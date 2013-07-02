@@ -10,12 +10,61 @@
 
 #include <glm/glm.hpp>
 
+template <int count>
 class Vertex
 {
+protected:
 public:
+	static void setAttribPointers(int totalSize, void* base = NULL, int index = 0, int offset = 0)
+	{
+		glVertexAttribPointer(index, count, GL_FLOAT, GL_FALSE, totalSize, (char*)base + offset);
+	}
+	static const int size() { return count; };
 };
 
 
+class VertexPosition3 : public Vertex<3>
+{
+public:
+	glm::vec3 position;
+	VertexPosition3(glm::vec3 position) : Vertex()
+	{
+		this->position = position;
+	}
+};
+
+class VertexTexture2 : public Vertex<2>
+{
+public:
+	glm::vec2 texCoord;
+	VertexTexture2(glm::vec2 texCoord)
+	{
+		this->texCoord = texCoord;
+	}
+};
+
+
+class VertexPosition3Texture2 : public VertexPosition3, public VertexTexture2
+{
+public:
+	VertexPosition3Texture2(glm::vec3 position, glm::vec2 texCoord) : VertexPosition3(position), VertexTexture2(texCoord)
+	{
+	}
+
+	static int setAttribPointers(int totalSize = size(), void* base = NULL, int index = 0, int offset = 0)
+	{
+		VertexPosition3::setAttribPointers(totalSize, base, index+0, offset);
+		VertexTexture2::setAttribPointers(totalSize, base, index+1, offset);
+		return index+2;
+	}
+
+	static const int size() { return VertexPosition3::size() + VertexTexture2::size(); };
+};
+
+
+
+
+/*
 class VertexPosition : public Vertex
 {
 public:
@@ -288,5 +337,5 @@ public:
 		return index;
 	}
 };
-
+*/
 #endif
