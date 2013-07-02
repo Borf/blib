@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "AudioManagerWindows.h"
 
 #include <Windows.h>
@@ -27,6 +28,7 @@ void AudioManagerWindows::stopMusic()
 {
 	mciSendString("stop song1", NULL, 0, 0);
 }
+
 static int i = 2;
 void AudioManagerWindows::playSound( std::string filename )
 {

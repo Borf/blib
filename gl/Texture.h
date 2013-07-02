@@ -12,93 +12,81 @@
 #include <vector>
 #include <map>
 
-class Texture
+namespace blib
 {
-protected:
-	Texture();
-	void fromData(unsigned char* data, int width, int height);
-	void fromFile(std::string fileName, int loadOptions);
-
-	Texture(std::string fileName, int loadOptions = 0);
-	~Texture(void);
-public:
-	enum LoadOptions
+	namespace gl
 	{
-		NoResize = 1,
-		KeepData = 2,
-		LoadLater = 4,
-		TextureWrap = 8,
-	};
+		class Texture
+		{
+		protected:
+			Texture();
+			void fromData(unsigned char* data, int width, int height);
+			void fromFile(std::string fileName, int loadOptions);
 
-	static std::map<std::string, Texture*> textureCache;
-	static Texture* loadCached(std::string fileName, int loadOptions = 0);
-	static void clearCache();
+			Texture(std::string fileName, int loadOptions = 0);
+			~Texture(void);
+		public:
+			enum LoadOptions
+			{
+				NoResize = 1,
+				KeepData = 2,
+				LoadLater = 4,
+				TextureWrap = 8,
+			};
 
-
-
-	unsigned char* data;
-
-	GLuint texid;
-	int width;
-	int height;
-
-	int originalWidth;
-	int originalHeight;
-	
-
-	Texture(unsigned char* data, int width, int height);
-};
+			static std::map<std::string, Texture*> textureCache;
+			static Texture* loadCached(std::string fileName, int loadOptions = 0);
+			static void clearCache();
 
 
-class TextureMap
-{
-public:
-	int width;
-	int height;
 
-	class TexInfo
-	{
-	public:
-		TexInfo(TextureMap* texMap);
-		TextureMap* texMap;
-		glm::vec2 t1;
-		glm::vec2 t2;
+			unsigned char* data;
+
+			GLuint texid;
+			int width;
+			int height;
+
+			int originalWidth;
+			int originalHeight;
 
 
-		int x,y,width,height;
-	};
-	GLuint texid;
-	std::map<std::string, TexInfo*> info;
+			Texture(unsigned char* data, int width, int height);
+		};
+		
+
+		class TextureMap
+		{
+		public:
+			int width;
+			int height;
+
+			class TexInfo
+			{
+			public:
+				TexInfo(TextureMap* texMap);
+				TextureMap* texMap;
+				glm::vec2 t1;
+				glm::vec2 t2;
 
 
-	bool* taken;
-	inline bool &isTaken(int x, int y);
-
-	void save(std::string filename);
-
-	TextureMap();
-	~TextureMap();
-	TexInfo* addTexture(std::string filename);
-};
+				int x,y,width,height;
+			};
+			GLuint texid;
+			std::map<std::string, TexInfo*> info;
 
 
-class TextureAtlas : public Texture
-{
-	struct ImageData
-	{
-		unsigned char* data;
-		int width;
-		int height;
-		int depth;
-	};
-	std::vector<ImageData> imageData;
+			bool* taken;
+			inline bool &isTaken(int x, int y);
 
-	int cx, cy;
+			void save(std::string filename);
 
-public:
-	TextureAtlas(std::vector<std::string> filenames );
+			TextureMap();
+			~TextureMap();
+			TexInfo* addTexture(std::string filename);
+		};
 
-	glm::vec2 topleft(int i);
-	glm::vec2 size(int i);
-	int frameCount();
-};
+
+	}
+}
+
+

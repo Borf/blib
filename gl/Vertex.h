@@ -10,332 +10,54 @@
 
 #include <glm/glm.hpp>
 
-template <int count>
 class Vertex
 {
 protected:
 public:
-	static void setAttribPointers(int totalSize, void* base = NULL, int index = 0, int offset = 0)
+	static void setAttribPointers(int &index, int totalSize = size())
 	{
-		glVertexAttribPointer(index, count, GL_FLOAT, GL_FALSE, totalSize, (char*)base + offset);
 	}
-	static const int size() { return count; };
+	static const int size() { return 0; };
 };
 
 
-class VertexPosition3 : public Vertex<3>
-{
-public:
-	glm::vec3 position;
-	VertexPosition3(glm::vec3 position) : Vertex()
-	{
-		this->position = position;
-	}
-};
+#define VertexDefBegin(className, memberName, memberType, count, base)	\
+	class className : public base \
+	{ \
+	public: \
+	\
+		static void setAttribPointers(int &index, int totalSize = size()) \
+		{\
+			base::setAttribPointers(index, totalSize);\
+			glVertexAttribPointer(index++, count, GL_FLOAT, GL_FALSE, totalSize, (void*)base::size());\
+		}\
+		static int size() { return base::size() + count*sizeof(GL_FLOAT); }\
+		\
+		memberType memberName; \
+		\
 
-class VertexTexture2 : public Vertex<2>
-{
-public:
-	glm::vec2 texCoord;
-	VertexTexture2(glm::vec2 texCoord)
-	{
-		this->texCoord = texCoord;
-	}
-};
-
-
-class VertexPosition3Texture2 : public VertexPosition3, public VertexTexture2
-{
-public:
-	VertexPosition3Texture2(glm::vec3 position, glm::vec2 texCoord) : VertexPosition3(position), VertexTexture2(texCoord)
-	{
-	}
-
-	static int setAttribPointers(int totalSize = size(), void* base = NULL, int index = 0, int offset = 0)
-	{
-		VertexPosition3::setAttribPointers(totalSize, base, index+0, offset);
-		VertexTexture2::setAttribPointers(totalSize, base, index+1, offset);
-		return index+2;
-	}
-
-	static const int size() { return VertexPosition3::size() + VertexTexture2::size(); };
-};
+#define VertexDefEnd() }
 
 
 
 
-/*
-class VertexPosition : public Vertex
-{
-public:
-	glm::vec3 position;
 
-	VertexPosition(glm::vec3 position)
-	{
-		this->position = position;
-	}
+VertexDefBegin(VertexPosition3,								position,	glm::vec3, 3, Vertex)
+	VertexPosition3(glm::vec3 position) : position(position) {};
+VertexDefEnd();
 
-	static int getSize()
-	{
-		return sizeof(GL_FLOAT) * 3;
-	}
+VertexDefBegin(VertexPosition2,								position,	glm::vec2, 2, Vertex)
+	VertexPosition2(glm::vec2 position) : position(position) {};
+VertexDefEnd();
 
-	static int setVAO(int totalSize)
-	{
-		int index = 0;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, totalSize, (void*) 0);
-		return index;
-	}
-};
+VertexDefBegin(VertexPosition3Texture2,						texCoord,	glm::vec2, 2, VertexPosition3)
+	VertexPosition3Texture2(glm::vec3 position, glm::vec2 texCoord) : VertexPosition3(position), texCoord(texCoord) {};
+VertexDefEnd();
 
-class VertexPositionColor : public VertexPosition
-{
-public:
-	glm::vec4 color;
+VertexDefBegin(VertexPosition3Texture2Color4,				color,		glm::vec4, 4, VertexPosition3Texture2)
+	VertexPosition3Texture2Color4(glm::vec3 position, glm::vec2 texCoord, glm::vec4 color) : VertexPosition3Texture2(position, texCoord), color(color) {};
+VertexDefEnd();
 
 
-	VertexPositionColor(glm::vec3 position, glm::vec4 color) : VertexPosition(position)
-	{
-		this->color = color;
-	}
 
-	static int getSize()
-	{
-		return VertexPosition::getSize() + sizeof(GL_FLOAT)*4;
-	}
-	static int setVAO(int totalSize)
-	{
-		int index = VertexPosition::setVAO(totalSize)+1;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 4, GL_FLOAT, GL_FALSE, totalSize, (void*) VertexPosition::getSize());
-		return index;
-	}
-};
-
-class VertexPositionColorNormal : public VertexPositionColor
-{
-public:
-	glm::vec3 normal;
-
-
-	VertexPositionColorNormal(glm::vec3 position, glm::vec4 color, glm::vec3 normal) : VertexPositionColor(position, color)
-	{
-		this->normal = normal;
-	}
-	static int getSize()
-	{
-		return VertexPositionColor::getSize() + sizeof(GL_FLOAT)*3;
-	}
-	static int setVAO(int totalSize)
-	{
-		int index = VertexPositionColor::setVAO(totalSize)+1;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, totalSize, (void*) VertexPositionColor::getSize());
-		return index;
-	}
-};
-
-class VertexPositionNormal : public VertexPosition
-{
-public:
-	glm::vec3 normal;
-
-
-	VertexPositionNormal(glm::vec3 position, glm::vec3 normal) : VertexPosition(position)
-	{
-		this->normal = normal;
-	}
-	static int getSize()
-	{
-		return VertexPosition::getSize() + sizeof(GL_FLOAT)*3;
-	}
-	static int setVAO(int totalSize)
-	{
-		int index = VertexPosition::setVAO(totalSize)+1;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 3, GL_FLOAT, GL_FALSE, totalSize, (void*) VertexPosition::getSize());
-		return index;
-	}
-};
-
-
-class VertexPositionColorTexture : public VertexPositionColor
-{
-public:
-	glm::vec2 texCoord;
-
-	VertexPositionColorTexture(glm::vec3 position, glm::vec4 color, glm::vec2 texCoord) : VertexPositionColor(position, color)
-	{
-		this->texCoord = texCoord;
-	}
-	static int getSize()
-	{
-		return VertexPositionColor::getSize() + sizeof(GL_FLOAT)*2;
-	}
-	static int setVAO(int totalSize)
-	{
-		int index = VertexPositionColor::setVAO(totalSize)+1;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, totalSize, (void*) VertexPositionColor::getSize());
-		return index;
-	}
-};
-
-class VertexPositionColorNormalTexture : public VertexPositionColorNormal
-{
-public:
-	glm::vec2 texCoord;
-
-	VertexPositionColorNormalTexture(glm::vec3 position, glm::vec4 color, glm::vec3 normal, glm::vec2 texCoord) : VertexPositionColorNormal(position, color, normal)
-	{
-		this->texCoord = texCoord;
-	}
-	
-	static int getSize()
-	{
-		return VertexPositionColorNormal::getSize() + sizeof(GL_FLOAT)*2;
-	}
-
-	static int setVAO(int totalSize)
-	{
-		int index = VertexPositionColorNormal::setVAO(totalSize)+1;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, totalSize, (void*) VertexPositionColorNormal::getSize());
-		return index;
-	}
-
-};
-
-
-class VertexPositionTexture : public VertexPosition
-{
-public:
-	glm::vec2 texCoord;
-	VertexPositionTexture() : VertexPosition(glm::vec3(0,0,0))
-	{
-		texCoord = glm::vec2(0,0);
-	}
-
-	VertexPositionTexture(const VertexPositionTexture& other) : VertexPosition(other.position)
-	{
-		texCoord = other.texCoord;
-	}
-
-
-	VertexPositionTexture(glm::vec3 position, glm::vec2 texCoord) : VertexPosition(position)
-	{
-		this->texCoord = texCoord;
-	}
-
-	static int getSize()
-	{
-		return VertexPosition::getSize() + sizeof(GL_FLOAT)*2;
-	}
-
-	static int setVAO(int totalSize)
-	{
-		int index = VertexPosition::setVAO(totalSize)+1;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, totalSize, (void*) VertexPosition::getSize());
-		return index;
-	}
-
-};
-
-class VertexPositionColorNormalTextureTexture : public VertexPositionColorNormalTexture
-{
-public:
-	glm::vec2 texCoord2;
-
-	VertexPositionColorNormalTextureTexture(glm::vec3 position, glm::vec4 color, glm::vec3 normal, glm::vec2 texCoord, glm::vec2 texCoord2) : VertexPositionColorNormalTexture(position, color, normal, texCoord)
-	{
-		this->texCoord2 = texCoord2;
-	}
-
-	static int getSize()
-	{
-		return VertexPositionColorNormalTexture::getSize() + sizeof(GL_FLOAT)*2;
-	}
-
-	static int setVAO(int totalSize)
-	{
-		int index = VertexPositionColorNormalTexture::setVAO(totalSize)+1;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, totalSize, (void*) VertexPositionColorNormalTexture::getSize());
-		return index;
-	}
-
-};
-class VertexPositionNormalTexture : public VertexPositionNormal
-{
-public:
-	glm::vec2 texCoord;
-
-	VertexPositionNormalTexture(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoord) : VertexPositionNormal(position, normal)
-	{
-		this->texCoord = texCoord;
-	}
-
-	static int getSize()
-	{
-		return VertexPositionNormal::getSize() + sizeof(GL_FLOAT)*2;
-	}
-
-	static int setVAO(int totalSize)
-	{
-		int index = VertexPositionNormal::setVAO(totalSize)+1;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, totalSize, (void*) VertexPositionNormal::getSize());
-		return index;
-	}
-};
-
-class VertexPositionNormalTextureTexture : public VertexPositionNormalTexture
-{
-public:
-	glm::vec2 texCoord2;
-
-	VertexPositionNormalTextureTexture(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoord, glm::vec2 texCoord2) : VertexPositionNormalTexture(position, normal, texCoord)
-	{
-		this->texCoord2 = texCoord2;
-	}
-
-	static int getSize()
-	{
-		return VertexPositionNormalTexture::getSize() + sizeof(GL_FLOAT)*2;
-	}
-
-	static int setVAO(int totalSize)
-	{
-		int index = VertexPositionNormalTexture::setVAO(totalSize)+1;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 2, GL_FLOAT, GL_FALSE, totalSize, (void*) VertexPositionNormalTexture::getSize());
-		return index;
-	}
-};
-
-class VertexPositionNormalTextureTextureColor : public VertexPositionNormalTextureTexture
-{
-public:
-	glm::vec4 color;
-	VertexPositionNormalTextureTextureColor(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoord, glm::vec2 texCoord2, glm::vec4 color) : VertexPositionNormalTextureTexture(position, normal, texCoord, texCoord2)
-	{
-		this->color = color;
-	}
-
-	static int getSize()
-	{
-		return VertexPositionNormalTextureTexture::getSize() + sizeof(GL_FLOAT)*4;
-	}
-
-	static int setVAO(int totalSize)
-	{
-		int index = VertexPositionNormalTextureTexture::setVAO(totalSize)+1;
-		glEnableVertexAttribArray(index);
-		glVertexAttribPointer(index, 4, GL_FLOAT, GL_FALSE, totalSize, (void*) VertexPositionNormalTextureTexture::getSize());
-		return index;
-	}
-};
-*/
 #endif

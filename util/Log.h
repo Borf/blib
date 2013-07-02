@@ -2,31 +2,38 @@
 
 #include <string>
 
-class Log
+namespace blib
 {
-	std::string buffer;
-//	bool endline;
-	class EndLine{};
+	namespace util
+	{
+		class Log
+		{
+			std::string buffer;
+		//	bool endline;
+			class EndLine{};
 
-	void logString(const char* format, ...);
+			void logString(const char* format, ...);
 
-public:
-	Log();
+		public:
+			Log();
 
-	static EndLine newline;
+			static EndLine newline;
 
-	Log& operator <<(const char* txt);
-	Log& operator <<(std::string txt);
-	Log& operator <<(int txt);
-	Log& operator <<(unsigned long txt);
-	Log& operator <<(unsigned int txt);
-	Log& operator <<(float txt);
-	Log& operator <<(double txt);
-	Log& operator <<(const EndLine& endline);
-
-
-	static std::string format(const char* fmt, ...); //TODO: move this to a better spot
-};
+			Log& operator <<(const char* txt);
+			Log& operator <<(std::string txt);
+			Log& operator <<(int txt);
+			Log& operator <<(unsigned long txt);
+			Log& operator <<(unsigned int txt);
+			Log& operator <<(float txt);
+			Log& operator <<(double txt);
+			Log& operator <<(const EndLine& endline);
 
 
-extern Log logger;
+			static std::string format(const char* fmt, ...); //TODO: move this to a better spot
+			static Log out;
+			static Log err;
+		};
+	}
+}
+
+

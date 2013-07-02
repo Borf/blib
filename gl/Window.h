@@ -8,17 +8,16 @@ namespace blib
 	{
 		class Window : public blib::Window
 		{
-		protected:
-			int width,height;
-			bool resizable;
 		public:
 			Window();
 			~Window();
-			virtual void setSize( int width, int height );
-			virtual void isResizable( bool resizable );
 			virtual void create();
+			virtual void swapBuffers();
+			virtual void tick();
+
 		private:
-			Window(const Window& other) {};
+			Window(const Window& other) { throw "not copyable!"; };
+			Window& operator = (Window& other) { throw "not copyable!"; };
 
 		};
 	}
