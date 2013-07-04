@@ -108,7 +108,19 @@ namespace blib
 			file.read(data, size);
 			return size;
 		}
+		std::string FileSystem::getData(std::string fileName)
+		{
+			StreamInFile file(fileName);
+			std::string ret;
+			char buf[1024];
 
+			while(!file.eof())
+			{
+				int rc = file.read(buf, 1024);
+				ret += std::string(buf, rc);
+			}
+			return ret;
+		}
 	}
 }
 

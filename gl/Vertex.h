@@ -14,7 +14,7 @@ class Vertex
 {
 protected:
 public:
-	static void setAttribPointers(int &index, int totalSize = size())
+	static void setAttribPointers(void* offset = NULL, int *index = NULL, int totalSize = size())
 	{
 	}
 	static const int size() { return 0; };
@@ -26,10 +26,14 @@ public:
 	{ \
 	public: \
 	\
-		static void setAttribPointers(int &index, int totalSize = size()) \
+		className() {} \
+		static void setAttribPointers(void* offset = NULL, int *index = NULL, int totalSize = size()) \
 		{\
-			base::setAttribPointers(index, totalSize);\
-			glVertexAttribPointer(index++, count, GL_FLOAT, GL_FALSE, totalSize, (void*)base::size());\
+			int tmpIndex = 0;\
+			if(!index)\
+				index = &tmpIndex;\
+			base::setAttribPointers(offset, index, totalSize);\
+			glVertexAttribPointer((*index)++, count, GL_FLOAT, GL_FALSE, totalSize, (void*)((char*)offset + base::size()));\
 		}\
 		static int size() { return base::size() + count*sizeof(GL_FLOAT); }\
 		\

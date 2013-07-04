@@ -1,7 +1,9 @@
 #include "App.h"
 
 #include <blib/gl/Window.h>
-
+#include <blib/gl/GlInitRegister.h>
+#include <blib/gl/GlResizeRegister.h>
+#include <blib/util/Profiler.h>
 namespace blib
 {
 
@@ -23,16 +25,24 @@ namespace blib
 		} listener(this);
 		addListener(&listener);
 
-
+		blib::gl::GlInitRegister::initRegisteredObjects();
 
 		init();
+
+		blib::gl::GlResizeRegister::ResizeRegisteredObjects(window->getWidth(), window->getHeight());
+
+
 		running = true;
 		while(running)
 		{
+			blib::util::Profiler::startFrame();
+			blib::util::Profiler::startSection("frame");
 			window->tick();
 			update();
 			draw();
 			window->swapBuffers();
+			blib::util::Profiler::endSection("frame");
+			Sleep(0);
 		}
 	}
 

@@ -54,6 +54,7 @@ namespace blib
 			static StreamOut* openWrite(std::string fileName);
 			static void registerHandler(FileSystemHandler* handler);
 			static int getData(std::string fileName, char* &data);
+			static std::string getData(std::string fileName);
 		};
 	}
 }

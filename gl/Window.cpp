@@ -70,6 +70,10 @@ namespace blib
 			ShowWindow(hWnd, SW_SHOW);
 			UpdateWindow(hWnd);
 
+			glViewport(0,0,width, height);
+
+			wglSwapIntervalEXT(0);
+
 		}
 
 		void Window::swapBuffers()

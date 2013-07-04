@@ -38,6 +38,8 @@ namespace blib
 		virtual void setResizable(bool resizable);
 		virtual void setBorder(bool border);
 		virtual bool isOpened();
+		virtual int getWidth() { return width; }
+		virtual int getHeight() { return height; }
 
 		virtual void create();
 		virtual void swapBuffers() = 0;
@@ -47,6 +49,5 @@ namespace blib
 
 		void addListener(KeyListener* keyListener);
 		void addListener(MouseListener* keyListener);
-
 	};
 }
