@@ -6,7 +6,10 @@
 #include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/gl/Shader.h>
+#include <blib/gl/VBO.h>
+#include <blib/gl/VIO.h>
 #include <queue>
+
 
 
 namespace blib
@@ -20,7 +23,9 @@ namespace blib
 
 		class SpriteBatch : public GlInitRegister
 		{
-#define MAX_SPRITES 100000
+			typedef VertexPosition3Texture2 vertexDef;
+
+#define MAX_SPRITES 200000
 			class Shader : public blib::gl::Shader, GlResizeRegister
 			{
 			public:
@@ -28,9 +33,11 @@ namespace blib
 				void init();
 			};
 
+			VBO<vertexDef> vbo;
+			vertexDef	verts[MAX_SPRITES];
+			VIO<unsigned short> vio;
+
 			int spriteCount;
-			VertexPosition3Texture2 verts[MAX_SPRITES*4];
-			unsigned short indices[MAX_SPRITES*6];
 
 			
 			bool active;
