@@ -19,6 +19,10 @@ namespace blib
 		struct KeyState
 		{
 			bool pressedKeys[255];
+			inline bool isPressed(int index)
+			{
+				return pressedKeys[index];
+			}
 		} keyState;
 
 		bool running;

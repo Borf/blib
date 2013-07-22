@@ -51,6 +51,8 @@ namespace blib
 
 
 			Texture(unsigned char* data, int width, int height);
+
+			glm::vec2 center;
 		};
 		
 

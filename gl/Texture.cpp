@@ -157,6 +157,8 @@ namespace blib
 					delete[] data;
 					data = NULL;
 				}
+
+				center = glm::vec2(originalWidth/2.0f, originalHeight/2.0f);
 			}
 		}
 
@@ -207,6 +209,7 @@ namespace blib
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+			center = glm::vec2(originalWidth/2.0f, originalHeight/2.0f);
 		}
 
 
