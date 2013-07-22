@@ -28,7 +28,7 @@ namespace blib
 		void run();
 
 		virtual void init() = 0;
-		virtual void update() = 0;
+		virtual void update(double elapsedTime) = 0;
 		virtual void draw() = 0;
 	protected:
 		void addListener(KeyListener* keyListener);

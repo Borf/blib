@@ -61,12 +61,15 @@ void main()\
 			vertexDef::setAttribPointers();
 		}
 
-		void SpriteBatch::begin()
+		void SpriteBatch::begin(glm::mat4 matrix)
 		{
 			assert(!active);
 			active = true;
 			depth = 0;
 			spriteCount = 0;
+			currentTexture = NULL;
+			this->matrix = matrix;
+			materialIndices.clear();
 			vbo.mapData(GL_WRITE_ONLY);		
 		}
 
@@ -74,35 +77,52 @@ void main()\
 		{
 			assert(active);
 			vbo.unmapData();
-			glDrawElements(GL_TRIANGLES, (spriteCount/4)*6, GL_UNSIGNED_SHORT, 0);
+			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, (spriteCount/4) * 6));
+
+
+			glDisable(GL_DEPTH_TEST);
+			glDepthMask(GL_FALSE);
+
+			int lastIndex = 0;
+			for(size_t i = 0; i < materialIndices.size(); i++)
+			{
+				glBindTexture(GL_TEXTURE_2D, materialIndices[i].first->texid);
+				glDrawElements(GL_TRIANGLES, materialIndices[i].second - lastIndex, GL_UNSIGNED_SHORT, (GLvoid*)(lastIndex * sizeof(unsigned short)));
+				lastIndex = materialIndices[i].second;
+			}
+
 			active = false;
 		}
 
 
 
-		void SpriteBatch::draw( Texture* texture, glm::mat4 transform )
+		void SpriteBatch::draw( Texture* texture, glm::mat4 transform, glm::vec2 center)
 		{
 			assert(active);
-			vbo[spriteCount].position = glm::vec3(transform * glm::vec4(0,0,0,1));
-			vbo[spriteCount].texCoord = glm::vec2(0,0);
-			vbo[spriteCount].position.z = (float)depth*0.01f;
-			spriteCount++;
 
-			vbo[spriteCount].position = glm::vec3(transform * glm::vec4(0,texture->originalHeight,0,1));
+			if(currentTexture != texture && currentTexture != NULL)
+				materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, (spriteCount/4) * 6));
+			currentTexture = texture;
+
+			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(0 - center.x,						0 - center.y,							0,1));
 			vbo[spriteCount].texCoord = glm::vec2(0,1);
-			vbo[spriteCount].position.z = (float)depth*0.01f;
+//			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
 
-			vbo[spriteCount].position = glm::vec3(transform * glm::vec4(texture->originalWidth,0,0,1));
-			vbo[spriteCount].texCoord = glm::vec2(1,0);
-			vbo[spriteCount].position.z = (float)depth*0.01f;
+			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(0 - center.x,						texture->originalHeight - center.y,	0,1));
+			vbo[spriteCount].texCoord = glm::vec2(0,0);
+//			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
 
-			vbo[spriteCount].position = glm::vec3(transform * glm::vec4(texture->originalWidth,texture->originalHeight,0,1));
+			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(texture->originalWidth - center.x,	0 - center.y,							0,1));
 			vbo[spriteCount].texCoord = glm::vec2(1,1);
-			vbo[spriteCount].position.z = (float)depth*0.01f;
+//			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
 
+			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(texture->originalWidth - center.x,	texture->originalHeight - center.y,	0,1));
+			vbo[spriteCount].texCoord = glm::vec2(1,0);
+//			vbo[spriteCount].position.z = (float)depth*0.01f;
+			spriteCount++;
 			depth++;
 		}
 

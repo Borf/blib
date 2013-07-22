@@ -77,5 +77,8 @@ VertexDefBegin(VertexPosition3Texture2Color1,			filler,			int, 1, VertexPosition
 	};
 VertexDefEnd();
 
+VertexDefBegin(VertexPosition2Texture2Color4,				color,		glm::vec4, 4, VertexPosition2Texture2)
+	VertexPosition2Texture2Color4(glm::vec2 position, glm::vec2 texCoord, glm::vec4 color) : VertexPosition2Texture2(position, texCoord), color(color) {};
+VertexDefEnd();
 
 #endif

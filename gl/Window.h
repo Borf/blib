@@ -1,12 +1,13 @@
 #pragma once
 
 #include <blib/Window.h>
+#include <blib/util/NotCopyable.h>
 
 namespace blib
 {
 	namespace gl
 	{
-		class Window : public blib::Window
+		class Window : public blib::Window, blib::util::NotCopyable
 		{
 		public:
 			Window();
@@ -14,11 +15,6 @@ namespace blib
 			virtual void create();
 			virtual void swapBuffers();
 			virtual void tick();
-
-		private:
-			Window(const Window& other) { throw "not copyable!"; };
-			Window& operator = (Window& other) { throw "not copyable!"; };
-
 		};
 	}
 }

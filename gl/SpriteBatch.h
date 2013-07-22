@@ -23,9 +23,9 @@ namespace blib
 
 		class SpriteBatch : public GlInitRegister
 		{
-			typedef VertexPosition3Texture2 vertexDef;
+			typedef VertexPosition2Texture2Color4 vertexDef;
 
-#define MAX_SPRITES 200000
+#define MAX_SPRITES 110000
 			class Shader : public blib::gl::Shader, GlResizeRegister
 			{
 			public:
@@ -36,12 +36,15 @@ namespace blib
 			VBO<vertexDef> vbo;
 			vertexDef	verts[MAX_SPRITES];
 			VIO<unsigned short> vio;
+			std::vector<std::pair<Texture*, unsigned short> > materialIndices;
+			Texture* currentTexture;
 
 			int spriteCount;
-
-			
 			bool active;
 			int depth;
+
+			glm::mat4 matrix;
+
 
 			blib::gl::Shader* shader;
 		public:
@@ -49,10 +52,10 @@ namespace blib
 
 			virtual void initGl();
 
-			virtual void begin();
+			virtual void begin(glm::mat4 matrix = glm::mat4());
 			virtual void end();
 
-			virtual void draw(Texture* sprite, glm::mat4 transform);
+			virtual void draw(Texture* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0));
 			virtual void draw(TextureMap::TexInfo* sprite, glm::mat4 transform);
 
 		};

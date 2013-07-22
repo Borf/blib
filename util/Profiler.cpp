@@ -2,7 +2,7 @@
 #include "Log.h"
 
 #define SHOWFPS
-//#define NOPROFILE
+#define NOPROFILE
 
 #ifdef WIN32
 #include <Windows.h>

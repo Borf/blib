@@ -24,7 +24,6 @@ namespace blib
 			static timespec fpscalc;
 			static int fpsFrameCount;
 			static int frameCount;
-			static double getTime();
 
 			static std::list<std::map<std::string, double> > frameTimes;
 			static std::map<std::string, double> currentFrameTimes;
@@ -32,6 +31,7 @@ namespace blib
 		public:
 			Profiler();
 
+			static double getTime();
 	
 			static void startFrame();
 
