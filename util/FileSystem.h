@@ -8,6 +8,8 @@
 #include <blib/util/StreamSeekable.h>
 
 
+namespace Json { class Value; }
+
 namespace blib
 {
 	namespace util
@@ -55,6 +57,7 @@ namespace blib
 			static void registerHandler(FileSystemHandler* handler);
 			static int getData(std::string fileName, char* &data);
 			static std::string getData(std::string fileName);
+			static Json::Value getJson(std::string fileName);
 		};
 	}
 }

@@ -1,5 +1,5 @@
 #include "FileSystem.h"
-
+#include <json/json.h>
 #include <fstream>
 
 namespace blib
@@ -121,6 +121,17 @@ namespace blib
 			}
 			return ret;
 		}
+
+		Json::Value FileSystem::getJson( std::string fileName )
+		{
+			std::string data = getData(fileName);
+			Json::Value ret;
+			Json::Reader reader;
+			reader.parse(data, ret);
+
+			return ret;
+		}
+
 	}
 }
 

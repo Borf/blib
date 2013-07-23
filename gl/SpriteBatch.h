@@ -8,6 +8,7 @@
 #include <blib/gl/Shader.h>
 #include <blib/gl/VBO.h>
 #include <blib/gl/VIO.h>
+#include <blib/math/Rectangle.h>
 #include <queue>
 
 
@@ -55,7 +56,7 @@ namespace blib
 			virtual void begin(glm::mat4 matrix = glm::mat4());
 			virtual void end();
 
-			virtual void draw(Texture* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0));
+			virtual void draw(Texture* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0), blib::math::Rectangle src = blib::math::Rectangle(0,0,1,1));
 			virtual void draw(TextureMap::TexInfo* sprite, glm::mat4 transform);
 
 		};

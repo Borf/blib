@@ -32,7 +32,7 @@ uniform sampler2D s_texture;\
 varying vec2 texCoord;\
 void main()\
 {\
-	gl_FragColor = texture2D(s_texture, texCoord);\
+gl_FragColor = clamp(texture2D(s_texture, texCoord) + vec4(0.0, 0.0, 0.0, 0.4),0,1);\
 }\
 ");
 			vbo.setData(MAX_SPRITES*4, NULL, GL_STATIC_DRAW);
@@ -96,31 +96,34 @@ void main()\
 
 
 
-		void SpriteBatch::draw( Texture* texture, glm::mat4 transform, glm::vec2 center)
+		void SpriteBatch::draw( Texture* texture, glm::mat4 transform, glm::vec2 center, blib::math::Rectangle src)
 		{
 			assert(active);
+
+			float fw = (float)src.width();
+			float fh = (float)src.height();
 
 			if(currentTexture != texture && currentTexture != NULL)
 				materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, (spriteCount/4) * 6));
 			currentTexture = texture;
 
-			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(0 - center.x,						0 - center.y,							0,1));
-			vbo[spriteCount].texCoord = glm::vec2(0,1);
+			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1));
+			vbo[spriteCount].texCoord = glm::vec2(src.topleft.x,src.bottomright.y);
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
 
-			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(0 - center.x,						texture->originalHeight - center.y,	0,1));
-			vbo[spriteCount].texCoord = glm::vec2(0,0);
+			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1));
+			vbo[spriteCount].texCoord = glm::vec2(src.topleft.x,src.topleft.y);
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
 
-			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(texture->originalWidth - center.x,	0 - center.y,							0,1));
-			vbo[spriteCount].texCoord = glm::vec2(1,1);
+			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1));
+			vbo[spriteCount].texCoord = glm::vec2(src.bottomright.x,src.bottomright.y);
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
 
-			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(texture->originalWidth - center.x,	texture->originalHeight - center.y,	0,1));
-			vbo[spriteCount].texCoord = glm::vec2(1,0);
+			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*texture->originalHeight - center.y,	0,1));
+			vbo[spriteCount].texCoord = glm::vec2(src.bottomright.x,src.topleft.y);
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
 			depth++;
