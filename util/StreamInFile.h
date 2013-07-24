@@ -21,7 +21,7 @@ namespace blib
 			}
 		public:
 			StreamInFile(std::string fileName);
-			~StreamInFile()
+			virtual ~StreamInFile()
 			{
 				if(innerStream)
 					delete innerStream;

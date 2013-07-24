@@ -34,6 +34,7 @@ namespace blib
 				std::ifstream* stream;
 			public:
 				StreamInFilePhysical(std::ifstream* stream);
+				~StreamInFilePhysical();
 				virtual unsigned int read( char* data, int count );
 				virtual char get();
 				virtual bool eof();

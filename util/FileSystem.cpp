@@ -29,6 +29,13 @@ namespace blib
 			this->stream = stream;
 		}
 
+		PhysicalFileSystemHandler::StreamInFilePhysical::~StreamInFilePhysical()
+		{
+			stream->close();
+			delete stream;
+			stream = NULL;
+		}
+
 		unsigned int PhysicalFileSystemHandler::StreamInFilePhysical::read( char* data, int count )
 		{
 			stream->read(data, count);
