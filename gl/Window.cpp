@@ -69,7 +69,7 @@ namespace blib
 			Log::out<<"Using OpenGL " << (const char*)glGetString(GL_VERSION) << Log::newline;
 			Log::out<<"Using OpenGL " << glVersion[0] << "." << glVersion[1] << Log::newline; // Output which version of OpenGL we are using
 
-			ShowCursor(FALSE);
+//			ShowCursor(FALSE);
 			ShowWindow(hWnd, SW_SHOW);
 			UpdateWindow(hWnd);
 
