@@ -6,6 +6,11 @@ namespace blib
 {
 	namespace math
 	{
+		class Circle;
+		class Line;
+		class Ray;
+		class Triangle;
+
 		class Rectangle
 		{
 		public:
@@ -21,6 +26,14 @@ namespace blib
 
 			inline float width() const { return bottomright.x - topleft.x; };
 			inline float height() const { return bottomright.y - topleft.y; };
+
+
+			bool contains(glm::vec2 point);
+			bool intersect(const blib::math::Rectangle &other);
+			bool intersect(const blib::math::Circle &other);
+			bool intersect(const blib::math::Line &other);
+			bool intersect(const blib::math::Ray &other);
+			bool intersect(const blib::math::Triangle &other);
 		};
 	}
 }

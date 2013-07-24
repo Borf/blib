@@ -66,6 +66,11 @@ VertexDefBegin(VertexPosition3Texture2Color4,				color,		glm::vec4, 4, VertexPos
 	VertexPosition3Texture2Color4(glm::vec3 position, glm::vec2 texCoord, glm::vec4 color) : VertexPosition3Texture2(position, texCoord), color(color) {};
 VertexDefEnd();
 
+VertexDefBegin(VertexPosition2Color4,						color,		glm::vec4, 4, VertexPosition2)
+	VertexPosition2Color4(glm::vec2 position, glm::vec4 color) : VertexPosition2(position), color(color) {};
+VertexDefEnd();
+
+
 VertexDefBegin(VertexPosition3Texture2Color3,				color,		glm::vec3, 3, VertexPosition3Texture2)
 	VertexPosition3Texture2Color3(glm::vec3 position, glm::vec2 texCoord, glm::vec3 color) : VertexPosition3Texture2(position, texCoord), color(color) {};
 VertexDefEnd();

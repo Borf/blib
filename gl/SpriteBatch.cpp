@@ -52,13 +52,6 @@ void main()\
 			}
 			vio.setData(MAX_SPRITES*6, indices, GL_STATIC_DRAW);
 			delete[] indices;
-
-			glEnableVertexAttribArray(0);
-			glEnableVertexAttribArray(1);
-			shader->use();
-			vbo.bind();
-			vio.bind();
-			vertexDef::setAttribPointers();
 		}
 
 		void SpriteBatch::begin(glm::mat4 matrix)
@@ -77,8 +70,19 @@ void main()\
 		{
 			assert(active);
 			vbo.unmapData();
+
+			if(spriteCount == 0)
+				return;
+
 			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, (spriteCount/4) * 6));
 
+
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+			shader->use();
+			vbo.bind();
+			vio.bind();
+			vertexDef::setAttribPointers();
 
 			glDisable(GL_DEPTH_TEST);
 			glDepthMask(GL_FALSE);

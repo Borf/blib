@@ -59,7 +59,7 @@ namespace blib
 			while(time > currentState->keyFrames[nextKeyFrame].time)
 			{
 				nextKeyFrame++;
-				if(nextKeyFrame >= currentState->keyFrames.size())
+				if(nextKeyFrame >= (int)currentState->keyFrames.size())
 				{
 					nextKeyFrame = 0;
 					time -= currentState->length;

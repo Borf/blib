@@ -35,11 +35,12 @@ namespace blib
 		running = true;
 		while(running)
 		{
-			double time = blib::util::Profiler::getTime();
+			double elapsedTime = blib::util::Profiler::getTime();
 			blib::util::Profiler::startFrame();
 			blib::util::Profiler::startSection("frame");
 			window->tick();
-			update(time);
+			time += elapsedTime;
+			update(elapsedTime);
 			draw();
 			window->swapBuffers();
 			blib::util::Profiler::endSection("frame");

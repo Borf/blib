@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <blib/gl/Texture.h>
 #include <blib/gl/Vertex.h>
 #include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
@@ -17,16 +16,13 @@ namespace blib
 {
 	namespace gl
 	{
-		class Texture;
 		class Shader;
 
-
-
-		class SpriteBatch : public GlInitRegister
+		class LineBatch : public GlInitRegister
 		{
-			typedef VertexPosition2Texture2Color4 vertexDef;
+			typedef VertexPosition2Color4 vertexDef;
 
-#define MAX_SPRITES 110000
+#define MAX_LINES 110000
 			class Shader : public blib::gl::Shader, GlResizeRegister
 			{
 			public:
@@ -35,28 +31,23 @@ namespace blib
 			};
 
 			VBO<vertexDef> vbo;
+			vertexDef	verts[MAX_LINES];
 			VIO<unsigned short> vio;
-			std::vector<std::pair<Texture*, unsigned short> > materialIndices;
-			Texture* currentTexture;
 
-			int spriteCount;
+			int lineCount;
 			bool active;
-			int depth;
 
 			glm::mat4 matrix;
-
-
 			blib::gl::Shader* shader;
 		public:
-			SpriteBatch();
+			LineBatch();
 
 			virtual void initGl();
 
 			virtual void begin(glm::mat4 matrix = glm::mat4());
 			virtual void end();
 
-			virtual void draw(Texture* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0), blib::math::Rectangle src = blib::math::Rectangle(0,0,1,1));
-			virtual void draw(TextureMap::TexInfo* sprite, glm::mat4 transform);
+			virtual void draw(glm::vec2 v1, glm::vec2 v2, glm::vec4 color = glm::vec4(1,1,0,1), glm::mat4 transform = glm::mat4());
 
 		};
 

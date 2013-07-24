@@ -11,6 +11,8 @@ namespace blib
 	{
 	protected:
 		Window* window;
+		double time;
+
 		struct AppSetup
 		{
 			int width, height;
