@@ -32,7 +32,7 @@ uniform sampler2D s_texture;\
 varying vec2 texCoord;\
 void main()\
 {\
-gl_FragColor = clamp(texture2D(s_texture, texCoord) + vec4(0.0, 0.0, 0.0, 0.4),0,1);\
+	gl_FragColor = texture2D(s_texture, texCoord);\
 }\
 ");
 			vbo.setData(MAX_SPRITES*4, NULL, GL_STATIC_DRAW);

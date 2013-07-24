@@ -32,21 +32,36 @@ namespace blib
 			public:
 				class KeyFrame
 				{
+				public:
+					class BoneFrameInfo
+					{
+					public:
+						int frame;
+						BoneFrameInfo(Json::Value &config);
+					};
+					float time;
+					std::list<std::pair<Bone*, BoneFrameInfo> > boneInfo;
 
+					KeyFrame(const Animation& animation, Json::Value &config);
 				};
+				State(const Animation& animation, Json::Value &config);
 
-				std::string name;
+
+				float length;
 				std::vector<KeyFrame> keyFrames;
 			};
 			
 
 			double time;
+			int currentKeyFrame;
 			State* currentState;
 			Texture* texture;
 			Bone* rootBone;
 
 			std::vector<blib::math::Rectangle> frames;
 			std::map<std::string, State*> states;
+			std::map<std::string, Bone*> bones;
+
 
 		public:
 			Animation(std::string filename);
