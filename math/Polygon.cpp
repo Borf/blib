@@ -15,13 +15,13 @@ namespace blib
 
 				if(line.intersects(l2))
 				{
-
+					return true;
 				}
 
 			}
 
 
-			return true;
+			return false;
 		}
 
 	}

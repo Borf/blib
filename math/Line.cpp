@@ -14,14 +14,10 @@ namespace blib
 
 		bool Line::intersects( const Line &other ) const
 		{
-	/*		public Vector2 LineLineIntersect(Vector2 v1, Vector2 v2, Vector2 v3, Vector2 v4)
-			{
-				float u = LineLineIntersectFac(v1, v2, v3, v4);
-				return v1 + u * (v2 - v1);
-			}
+			glm::vec2 point;
+			return intersects(other, point);
 
-			//TODO: move to physics / collision class
-			Vector2 closestPointBetween(Vector2 a, Vector2 b, Vector2 p)
+/*			Vector2 closestPointBetween(Vector2 a, Vector2 b, Vector2 p)
 			{
 				Vector2 AB = b - a;
 				float ab2 = AB.LengthSquared();
@@ -36,9 +32,19 @@ namespace blib
 			}	*/
 		}
 
+
+
 		bool Line::intersects( const Line &other, glm::vec2 &point ) const
 		{
+			float div = ((other.p2.y - other.p1.y)*(p2.x - p1.x) - (other.p2.x - other.p1.x)*(p2.y - p1.y));
+			float fac1 = ((other.p2.x - other.p1.x)*(p1.y - other.p1.y) - (other.p2.y - other.p1.y)*(p1.x - other.p1.x))/div;
+			if(fac1 < 0 || fac1 > 1)
+				return false;
+			float fac2 = ((p2.x - p1.x) * (p1.y - other.p1.y) - (p2.y - p1.y) * (p1.x - other.p1.x)) / div;
+			if(fac2 < 0 || fac2 > 1)
+				return false;
 
+			return true;
 		}
 
 	}
