@@ -3,6 +3,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <blib/gl/LineBatch.h>
+#include <clipper/clipper.hpp>
 
 namespace blib
 {
@@ -13,14 +14,39 @@ namespace blib
 		class Polygon : public std::vector<glm::vec2>, public blib::gl::ILineDrawable
 		{
 		public:
-			bool contains(glm::vec2 point);
-			bool intersects(const Line& line);
-			bool intersects(const Line& line, glm::vec2 &point, Line &collidedLine);
+			Polygon() { }
+			Polygon(const ClipperLib::Polygon &p);
 
-			glm::vec2 normal(int index);
+
+			ClipperLib::Polygon toClipperPolygon() const;
+			bool contains(glm::vec2 point) const;
+			bool intersects(const Line& line) const;
+			bool intersects(const Line& line, glm::vec2 &point, Line &collidedLine) const;
+			bool intersects( const Line &line, std::vector<std::pair<glm::vec2, Line> >* collisions) const;
+
+			glm::vec2 normal(int index) const;
 
 
 			void buildLines();
+
+			void push_back(const value_type& _Val)
+			{
+				std::vector<glm::vec2>::push_back(_Val);
+				lines.clear();
+			}
+
+			void push_back(value_type&& _Val)
+			{
+				std::vector<glm::vec2>::push_back(_Val);
+				lines.clear();
+			}
+
+			void clear()
+			{
+				std::vector<glm::vec2>::clear();
+				lines.clear();
+			}
+
 		};
 
 	}

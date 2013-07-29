@@ -9,6 +9,7 @@
 #endif
 
 #include <list>
+#include <vector>
 
 namespace blib
 {
@@ -23,6 +24,8 @@ namespace blib
 		std::list<MouseListener*> mouseListeners;
 
 		int mouseButtons;
+		std::vector<long> clicks;
+		int lastButton;
 
 	protected:
 		HDC hdc;

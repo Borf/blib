@@ -31,5 +31,15 @@ namespace blib
 			return point.x >= topleft.x && point.y >= topleft.y && point.x < bottomright.x && point.y < bottomright.y;
 		}
 
+		ClipperLib::Polygon Rectangle::toClipperPolygon() const
+		{
+			ClipperLib::Polygon ret;
+			ret.push_back(topleft);
+			ret.push_back(glm::vec2(topleft.x, bottomright.y));
+			ret.push_back(bottomright);
+			ret.push_back(glm::vec2(bottomright.x, topleft.y));
+			return ret;
+		}
+
 	}
 }

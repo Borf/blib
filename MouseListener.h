@@ -20,8 +20,8 @@ namespace blib
 			inline bool isButtonDown(Button button) { return (button & button) != 0; };
 		};
 
-		virtual void onMouseDown(int x, int y, Button button) {};
-		virtual void onMouseUp(int x, int y, Button button) {};
+		virtual void onMouseDown(int x, int y, Button button, int clickCount) {};
+		virtual void onMouseUp(int x, int y, Button button, int clickCount) {};
 		virtual void onMouseMove(int x, int y, Buttons button) {};
 	};
 }

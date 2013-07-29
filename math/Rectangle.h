@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <blib/gl/LineBatch.h>
+#include <clipper/clipper.hpp>
 
 namespace blib
 {
@@ -38,6 +39,7 @@ namespace blib
 			bool intersect(const blib::math::Triangle &other);
 
 			void buildLines();
+			ClipperLib::Polygon toClipperPolygon() const;
 		};
 	}
 }
