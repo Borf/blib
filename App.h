@@ -18,6 +18,8 @@ namespace blib
 			int width, height;
 			bool border;
 		} appSetup;
+
+
 		struct KeyState
 		{
 			bool pressedKeys[255];
@@ -26,6 +28,21 @@ namespace blib
 				return pressedKeys[index];
 			}
 		} keyState;
+		struct MouseState
+		{
+			union
+			{
+				bool buttons[3];
+				struct 
+				{
+					bool leftButton;
+					bool middleButton;
+					bool rightButton;
+				};
+			};
+			int x;
+			int y;
+		} mouseState;
 
 		bool running;
 

@@ -21,6 +21,9 @@ namespace blib
 	private:
 		std::list<KeyListener*> keyListeners;
 		std::list<MouseListener*> mouseListeners;
+
+		int mouseButtons;
+
 	protected:
 		HDC hdc;
 		HWND hWnd;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <blib/gl/LineBatch.h>
 
 namespace blib
 {
@@ -11,10 +12,11 @@ namespace blib
 		class Ray;
 		class Triangle;
 
-		class Rectangle
+		class Rectangle : public blib::gl::ILineDrawable
 		{
 		public:
 			Rectangle(float x, float y, float width, float height);
+			Rectangle(glm::vec2 topleft, float width, float height);
 			Rectangle(glm::vec2 topleft, glm::vec2 bottomright);
 
 			glm::vec2 topleft;
@@ -34,6 +36,8 @@ namespace blib
 			bool intersect(const blib::math::Line &other);
 			bool intersect(const blib::math::Ray &other);
 			bool intersect(const blib::math::Triangle &other);
+
+			void buildLines();
 		};
 	}
 }

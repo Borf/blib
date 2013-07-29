@@ -21,10 +21,11 @@ attribute vec2 a_position;\
 attribute vec2 a_texture;\
 varying vec2 texCoord;\
 uniform mat4 matrix;\
+uniform mat4 projectionmatrix;\
 void main()\
 {\
 	texCoord = a_texture;\
-	gl_Position = matrix * vec4(a_position,0.0,1.0);\
+	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\
 }\
 ", "\
 precision mediump float;\
@@ -80,6 +81,7 @@ void main()\
 			glEnableVertexAttribArray(0);
 			glEnableVertexAttribArray(1);
 			shader->use();
+			shader->setUniform("matrix", matrix);
 			vbo.bind();
 			vio.bind();
 			vertexDef::setAttribPointers();
@@ -111,22 +113,22 @@ void main()\
 				materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, (spriteCount/4) * 6));
 			currentTexture = texture;
 
-			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1));
+			vbo[spriteCount].position = glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1));
 			vbo[spriteCount].texCoord = glm::vec2(src.topleft.x,src.bottomright.y);
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
 
-			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1));
+			vbo[spriteCount].position = glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1));
 			vbo[spriteCount].texCoord = glm::vec2(src.topleft.x,src.topleft.y);
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
 
-			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1));
+			vbo[spriteCount].position = glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1));
 			vbo[spriteCount].texCoord = glm::vec2(src.bottomright.x,src.bottomright.y);
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
 
-			vbo[spriteCount].position = glm::vec2(matrix * transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*texture->originalHeight - center.y,	0,1));
+			vbo[spriteCount].position = glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*texture->originalHeight - center.y,	0,1));
 			vbo[spriteCount].texCoord = glm::vec2(src.bottomright.x,src.topleft.y);
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 			spriteCount++;
@@ -144,7 +146,7 @@ void main()\
 		void SpriteBatch::Shader::resizeGl( int width, int height )
 		{
 			use();
-			setUniform("matrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
+			setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 		}
 
 		void SpriteBatch::Shader::init()

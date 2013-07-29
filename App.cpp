@@ -4,6 +4,8 @@
 #include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/util/Profiler.h>
+#include <blib/MouseListener.h>
+
 namespace blib
 {
 
@@ -14,16 +16,30 @@ namespace blib
 		window->setBorder(appSetup.border);
 		window->create();
 
-		for(int i = 0; i < 255; i++)
-			keyState.pressedKeys[i] = false;
-		class AppKeyListener : public KeyListener {
-			App* app;
-		public:
-			AppKeyListener(App* app)			{			this->app = app;							}
-			void onKeyDown( blib::Key key )		{			app->keyState.pressedKeys[key] = true;		}
-			void onKeyUp( blib::Key key )		{			app->keyState.pressedKeys[key] = false;		}
-		} listener(this);
-		addListener(&listener);
+		{
+			for(int i = 0; i < 255; i++)
+				keyState.pressedKeys[i] = false;
+			class AppKeyListener : public KeyListener {
+				App* app;
+			public:
+				AppKeyListener(App* app)			{			this->app = app;							}
+				void onKeyDown( blib::Key key )		{			app->keyState.pressedKeys[key] = true;		}
+				void onKeyUp( blib::Key key )		{			app->keyState.pressedKeys[key] = false;		}
+			} listener(this);
+			addListener(&listener);
+		}
+
+		{
+			class AppMouseListener : public MouseListener {
+				App* app;
+			public:
+				AppMouseListener(App* app)						{	this->app = app;								}
+				void onMouseDown(int x, int y, Button button)	{	app->mouseState.buttons[button] = true;	};
+				void onMouseUp(int x, int y, Button button)		{	app->mouseState.buttons[button] = true;	};
+				void onMouseMove(int x, int y, Buttons button)	{	app->mouseState.x = x; app->mouseState.y = y;};
+			} listener(this);
+			addListener(&listener);
+		}
 
 		blib::gl::GlInitRegister::initRegisteredObjects();
 

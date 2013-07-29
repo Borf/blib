@@ -1,6 +1,9 @@
 #include "Window.h"
 
+#include <Windowsx.h>
+
 #include <blib/KeyListener.h>
+#include <blib/MouseListener.h>
 #include <blib/util/Log.h>
 using blib::util::Log;
 #include <map>
@@ -16,6 +19,7 @@ namespace blib
 	Window::Window()
 	{
 		opened = false;
+		mouseButtons = 0;
 	}
 
 	void Window::create()
@@ -67,41 +71,40 @@ namespace blib
 			for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
 				(*it)->onKeyUp((blib::Key)wParam);
 			break;
-	/*	case WM_LBUTTONDOWN:
-			if(mouseDriver)
-				mouseDriver->mouseDown(MouseButtonDeviceDriver::Left);
+		case WM_LBUTTONDOWN:
+			mouseButtons |= MouseListener::Left;
+			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+				(*it)->onMouseDown(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Left);
 			break;
 		case WM_LBUTTONUP:
-			if(mouseDriver)
-				mouseDriver->mouseUp(MouseButtonDeviceDriver::Left);
+			mouseButtons &= ~MouseListener::Left;
+			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+				(*it)->onMouseUp(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Left);
 			break;
 		case WM_RBUTTONDOWN:
-			if(mouseDriver)
-				mouseDriver->mouseDown(MouseButtonDeviceDriver::Right);
+			mouseButtons |= MouseListener::Right;
+			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+				(*it)->onMouseDown(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Right);
 			break;
 		case WM_RBUTTONUP:
-			if(mouseDriver)
-				mouseDriver->mouseUp(MouseButtonDeviceDriver::Right);
+			mouseButtons &= ~MouseListener::Right;
+			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+				(*it)->onMouseUp(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Right);
 			break;
 		case WM_MBUTTONDOWN:
-			middleButtonDown = true;
-			lastX = GET_X_LPARAM(lParam); 
-			lastY = GET_Y_LPARAM(lParam); 
+			mouseButtons |= MouseListener::Middle;
+			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+				(*it)->onMouseDown(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Middle);
 			break;
 		case WM_MBUTTONUP:
-			middleButtonDown = false;
+			mouseButtons &= ~MouseListener::Middle;
+			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+				(*it)->onMouseUp(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Middle);
 			break;
 		case WM_MOUSEMOVE:
-			if(middleButtonDown && simPositionDriver)
-			{
-				int x = GET_X_LPARAM(lParam); 
-				int y = GET_Y_LPARAM(lParam); 
-				simPositionDriver->mouseMove(x-lastX, y-lastY);
-				lastX = x;
-				lastY = y;
-			}
-			break;*/
-
+			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+				(*it)->onMouseMove(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),(MouseListener::Buttons)mouseButtons);
+			break;
 		}
 
 		return DefWindowProc(hWnd, message, wParam, lParam);

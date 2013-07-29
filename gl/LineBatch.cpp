@@ -20,11 +20,12 @@ precision mediump float;\
 attribute vec2 a_position;\
 attribute vec4 a_color;\
 varying vec4 color;\
+uniform mat4 projectionmatrix;\
 uniform mat4 matrix;\
 void main()\
 {\
 	color = a_color;\
-	gl_Position = matrix * vec4(a_position,0.0,1.0);\
+	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\
 }\
 ", "\
 precision mediump float;\
@@ -61,6 +62,7 @@ void main()\
 			glEnableVertexAttribArray(0);
 			glEnableVertexAttribArray(1);
 			shader->use();
+			shader->setUniform("matrix", matrix);
 			vbo.bind();
 			vio.bind();
 			vertexDef::setAttribPointers();
@@ -79,16 +81,46 @@ void main()\
 		void LineBatch::draw(glm::vec2 v1, glm::vec2 v2, glm::vec4 color, glm::mat4 transform )
 		{
 			assert(active);
-
-			vbo[lineCount].position = glm::vec2(matrix * transform * glm::vec4(v1,0,1));
+			vbo[lineCount].position = glm::vec2(transform * glm::vec4(v1,0,1));
 			vbo[lineCount].color = color;
-//			vbo[spriteCount].position.z = (float)depth*0.01f;
 			lineCount++;
 
-			vbo[lineCount].position = glm::vec2(matrix * transform * glm::vec4(v2,0,1));
+			vbo[lineCount].position = glm::vec2(transform * glm::vec4(v2,0,1));
 			vbo[lineCount].color = color;
-//			vbo[spriteCount].position.z = (float)depth*0.01f;
 			lineCount++;
+		}
+
+		void LineBatch::draw(blib::gl::ILineDrawable& drawable, glm::vec4 color, bool normal, glm::mat4 transform)
+		{
+			assert(active);
+			std::list<blib::gl::ILineDrawable::LinePart>& lines = drawable.getLines();
+			for(std::list<blib::gl::ILineDrawable::LinePart>::iterator it = lines.begin(); it != lines.end(); it++)
+			{
+				vbo[lineCount].position = glm::vec2(transform * glm::vec4(it->p1,0,1));
+				vbo[lineCount].color = color;
+				lineCount++;
+
+				vbo[lineCount].position = glm::vec2(transform * glm::vec4(it->p2,0,1));
+				vbo[lineCount].color = color;
+				lineCount++;
+
+				if(normal)
+				{
+					glm::vec2 center = (it->p1 + it->p2) / 2.0f;
+					glm::vec2 normal = glm::normalize(glm::vec2(it->p2.y - it->p1.y, -(it->p2.x - it->p1.x)));
+
+					vbo[lineCount].position = glm::vec2(transform * glm::vec4(center,0,1));
+					vbo[lineCount].color = glm::clamp(color * 1.25f, 0, 1);
+					lineCount++;
+
+					vbo[lineCount].position = glm::vec2(transform * glm::vec4(center + 10.0f * normal,0,1));
+					vbo[lineCount].color = glm::clamp(color * 1.25f, 0, 1);
+					lineCount++;
+
+
+				}
+
+			}
 
 		}
 
@@ -96,7 +128,7 @@ void main()\
 		void LineBatch::Shader::resizeGl( int width, int height )
 		{
 			use();
-			setUniform("matrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
+			setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 		}
 
 		void LineBatch::Shader::init()
