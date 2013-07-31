@@ -4,6 +4,8 @@
 #include <blib/gl/LineBatch.h>
 #include <clipper/clipper.hpp>
 
+namespace p2t { struct Point; }
+
 namespace blib
 {
 	namespace math
@@ -40,6 +42,7 @@ namespace blib
 
 			void buildLines();
 			ClipperLib::Polygon toClipperPolygon() const;
+			std::vector<p2t::Point*> toP2TPolygon() const;
 		};
 	}
 }

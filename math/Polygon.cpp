@@ -2,6 +2,7 @@
 #include "Line.h"
 #include "Rectangle.h"
 #include <limits>
+#include <poly2tri/poly2tri.h>
 
 
 namespace blib
@@ -76,6 +77,14 @@ namespace blib
 				push_back(p.at(i)());
 		}
 
+
+		Polygon::Polygon( p2t::Triangle *t)
+		{
+			for(int i = 0; i < 3; i++)
+				push_back(glm::vec2(t->GetPoint(i)->x, t->GetPoint(i)->y));
+		}
+
+
 		blib::math::Rectangle Polygon::getBoundingBox() const
 		{
 			blib::math::Rectangle ret(glm::vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()), glm::vec2(std::numeric_limits<float>::min(), std::numeric_limits<float>::min()));
@@ -87,6 +96,13 @@ namespace blib
 			}
 			return ret;
 		}
+
+		std::vector<p2t::Point*> Polygon::toP2TPolygon() const
+		{
+			std::vector<p2t::Point*> ret;
+			for(size_t i = 0; i < size(); i++)
+				ret.push_back(new p2t::Point(at(i)));
+			return ret;		}
 
 	}
 }

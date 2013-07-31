@@ -5,6 +5,8 @@
 #include <blib/gl/LineBatch.h>
 #include <clipper/clipper.hpp>
 
+namespace p2t { struct Point; class Triangle; }
+
 namespace blib
 {
 	namespace math
@@ -17,9 +19,11 @@ namespace blib
 		public:
 			Polygon() { }
 			Polygon(const ClipperLib::Polygon &p);
+			Polygon(p2t::Triangle *t);
 
 
 			ClipperLib::Polygon toClipperPolygon() const;
+			std::vector<p2t::Point*> toP2TPolygon() const;
 			bool contains(glm::vec2 point) const;
 			bool intersects(const Line& line) const;
 			bool intersects(const Line& line, glm::vec2 &point, Line &collidedLine) const;

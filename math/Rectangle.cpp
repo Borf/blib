@@ -1,5 +1,7 @@
 #include "Rectangle.h"
 
+#include <poly2tri/poly2tri.h>
+
 namespace blib
 {
 	namespace math
@@ -44,6 +46,16 @@ namespace blib
 			ret.push_back(glm::vec2(topleft.x, bottomright.y));
 			ret.push_back(bottomright);
 			ret.push_back(glm::vec2(bottomright.x, topleft.y));
+			return ret;
+		}
+
+		std::vector<p2t::Point*> Rectangle::toP2TPolygon() const
+		{
+			std::vector<p2t::Point*> ret;
+			ret.push_back(new p2t::Point(topleft));
+			ret.push_back(new p2t::Point(glm::vec2(topleft.x, bottomright.y)));
+			ret.push_back(new p2t::Point(bottomright));
+			ret.push_back(new p2t::Point(glm::vec2(bottomright.x, topleft.y)));
 			return ret;
 		}
 
