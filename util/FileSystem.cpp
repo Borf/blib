@@ -67,6 +67,13 @@ namespace blib
 			return (unsigned int)stream->tellg();
 		}
 
+		bool PhysicalFileSystemHandler::StreamInFilePhysical::opened()
+		{
+			if(!stream)
+				return false;
+			return stream->is_open();
+		}
+
 
 
 
@@ -118,6 +125,8 @@ namespace blib
 		std::string FileSystem::getData(std::string fileName)
 		{
 			StreamInFile file(fileName);
+			if(!file.opened())
+				return "";
 			std::string ret;
 			char buf[1024];
 

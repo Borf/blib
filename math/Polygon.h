@@ -10,6 +10,7 @@ namespace blib
 	namespace math
 	{
 		class Line;
+		class Rectangle;
 
 		class Polygon : public std::vector<glm::vec2>, public blib::gl::ILineDrawable
 		{
@@ -26,6 +27,7 @@ namespace blib
 
 			glm::vec2 normal(int index) const;
 
+			blib::math::Rectangle getBoundingBox() const;
 
 			void buildLines();
 

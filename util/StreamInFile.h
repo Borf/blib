@@ -51,6 +51,13 @@ namespace blib
 				return innerStream->tell();
 			}
 
+			virtual bool opened()
+			{
+				if(!innerStream)
+					return false;
+				return innerStream->opened();
+			}
+
 		};
 	}
 }

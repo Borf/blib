@@ -34,7 +34,6 @@ namespace blib
 			if(fac2 < 0 || fac2 > 1)
 				return false;
 
-			
 			point = p1 + fac1 * (p2 - p1);
 			return true;
 		}

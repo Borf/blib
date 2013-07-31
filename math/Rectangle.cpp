@@ -18,6 +18,12 @@ namespace blib
 			this->bottomright = topleft + glm::vec2(width, height);
 		}
 
+		Rectangle::Rectangle( glm::vec2 topleft, glm::vec2 bottomright )
+		{
+			this->topleft = topleft;
+			this->bottomright = bottomright;
+		}
+
 		void Rectangle::buildLines()
 		{
 			lines.push_back(blib::gl::ILineDrawable::LinePart(topleft, glm::vec2(topleft.x, bottomright.y)));

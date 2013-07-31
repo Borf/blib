@@ -40,6 +40,7 @@ namespace blib
 				virtual bool eof();
 				virtual void seek( int offset, StreamOffset offsetTo );
 				virtual unsigned int tell();
+				virtual bool opened();
 			};
 			std::string directory;
 		public:

@@ -1,5 +1,7 @@
 #include "Polygon.h"
 #include "Line.h"
+#include "Rectangle.h"
+#include <limits>
 
 
 namespace blib
@@ -72,6 +74,18 @@ namespace blib
 			reserve(p.size());
 			for(size_t i = 0; i < p.size(); i++)
 				push_back(p.at(i)());
+		}
+
+		blib::math::Rectangle Polygon::getBoundingBox() const
+		{
+			blib::math::Rectangle ret(glm::vec2(std::numeric_limits<float>::max(), std::numeric_limits<float>::max()), glm::vec2(std::numeric_limits<float>::min(), std::numeric_limits<float>::min()));
+
+			for(size_t i = 0; i < size(); i++)
+			{
+				ret.topleft = glm::min(ret.topleft, at(i));
+				ret.bottomright = glm::max(ret.bottomright, at(i));
+			}
+			return ret;
 		}
 
 	}
