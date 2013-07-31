@@ -101,7 +101,7 @@ void main()\
 		}
 
 
-
+		//TODO: make overload without src rectangle, so it doesn't have to clean it up
 		void SpriteBatch::draw( Texture* texture, glm::mat4 transform, glm::vec2 center, blib::math::Rectangle src)
 		{
 			assert(active);

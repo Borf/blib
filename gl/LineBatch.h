@@ -57,9 +57,10 @@ namespace blib
 			bool active;
 
 			glm::mat4 matrix;
-			blib::gl::Shader* shader;
 		public:
 			LineBatch();
+
+			blib::gl::Shader* shader;
 
 			virtual void initGl();
 

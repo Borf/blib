@@ -17,6 +17,7 @@ namespace blib
 			Line(glm::vec2 p1, glm::vec2 p2);
 
 
+			bool side(const glm::vec2 &point) const;
 			bool intersects(const Line &other) const;
 			bool intersects(const Line &other, glm::vec2 &point) const;
 			glm::vec2 project(const glm::vec2& point) const;

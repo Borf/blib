@@ -7,21 +7,32 @@
 #include <gl/glew.h>
 #endif
 
-class FBO
+#include <blib/gl/GlInitRegister.h>
+#include <blib/gl/Texture.h>
+
+namespace blib
 {
-	int width;
-	int height;
-	GLuint fbo;
-	GLuint depthBuffer;
-public:
-	FBO(int width, int height, bool depth = false);
-	~FBO();
+	namespace gl
+	{
+		class FBO : public GlInitRegister, public Texture
+		{
+			bool depth;
 
-	void bind();
-	void unbind();
-	GLuint texid;
+			GLuint fbo;
+			GLuint depthBuffer;
+		public:
+			FBO(int width, int height, bool depth = false);
+			~FBO();
 
-	int getHeight();
-	int getWidth();
+			void initGl();
 
-};
+			void bind();
+			void unbind();
+
+			int getHeight();
+			int getWidth();
+
+		};
+
+	}
+}

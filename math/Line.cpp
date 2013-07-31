@@ -72,5 +72,10 @@ namespace blib
 			return p1 + AB * t;
 		}
 
+		bool Line::side( const glm::vec2 &point ) const
+		{
+			return ((p2.x - p1.x)*(point.y - p1.y) - (p2.y - p1.y)*(point.x - p1.x)) > 0;
+		}
+
 	}
 }
