@@ -17,11 +17,13 @@ namespace blib
 		class FBO : public GlInitRegister, public Texture
 		{
 			bool depth;
+			bool stencil;
 
 			GLuint fbo;
 			GLuint depthBuffer;
+			GLuint stencilBuffer;
 		public:
-			FBO(int width, int height, bool depth = false);
+			FBO(int width, int height, bool depth = false, bool stencil = true);
 			~FBO();
 
 			void initGl();

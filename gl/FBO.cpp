@@ -8,9 +8,10 @@ namespace blib
 {
 	namespace gl
 	{
-		FBO::FBO(int width, int height, bool depth)
+		FBO::FBO(int width, int height, bool depth, bool stencil)
 		{
 			depthBuffer = 0;
+			stencilBuffer = 0;
 			texid = 0;
 			fbo = 0;
 			this->width = width;
@@ -18,6 +19,7 @@ namespace blib
 			this->originalHeight = height;
 			this->originalWidth = width;
 			this->depth = depth;
+			this->stencil = stencil;
 		}
 		FBO::~FBO()
 		{
@@ -41,17 +43,26 @@ namespace blib
 
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texid, 0);
 
-			if(depth)
+			if(depth || stencil)
 			{
 				glGenRenderbuffers(1, &depthBuffer);
 				glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
 		#ifdef ANDROID
 				glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
 		#else
-				glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+				if(depth && !stencil)
+					glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+				else if(!depth && stencil)
+					glRenderbufferStorage( GL_RENDERBUFFER, GL_STENCIL_INDEX8, width, height);
+				else if (depth && stencil)
+					glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL, width, height);
 		#endif
-				glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+				if(depth)
+					glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
+				if(stencil)
+					glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 			}
+
 			unbind();
 		}
 
