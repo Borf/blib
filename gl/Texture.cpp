@@ -238,8 +238,8 @@ namespace blib
 
 		TextureMap::TextureMap()
 		{
-			width = 2048;
-			height = 2048;
+			width = 128;
+			height = 128;
 			glGenTextures(1, &texid);
 			glBindTexture(GL_TEXTURE_2D, texid);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
