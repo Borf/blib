@@ -88,6 +88,35 @@ namespace blib
 		};
 
 
+		class MultiTextureMap
+		{
+		public:
+			int maxCount;
+			int count;
+			int width, height;
+
+			class TexInfo
+			{
+			public:
+			//	TexInfo();
+				MultiTextureMap* texMap;
+				glm::vec2 t1;
+				glm::vec2 t2;
+				int x,y,width,height;
+
+				int depth;
+			};
+			GLuint texid;
+			std::map<std::string, TexInfo*> info;
+
+			MultiTextureMap(int width, int height);
+			~MultiTextureMap();
+			TexInfo* addTexture(std::string filename);
+
+
+		};
+
+
 	}
 }
 

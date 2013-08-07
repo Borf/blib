@@ -24,7 +24,7 @@ namespace blib
 
 		class SpriteBatch : public GlInitRegister
 		{
-			typedef VertexPosition2Texture2Color4 vertexDef;
+			typedef VertexP2TC4 vertexDef;
 
 #define MAX_SPRITES 110000
 			class Shader : public blib::gl::Shader, GlResizeRegister

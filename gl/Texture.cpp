@@ -329,8 +329,8 @@ namespace blib
 			glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset*32, yoffset*32, w, h, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 			TexInfo* newInfo = new TexInfo(this);
-			newInfo->t1 = glm::vec2((xoffset*32+0.5f) / (float)width, (yoffset*32+0.5f) / (float)height);
-			newInfo->t2 = newInfo->t1 + glm::vec2((w-1)/(float)width, (h-1)/(float)height);
+			newInfo->t1 = glm::vec2((xoffset*32+0.25f) / (float)width, (yoffset*32+0.25f) / (float)height);
+			newInfo->t2 = newInfo->t1 + glm::vec2((w-0.5f)/(float)width, (h-0.5f)/(float)height);
 
 			newInfo->width = w;
 			newInfo->height = h;
@@ -378,6 +378,77 @@ namespace blib
 		{
 			this->texMap = texMap;
 		}
+
+
+
+
+
+
+
+		MultiTextureMap::MultiTextureMap(int width, int height)
+		{
+			this->width = width;
+			this->height = height;
+			this->count = 0;
+			this->maxCount = 64;
+
+			glGenTextures(1,&texid);
+			glBindTexture(GL_TEXTURE_2D_ARRAY,texid);
+			glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA8, width, height, maxCount);
+
+			glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_S,GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_T,GL_REPEAT);
+		}
+
+
+
+		MultiTextureMap::TexInfo* MultiTextureMap::addTexture(std::string filename)
+		{
+			if(info.find(filename) != info.end())
+				return info[filename];
+
+			glBindTexture(GL_TEXTURE_2D_ARRAY, texid);
+			char* fileData = NULL;
+			int length = blib::util::FileSystem::getData(filename, fileData);
+			if(length < 0)
+			{
+				Log::err<<"Error loading texture "<<filename<<Log::newline;
+				return NULL;
+			}
+
+			int depth = 4;
+			int w,h;
+			unsigned char* data = stbi_load_from_memory((stbi_uc*)fileData, length, &w, &h, &depth, 4);
+			delete[] fileData;
+
+			if(w != width)
+				Log::err<<"Error loading texture "<<filename<<", width is not a multiple of 32"<<Log::newline;
+			if(h != height)
+				Log::err<<"Error loading texture "<<filename<<", height is not a multiple of 32"<<Log::newline;
+
+
+			glBindTexture(GL_TEXTURE_2D_ARRAY, texid);
+			glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, count, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			stbi_image_free(data);
+			count++;
+
+			TexInfo* texinfo = new TexInfo();
+			texinfo->t1 = glm::vec2(0,0);
+			texinfo->t2 = glm::vec2(1,1);
+			texinfo->depth = count-1;
+			texinfo->texMap = this;
+			texinfo->height = height;
+			texinfo->width = width;
+			texinfo->x = 0;
+			texinfo->y = 0;
+
+			info[filename] = texinfo;
+			return texinfo;
+		}
+
+
 
 	}
 }

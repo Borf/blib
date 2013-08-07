@@ -46,48 +46,57 @@ public:
 
 
 
-VertexDefBegin(VertexPosition3,								position,	glm::vec3, 3, Vertex)
-	VertexPosition3(glm::vec3 position) : position(position) {};
+VertexDefBegin(VertexP3,								position,	glm::vec3, 3, Vertex)
+	VertexP3(glm::vec3 position) : position(position) {};
 VertexDefEnd();
 
-VertexDefBegin(VertexPosition2,								position,	glm::vec2, 2, Vertex)
-	VertexPosition2(glm::vec2 position) : position(position) {};
+VertexDefBegin(VertexP2,								position,	glm::vec2, 2, Vertex)
+	VertexP2(glm::vec2 position) : position(position) {};
 VertexDefEnd();
 
-VertexDefBegin(VertexPosition3Texture2,						texCoord,	glm::vec2, 2, VertexPosition3)
-	VertexPosition3Texture2(glm::vec3 position, glm::vec2 texCoord) : VertexPosition3(position), texCoord(texCoord) {};
+VertexDefBegin(VertexP3T2,								texCoord,	glm::vec2, 2, VertexP3)
+	VertexP3T2(glm::vec3 position, glm::vec2 texCoord) : VertexP3(position), texCoord(texCoord) {};
 VertexDefEnd();
 
-VertexDefBegin(VertexPosition2Texture2,						texCoord,	glm::vec2, 2, VertexPosition2)
-	VertexPosition2Texture2(glm::vec2 position, glm::vec2 texCoord) : VertexPosition2(position), texCoord(texCoord) {};
+VertexDefBegin(VertexP2T2,								texCoord,	glm::vec2, 2, VertexP2)
+	VertexP2T2(glm::vec2 position, glm::vec2 texCoord) : VertexP2(position), texCoord(texCoord) {};
 VertexDefEnd();
 
-VertexDefBegin(VertexPosition2Texture2Texture2,				texCoord2,	glm::vec2, 2, VertexPosition2Texture2)
-	VertexPosition2Texture2Texture2(glm::vec2 position, glm::vec2 texCoord, glm::vec2 texCoord2) : VertexPosition2Texture2(position, texCoord), texCoord2(texCoord2) {};
+VertexDefBegin(VertexP2T2T2,							texCoord2,	glm::vec2, 2, VertexP2T2)
+	VertexP2T2T2(glm::vec2 position, glm::vec2 texCoord, glm::vec2 texCoord2) : VertexP2T2(position, texCoord), texCoord2(texCoord2) {};
 VertexDefEnd();
 
-VertexDefBegin(VertexPosition3Texture2Color4,				color,		glm::vec4, 4, VertexPosition3Texture2)
-	VertexPosition3Texture2Color4(glm::vec3 position, glm::vec2 texCoord, glm::vec4 color) : VertexPosition3Texture2(position, texCoord), color(color) {};
+VertexDefBegin(VertexP2T3,								texCoord,	glm::vec3, 3, VertexP2)
+	VertexP2T3(glm::vec2 position, glm::vec3 texCoord) : VertexP2(position), texCoord(texCoord) {};
 VertexDefEnd();
 
-VertexDefBegin(VertexPosition2Color4,						color,		glm::vec4, 4, VertexPosition2)
-	VertexPosition2Color4(glm::vec2 position, glm::vec4 color) : VertexPosition2(position), color(color) {};
+VertexDefBegin(VertexP2T3T2,							texCoord2,	glm::vec2, 2, VertexP2T3)
+	VertexP2T3T2(glm::vec2 position, glm::vec3 texCoord, glm::vec2 texCoord2) : VertexP2T3(position, texCoord), texCoord2(texCoord2) {};
 VertexDefEnd();
 
 
-VertexDefBegin(VertexPosition3Texture2Color3,				color,		glm::vec3, 3, VertexPosition3Texture2)
-	VertexPosition3Texture2Color3(glm::vec3 position, glm::vec2 texCoord, glm::vec3 color) : VertexPosition3Texture2(position, texCoord), color(color) {};
+VertexDefBegin(VertexP3T2C4,							color,		glm::vec4, 4, VertexP3T2)
+	VertexP3T2C4(glm::vec3 position, glm::vec2 texCoord, glm::vec4 color) : VertexP3T2(position, texCoord), color(color) {};
 VertexDefEnd();
 
-VertexDefBegin(VertexPosition3Texture2Color1,			filler,			int, 1, VertexPosition3Texture2)
-	VertexPosition3Texture2Color1(glm::vec3 position, glm::vec2 texCoord, glm::vec4 color) : VertexPosition3Texture2(position, texCoord) 
+VertexDefBegin(VertexP2C4,								color,		glm::vec4, 4, VertexP2)
+	VertexP2C4(glm::vec2 position, glm::vec4 color) : VertexP2(position), color(color) {};
+VertexDefEnd();
+
+
+VertexDefBegin(VertexP3T2C3,							color,		glm::vec3, 3, VertexP3T2)
+	VertexP3T2C3(glm::vec3 position, glm::vec2 texCoord, glm::vec3 color) : VertexP3T2(position, texCoord), color(color) {};
+VertexDefEnd();
+
+VertexDefBegin(VertexP3T2C1,							filler,			int, 1, VertexP3T2)
+	VertexP3T2C1(glm::vec3 position, glm::vec2 texCoord, glm::vec4 color) : VertexP3T2(position, texCoord) 
 	{
 		//int r = color.
 	};
 VertexDefEnd();
 
-VertexDefBegin(VertexPosition2Texture2Color4,				color,		glm::vec4, 4, VertexPosition2Texture2)
-	VertexPosition2Texture2Color4(glm::vec2 position, glm::vec2 texCoord, glm::vec4 color) : VertexPosition2Texture2(position, texCoord), color(color) {};
+VertexDefBegin(VertexP2TC4,								color,		glm::vec4, 4, VertexP2T2)
+	VertexP2TC4(glm::vec2 position, glm::vec2 texCoord, glm::vec4 color) : VertexP2T2(position, texCoord), color(color) {};
 VertexDefEnd();
 
 #endif

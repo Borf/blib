@@ -39,7 +39,7 @@ namespace blib
 
 		class LineBatch : public GlInitRegister
 		{
-			typedef VertexPosition2Color4 vertexDef;
+			typedef VertexP2C4 vertexDef;
 
 #define MAX_LINES 110000
 			class Shader : public blib::gl::Shader, GlResizeRegister

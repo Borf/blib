@@ -9,15 +9,15 @@ namespace blib
 	public:
 		enum Button
 		{
-			Left,
-			Middle,
-			Right,
+			Left = 1,
+			Middle = 2,
+			Right = 4,
 		};
 		struct Buttons
 		{
 			int button;
 			Buttons(int i) : button(i) {};
-			inline bool isButtonDown(Button button) { return (button & button) != 0; };
+			inline bool isButtonDown(Button button) { return (this->button & button) != 0; };
 		};
 
 		virtual void onMouseDown(int x, int y, Button button, int clickCount) {};
