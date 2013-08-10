@@ -25,12 +25,13 @@ namespace blib
 
 			void render(std::string text, float scale);
 			float textlen(std::string text);
+			std::map<char, Glyph*> charmap;
+			Texture* texture;
+
 		private:
 			Font(std::string file);
 			~Font();
-			Texture* texture;
 
-			std::map<char, Glyph*> charmap;
 		};
 	}
 }

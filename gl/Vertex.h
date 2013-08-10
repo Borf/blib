@@ -95,8 +95,8 @@ VertexDefBegin(VertexP3T2C1,							filler,			int, 1, VertexP3T2)
 	};
 VertexDefEnd();
 
-VertexDefBegin(VertexP2TC4,								color,		glm::vec4, 4, VertexP2T2)
-	VertexP2TC4(glm::vec2 position, glm::vec2 texCoord, glm::vec4 color) : VertexP2T2(position, texCoord), color(color) {};
+VertexDefBegin(VertexP2T2C4,								color,		glm::vec4, 4, VertexP2T2)
+	VertexP2T2C4(glm::vec2 position, glm::vec2 texCoord, glm::vec4 color) : VertexP2T2(position, texCoord), color(color) {};
 VertexDefEnd();
 
 #endif
