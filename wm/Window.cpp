@@ -1,6 +1,6 @@
 #include "Window.h"
 
-#include <blib/wm/WM.h>
+#include <json/value.h>
 
 #include <algorithm>
 #include <cctype>
@@ -9,19 +9,21 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-//#include <Brolib/glHelper.h>
+#include <blib/wm/WM.h>
 #include <blib/gl/Texture.h>
 #include <blib/gl/SpriteBatch.h>
+#include <blib/util/Log.h>
+#include <blib/util/FileSystem.h>
+#include <blib/math/Rectangle.h>
+
 #include <blib/wm/widgets/Panel.h>
 #include <blib/wm/widgets/button.h>
 #include <blib/wm/widgets/textbox.h>
 #include <blib/wm/widgets/Label.h>
 #include <blib/wm/widgets/list.h>
 #include <blib/wm/widgets/ScrollPanel.h>
-#include <blib/util/Log.h>
-#include <blib/util/FileSystem.h>
-#include <blib/math/Rectangle.h>
-#include <json/value.h>
+#include <blib/wm/widgets/Image.h>
+
 
 using blib::util::Log;
 
@@ -100,19 +102,8 @@ namespace blib
 		void Window::draw( gl::SpriteBatch &spriteBatch )
 		{
 			glm::mat4 matrix = glm::translate(glm::mat4(), glm::vec3(x,y,0));
-
 			spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, matrix, WM::getInstance()->skin["window"], glm::vec2(width,height));
-			spriteBatch.draw(WM::getInstance()->font, "Yo dawg", glm::translate(glm::mat4(), glm::vec3(x+20, y+1,0)), glm::vec4(0,0,0,1));
-
-
-/*			GlHelper::drawStretchyRect(0, 0, width, height, WM::getInstance()->skin["window"]);
-
-			WM::getInstance()->font->Render(title.c_str(), -1, FTPoint(20,-12));
-			glBindTexture(GL_TEXTURE_2D, WM::getInstance()->skinTexture->texid);
-
-
-			shader->setMatrix(glm::translate(glm::mat4(), glm::vec3(x + WM::getInstance()->skin["window"]["offsets"]["left"].asInt(),y + WM::getInstance()->skin["window"]["offsets"]["top"].asInt(),0)));
-	*/
+			spriteBatch.draw(WM::getInstance()->font, title, glm::translate(glm::mat4(), glm::vec3(x+20, y+1,0)), glm::vec4(0,0,0,1));
 			rootPanel->draw(spriteBatch, glm::translate(matrix, glm::vec3(WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), WM::getInstance()->skin["window"]["offsets"]["top"].asInt(),0)));
 		}
 
@@ -147,6 +138,8 @@ namespace blib
 				}
 				else if(type == "scrollpanel")
 					widget = new widgets::ScrollPanel();
+				else if(type == "image")
+					widget = new widgets::Image(gl::Texture::loadCached(widgetSkin["src"].asString()));
 				else
 				{
 					Log::out<<"Unknown widget type: "<<type<<Log::newline;

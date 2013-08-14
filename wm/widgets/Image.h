@@ -17,8 +17,10 @@ namespace blib
 				gl::Texture* texture;
 			public:
 				Image(gl::Texture* texture);
-
 				virtual void draw(gl::SpriteBatch &shader, glm::mat4 matrix);
+
+				void setTexture(gl::Texture*);
+				gl::Texture* getTexture();
 			};
 		}
 	}

@@ -1,4 +1,5 @@
 #include "FileSystem.h"
+#include <blib/util/Log.h>
 #include <json/json.h>
 #include <fstream>
 
@@ -115,6 +116,8 @@ namespace blib
 		int FileSystem::getData(std::string fileName, char* &data)
 		{
 			StreamInFile file(fileName);
+			if(!file.opened())
+				return 0;
 			file.seek(0, StreamSeekable::END);
 			unsigned int size = file.tell();
 			data = new char[size];
@@ -141,9 +144,12 @@ namespace blib
 		Json::Value FileSystem::getJson( std::string fileName )
 		{
 			std::string data = getData(fileName);
+			if(data == "")
+				return Json::nullValue;
 			Json::Value ret;
 			Json::Reader reader;
-			reader.parse(data, ret);
+			if(!reader.parse(data, ret))
+				Log::out<<reader.getFormattedErrorMessages()<<Log::newline;
 
 			return ret;
 		}

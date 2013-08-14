@@ -26,7 +26,8 @@ namespace blib
 
 			void Image::draw( gl::SpriteBatch &spriteBatch, glm::mat4 matrix)
 			{
-				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x,y,0)));
+				spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["box"], glm::vec2(width, height));
+				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x+2,y+2,0)));
 
 			/*	glBindTexture(GL_TEXTURE_2D, texture->texid);
 				shader->useTexture(true);
@@ -47,6 +48,17 @@ namespace blib
 				glEnd();
 				shader->setColor(glm::vec4(1,1,1,1));*/
 
+			}
+
+
+			void Image::setTexture(gl::Texture* texture)
+			{
+				this->texture = texture;
+			}
+
+			gl::Texture* Image::getTexture()
+			{
+				return this->texture;
 			}
 
 		}

@@ -22,7 +22,7 @@ namespace blib
 		class Widget
 		{
 		public:
-			typedef FastDelegate3<int, int, int> mouseHandler;
+			typedef FastDelegate4<Widget*, int, int, int> mouseHandler;
 			typedef FastDelegate1<char> keyHandler;
 			typedef FastDelegate1<int> keySpecialHandler;
 

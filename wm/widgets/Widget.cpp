@@ -35,7 +35,7 @@ namespace blib
 			for(std::list< mouseHandler >::iterator it = clickHandlers.begin(); it != clickHandlers.end(); it++)
 			{
 				mouseHandler &handler = *it;
-				handler(x, y, clickcount);
+				handler(this, x, y, clickcount);
 			}
 		}
 

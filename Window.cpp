@@ -60,7 +60,7 @@ namespace blib
 		{
 			if(message != lastButton)
 				clicks.clear();
-			lastButton = lastButton;
+			lastButton = message;
 			clicks.push_back(GetTickCount());
 			int i = clicks.size()-2;
 			while(i >= 0 && clicks[i] > clicks[i+1]-200)
@@ -70,7 +70,11 @@ namespace blib
 			}
 			if(clickCount < clicks.size())
 				clicks.erase(clicks.begin(), clicks.begin() + clicks.size() - clickCount);
+			Log::out<<clickCount<<Log::newline;
 		}
+
+		if(message == WM_LBUTTONUP || message == WM_MBUTTONUP || message == WM_RBUTTONUP)
+			clickCount = clicks.size();
 
 
 

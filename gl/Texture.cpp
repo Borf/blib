@@ -61,9 +61,9 @@ namespace blib
 		{
 			char* fileData = NULL;
 			int length = blib::util::FileSystem::getData(fileName, fileData);
-			if(length == -1)
+			if(length <= 0)
 			{
-				Log::err<<"Error loading texture "<<fileName<<Log::newline;
+				Log::err<<"Error loading texture '"<<fileName<<"'"<<Log::newline;
 				return;
 			}
 
