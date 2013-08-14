@@ -435,6 +435,7 @@ namespace blib
 			count++;
 
 			TexInfo* texinfo = new TexInfo();
+			texinfo->filename = filename;
 			texinfo->t1 = glm::vec2(0,0);
 			texinfo->t2 = glm::vec2(1,1);
 			texinfo->depth = count-1;

@@ -17,6 +17,7 @@ namespace blib
 				std::list<Widget*> children;
 			public:
 				void add(Widget* toAdd);
+				void clear();
 
 				virtual void draw(gl::SpriteBatch &spriteBatch, glm::mat4 matrix);
 				virtual Widget* getComponent(std::string name);

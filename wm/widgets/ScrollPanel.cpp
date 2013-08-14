@@ -90,10 +90,11 @@ namespace blib
 				glEnable(GL_SCISSOR_TEST);
 				glm::mat4 matrix = shader->matrix;
 				shader->setMatrix(glm::translate(shader->matrix, glm::vec3(x+2,y+2-scrollY,0)));
-				ContainerWidget::draw(shader);
 				shader->setMatrix(matrix);
 				glDisable(GL_SCISSOR_TEST);
 				*/
+
+				ContainerWidget::draw(spriteBatch, glm::translate(matrix, glm::vec3(x+2,y+2-scrollY,0)));
 
 			}
 

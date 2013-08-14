@@ -105,6 +105,7 @@ namespace blib
 				int x,y,width,height;
 
 				int depth;
+				std::string filename;
 			};
 			GLuint texid;
 			std::map<std::string, TexInfo*> info;

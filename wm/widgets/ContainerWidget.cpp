@@ -12,6 +12,14 @@ namespace blib
 				children.push_back(toAdd);
 			}
 
+			void ContainerWidget::clear()
+			{
+				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+					delete *it;
+				children.clear();
+			}
+
+
 			void ContainerWidget::draw( gl::SpriteBatch &spriteBatch, glm::mat4 matrix )
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)

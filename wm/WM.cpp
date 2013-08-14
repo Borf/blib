@@ -108,6 +108,7 @@ namespace blib
 
 		bool WM::mousemove( int oldX, int oldY, int x, int y )
 		{
+			bool handled = false;
 
 			if(draggingWindow == NULL)
 			{
@@ -142,6 +143,7 @@ namespace blib
 							else if(dragMode == (2 | 8)) // bottomright
 								newCursor = RESIZE_TL;
 						}
+						handled = true;
 						break;
 					}
 				}
@@ -194,6 +196,7 @@ namespace blib
 						draggingWindow->height = y - draggingWindow->y;
 					draggingWindow->arrangeComponents(oldWidth, oldHeight);
 				}
+				handled = true;
 			}
 
 			if(leftbuttondown)
@@ -204,6 +207,7 @@ namespace blib
 					if(w->inWindow(x, y) && w->visible)
 					{
 						w->mousedrag(x,y);
+						handled = true;
 						break;
 					}
 				}
@@ -222,12 +226,13 @@ namespace blib
 						if(widget != NULL)
 							widget->hover = true;
 						hoverWidget = widget;
+						handled = true;
 						break;
 					}
 				}
 			}
 
-			return false;
+			return handled;
 		}
 
 		bool WM::mousedown( int x, int y )

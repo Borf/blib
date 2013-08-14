@@ -2,11 +2,11 @@
 
 #include "Widget.h"
 #include <string>
-class Texture;
 
 
 namespace blib
 {
+	namespace gl { class Texture; }
 	namespace wm
 	{
 		namespace widgets
@@ -14,11 +14,11 @@ namespace blib
 			class Image : public Widget
 			{
 			protected:
-				Texture* texture;
+				gl::Texture* texture;
 			public:
-				Image(Texture* texture);
+				Image(gl::Texture* texture);
 
-				virtual void draw(gl::SpriteBatch &shader);
+				virtual void draw(gl::SpriteBatch &shader, glm::mat4 matrix);
 			};
 		}
 	}

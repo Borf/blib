@@ -2,8 +2,11 @@
 
 #include <gl/glew.h>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <blib/wm/wm.h>
 #include <blib/gl/Texture.h>
+#include <blib/gl/SpriteBatch.h>
 
 
 namespace blib
@@ -12,7 +15,7 @@ namespace blib
 	{
 		namespace widgets
 		{
-			Image::Image(Texture* texture )
+			Image::Image(gl::Texture* texture )
 			{
 				this->texture = texture;
 				this->width = 100;
@@ -21,8 +24,10 @@ namespace blib
 
 
 
-			void Image::draw( gl::SpriteBatch &spriteBatch)
+			void Image::draw( gl::SpriteBatch &spriteBatch, glm::mat4 matrix)
 			{
+				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x,y,0)));
+
 			/*	glBindTexture(GL_TEXTURE_2D, texture->texid);
 				shader->useTexture(true);
 
