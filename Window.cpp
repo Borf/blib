@@ -55,9 +55,10 @@ namespace blib
 
 	LRESULT Window::wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
-		size_t clickCount = 1;
+		size_t clickCount = 0;
 		if(message == WM_LBUTTONDOWN || message == WM_MBUTTONDOWN || message == WM_RBUTTONDOWN)
 		{
+			clickCount = 1;
 			if(message != lastButton)
 				clicks.clear();
 			lastButton = message;
@@ -70,13 +71,13 @@ namespace blib
 			}
 			if(clickCount < clicks.size())
 				clicks.erase(clicks.begin(), clicks.begin() + clicks.size() - clickCount);
-			Log::out<<clickCount<<Log::newline;
 		}
 
 		if(message == WM_LBUTTONUP || message == WM_MBUTTONUP || message == WM_RBUTTONUP)
 			clickCount = clicks.size();
 
-
+		if(clickCount > 0)
+			Log::out<<clickCount<<Log::newline;
 
 		switch (message) {
 		case WM_SIZE: // If our window is resizing

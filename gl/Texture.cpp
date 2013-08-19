@@ -412,7 +412,7 @@ namespace blib
 			glBindTexture(GL_TEXTURE_2D_ARRAY, texid);
 			char* fileData = NULL;
 			int length = blib::util::FileSystem::getData(filename, fileData);
-			if(length < 0)
+			if(length <= 0)
 			{
 				Log::err<<"Error loading texture "<<filename<<Log::newline;
 				return NULL;
