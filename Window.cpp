@@ -24,9 +24,12 @@ namespace blib
 
 	void Window::create()
 	{
-		//Open Window
-		const char* title = "WindowTitle";
-
+		if(className == "")
+		{
+			className = "blib_";
+			for(int i = 0; i < 16; i++)
+				className += 'a' + (rand()%26);
+		}
 		WNDCLASS windowClass;
 		DWORD dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 
@@ -41,12 +44,12 @@ namespace blib
 		windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 		windowClass.hbrBackground = NULL;
 		windowClass.lpszMenuName = NULL;
-		windowClass.lpszClassName = title;
+		windowClass.lpszClassName = className.c_str();
 
 		if (!RegisterClass(&windowClass)) {
 			return;
 		}
-		hWnd = CreateWindowEx(dwExStyle, title, title, (showBorder ? WS_OVERLAPPEDWINDOW : (WS_OVERLAPPED | WS_POPUP)),
+		hWnd = CreateWindowEx(dwExStyle, className.c_str(), title.c_str(), (showBorder ? WS_OVERLAPPEDWINDOW : (WS_OVERLAPPED | WS_POPUP)),
 			CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, hInstance, this);
 		hdc = GetDC(hWnd); // Get the device context for our window
 		opened = true;
@@ -146,6 +149,11 @@ namespace blib
 	void Window::setResizable( bool resizable )
 	{
 		this->resizable = resizable;
+	}
+
+	void Window::setTitle(std::string title)
+	{
+		this->title = title;
 	}
 
 	void Window::setBorder(bool border)

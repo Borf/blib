@@ -4,6 +4,8 @@
 #include <list>
 #include <map>
 
+#include <blib/Shader.h>
+
 #ifdef ANDROID
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
@@ -15,7 +17,7 @@ namespace blib
 {
 	namespace gl
 	{
-		class Shader
+		class Shader : public blib::Shader
 		{
 		protected:
 			class SubShader
@@ -73,14 +75,16 @@ namespace blib
 
 			void bindAttributeLocation(std::string name, int position);
 			//void bindFragLocation( std::string name, int position );
-
-			void setUniform(std::string name,			const glm::mat4& value);
-			void setUniform(std::string name,			const glm::mat3& value);
-			void setUniform(std::string name,			const float& value);
-			void setUniform(std::string name,			const int& value);
-			void setUniform(std::string name,			const glm::vec4& value);
-			void setUniform(std::string name,			const glm::vec3& value);
-			void setUniform(std::string name,			const glm::vec2& value);
+		
+		
+		protected:
+			void doUniform(std::string name,			const glm::mat4& value);
+			void doUniform(std::string name,			const glm::mat3& value);
+			void doUniform(std::string name,			const float& value);
+			void doUniform(std::string name,			const int& value);
+			void doUniform(std::string name,			const glm::vec4& value);
+			void doUniform(std::string name,			const glm::vec3& value);
+			void doUniform(std::string name,			const glm::vec2& value);
 
 		};
 	}

@@ -9,7 +9,9 @@
 
 namespace blib
 {
-	namespace gl { class Font; class Texture; class SpriteBatch; };
+	class Font; 
+	class Texture; 
+	class SpriteBatch;
 
 	namespace wm
 	{
@@ -32,10 +34,10 @@ namespace blib
 			void addWindow(Window* window);
 			void removeWindow(Window* window);
 			void setSkin(std::string skinFile);
-			void setFont(gl::Font* font);
+			void setFont(Font* font);
 
 
-			void draw(gl::SpriteBatch &spriteBatch);
+			void draw(SpriteBatch &spriteBatch);
 			bool mousedown(int x, int y);
 			bool mouseup(int x, int y, int clickcount);
 			bool mousemove(int oldX, int oldY, int x, int y );
@@ -45,8 +47,8 @@ namespace blib
 			bool hasModalWindow();
 			glm::vec4 convertHexColor4( std::string hexColor );
 			Json::Value skin;
-			gl::Texture* skinTexture;
-			gl::Font* font;
+			Texture* skinTexture;
+			Font* font;
 
 			Window* draggingWindow;
 			int		dragMode;

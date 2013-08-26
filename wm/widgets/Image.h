@@ -6,7 +6,7 @@
 
 namespace blib
 {
-	namespace gl { class Texture; }
+	class Texture;
 	namespace wm
 	{
 		namespace widgets
@@ -14,13 +14,13 @@ namespace blib
 			class Image : public Widget
 			{
 			protected:
-				gl::Texture* texture;
+				Texture* texture;
 			public:
-				Image(gl::Texture* texture);
-				virtual void draw(gl::SpriteBatch &shader, glm::mat4 matrix);
+				Image(Texture* texture);
+				virtual void draw(SpriteBatch &shader, glm::mat4 matrix);
 
-				void setTexture(gl::Texture*);
-				gl::Texture* getTexture();
+				void setTexture(Texture*);
+				Texture* getTexture();
 			};
 		}
 	}

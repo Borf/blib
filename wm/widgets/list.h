@@ -23,7 +23,7 @@ namespace blib
 
 
 
-				virtual void draw(gl::SpriteBatch &spriteBatch, glm::mat4 matrix);
+				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix);
 
 				virtual void mousewheel( int direction, int x, int y );
 				virtual void mouseclick(int x, int y, int clickcount);

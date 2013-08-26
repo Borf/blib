@@ -10,8 +10,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <blib/wm/WM.h>
-#include <blib/gl/Texture.h>
-#include <blib/gl/SpriteBatch.h>
+#include <blib/Texture.h>
+#include <blib/SpriteBatch.h>
 #include <blib/util/Log.h>
 #include <blib/util/FileSystem.h>
 #include <blib/math/Rectangle.h>
@@ -99,7 +99,7 @@ namespace blib
 			visible = false;
 		}
 
-		void Window::draw( gl::SpriteBatch &spriteBatch )
+		void Window::draw( SpriteBatch &spriteBatch )
 		{
 			glm::mat4 matrix = glm::translate(glm::mat4(), glm::vec3(x,y,0));
 			spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, matrix, WM::getInstance()->skin["window"], glm::vec2(width,height));
@@ -139,7 +139,7 @@ namespace blib
 				else if(type == "scrollpanel")
 					widget = new widgets::ScrollPanel();
 				else if(type == "image")
-					widget = new widgets::Image(gl::Texture::loadCached(widgetSkin["src"].asString()));
+					widget = new widgets::Image(Texture::loadCached(widgetSkin["src"].asString()));
 				else
 				{
 					Log::out<<"Unknown widget type: "<<type<<Log::newline;

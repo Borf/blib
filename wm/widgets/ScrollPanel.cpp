@@ -2,8 +2,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <blib/wm/WM.h>
-#include <blib/gl/texture.h>
-#include <blib/gl/SpriteBatch.h>
+#include <blib/texture.h>
+#include <blib/SpriteBatch.h>
 
 
 namespace blib
@@ -21,7 +21,7 @@ namespace blib
 			}
 
 
-			void ScrollPanel::draw( gl::SpriteBatch &spriteBatch, glm::mat4 matrix)
+			void ScrollPanel::draw( SpriteBatch &spriteBatch, glm::mat4 matrix)
 			{
 
 				Json::Value skin = WM::getInstance()->skin["list"];

@@ -20,7 +20,7 @@ namespace blib
 			}
 
 
-			void ContainerWidget::draw( gl::SpriteBatch &spriteBatch, glm::mat4 matrix )
+			void ContainerWidget::draw( SpriteBatch &spriteBatch, glm::mat4 matrix )
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{

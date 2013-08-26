@@ -6,6 +6,8 @@ namespace blib
 {
 	class Window;
 	class MouseListener;
+	class Renderer;
+	class RenderState;
 
 	class App
 	{
@@ -48,7 +50,10 @@ namespace blib
 
 
 	public:
+		void start(bool looping = true);
 		void run();
+		void step();
+
 
 		virtual void init() = 0;
 		virtual void update(double elapsedTime) = 0;
@@ -56,6 +61,9 @@ namespace blib
 	protected:
 		void addListener(KeyListener* keyListener);
 		void addListener(MouseListener* mouseListener);
+
+		Renderer* renderer;
+		RenderState* renderState;
 
 	};
 

@@ -16,7 +16,7 @@ namespace blib
 				std::string text;
 				Label();
 
-				virtual void draw(gl::SpriteBatch &spriteBatch, glm::mat4 matrix);
+				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix);
 			};
 		}
 	}

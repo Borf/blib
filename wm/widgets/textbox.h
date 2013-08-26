@@ -27,7 +27,7 @@ namespace blib
 
 				Textbox();
 
-				virtual void draw(gl::SpriteBatch &spriteBatch, glm::mat4 matrix);
+				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix);
 
 				virtual void keyboard(char key);
 				virtual void keyboardSpecial(int key);

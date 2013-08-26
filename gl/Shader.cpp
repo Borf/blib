@@ -133,36 +133,42 @@ namespace blib
 
 
 
-		void Shader::setUniform( std::string name, const glm::mat4& value )
+		void Shader::doUniform( std::string name, const glm::mat4& value )
 		{
 			int location = getUniformLocation(name);
 			glUniformMatrix4fv(location, 1, 0, glm::value_ptr(value));
 		}
 
-		void Shader::setUniform( std::string name, const int &value )
+		void Shader::doUniform( std::string name, const glm::mat3& value )
+		{
+			int location = getUniformLocation(name);
+			glUniformMatrix3fv(location, 1, 0, glm::value_ptr(value));
+		}
+
+		void Shader::doUniform( std::string name, const int &value )
 		{
 			int location = getUniformLocation(name);
 			glUniform1i(location, value);
 		}
 
-		void Shader::setUniform( std::string name, const float &value )
+		void Shader::doUniform( std::string name, const float &value )
 		{
 			int location = getUniformLocation(name);
 			glUniform1f(location, value);
 		}
 
-		void Shader::setUniform( std::string name, const glm::vec4& value )
+		void Shader::doUniform( std::string name, const glm::vec4& value )
 		{
 			int location = getUniformLocation(name);
 			glUniform4f(location, value.x, value.y, value.z, value.w);
 		}
 
-		void Shader::setUniform( std::string name, const glm::vec3& value )
+		void Shader::doUniform( std::string name, const glm::vec3& value )
 		{
 			int location = getUniformLocation(name);
 			glUniform3f(location, value.x, value.y, value.z);
 		}
-		void Shader::setUniform( std::string name, const glm::vec2& value )
+		void Shader::doUniform( std::string name, const glm::vec2& value )
 		{
 			int location = getUniformLocation(name);
 			glUniform2f(location, value.x, value.y);

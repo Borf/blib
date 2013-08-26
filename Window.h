@@ -36,10 +36,13 @@ namespace blib
 		bool showBorder;
 
 		bool opened;
+		std::string title;
+		std::string className;
 
 	public:
 		Window();
 
+		virtual void setTitle(std::string title);
 		virtual void setSize(int width, int height);
 		virtual void setResizable(bool resizable);
 		virtual void setBorder(bool border);

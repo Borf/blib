@@ -10,26 +10,28 @@ using blib::util::Log;
 
 namespace blib
 {
+	std::map<std::string, Texture*> Texture::textureCache;
+
+	Texture* Texture::loadCached(std::string fileName, int loadOptions)
+	{
+		if(textureCache.find(fileName) == textureCache.end())
+			textureCache[fileName] = new gl::Texture(fileName, loadOptions);
+		return textureCache[fileName];
+	}
+
+
+	void Texture::clearCache()
+	{
+		for(std::map<std::string, Texture*>::iterator it = textureCache.begin(); it != textureCache.end(); it++)
+		{
+			delete it->second;
+		}
+		textureCache.clear();
+	}
+
+
 	namespace gl
 	{
-		std::map<std::string, Texture*> Texture::textureCache;
-
-		Texture* Texture::loadCached(std::string fileName, int loadOptions)
-		{
-			if(textureCache.find(fileName) == textureCache.end())
-				textureCache[fileName] = new Texture(fileName, loadOptions);
-			return textureCache[fileName];
-		}
-
-
-		void Texture::clearCache()
-		{
-			for(std::map<std::string, Texture*>::iterator it = textureCache.begin(); it != textureCache.end(); it++)
-			{
-				delete it->second;
-			}
-			textureCache.clear();
-		}
 
 
 		Texture::Texture()
@@ -222,6 +224,11 @@ namespace blib
 			if(texid != 0)
 				glDeleteTextures(1, &texid);
 			texid = 0;
+		}
+
+		void Texture::use()
+		{
+			glBindTexture(GL_TEXTURE_2D, texid);
 		}
 
 

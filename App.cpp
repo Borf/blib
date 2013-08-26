@@ -3,13 +3,15 @@
 #include <blib/gl/Window.h>
 #include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
+#include <blib/gl/Renderer.h>
 #include <blib/util/Profiler.h>
+#include <blib/RenderState.h>
 #include <blib/MouseListener.h>
 
 namespace blib
 {
 
-	void App::run()
+	void App::start(bool looping)
 	{
 		window = new blib::gl::Window();
 		window->setSize(appSetup.width, appSetup.height);
@@ -41,6 +43,9 @@ namespace blib
 			addListener(&listener);
 		}
 
+		renderer = new gl::Renderer();
+		renderState = RenderState::activeRenderState;
+
 		blib::gl::GlInitRegister::initRegisteredObjects();
 
 		init();
@@ -49,21 +54,32 @@ namespace blib
 
 
 		running = true;
+
+		if(looping)
+			run();
+	}
+
+	void App::run()
+	{
 		while(running)
 		{
-			double elapsedTime = blib::util::Profiler::getTime();
-			blib::util::Profiler::startFrame();
-			blib::util::Profiler::startSection("frame");
-			window->tick();
-			time += elapsedTime;
-			update(elapsedTime);
-			draw();
-			window->swapBuffers();
-			blib::util::Profiler::endSection("frame");
-			Sleep(0);
+			step();
 		}
 	}
 
+	void App::step()
+	{
+		double elapsedTime = blib::util::Profiler::getTime();
+		blib::util::Profiler::startFrame();
+		blib::util::Profiler::startSection("frame");
+		window->tick();
+		time += elapsedTime;
+		update(elapsedTime);
+		draw();
+		window->swapBuffers();
+		blib::util::Profiler::endSection("frame");
+		Sleep(0);
+	}
 
 
 	void App::addListener(KeyListener* keyListener)

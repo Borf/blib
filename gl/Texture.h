@@ -11,14 +11,16 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <blib/Texture.h>
 
 namespace blib
 {
+
 	namespace gl
 	{
-		class Texture
+		class Texture : public blib::Texture
 		{
-		protected:
+		public: //TODO: make protected
 			Texture();
 			void fromData(unsigned char* data, int width, int height);
 			void fromFile(std::string fileName, int loadOptions);
@@ -34,25 +36,16 @@ namespace blib
 				TextureWrap = 8,
 			};
 
-			static std::map<std::string, Texture*> textureCache;
-			static Texture* loadCached(std::string fileName, int loadOptions = 0);
-			static void clearCache();
 
 
 
 			unsigned char* data;
 
 			GLuint texid;
-			int width;
-			int height;
-
-			int originalWidth;
-			int originalHeight;
-
-
 			Texture(unsigned char* data, int width, int height);
+			
+			void use();
 
-			glm::vec2 center;
 		};
 		
 

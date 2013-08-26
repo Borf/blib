@@ -5,8 +5,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <blib/wm/wm.h>
-#include <blib/gl/Texture.h>
-#include <blib/gl/SpriteBatch.h>
+#include <blib/Texture.h>
+#include <blib/SpriteBatch.h>
 
 
 namespace blib
@@ -15,7 +15,7 @@ namespace blib
 	{
 		namespace widgets
 		{
-			Image::Image(gl::Texture* texture )
+			Image::Image(Texture* texture )
 			{
 				this->texture = texture;
 				this->width = 100;
@@ -24,7 +24,7 @@ namespace blib
 
 
 
-			void Image::draw( gl::SpriteBatch &spriteBatch, glm::mat4 matrix)
+			void Image::draw( SpriteBatch &spriteBatch, glm::mat4 matrix)
 			{
 				spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["box"], glm::vec2(width, height));
 				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x+2,y+2,0)));
@@ -51,12 +51,12 @@ namespace blib
 			}
 
 
-			void Image::setTexture(gl::Texture* texture)
+			void Image::setTexture(Texture* texture)
 			{
 				this->texture = texture;
 			}
 
-			gl::Texture* Image::getTexture()
+			Texture* Image::getTexture()
 			{
 				return this->texture;
 			}

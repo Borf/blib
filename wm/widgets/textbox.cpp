@@ -3,9 +3,9 @@
 #include <gl/glew.h>
 
 #include <blib/wm/wm.h>
-#include <blib/gl/Texture.h>
-#include <blib/gl/Shader.h>
-#include <blib/gl/Font.h>
+#include <blib/Texture.h>
+#include <blib/Shader.h>
+#include <blib/Font.h>
 #include <windows.h>
 
 
@@ -29,7 +29,7 @@ namespace blib
 
 
 
-			void Textbox::draw( gl::SpriteBatch& spriteBatch, glm::mat4 matrix)
+			void Textbox::draw( SpriteBatch& spriteBatch, glm::mat4 matrix)
 			{/*
 				glBindTexture(GL_TEXTURE_2D, WM::getInstance()->skinTexture->texid);
 				shader->setColor(glm::vec4(selected ? 1 : 0.9f,selected ? 1 : 0.9f,selected ? 1 : 0.9f,1));

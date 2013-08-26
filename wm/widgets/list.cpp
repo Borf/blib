@@ -1,8 +1,8 @@
 #include "list.h"
 
 #include <blib/wm/wm.h>
-#include <blib/gl/Texture.h>
-#include <blib/gl/SpriteBatch.h>
+#include <blib/Texture.h>
+#include <blib/SpriteBatch.h>
 #include <blib/math/Rectangle.h>
 
 #include <gl/glew.h>
@@ -28,7 +28,7 @@ namespace blib
 
 
 
-			void List::draw( gl::SpriteBatch &spriteBatch, glm::mat4 matrix)
+			void List::draw( SpriteBatch &spriteBatch, glm::mat4 matrix)
 			{
 
 				spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["list"], glm::vec2(width, height));

@@ -1,9 +1,9 @@
 #include "WM.h"
 
 #include "Window.h"
-#include <blib/gl/SpriteBatch.h>
-#include <blib/gl/Texture.h>
-#include <blib/gl/Font.h>
+#include <blib/SpriteBatch.h>
+#include <blib/Texture.h>
+#include <blib/Font.h>
 #include <blib/util/FileSystem.h>
 #include <blib/util/Log.h>
 using blib::util::Log;
@@ -51,7 +51,7 @@ namespace blib
 	
 		}
 
-		void WM::draw( gl::SpriteBatch &spriteBatch )
+		void WM::draw( SpriteBatch &spriteBatch )
 		{
 			for(std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
 			{
@@ -94,11 +94,11 @@ namespace blib
 		void WM::setSkin( std::string skinFile )
 		{
 			skin = util::FileSystem::getJson(skinFile);
-			skinTexture = gl::Texture::loadCached(skin["texture"].asString());
-			font = gl::Font::getFontInstance("tahoma");
+			skinTexture = Texture::loadCached(skin["texture"].asString());
+			font = Font::getFontInstance("tahoma");
 		}
 
-		void WM::setFont( gl::Font* font )
+		void WM::setFont( Font* font )
 		{
 			this->font = font;
 		}
