@@ -6,6 +6,7 @@ namespace blib
 {
 	class Window;
 	class MouseListener;
+	class SpriteBatch;
 	class Renderer;
 	class RenderState;
 
@@ -58,10 +59,13 @@ namespace blib
 		virtual void init() = 0;
 		virtual void update(double elapsedTime) = 0;
 		virtual void draw() = 0;
+
+
 	protected:
 		void addListener(KeyListener* keyListener);
 		void addListener(MouseListener* mouseListener);
 
+		SpriteBatch* spriteBatch;
 		Renderer* renderer;
 		RenderState* renderState;
 

@@ -89,5 +89,10 @@ namespace blib
 		{
 			return height;
 		}
+
+		void FBO::use()
+		{
+			glBindTexture(GL_TEXTURE_2D, texid);
+		}
 	}
 }

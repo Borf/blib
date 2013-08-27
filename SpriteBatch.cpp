@@ -41,7 +41,7 @@ void main()\
 	gl_FragColor = color*texture2D(s_texture, texCoord);\
 }\
 ");
-		vertices.resize(MAX_SPRITES);
+		vertices.reserve(MAX_SPRITES);
 	/*	int index = 0;
 		unsigned short* indices = new unsigned short[MAX_SPRITES*6];
 		for(int i = 0; i < MAX_SPRITES; i+=6)
@@ -70,6 +70,7 @@ void main()\
 		this->matrix = matrix;
 		materialIndices.clear();
 		//vbo.mapData(GL_WRITE_ONLY);		
+		vertices.clear();
 	}
 
 	void SpriteBatch::end()
@@ -99,9 +100,16 @@ void main()\
 		int lastIndex = 0;
 		for(size_t i = 0; i < materialIndices.size(); i++)
 		{
-			materialIndices[i].first->use();
+			//materialIndices[i].first->use();
 //			glBindTexture(GL_TEXTURE_2D, materialIndices[i].first->texid);
 //			glDrawElements(GL_TRIANGLES, materialIndices[i].second - lastIndex, GL_UNSIGNED_SHORT, (GLvoid*)(lastIndex * sizeof(unsigned short)));
+			
+			RenderState::activeRenderState->activeTexture[0] = materialIndices[i].first;
+			RenderState::activeRenderState->activeShader = shader;
+
+
+			renderer->drawTriangles<vertexDef>(*RenderState::activeRenderState, vertices);
+
 			lastIndex = materialIndices[i].second;
 		}
 
@@ -121,29 +129,54 @@ void main()\
 			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, (spriteCount/4) * 6));
 		currentTexture = texture;
 
-		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1));
+/*		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1));		//1
 		vertices[spriteCount].texCoord = glm::vec2(src.topleft.x,src.topleft.y);
 		vertices[spriteCount].color = color;
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 		spriteCount++;
 
-		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1));
+		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1));			//2
 		vertices[spriteCount].texCoord = glm::vec2(src.topleft.x,src.bottomright.y);
 		vertices[spriteCount].color = color;
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 		spriteCount++;
 
-		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1));
+		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1));			//3
 		vertices[spriteCount].texCoord = glm::vec2(src.bottomright.x,src.topleft.y);
 		vertices[spriteCount].color = color;
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
 		spriteCount++;
 
-		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*texture->originalHeight - center.y,	0,1));
+
+		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1));			//2
+		vertices[spriteCount].texCoord = glm::vec2(src.topleft.x,src.bottomright.y);
+		vertices[spriteCount].color = color;
+		//			vbo[spriteCount].position.z = (float)depth*0.01f;
+		spriteCount++;
+
+		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1));			//3
+		vertices[spriteCount].texCoord = glm::vec2(src.bottomright.x,src.topleft.y);
+		vertices[spriteCount].color = color;
+		//			vbo[spriteCount].position.z = (float)depth*0.01f;
+		spriteCount++;
+
+		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*texture->originalHeight - center.y,	0,1));				//4
 		vertices[spriteCount].texCoord = glm::vec2(src.bottomright.x,src.bottomright.y);
 		vertices[spriteCount].color = color;
 //			vbo[spriteCount].position.z = (float)depth*0.01f;
-		spriteCount++;
+		spriteCount++;*/
+
+
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1)),	glm::vec2(src.topleft.x,src.topleft.y), color)); // 1
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1)),		glm::vec2(src.topleft.x,src.bottomright.y), color)); // 2
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1)),		glm::vec2(src.bottomright.x,src.topleft.y), color)); // 3
+
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1)), 		glm::vec2(src.topleft.x,src.bottomright.y), color)); // 2
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1)),		glm::vec2(src.bottomright.x,src.topleft.y), color)); // 3
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*texture->originalHeight - center.y,	0,1)),			glm::vec2(src.bottomright.x,src.bottomright.y), color)); //4
+	
+		spriteCount+=6;
+
 		depth++;
 	}
 

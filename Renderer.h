@@ -10,19 +10,23 @@ namespace blib
 	class Renderer
 	{
 	protected:
-		class RenderBlockBase
+		class Render
 		{
 		public:
+			enum Command {
+				Clear,
+				DrawTriangles,
+			} command;
+
 			RenderState renderState;
 			Shader::State state;
 
 			virtual void setVertexAttributes() = 0;
-			virtual float* firstVertex() = 0;
 			virtual int vertexCount() = 0;
 		};
 
 		template <class T>
-		class RenderBlock : public RenderBlockBase
+		class RenderBlock : public Render
 		{
 		public:
 			std::vector<T> vertices;
@@ -35,17 +39,59 @@ namespace blib
 				return vertices.size();
 			}
 		};
-		std::vector<RenderBlockBase*> toRender;
+
+
+		class RenderClear : public Render
+		{
+		public:
+			glm::vec4 color;
+			bool clearColor;
+			bool clearDepth;
+			bool clearStencil;
+
+			virtual void setVertexAttributes()
+			{
+			}
+
+			virtual int vertexCount()
+			{
+				return 0;
+			}
+		};
+
+		std::vector<Render*> toRender;
 
 	public:
+		enum ClearOptions
+		{
+			Color = 1,
+			Depth = 2,
+			Stencil = 4,
+		};
+
+
 		template<class T>
 		void drawTriangles(const RenderState& renderState, std::vector<T> &vertices)
 		{
 			RenderBlock<T>* block = new RenderBlock<T>();
+			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->renderState = renderState;
 			block->state = renderState.activeShader->state;
 			block->vertices = vertices;
+			toRender.push_back(block);
 		}
+		void clear(const glm::vec4 &color, int bits)
+		{
+			RenderClear* block = new RenderClear();
+			block->command = Render::Clear;
+			block->color = color;
+			block->clearColor = (bits & Color) != 0;
+			block->clearDepth = (bits & Depth) != 0;
+			block->clearStencil = (bits & Stencil) != 0;
+			toRender.push_back(block);
+		}
+
+
 		virtual void flush() = 0;
 	};
 }

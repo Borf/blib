@@ -7,6 +7,7 @@
 #include <blib/util/Profiler.h>
 #include <blib/RenderState.h>
 #include <blib/MouseListener.h>
+#include <blib/SpriteBatch.h>
 
 namespace blib
 {
@@ -45,6 +46,8 @@ namespace blib
 
 		renderer = new gl::Renderer();
 		renderState = RenderState::activeRenderState;
+		spriteBatch = new SpriteBatch(renderer);
+
 
 		blib::gl::GlInitRegister::initRegisteredObjects();
 
@@ -76,6 +79,8 @@ namespace blib
 		time += elapsedTime;
 		update(elapsedTime);
 		draw();
+		
+		renderer->flush();
 		window->swapBuffers();
 		blib::util::Profiler::endSection("frame");
 		Sleep(0);

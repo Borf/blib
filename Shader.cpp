@@ -2,21 +2,21 @@
 
 namespace blib
 {
-	void Shader::setState( const State& state )
+	void Shader::setState( State& state )
 	{
-		for(std::map<std::string,	const float>::const_iterator it = state.floatValues.cbegin(); it != state.floatValues.cend(); it++)
+		for(std::map<std::string,	float>::iterator it = state.floatValues.begin(); it != state.floatValues.end(); it++)
 			setUniform(it->first, it->second);
-		for(std::map<std::string,	const int>::const_iterator it = state.intValues.cbegin(); it != state.intValues.cend(); it++)
+		for(std::map<std::string,	int>::iterator it = state.intValues.begin(); it != state.intValues.end(); it++)
 			setUniform(it->first, it->second);
-		for(std::map<std::string,	const glm::vec2>::const_iterator it = state.vec2Values.cbegin(); it != state.vec2Values.cend(); it++)
+		for(std::map<std::string,	glm::vec2>::iterator it = state.vec2Values.begin(); it != state.vec2Values.end(); it++)
 			setUniform(it->first, it->second);
-		for(std::map<std::string,	const glm::vec3>::const_iterator it = state.vec3Values.cbegin(); it != state.vec3Values.cend(); it++)
+		for(std::map<std::string,	glm::vec3>::iterator it = state.vec3Values.begin(); it != state.vec3Values.end(); it++)
 			setUniform(it->first, it->second);
-		for(std::map<std::string,	const glm::vec4>::const_iterator it = state.vec4Values.cbegin(); it != state.vec4Values.cend(); it++)
+		for(std::map<std::string,	glm::vec4>::iterator it = state.vec4Values.begin(); it != state.vec4Values.end(); it++)
 			setUniform(it->first, it->second);
-		for(std::map<std::string,	const glm::mat3>::const_iterator it = state.mat3Values.cbegin(); it != state.mat3Values.cend(); it++)
+		for(std::map<std::string,	glm::mat3>::iterator it = state.mat3Values.begin(); it != state.mat3Values.end(); it++)
 			setUniform(it->first, it->second);
-		for(std::map<std::string,	const glm::mat4>::const_iterator it = state.mat4Values.cbegin(); it != state.mat4Values.cend(); it++)
+		for(std::map<std::string,	glm::mat4>::iterator it = state.mat4Values.begin(); it != state.mat4Values.end(); it++)
 			setUniform(it->first, it->second);
 	}
 

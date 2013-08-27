@@ -9,16 +9,18 @@
 
 #include <blib/gl/GlInitRegister.h>
 #include <blib/gl/Texture.h>
+#include <blib/FBO.h>
 
 namespace blib
 {
 	namespace gl
 	{
-		class FBO : public GlInitRegister, public Texture
+		class FBO : public blib::FBO, public GlInitRegister
 		{
 			bool depth;
 			bool stencil;
 
+			GLuint texid;
 			GLuint fbo;
 			GLuint depthBuffer;
 			GLuint stencilBuffer;
@@ -33,6 +35,8 @@ namespace blib
 
 			int getHeight();
 			int getWidth();
+
+			void use();
 
 		};
 
