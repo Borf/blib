@@ -8,6 +8,7 @@
 #include <GL/glew.h>
 #endif
 
+#include <blib/VBO.h>
 #include <blib/util/NotCopyable.h>
 #include <blib/gl/GlInitRegister.h>
 
@@ -17,7 +18,7 @@ namespace blib
 	{
 
 		template <class T>
-		class VBO : public blib::util::NotCopyable, public GlInitRegister
+		class VBO : public blib::VBO, public blib::util::NotCopyable, public GlInitRegister
 		{
 		private:
 			GLuint vbo;

@@ -10,7 +10,7 @@
 
 #include <blib/util/NotCopyable.h>
 #include <blib/gl/GlInitRegister.h>
-
+#include <blib/VIO.h>
 
 namespace blib
 {
@@ -18,7 +18,7 @@ namespace blib
 	{
 
 		template <class T>
-		class VIO : public blib::util::NotCopyable, public GlInitRegister
+		class VIO : public blib::VIO, public blib::util::NotCopyable, public GlInitRegister
 		{
 		private:
 			GLuint vio;

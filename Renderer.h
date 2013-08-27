@@ -30,13 +30,20 @@ namespace blib
 		{
 		public:
 			std::vector<T> vertices;
+			int count;
 			virtual void setVertexAttributes()
 			{
-				T::setAttribPointers(&vertices[0]);
+				if(renderState.activeVbo != NULL)
+					T::setAttribPointers();
+				else
+					T::setAttribPointers(&vertices[0]);
 			}
 			virtual int vertexCount()
 			{
-				return vertices.size();
+				if(renderState.activeVbo != NULL)
+					return count;
+				else
+					return vertices.size();
 			}
 			virtual ~RenderBlock() { vertices.clear(); };
 		};
@@ -81,6 +88,18 @@ namespace blib
 			block->vertices = vertices;
 			toRender.push_back(block);
 		}
+
+		template<class T>
+		void drawTriangles(const RenderState& renderState, int count)
+		{
+			RenderBlock<T>* block = new RenderBlock<T>();
+			block->command = Render::DrawTriangles;	//TODO : move to constructor
+			block->count = count;
+			block->renderState = renderState;
+			block->state = renderState.activeShader->state;
+			toRender.push_back(block);
+		}
+
 		void clear(const RenderState& renderState, const glm::vec4 &color, int bits)
 		{
 			RenderClear* block = new RenderClear();

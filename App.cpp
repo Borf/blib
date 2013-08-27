@@ -44,6 +44,12 @@ namespace blib
 			addListener(&listener);
 		}
 
+		mouseState.leftButton = false;
+		mouseState.rightButton = false;
+		mouseState.middleButton = false;
+		mouseState.x = 0;
+		mouseState.y = 0;
+
 		renderer = new gl::Renderer();
 		renderState = RenderState::activeRenderState;
 		spriteBatch = new SpriteBatch(renderer);

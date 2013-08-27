@@ -81,7 +81,7 @@ namespace blib
 		};
 
 
-		class MultiTextureMap
+		class MultiTextureMap : public blib::Texture
 		{
 		public:
 			int maxCount;
@@ -100,6 +100,8 @@ namespace blib
 				int depth;
 				std::string filename;
 			};
+
+			void use();
 			GLuint texid;
 			std::map<std::string, TexInfo*> info;
 

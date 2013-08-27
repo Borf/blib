@@ -5,6 +5,7 @@
 #include <blib/RenderState.h>
 #include <blib/Texture.h>
 #include <blib/gl/FBO.h>
+#include <blib/gl/VBO.h>
 
 namespace blib
 {
@@ -96,9 +97,10 @@ namespace blib
 						glDisable(GL_BLEND);
 
 
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-					glEnableVertexAttribArray(0);
-					glEnableVertexAttribArray(1);
+					if(toRender[i]->renderState.activeVbo)
+						toRender[i]->renderState.activeVbo->bind();
+					else
+						glBindBuffer(GL_ARRAY_BUFFER, 0);
 					toRender[i]->setVertexAttributes();
 
 					glDrawArrays(GL_TRIANGLES, 0, toRender[i]->vertexCount());

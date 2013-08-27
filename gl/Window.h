@@ -11,7 +11,7 @@ namespace blib
 		{
 		public:
 			Window();
-			~Window();
+			virtual ~Window();
 			virtual void create();
 			virtual void swapBuffers();
 			virtual void tick();

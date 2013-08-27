@@ -14,6 +14,7 @@ namespace blib
 		if(message == WM_NCCREATE)
 			SetWindowLongPtr(hWnd, GWL_USERDATA, (LONG_PTR) ((CREATESTRUCT*)lParam)->lpCreateParams);
 		return ((Window*) GetWindowLongPtr(hWnd, GWL_USERDATA))->wndProc(hWnd, message, wParam, lParam);
+//		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 
 	Window::Window()
@@ -24,14 +25,16 @@ namespace blib
 
 	void Window::create()
 	{
+		showBorder = true;
+		title = "Blib demo";
 		if(className == "")
 		{
 			className = "blib_";
-			for(int i = 0; i < 16; i++)
+			for(int i = 0; i < 3; i++)
 				className += 'a' + (rand()%26);
 		}
 		WNDCLASS windowClass;
-		DWORD dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+		DWORD dwExStyle = WS_EX_APPWINDOW ;//| WS_EX_WINDOWEDGE;
 
 		HINSTANCE hInstance = GetModuleHandle(NULL);
 
@@ -44,15 +47,38 @@ namespace blib
 		windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 		windowClass.hbrBackground = NULL;
 		windowClass.lpszMenuName = NULL;
-		windowClass.lpszClassName = className.c_str();
+		windowClass.lpszClassName = "asdasdasd";
 
 		if (!RegisterClass(&windowClass)) {
+			Log::out<<"Error loading window class"<<Log::newline;
 			return;
 		}
-		hWnd = CreateWindowEx(dwExStyle, className.c_str(), title.c_str(), (showBorder ? WS_OVERLAPPEDWINDOW : (WS_OVERLAPPED | WS_POPUP)),
+		hWnd = CreateWindowEx(dwExStyle, "asdasdasd", title.c_str(), WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_POPUP,
 			CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, hInstance, this);
+		if(!hWnd)
+		{
+			Log::out<<"Unable to create window...wtf?"<<Log::newline;
+			char* lpMsgBuf;
+			DWORD dw = GetLastError(); 
+			FormatMessage(
+				FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+				FORMAT_MESSAGE_FROM_SYSTEM |
+				FORMAT_MESSAGE_IGNORE_INSERTS,
+				NULL,
+				dw,
+				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+				(LPTSTR) &lpMsgBuf,
+				0, NULL );
+
+			Log::out<<"Error: "<<lpMsgBuf<<Log::newline;
+			return;
+
+		}
 		hdc = GetDC(hWnd); // Get the device context for our window
+
+		ShowWindow(hWnd, SW_SHOW);
 		opened = true;
+		lastButton = 0;
 	}
 
 
@@ -78,7 +104,6 @@ namespace blib
 
 		if(message == WM_LBUTTONUP || message == WM_MBUTTONUP || message == WM_RBUTTONUP)
 			clickCount = clicks.size();
-
 		switch (message) {
 		case WM_SIZE: // If our window is resizing
 			width = LOWORD(lParam);
@@ -95,7 +120,7 @@ namespace blib
 			for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
 				(*it)->onKeyUp((blib::Key)wParam);
 			break;
-		case WM_LBUTTONDOWN:
+		/*case WM_LBUTTONDOWN:
 			mouseButtons |= MouseListener::Left;
 			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 				(*it)->onMouseDown(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Left, clickCount);
@@ -128,7 +153,7 @@ namespace blib
 		case WM_MOUSEMOVE:
 			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 				(*it)->onMouseMove(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),(MouseListener::Buttons)mouseButtons);
-			break;
+			break;*/
 		}
 
 		return DefWindowProc(hWnd, message, wParam, lParam);
@@ -170,6 +195,11 @@ namespace blib
 	void Window::addListener( MouseListener* mouseListener )
 	{
 		mouseListeners.push_back(mouseListener);
+	}
+
+	Window::~Window()
+	{
+		Log::out<<"Window Destroyed"<<Log::newline;
 	}
 
 

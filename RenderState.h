@@ -7,6 +7,8 @@ namespace blib
 	class Shader;
 	class Texture;
 	class FBO;
+	class VBO;
+	class VIO;
 
 	class RenderState
 	{
@@ -14,6 +16,8 @@ namespace blib
 		Shader* activeShader;
 		Texture* activeTexture[10];
 		FBO* activeFbo;
+		VBO* activeVbo;
+		VIO* activeVio;
 
 		//blending
 		bool blendEnabled;
@@ -40,6 +44,8 @@ namespace blib
 			for(int i = 0; i < 10; i++)
 				activeTexture[i] = NULL;
 			activeFbo = NULL;
+			activeVbo = NULL;
+			activeVio = NULL;
 
 			blendEnabled = false;
 			srcBlendColor = SRC_ALPHA;

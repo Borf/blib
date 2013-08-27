@@ -41,6 +41,7 @@ namespace blib
 
 	public:
 		Window();
+		virtual ~Window();
 
 		virtual void setTitle(std::string title);
 		virtual void setSize(int width, int height);

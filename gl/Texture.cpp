@@ -456,6 +456,11 @@ namespace blib
 			return texinfo;
 		}
 
+		void MultiTextureMap::use()
+		{
+			glBindTexture(GL_TEXTURE_2D_ARRAY, texid);
+		}
+
 
 
 	}

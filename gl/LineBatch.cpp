@@ -90,7 +90,7 @@ void main()\
 			lineCount++;
 		}
 
-		void LineBatch::draw(blib::gl::ILineDrawable& drawable, glm::vec4 color, bool normal, glm::mat4 transform)
+		void LineBatch::draw(blib::gl::ILineDrawable& drawable, glm::vec4 color, bool showNormal, glm::mat4 transform)
 		{
 			assert(active);
 			std::list<blib::gl::ILineDrawable::LinePart>& lines = drawable.getLines();
@@ -104,7 +104,7 @@ void main()\
 				vbo[lineCount].color = color;
 				lineCount++;
 
-				if(normal)
+				if(showNormal)
 				{
 					glm::vec2 center = (it->p1 + it->p2) / 2.0f;
 					glm::vec2 normal = glm::normalize(glm::vec2(it->p2.y - it->p1.y, -(it->p2.x - it->p1.x)));
