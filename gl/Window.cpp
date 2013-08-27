@@ -31,11 +31,12 @@ namespace blib
 			PIXELFORMATDESCRIPTOR pfd; // Create a new PIXELFORMATDESCRIPTOR (PFD)
 			memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR)); // Clear our  PFD
 			pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR); // Set the size of the PFD to the size of the class
-			pfd.dwFlags = PFD_DOUBLEBUFFER | PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW; // Enable double buffering, opengl support and drawing to a window
+			pfd.dwFlags = PFD_DOUBLEBUFFER | PFD_SUPPORT_OPENGL | PFD_DRAW_TO_WINDOW | PFD_TYPE_RGBA; // Enable double buffering, opengl support and drawing to a window
 			pfd.iPixelType = PFD_TYPE_RGBA; // Set our application to use RGBA pixels
 			pfd.cColorBits = 32; // Give us 32 bits of color information (the higher, the more colors)
 			pfd.cDepthBits = 32; // Give us 32 bits of depth information (the higher, the more depth levels)
 			pfd.iLayerType = PFD_MAIN_PLANE; // Set the layer of the PFD
+			pfd.cStencilBits = 16;
 
 			int nPixelFormat = ChoosePixelFormat(hdc, &pfd); // Check if our PFD is valid and get a pixel format back
 			if (nPixelFormat == 0) // If it fails
