@@ -10,9 +10,12 @@
 
 #include <glm/glm.hpp>
 
+
 class Vertex
 {
 protected:
+	static bool enabledVertexAttributes[10];
+
 public:
 	static void setAttribPointers(void* offset = NULL, int *index = NULL, int totalSize = size())
 	{
@@ -33,7 +36,18 @@ public:
 			if(!index)\
 				index = &tmpIndex;\
 			base::setAttribPointers(offset, index, totalSize);\
+			glEnableVertexAttribArray(*index);\
+			Vertex::enabledVertexAttributes[*index] = true;\
 			glVertexAttribPointer((*index)++, count, GL_FLOAT, GL_FALSE, totalSize, (void*)((char*)offset + base::size()));\
+			if(index == &tmpIndex)\
+			{\
+				for(int i = *index; i < 10; i++)\
+					if(Vertex::enabledVertexAttributes[i])\
+					{\
+						Vertex::enabledVertexAttributes[i] = false;\
+						glDisableVertexAttribArray(i);\
+					}\
+			}\
 		}\
 		static int size() { return base::size() + count*sizeof(GL_FLOAT); }\
 		\

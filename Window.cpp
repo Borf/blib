@@ -79,9 +79,6 @@ namespace blib
 		if(message == WM_LBUTTONUP || message == WM_MBUTTONUP || message == WM_RBUTTONUP)
 			clickCount = clicks.size();
 
-		if(clickCount > 0)
-			Log::out<<clickCount<<Log::newline;
-
 		switch (message) {
 		case WM_SIZE: // If our window is resizing
 			width = LOWORD(lParam);

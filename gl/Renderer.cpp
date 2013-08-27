@@ -22,6 +22,8 @@ namespace blib
 					else
 						glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+
 					glClearColor(	((blib::Renderer::RenderClear*)toRender[i])->color.r, 
 									((blib::Renderer::RenderClear*)toRender[i])->color.g, 
 									((blib::Renderer::RenderClear*)toRender[i])->color.b, 
@@ -84,6 +86,15 @@ namespace blib
 						toRender[i]->renderState.activeTexture[1]->use();
 						glActiveTexture(GL_TEXTURE0);
 					}
+
+					if(toRender[i]->renderState.blendEnabled)
+					{
+						glEnable(GL_BLEND);
+						glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+					}
+					else
+						glDisable(GL_BLEND);
+
 
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
 					glEnableVertexAttribArray(0);

@@ -17,7 +17,7 @@ namespace blib
 				Clear,
 				DrawTriangles,
 			} command;
-
+			virtual ~Render() {};
 			RenderState renderState;
 			Shader::State state;
 
@@ -38,6 +38,7 @@ namespace blib
 			{
 				return vertices.size();
 			}
+			virtual ~RenderBlock() { vertices.clear(); };
 		};
 
 
@@ -80,11 +81,12 @@ namespace blib
 			block->vertices = vertices;
 			toRender.push_back(block);
 		}
-		void clear(const glm::vec4 &color, int bits)
+		void clear(const RenderState& renderState, const glm::vec4 &color, int bits)
 		{
 			RenderClear* block = new RenderClear();
 			block->command = Render::Clear;
 			block->color = color;
+			block->renderState = renderState;
 			block->clearColor = (bits & Color) != 0;
 			block->clearDepth = (bits & Depth) != 0;
 			block->clearStencil = (bits & Stencil) != 0;

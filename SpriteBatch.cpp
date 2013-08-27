@@ -87,15 +87,12 @@ void main()\
 
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
+	//	glEnableVertexAttribArray(2);
 		shader->use();
 		shader->setUniform("matrix", matrix);
 		//vbo.bind();
 		//vio.bind();
 		//vertexDef::setAttribPointers();
-
-		glDisable(GL_DEPTH_TEST);
-		glDepthMask(GL_FALSE);
 
 		int lastIndex = 0;
 		for(size_t i = 0; i < materialIndices.size(); i++)
