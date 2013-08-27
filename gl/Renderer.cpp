@@ -17,6 +17,11 @@ namespace blib
 			{
 				if(toRender[i]->command == Render::Clear)
 				{
+					if(toRender[i]->renderState.activeFbo != NULL)
+						toRender[i]->renderState.activeFbo->bind();
+					else
+						glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 					glClearColor(	((blib::Renderer::RenderClear*)toRender[i])->color.r, 
 									((blib::Renderer::RenderClear*)toRender[i])->color.g, 
 									((blib::Renderer::RenderClear*)toRender[i])->color.b, 
@@ -43,7 +48,7 @@ namespace blib
 					if(toRender[i]->renderState.activeFbo != NULL)
 						toRender[i]->renderState.activeFbo->bind();
 					else
-						glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+						glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 					if(toRender[i]->renderState.stencilTestEnabled)
 					{
@@ -70,17 +75,21 @@ namespace blib
 
 
 					if(toRender[i]->renderState.activeTexture[0])
+					{
 						toRender[i]->renderState.activeTexture[0]->use();
+					}
 					if(toRender[i]->renderState.activeTexture[1])
+					{
+						glActiveTexture(GL_TEXTURE1);
 						toRender[i]->renderState.activeTexture[1]->use();
+						glActiveTexture(GL_TEXTURE0);
+					}
 
 					glBindBuffer(GL_ARRAY_BUFFER, 0);
 					glEnableVertexAttribArray(0);
 					glEnableVertexAttribArray(1);
 					toRender[i]->setVertexAttributes();
-					glBindBuffer(GL_ARRAY_BUFFER, 0);
-//					glEnableVertexAttribArray(0);
-//					glEnableVertexAttribArray(1);
+
 					glDrawArrays(GL_TRIANGLES, 0, toRender[i]->vertexCount());
 				}
 
