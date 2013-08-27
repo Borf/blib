@@ -36,7 +36,8 @@ public:
 			if(!index)\
 				index = &tmpIndex;\
 			base::setAttribPointers(offset, index, totalSize);\
-			glEnableVertexAttribArray(*index);\
+			if(!Vertex::enabledVertexAttributes[*index])\
+				glEnableVertexAttribArray(*index);\
 			Vertex::enabledVertexAttributes[*index] = true;\
 			glVertexAttribPointer((*index)++, count, GL_FLOAT, GL_FALSE, totalSize, (void*)((char*)offset + base::size()));\
 			if(index == &tmpIndex)\
