@@ -94,11 +94,10 @@ namespace blib
 		update(elapsedTime);
 		draw();
 		
+		renderThread->updateSignal->wait();
+		renderer->swap();
 		wglMakeCurrent(NULL, NULL);
 		renderThread->renderSignal->signal();
-		renderThread->updateSignal->wait();
-
-
 		if(!wglMakeCurrent(window->hdc, ((blib::gl::Window*)window)->hrc))
 		{
 			Log::out<<"ERROR MAKING CURRENT"<<Log::newline;
@@ -106,10 +105,6 @@ namespace blib
 			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	GetLastError(),	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
 			Log::out<<"Error: "<<lpMsgBuf<<Log::newline;
 		}
-
-
-		//renderer->flush();
-
 		blib::util::Profiler::endSection("frame");
 		Sleep(0);
 	}
