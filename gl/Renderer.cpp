@@ -6,6 +6,9 @@
 #include <blib/Texture.h>
 #include <blib/gl/FBO.h>
 #include <blib/gl/VBO.h>
+#include <blib/util/Log.h>
+
+using blib::util::Log;
 
 namespace blib
 {
@@ -13,6 +16,7 @@ namespace blib
 	{
 		void Renderer::flush()
 		{
+			int totalVerts = 0;
 
 			for(size_t i = 0; i < toRender[1-activeLayer].size(); i++)
 			{
@@ -106,10 +110,12 @@ namespace blib
 						glBindBuffer(GL_ARRAY_BUFFER, 0);
 					r->setVertexAttributes();
 
+					totalVerts += r->vertexCount();
 					glDrawArrays(GL_TRIANGLES, 0, r->vertexCount());
 				}
 
 			}
+		//	Log::out<<toRender[1-activeLayer].size()<< " render commands, "<<totalVerts<<" vertices"<<Log::newline;
 
 			for(size_t i = 0; i < toRender[1-activeLayer].size(); i++)
 				delete toRender[1-activeLayer][i];
