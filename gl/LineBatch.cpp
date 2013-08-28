@@ -35,7 +35,7 @@ void main()\
 	gl_FragColor = color;\
 }\
 ");
-			vbo.setData(MAX_LINES*2, NULL, GL_STATIC_DRAW);
+			vbo.setData(MAX_LINES*2, NULL);
 			unsigned short* indices = new unsigned short[MAX_LINES*2];
 			for(int i = 0; i < MAX_LINES; i++)
 				indices[i] = i;

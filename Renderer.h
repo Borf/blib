@@ -2,10 +2,12 @@
 
 #include <blib/Shader.h>
 #include <blib/RenderState.h>
+#include <blib/VBO.h>
 #include <vector>
 
 namespace blib
 {
+
 
 	class Renderer
 	{
@@ -16,6 +18,7 @@ namespace blib
 			enum Command {
 				Clear,
 				DrawTriangles,
+				SetVbo,
 			} command;
 			virtual ~Render() {};
 			RenderState renderState;
@@ -23,6 +26,7 @@ namespace blib
 
 			virtual void setVertexAttributes() = 0;
 			virtual int vertexCount() = 0;
+			virtual void perform() {};
 		};
 
 		template <class T>
@@ -66,6 +70,28 @@ namespace blib
 				return 0;
 			}
 		};
+
+		template <class T>
+		class RenderSetVbo : public Render
+		{
+		public:
+			std::vector<T> vertices;
+			VBO_<T>* vbo;
+
+			virtual void setVertexAttributes()
+			{
+			}
+			virtual int vertexCount()
+			{
+				return vertices.size();
+			}
+			virtual ~RenderSetVbo() { vertices.clear(); };
+			virtual void perform()
+			{
+				vbo->setData(vertices.size(), &vertices[0]);
+			}
+		};
+
 
 
 		int activeLayer;
@@ -118,6 +144,17 @@ namespace blib
 			block->clearStencil = (bits & Stencil) != 0;
 			toRender[activeLayer].push_back(block);
 		}
+
+		template<class T>
+		void setVbo(VBO_<T>* vbo, const std::vector<T> &vertices)
+		{
+			RenderSetVbo<T>* block = new RenderSetVbo<T>();
+			block->command = Render::SetVbo;	//TODO : move to constructor
+			block->vertices = vertices;
+			block->vbo = vbo;
+			toRender[activeLayer].push_back(block);
+		}
+
 
 
 		virtual void flush() = 0;

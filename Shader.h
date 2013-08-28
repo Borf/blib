@@ -34,7 +34,7 @@ namespace blib
 		inline void setUniform(std::string name,			const T& value)
 		{
 			state.setValue(name, value);
-			doUniform(name, value);
+		//	doUniform(name, value);
 		}
 		virtual void use() = 0;
 		virtual void setState(State& state);

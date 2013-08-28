@@ -18,7 +18,7 @@ namespace blib
 	{
 
 		template <class T>
-		class VBO : public blib::VBO, public blib::util::NotCopyable, public GlInitRegister
+		class VBO : public blib::VBO_<T>, public blib::util::NotCopyable, public GlInitRegister
 		{
 		private:
 			GLuint vbo;
@@ -43,12 +43,12 @@ namespace blib
 					glGenBuffers(1, &vbo);
 			}
 
-			void setData(int length, T* data, GLenum usage)
+			void setData(int length, T* data)
 			{
 				this->length = length;
 				bind();
 				int size = T::size() * length;
-				glBufferData(GL_ARRAY_BUFFER, T::size() * length, data, usage);
+				glBufferData(GL_ARRAY_BUFFER, T::size() * length, data, GL_STATIC_DRAW);
 			}
 
 			void setSubData(int offset, int length, T* data)

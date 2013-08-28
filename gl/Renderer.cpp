@@ -41,7 +41,12 @@ namespace blib
 					glClear(bits);
 					continue;
 				}
-				else
+				else if(r->command == Render::SetVbo)
+				{
+					r->perform();
+
+				}
+				else if(r->command == Render::DrawTriangles)
 				{
 					r->renderState.activeShader->use();
 					r->renderState.activeShader->setState(r->state);
