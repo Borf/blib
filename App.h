@@ -14,7 +14,7 @@ namespace blib
 
 	namespace util
 	{
-		class Signal;
+		class Semaphore;
 	}
 
 
@@ -30,10 +30,18 @@ namespace blib
 		public:
 			RenderThread(App* app);
 			int run();
+			util::Semaphore* semaphore;
+		};
 
+		class UpdateThread : public blib::util::Thread
+		{
+		public:
+			App* app;
+		public:
+			UpdateThread(App* app);
+			int run();
 
-			blib::util::Signal* renderSignal;
-			blib::util::Signal* updateSignal;
+			util::Semaphore* semaphore;
 		};
 
 
@@ -79,6 +87,7 @@ namespace blib
 		void start(bool looping = true);
 		void run();
 		void step();
+		void createWindow();
 
 
 		virtual void init() = 0;
@@ -87,14 +96,17 @@ namespace blib
 
 
 	protected:
-		void addListener(KeyListener* keyListener);
-		void addListener(MouseListener* mouseListener);
+		void addKeyListener(KeyListener* keyListener);
+		void addMouseListener(MouseListener* mouseListener);
 
 		SpriteBatch* spriteBatch;
 		Renderer* renderer;
 		RenderState* renderState;
 
+
+		util::Semaphore* semaphore;
 		RenderThread* renderThread;
+		UpdateThread* updateThread;
 	};
 
 

@@ -17,14 +17,12 @@ namespace blib
 		private:
 #ifdef WIN32
 			HANDLE	threadHandle;
-			unsigned long threadId;
 			static DWORD WINAPI threadStarter( LPVOID lpParam );
 #else
 			pthread_t thread;
 			static void* threadStarter(void* param);
 #endif
 		protected:
-			std::string name;
 			bool running;
 		public:
 			Thread(std::string);
@@ -37,6 +35,11 @@ namespace blib
 			void waitForTermination();
 			static  void sleep(int);
 			virtual int run() = 0;
+
+			std::string name;
+#ifdef WIN32
+			unsigned long threadId;
+#endif
 		};
 
 

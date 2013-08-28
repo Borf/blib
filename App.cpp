@@ -9,7 +9,9 @@
 #include <blib/MouseListener.h>
 #include <blib/SpriteBatch.h>
 #include <blib/util/Signal.h>
+#include <blib/util/Mutex.h>
 #include <blib/util/Log.h>
+#include <blib/util/Semaphore.h>
 
 using blib::util::Log;
 
@@ -17,6 +19,42 @@ namespace blib
 {
 
 	void App::start(bool looping)
+	{
+		semaphore = new util::Semaphore(0,2);
+
+		updateThread = new UpdateThread(this);
+		updateThread->start();
+		updateThread->semaphore->wait(); //wait until it is initialized
+
+
+		renderThread = new RenderThread(this);
+		renderThread->start();
+
+
+		if(looping)
+			run();
+	}
+
+	void App::run()
+	{
+		while(running)
+		{
+			step();
+		}
+	}
+
+
+	void App::addKeyListener(KeyListener* keyListener)
+	{
+		window->addListener(keyListener);
+	}
+	void App::addMouseListener(MouseListener* mouseListener)
+	{
+		window->addListener(mouseListener);
+	}
+
+
+	void App::createWindow()
 	{
 		window = new blib::gl::Window();
 		window->setSize(appSetup.width, appSetup.height);
@@ -32,8 +70,8 @@ namespace blib
 				AppKeyListener(App* app)			{			this->app = app;							}
 				void onKeyDown( blib::Key key )		{			app->keyState.pressedKeys[key] = true;		}
 				void onKeyUp( blib::Key key )		{			app->keyState.pressedKeys[key] = false;		}
-			} listener(this);
-			addListener(&listener);
+			};
+			addKeyListener(new AppKeyListener(this));
 		}
 
 		{
@@ -44,8 +82,8 @@ namespace blib
 				void onMouseDown(int x, int y, Button button)	{	app->mouseState.buttons[button] = true;	};
 				void onMouseUp(int x, int y, Button button)		{	app->mouseState.buttons[button] = true;	};
 				void onMouseMove(int x, int y, Buttons button)	{	app->mouseState.x = x; app->mouseState.y = y;};
-			} listener(this);
-			addListener(&listener);
+			};
+			addMouseListener(new AppMouseListener(this));
 		}
 
 		mouseState.leftButton = false;
@@ -64,98 +102,86 @@ namespace blib
 		init();
 
 		blib::gl::GlResizeRegister::ResizeRegisteredObjects(window->getWidth(), window->getHeight());
-
+		wglMakeCurrent(NULL, NULL);
 
 		running = true;
-
-		renderThread = new RenderThread(this);
-		renderThread->start();
-
-		if(looping)
-			run();
 	}
 
-	void App::run()
+
+	App::RenderThread::RenderThread( App* app ) : Thread("RenderThread")
 	{
-		while(running)
-		{
-			step();
-		}
+		this->app = app;
+		semaphore = new blib::util::Semaphore(0,1);
 	}
+	App::UpdateThread::UpdateThread( App* app ) : Thread("UpdateThread")
+	{
+		this->app = app;
+		semaphore = new blib::util::Semaphore(0,1);
+	}
+
 
 	void App::step()
 	{
-
-		double elapsedTime = blib::util::Profiler::getTime();
-		blib::util::Profiler::startFrame();
-		blib::util::Profiler::startSection("frame");
-		window->tick();
-		time += elapsedTime;
-		update(elapsedTime);
-		draw();
-		
-		renderThread->updateSignal->wait();
 		renderer->swap();
-		wglMakeCurrent(NULL, NULL);
-		renderThread->renderSignal->signal();
-		if(!wglMakeCurrent(window->hdc, ((blib::gl::Window*)window)->hrc))
+		renderThread->semaphore->signal();
+		updateThread->semaphore->signal();
+		semaphore->wait();
+		semaphore->wait();
+
+	}
+
+
+
+	int App::RenderThread::run()
+	{
+		if(!wglMakeCurrent(app->window->hdc, ((blib::gl::Window*)app->window)->hrc))
 		{
 			Log::out<<"ERROR MAKING CURRENT"<<Log::newline;
 			char* lpMsgBuf;
 			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	GetLastError(),	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
 			Log::out<<"Error: "<<lpMsgBuf<<Log::newline;
 		}
-		blib::util::Profiler::endSection("frame");
-		Sleep(0);
-	}
-
-
-	void App::addListener(KeyListener* keyListener)
-	{
-		window->addListener(keyListener);
-	}
-	void App::addListener(MouseListener* mouseListener)
-	{
-		window->addListener(mouseListener);
-	}
-
-
-
-
-
-
-
-
-
-
-	App::RenderThread::RenderThread( App* app ) : Thread("RenderThread")
-	{
-		this->app = app;
-		renderSignal = new blib::util::Signal();
-		updateSignal = new blib::util::Signal();
-	}
-
-
-	int App::RenderThread::run()
-	{
-		while(true)
+		while(app->running)
 		{
-			renderSignal->wait();
-			if(!wglMakeCurrent(app->window->hdc, ((blib::gl::Window*)app->window)->hrc))
-			{
-				Log::out<<"ERROR MAKING CURRENT"<<Log::newline;
-				char* lpMsgBuf;
-				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	GetLastError(),	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
-				Log::out<<"Error: "<<lpMsgBuf<<Log::newline;
-
-			}
+			semaphore->wait();
+			if(!app->running)
+				break;
+			//Log::out<<"Render"<<Log::newline;
 			app->renderer->flush();
 			app->window->swapBuffers();
-			
-			wglMakeCurrent(NULL, NULL);
-
-			updateSignal->signal();
+			//wglMakeCurrent(NULL, NULL);
+			//signal->signal();
+			app->semaphore->signal();
 		}
+		app->semaphore->signal();
+		return 0;
 	}
+
+	int App::UpdateThread::run()
+	{
+		app->createWindow();
+
+		semaphore->signal();
+
+		while(app->running)
+		{
+			semaphore->wait();
+			if(!app->running)
+				break;
+			//Log::out<<"Update"<<Log::newline;
+			app->window->tick();
+
+			double elapsedTime = blib::util::Profiler::getTime();
+			blib::util::Profiler::startFrame();
+	//		blib::util::Profiler::startSection("frame");
+			app->time += elapsedTime;
+			app->update(elapsedTime);
+			app->draw();
+			app->semaphore->signal();
+		}
+		app->semaphore->signal();
+		return 0;
+	}
+
 
 }

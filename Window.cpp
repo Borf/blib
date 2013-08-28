@@ -120,7 +120,7 @@ namespace blib
 			for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
 				(*it)->onKeyUp((blib::Key)wParam);
 			break;
-		/*case WM_LBUTTONDOWN:
+		case WM_LBUTTONDOWN:
 			mouseButtons |= MouseListener::Left;
 			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 				(*it)->onMouseDown(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Left, clickCount);
@@ -153,7 +153,7 @@ namespace blib
 		case WM_MOUSEMOVE:
 			for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 				(*it)->onMouseMove(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),(MouseListener::Buttons)mouseButtons);
-			break;*/
+			break;
 		}
 
 		return DefWindowProc(hWnd, message, wParam, lParam);

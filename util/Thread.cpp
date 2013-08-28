@@ -61,7 +61,6 @@ namespace blib
 		{
 #ifdef WIN32
 			threadHandle = CreateThread(NULL, 0, Thread::threadStarter, this, 0, &threadId);
-			SetThreadName(threadId, (char*)name.c_str());
 #else
 			pthread_attr_t attr;
 			pthread_attr_init(&attr);
@@ -76,6 +75,7 @@ namespace blib
 #ifdef WIN32
 		DWORD WINAPI Thread::threadStarter( LPVOID lpParam )
 		{
+			SetThreadName(((Thread*)lpParam)->threadId, (char*)((Thread*)lpParam)->name.c_str());
 			return ((Thread*)lpParam)->run();
 		}
 #else

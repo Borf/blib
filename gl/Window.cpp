@@ -103,7 +103,7 @@ namespace blib
 		void Window::tick()
 		{
 			MSG msg;
-			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) { // If we have a message to process, process it
+			if (PeekMessage(&msg, hWnd, 0, 0, PM_REMOVE)) { // If we have a message to process, process it
 				if (msg.message == WM_QUIT) {
 					opened = false; // Set running to false if we have a message to quit
 				}
