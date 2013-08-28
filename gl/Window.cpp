@@ -56,7 +56,7 @@ namespace blib
 			wglMakeCurrent(hdc, tempOpenGLContext); // Make the OpenGL 2.1 context current and active
 
 
-			HGLRC hrc = tempOpenGLContext;
+			hrc = tempOpenGLContext;
 
 			GLenum error = glewInit(); // Enable GLEW
 			if (error != GLEW_OK) // If GLEW fails

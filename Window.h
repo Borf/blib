@@ -28,8 +28,6 @@ namespace blib
 		int lastButton;
 
 	protected:
-		HDC hdc;
-		HWND hWnd;
 
 		int width,height;
 		bool resizable;
@@ -38,8 +36,12 @@ namespace blib
 		bool opened;
 		std::string title;
 		std::string className;
+		HWND hWnd;
 
 	public:
+		HDC hdc;
+
+
 		Window();
 		virtual ~Window();
 

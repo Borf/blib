@@ -67,7 +67,9 @@ namespace blib
 			}
 		};
 
-		std::vector<Render*> toRender;
+
+		int activeLayer;
+		std::vector<Render*> toRender[2];
 
 	public:
 		enum ClearOptions
@@ -78,6 +80,11 @@ namespace blib
 		};
 
 
+		Renderer()
+		{
+			activeLayer = 0;
+		}
+
 		template<class T>
 		void drawTriangles(const RenderState& renderState, std::vector<T> &vertices)
 		{
@@ -86,7 +93,7 @@ namespace blib
 			block->renderState = renderState;
 			block->state = renderState.activeShader->state;
 			block->vertices = vertices;
-			toRender.push_back(block);
+			toRender[activeLayer].push_back(block);
 		}
 
 		template<class T>
@@ -97,7 +104,7 @@ namespace blib
 			block->count = count;
 			block->renderState = renderState;
 			block->state = renderState.activeShader->state;
-			toRender.push_back(block);
+			toRender[activeLayer].push_back(block);
 		}
 
 		void clear(const RenderState& renderState, const glm::vec4 &color, int bits)
@@ -109,10 +116,14 @@ namespace blib
 			block->clearColor = (bits & Color) != 0;
 			block->clearDepth = (bits & Depth) != 0;
 			block->clearStencil = (bits & Stencil) != 0;
-			toRender.push_back(block);
+			toRender[activeLayer].push_back(block);
 		}
 
 
 		virtual void flush() = 0;
+		void swap()
+		{
+			activeLayer = 1 - activeLayer;
+		}
 	};
 }

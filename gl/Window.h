@@ -10,6 +10,9 @@ namespace blib
 		class Window : public blib::Window, blib::util::NotCopyable
 		{
 		public:
+
+			HGLRC hrc;
+
 			Window();
 			virtual ~Window();
 			virtual void create();

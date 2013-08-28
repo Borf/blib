@@ -14,27 +14,28 @@ namespace blib
 		void Renderer::flush()
 		{
 
-			for(size_t i = 0; i < toRender.size(); i++)
+			for(size_t i = 0; i < toRender[1-activeLayer].size(); i++)
 			{
-				if(toRender[i]->command == Render::Clear)
+				Render* r = toRender[1-activeLayer][i];
+				if(r->command == Render::Clear)
 				{
-					if(toRender[i]->renderState.activeFbo != NULL)
-						toRender[i]->renderState.activeFbo->bind();
+					if(r->renderState.activeFbo != NULL)
+						r->renderState.activeFbo->bind();
 					else
 						glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-					glClearColor(	((blib::Renderer::RenderClear*)toRender[i])->color.r, 
-									((blib::Renderer::RenderClear*)toRender[i])->color.g, 
-									((blib::Renderer::RenderClear*)toRender[i])->color.b, 
-									((blib::Renderer::RenderClear*)toRender[i])->color.a);
+					glClearColor(	((blib::Renderer::RenderClear*)r)->color.r, 
+									((blib::Renderer::RenderClear*)r)->color.g, 
+									((blib::Renderer::RenderClear*)r)->color.b, 
+									((blib::Renderer::RenderClear*)r)->color.a);
 					int bits = 0;
-					if(((Renderer::RenderClear*)toRender[i])->clearColor)
+					if(((Renderer::RenderClear*)r)->clearColor)
 						bits |= GL_COLOR_BUFFER_BIT;
-					if(((Renderer::RenderClear*)toRender[i])->clearDepth)
+					if(((Renderer::RenderClear*)r)->clearDepth)
 						bits |= GL_DEPTH_BUFFER_BIT;
-					if(((Renderer::RenderClear*)toRender[i])->clearStencil)
+					if(((Renderer::RenderClear*)r)->clearStencil)
 						bits |= GL_STENCIL_BUFFER_BIT;
 
 					glClear(bits);
@@ -42,24 +43,21 @@ namespace blib
 				}
 				else
 				{
-					glEnableVertexAttribArray(0);
-					glEnableVertexAttribArray(1);
+					r->renderState.activeShader->use();
+					r->renderState.activeShader->setState(r->state);
 
-					toRender[i]->renderState.activeShader->use();
-					toRender[i]->renderState.activeShader->setState(toRender[i]->state);
-
-					if(toRender[i]->renderState.activeFbo != NULL)
-						toRender[i]->renderState.activeFbo->bind();
+					if(r->renderState.activeFbo != NULL)
+						r->renderState.activeFbo->bind();
 					else
 						glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-					if(toRender[i]->renderState.stencilTestEnabled)
+					if(r->renderState.stencilTestEnabled)
 					{
 						glEnable(GL_STENCIL_TEST);
 						glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
 						glStencilMask(0xFF);
 
-						if(toRender[i]->renderState.stencilWrite)
+						if(r->renderState.stencilWrite)
 						{
 							glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 							glStencilFunc(GL_NEVER, 1, 0xFF);
@@ -77,18 +75,18 @@ namespace blib
 					}
 
 
-					if(toRender[i]->renderState.activeTexture[0])
+					if(r->renderState.activeTexture[0])
 					{
-						toRender[i]->renderState.activeTexture[0]->use();
+						r->renderState.activeTexture[0]->use();
 					}
-					if(toRender[i]->renderState.activeTexture[1])
+					if(r->renderState.activeTexture[1])
 					{
 						glActiveTexture(GL_TEXTURE1);
-						toRender[i]->renderState.activeTexture[1]->use();
+						r->renderState.activeTexture[1]->use();
 						glActiveTexture(GL_TEXTURE0);
 					}
 
-					if(toRender[i]->renderState.blendEnabled)
+					if(r->renderState.blendEnabled)
 					{
 						glEnable(GL_BLEND);
 						glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
@@ -97,20 +95,20 @@ namespace blib
 						glDisable(GL_BLEND);
 
 
-					if(toRender[i]->renderState.activeVbo)
-						toRender[i]->renderState.activeVbo->bind();
+					if(r->renderState.activeVbo)
+						r->renderState.activeVbo->bind();
 					else
 						glBindBuffer(GL_ARRAY_BUFFER, 0);
-					toRender[i]->setVertexAttributes();
+					r->setVertexAttributes();
 
-					glDrawArrays(GL_TRIANGLES, 0, toRender[i]->vertexCount());
+					glDrawArrays(GL_TRIANGLES, 0, r->vertexCount());
 				}
 
 			}
 
-			for(size_t i = 0; i < toRender.size(); i++)
-				delete toRender[i];
-			toRender.clear();
+			for(size_t i = 0; i < toRender[1-activeLayer].size(); i++)
+				delete toRender[1-activeLayer][i];
+			toRender[1-activeLayer].clear();
 		}
 
 	}

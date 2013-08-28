@@ -1,6 +1,7 @@
 #pragma once
 
 #include <blib/KeyListener.h>
+#include <blib/util/Thread.h>
 
 namespace blib
 {
@@ -9,10 +10,34 @@ namespace blib
 	class SpriteBatch;
 	class Renderer;
 	class RenderState;
+	class App;
+
+	namespace util
+	{
+		class Signal;
+	}
+
+
+
 
 	class App
 	{
 	protected:
+		
+		class RenderThread : public blib::util::Thread
+		{
+			App* app;
+		public:
+			RenderThread(App* app);
+			int run();
+
+
+			blib::util::Signal* renderSignal;
+			blib::util::Signal* updateSignal;
+		};
+
+
+
 		Window* window;
 		double time;
 
@@ -69,6 +94,7 @@ namespace blib
 		Renderer* renderer;
 		RenderState* renderState;
 
+		RenderThread* renderThread;
 	};
 
 

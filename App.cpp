@@ -8,6 +8,10 @@
 #include <blib/RenderState.h>
 #include <blib/MouseListener.h>
 #include <blib/SpriteBatch.h>
+#include <blib/util/Signal.h>
+#include <blib/util/Log.h>
+
+using blib::util::Log;
 
 namespace blib
 {
@@ -64,6 +68,9 @@ namespace blib
 
 		running = true;
 
+		renderThread = new RenderThread(this);
+		renderThread->start();
+
 		if(looping)
 			run();
 	}
@@ -78,6 +85,7 @@ namespace blib
 
 	void App::step()
 	{
+
 		double elapsedTime = blib::util::Profiler::getTime();
 		blib::util::Profiler::startFrame();
 		blib::util::Profiler::startSection("frame");
@@ -86,8 +94,22 @@ namespace blib
 		update(elapsedTime);
 		draw();
 		
-		renderer->flush();
-		window->swapBuffers();
+		wglMakeCurrent(NULL, NULL);
+		renderThread->renderSignal->signal();
+		renderThread->updateSignal->wait();
+
+
+		if(!wglMakeCurrent(window->hdc, ((blib::gl::Window*)window)->hrc))
+		{
+			Log::out<<"ERROR MAKING CURRENT"<<Log::newline;
+			char* lpMsgBuf;
+			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	GetLastError(),	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
+			Log::out<<"Error: "<<lpMsgBuf<<Log::newline;
+		}
+
+
+		//renderer->flush();
+
 		blib::util::Profiler::endSection("frame");
 		Sleep(0);
 	}
@@ -101,4 +123,44 @@ namespace blib
 	{
 		window->addListener(mouseListener);
 	}
+
+
+
+
+
+
+
+
+
+
+	App::RenderThread::RenderThread( App* app ) : Thread("RenderThread")
+	{
+		this->app = app;
+		renderSignal = new blib::util::Signal();
+		updateSignal = new blib::util::Signal();
+	}
+
+
+	int App::RenderThread::run()
+	{
+		while(true)
+		{
+			renderSignal->wait();
+			if(!wglMakeCurrent(app->window->hdc, ((blib::gl::Window*)app->window)->hrc))
+			{
+				Log::out<<"ERROR MAKING CURRENT"<<Log::newline;
+				char* lpMsgBuf;
+				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	GetLastError(),	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
+				Log::out<<"Error: "<<lpMsgBuf<<Log::newline;
+
+			}
+			app->renderer->flush();
+			app->window->swapBuffers();
+			
+			wglMakeCurrent(NULL, NULL);
+
+			updateSignal->signal();
+		}
+	}
+
 }
