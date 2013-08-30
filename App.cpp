@@ -176,6 +176,8 @@ namespace blib
 	//		blib::util::Profiler::startSection("frame");
 			app->time += elapsedTime;
 			app->update(elapsedTime);
+			if(!app->running)
+				break;
 			app->draw();
 			app->semaphore->signal();
 		}
