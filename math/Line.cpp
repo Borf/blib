@@ -45,7 +45,7 @@ namespace blib
 
 		void Line::buildLines()
 		{
-			lines.push_back(blib::gl::ILineDrawable::LinePart(p1, p2));
+			lines.push_back(blib::ILineDrawable::LinePart(p1, p2));
 		}
 
 		glm::vec2 Line::project( const glm::vec2& point ) const

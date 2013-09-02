@@ -11,6 +11,7 @@ namespace blib
 	class Renderer;
 	class RenderState;
 	class App;
+	class LineBatch;
 
 	namespace util
 	{
@@ -31,6 +32,7 @@ namespace blib
 			RenderThread(App* app);
 			int run();
 			util::Semaphore* semaphore;
+			double frameTime;
 		};
 
 		class UpdateThread : public blib::util::Thread
@@ -42,6 +44,7 @@ namespace blib
 			int run();
 
 			util::Semaphore* semaphore;
+			double frameTime;
 		};
 
 
@@ -100,6 +103,7 @@ namespace blib
 		void addMouseListener(MouseListener* mouseListener);
 
 		SpriteBatch* spriteBatch;
+		LineBatch* lineBatch;
 		Renderer* renderer;
 		RenderState* renderState;
 
@@ -107,6 +111,20 @@ namespace blib
 		util::Semaphore* semaphore;
 		RenderThread* renderThread;
 		UpdateThread* updateThread;
+
+		struct PerformanceInfo
+		{
+			union 
+			{
+				struct {
+					double updateTime;
+					double drawTime;
+					double fps;//everything should be double!
+				};
+				double data[3];
+			};
+		}frameTimes[1000];
+		int frameTimeIndex;
 	};
 
 

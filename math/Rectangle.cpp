@@ -28,10 +28,10 @@ namespace blib
 
 		void Rectangle::buildLines()
 		{
-			lines.push_back(blib::gl::ILineDrawable::LinePart(topleft, glm::vec2(topleft.x, bottomright.y)));
-			lines.push_back(blib::gl::ILineDrawable::LinePart(glm::vec2(topleft.x, bottomright.y), bottomright));
-			lines.push_back(blib::gl::ILineDrawable::LinePart(bottomright, glm::vec2(bottomright.x,topleft.y)));
-			lines.push_back(blib::gl::ILineDrawable::LinePart(glm::vec2(bottomright.x,topleft.y), topleft));
+			lines.push_back(blib::ILineDrawable::LinePart(topleft, glm::vec2(topleft.x, bottomright.y)));
+			lines.push_back(blib::ILineDrawable::LinePart(glm::vec2(topleft.x, bottomright.y), bottomright));
+			lines.push_back(blib::ILineDrawable::LinePart(bottomright, glm::vec2(bottomright.x,topleft.y)));
+			lines.push_back(blib::ILineDrawable::LinePart(glm::vec2(bottomright.x,topleft.y), topleft));
 		}
 
 		bool Rectangle::contains( glm::vec2 point )

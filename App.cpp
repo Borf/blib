@@ -1,5 +1,5 @@
 #include "App.h"
-
+#include <glm/gtc/matrix_transform.hpp>
 #include <blib/gl/Window.h>
 #include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
@@ -12,7 +12,11 @@
 #include <blib/util/Mutex.h>
 #include <blib/util/Log.h>
 #include <blib/util/Semaphore.h>
-
+#include <blib/util/Profiler.h>
+#include <blib/SpriteBatch.h>
+#include <blib/LineBatch.h>
+#include <blib/Font.h>
+#include <blib/util.h>
 using blib::util::Log;
 
 namespace blib
@@ -20,16 +24,13 @@ namespace blib
 
 	void App::start(bool looping)
 	{
+		util::Profiler();
 		semaphore = new util::Semaphore(0,2);
-
-		updateThread = new UpdateThread(this);
+		updateThread = new UpdateThread(this);	//will create the window in the right thread
 		updateThread->start();
 		updateThread->semaphore->wait(); //wait until it is initialized
-
-
 		renderThread = new RenderThread(this);
 		renderThread->start();
-
 
 		if(looping)
 			run();
@@ -95,7 +96,7 @@ namespace blib
 		renderer = new gl::Renderer();
 		renderState = RenderState::activeRenderState;
 		spriteBatch = new SpriteBatch(renderer);
-
+		lineBatch = new LineBatch(renderer);
 
 		blib::gl::GlInitRegister::initRegisteredObjects();
 
@@ -103,7 +104,7 @@ namespace blib
 
 		blib::gl::GlResizeRegister::ResizeRegisteredObjects(window->getWidth(), window->getHeight());
 		wglMakeCurrent(NULL, NULL);
-
+		frameTimeIndex = 0;
 		running = true;
 	}
 
@@ -128,6 +129,10 @@ namespace blib
 		semaphore->wait();
 		semaphore->wait();
 
+		frameTimes[frameTimeIndex].drawTime = renderThread->frameTime;
+		frameTimes[frameTimeIndex].updateTime = updateThread->frameTime;
+		frameTimes[frameTimeIndex].fps = util::Profiler::fps;
+		frameTimeIndex = (frameTimeIndex+1)%1000;
 	}
 
 
@@ -146,11 +151,10 @@ namespace blib
 			semaphore->wait();
 			if(!app->running)
 				break;
-			//Log::out<<"Render"<<Log::newline;
+			double frameStart = util::Profiler::getAppTime();
 			app->renderer->flush();
 			app->window->swapBuffers();
-			//wglMakeCurrent(NULL, NULL);
-			//signal->signal();
+			frameTime = util::Profiler::getAppTime() - frameStart;
 			app->semaphore->signal();
 		}
 		app->semaphore->signal();
@@ -161,24 +165,71 @@ namespace blib
 	{
 		app->createWindow();
 
-		semaphore->signal();
+		Font* font = Font::getFontInstance("tahoma");
 
+		semaphore->signal();
 		while(app->running)
 		{
 			semaphore->wait();
 			if(!app->running)
 				break;
-			//Log::out<<"Update"<<Log::newline;
+			double frameStart = util::Profiler::getAppTime();
 			app->window->tick();
-
 			double elapsedTime = blib::util::Profiler::getTime();
 			blib::util::Profiler::startFrame();
-	//		blib::util::Profiler::startSection("frame");
 			app->time += elapsedTime;
 			app->update(elapsedTime);
 			if(!app->running)
 				break;
 			app->draw();
+
+			app->spriteBatch->begin();
+			app->spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::mat4());
+			app->spriteBatch->draw(font, "draw time",	glm::translate(glm::mat4(), glm::vec3(220, 20,0)), glm::vec4(1,0,0,1));
+			app->spriteBatch->draw(font, "update time", glm::translate(glm::mat4(), glm::vec3(220, 40,0)), glm::vec4(0,1,0,1));
+			app->spriteBatch->end();
+			app->lineBatch->begin();
+			app->lineBatch->draw(math::Rectangle(glm::vec2(20,20), 200,100), glm::vec4(1,1,1,1));
+
+			PerformanceInfo minValues = { 99999999999, 99999999999, 99999999999 };
+			PerformanceInfo maxValues = { -99999999999, -99999999999, -99999999999 };
+			for(int i = 0; i < 1000; i++)
+			{
+				for(int ii = 0; ii < 3; ii++)
+				{
+					minValues.data[ii] = glm::min(minValues.data[ii], app->frameTimes[i].data[ii]);
+					maxValues.data[ii] = glm::max(maxValues.data[ii], app->frameTimes[i].data[ii]);
+				}
+			}
+
+			float timeFactor = 100 / glm::max(maxValues.updateTime, maxValues.drawTime);
+
+			PerformanceInfo prevAccum = { 0, 0, 0 };
+			PerformanceInfo accum = { 0, 0, 0 };
+			for(int i = 0; i < 1000; i++)
+			{
+				for(int ii = 0; ii < 3; ii++)
+					accum.data[ii] += app->frameTimes[i].data[ii];
+				if(i%5 == 0 && i > 0)
+				{
+					for(int ii = 0; ii < 3; ii++)
+						accum.data[ii] /= 5.0;
+
+					if(i != 5)
+					{
+						app->lineBatch->draw(glm::vec2(19 + i*.2f, 120 - timeFactor*prevAccum.drawTime), glm::vec2(20 + i*.2f, 120 - timeFactor*accum.drawTime), glm::vec4(1,0,0,1));
+						app->lineBatch->draw(glm::vec2(19 + i*.2f, 120 - timeFactor*prevAccum.updateTime), glm::vec2(20 + i*.2f, 120 - timeFactor*accum.updateTime), glm::vec4(0,1,0,1));
+					}
+					prevAccum = accum;
+					ZeroMemory(&accum, sizeof(PerformanceInfo));
+				}
+			}
+
+			app->lineBatch->end();
+
+
+
+			frameTime = util::Profiler::getAppTime() - frameStart;
 			app->semaphore->signal();
 		}
 		app->semaphore->signal();

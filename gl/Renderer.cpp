@@ -50,7 +50,7 @@ namespace blib
 					r->perform();
 
 				}
-				else if(r->command == Render::DrawTriangles)
+				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines)
 				{
 					r->renderState.activeShader->use();
 					r->renderState.activeShader->setState(r->state);
@@ -111,12 +111,15 @@ namespace blib
 					r->setVertexAttributes();
 
 					totalVerts += r->vertexCount();
-					glDrawArrays(GL_TRIANGLES, 0, r->vertexCount());
+					if(r->command == Render::DrawTriangles)
+						glDrawArrays(GL_TRIANGLES, 0, r->vertexCount());
+					else//if(r->command == Renderer::DrawLines)
+						glDrawArrays(GL_LINES, 0, r->vertexCount());
 				}
 
 			}
 		//	Log::out<<toRender[1-activeLayer].size()<< " render commands, "<<totalVerts<<" vertices"<<Log::newline;
-
+			//delete takes up a lot of time here, let's see if we can reuse the list of vertices
 			for(size_t i = 0; i < toRender[1-activeLayer].size(); i++)
 				delete toRender[1-activeLayer][i];
 			toRender[1-activeLayer].clear();

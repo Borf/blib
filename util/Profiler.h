@@ -20,6 +20,7 @@ namespace blib
 	{
 		class Profiler
 		{
+			static timespec appBegin;
 			static timespec frameBegin;
 			static timespec fpscalc;
 			static int fpsFrameCount;
@@ -32,11 +33,14 @@ namespace blib
 			Profiler();
 
 			static double getTime();
+			static double getAppTime();
 	
 			static void startFrame();
 
 			static void startSection(std::string name);
 			static void endSection(std::string name);
+
+			static int fps;
 		};
 
 	}

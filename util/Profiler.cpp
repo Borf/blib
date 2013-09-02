@@ -80,12 +80,24 @@ namespace blib
 		}
 
 
+		double Profiler::getAppTime()
+		{
+			struct timespec current;
+			clock_gettime(CLOCK_REALTIME, &current);
+
+			double dSeconds = (double)(current.tv_sec - appBegin.tv_sec);
+			double dNanoSeconds = (double)( current.tv_nsec - appBegin.tv_nsec ) / 1000000000L;
+			return dSeconds + dNanoSeconds;
+		}
 
 
 		timespec Profiler::frameBegin;
+		timespec Profiler::appBegin;
 		int Profiler::frameCount;
 		timespec Profiler::fpscalc;
 		int Profiler::fpsFrameCount;
+		int Profiler::fps;
+
 		std::list<std::map<std::string, double> > Profiler::frameTimes;
 		std::map<std::string, double> Profiler::currentFrameTimes;
 
@@ -94,7 +106,9 @@ namespace blib
 		{
 			frameCount = 0;
 			fpsFrameCount = 0;
+			fps = 0;
 			clock_gettime(CLOCK_REALTIME, &frameBegin);
+			clock_gettime(CLOCK_REALTIME, &appBegin);
 		}
 
 
@@ -103,10 +117,10 @@ namespace blib
 			frameCount++;
 #ifdef SHOWFPS
 			fpsFrameCount++;
-			if(frameBegin.tv_sec - fpscalc.tv_sec >= 3)
+			if(frameBegin.tv_sec - fpscalc.tv_sec >= 1)
 			{
+				fps = fpsFrameCount/(frameBegin.tv_sec - fpscalc.tv_sec);
 				fpscalc = frameBegin;
-				Log::out<<"FPS: "<<(fpsFrameCount/3.0f)<<Log::newline;
 				fpsFrameCount = 0;
 			}
 #endif

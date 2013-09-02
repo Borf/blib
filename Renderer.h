@@ -19,6 +19,7 @@ namespace blib
 				Clear,
 				DrawTriangles,
 				SetVbo,
+				DrawLines,
 			} command;
 			virtual ~Render() {};
 			RenderState renderState;
@@ -155,6 +156,16 @@ namespace blib
 			toRender[activeLayer].push_back(block);
 		}
 
+		template<class T>
+		void drawLines(const RenderState& renderState, T* first, int count)
+		{
+			RenderBlock<T>* block = new RenderBlock<T>();
+			block->command = Render::DrawLines;	//TODO : move to constructor
+			block->renderState = renderState;
+			block->state = renderState.activeShader->state;
+			block->vertices = std::vector<T>(first, first+count);
+			toRender[activeLayer].push_back(block);
+		}
 
 
 		virtual void flush() = 0;
