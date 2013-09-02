@@ -47,8 +47,7 @@ namespace blib
 				}
 				else if(r->command == Render::SetVbo)
 				{
-					r->perform();
-
+					r->perform(vertices[1-activeLayer]);
 				}
 				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines)
 				{
@@ -108,7 +107,7 @@ namespace blib
 						r->renderState.activeVbo->bind();
 					else
 						glBindBuffer(GL_ARRAY_BUFFER, 0);
-					r->setVertexAttributes();
+					r->setVertexAttributes(vertices[1-activeLayer]);
 
 					totalVerts += r->vertexCount();
 					if(r->command == Render::DrawTriangles)

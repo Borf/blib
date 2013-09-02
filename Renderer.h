@@ -25,32 +25,29 @@ namespace blib
 			RenderState renderState;
 			Shader::State state;
 
-			virtual void setVertexAttributes() = 0;
+			virtual void setVertexAttributes(float* firstVertex) = 0;
 			virtual int vertexCount() = 0;
-			virtual void perform() {};
+			virtual void perform(float* firstVertex) {};
 		};
 
 		template <class T>
 		class RenderBlock : public Render
 		{
 		public:
-			std::vector<T> vertices;
+			int vertexStart;
 			int count;
-			virtual void setVertexAttributes()
+			virtual void setVertexAttributes(float* firstVertex)
 			{
 				if(renderState.activeVbo != NULL)
 					T::setAttribPointers();
 				else
-					T::setAttribPointers(&vertices[0]);
+					T::setAttribPointers(firstVertex + vertexStart);
 			}
 			virtual int vertexCount()
 			{
-				if(renderState.activeVbo != NULL)
-					return count;
-				else
-					return vertices.size();
+				return count;
 			}
-			virtual ~RenderBlock() { vertices.clear(); };
+			virtual ~RenderBlock() { };
 		};
 
 
@@ -62,7 +59,7 @@ namespace blib
 			bool clearDepth;
 			bool clearStencil;
 
-			virtual void setVertexAttributes()
+			virtual void setVertexAttributes(float* firstVertex)
 			{
 			}
 
@@ -76,20 +73,22 @@ namespace blib
 		class RenderSetVbo : public Render
 		{
 		public:
-			std::vector<T> vertices;
 			VBO_<T>* vbo;
+			int vertexStart;
+			int count;
 
-			virtual void setVertexAttributes()
+			virtual void setVertexAttributes(float* firstVertex)
 			{
 			}
 			virtual int vertexCount()
 			{
-				return vertices.size();
+			//	return vertices.size();
+				return 0;
 			}
-			virtual ~RenderSetVbo() { vertices.clear(); };
-			virtual void perform()
+			virtual ~RenderSetVbo() { };
+			virtual void perform(float* firstVertex)
 			{
-				vbo->setData(vertices.size(), &vertices[0]);
+				vbo->setData(count, (T*)(firstVertex + vertexStart));
 			}
 		};
 
@@ -97,6 +96,8 @@ namespace blib
 
 		int activeLayer;
 		std::vector<Render*> toRender[2];
+		float* vertices[2];
+		int vertexIndex[2];
 
 	public:
 		enum ClearOptions
@@ -110,6 +111,10 @@ namespace blib
 		Renderer()
 		{
 			activeLayer = 0;
+			vertices[0] = new float[1024*1024*10]; // 10M floats
+			vertices[1] = new float[1024*1024*10]; // 10M floats
+			vertexIndex[0] = 0;
+			vertexIndex[1] = 0;
 		}
 
 		template<class T>
@@ -119,7 +124,10 @@ namespace blib
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->renderState = renderState;
 			block->state = renderState.activeShader->state;
-			block->vertices = vertices;
+			block->vertexStart = vertexIndex[activeLayer];
+			block->count = vertices.size();
+			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
+			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * vertices.size();
 			toRender[activeLayer].push_back(block);
 		}
 
@@ -151,7 +159,10 @@ namespace blib
 		{
 			RenderSetVbo<T>* block = new RenderSetVbo<T>();
 			block->command = Render::SetVbo;	//TODO : move to constructor
-			block->vertices = vertices;
+			block->vertexStart = vertexIndex[activeLayer];
+			block->count = vertices.size();
+			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
+			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * vertices.size();
 			block->vbo = vbo;
 			toRender[activeLayer].push_back(block);
 		}
@@ -163,7 +174,10 @@ namespace blib
 			block->command = Render::DrawLines;	//TODO : move to constructor
 			block->renderState = renderState;
 			block->state = renderState.activeShader->state;
-			block->vertices = std::vector<T>(first, first+count);
+			block->vertexStart = vertexIndex[activeLayer];
+			block->count = count;
+			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], first, sizeof(T) * count);
+			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * count;
 			toRender[activeLayer].push_back(block);
 		}
 
@@ -172,6 +186,10 @@ namespace blib
 		void swap()
 		{
 			activeLayer = 1 - activeLayer;
+			vertexIndex[activeLayer] = 0;
 		}
+
+
+
 	};
 }

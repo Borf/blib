@@ -202,8 +202,7 @@ namespace blib
 				}
 			}
 
-			float timeFactor = 100 / glm::max(maxValues.updateTime, maxValues.drawTime);
-
+			float timeFactor = 100 / (float)glm::max(maxValues.updateTime, maxValues.drawTime);
 			PerformanceInfo prevAccum = { 0, 0, 0 };
 			PerformanceInfo accum = { 0, 0, 0 };
 			for(int i = 0; i < 1000; i++)

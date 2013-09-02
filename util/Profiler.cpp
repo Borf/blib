@@ -119,7 +119,7 @@ namespace blib
 			fpsFrameCount++;
 			if(frameBegin.tv_sec - fpscalc.tv_sec >= 1)
 			{
-				fps = fpsFrameCount/(frameBegin.tv_sec - fpscalc.tv_sec);
+				fps = fpsFrameCount/(frameBegin.tv_sec - fpscalc.tv_sec) + (double)(frameBegin.tv_nsec - fpscalc.tv_nsec) / 1000000000L;
 				fpscalc = frameBegin;
 				fpsFrameCount = 0;
 			}
