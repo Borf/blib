@@ -165,6 +165,7 @@ namespace blib
 	{
 		app->createWindow();
 
+		Texture* gear = Texture::loadCached("assets/textures/gear.png");
 		Font* font = Font::getFontInstance("tahoma");
 
 		semaphore->signal();
@@ -187,6 +188,10 @@ namespace blib
 			app->spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::mat4());
 			app->spriteBatch->draw(font, "draw time",	glm::translate(glm::mat4(), glm::vec3(220, 20,0)), glm::vec4(1,0,0,1));
 			app->spriteBatch->draw(font, "update time", glm::translate(glm::mat4(), glm::vec3(220, 40,0)), glm::vec4(0,1,0,1));
+
+			app->spriteBatch->draw(gear, glm::translate(glm::mat4(), glm::vec3(300, 300,0)), glm::vec2(0,0), blib::math::Rectangle(0,0,1/8.0f,1/8.0f));
+
+
 			app->spriteBatch->end();
 			app->lineBatch->begin();
 			app->lineBatch->draw(math::Rectangle(glm::vec2(20,20), 200,100), glm::vec4(1,1,1,1));
