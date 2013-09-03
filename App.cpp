@@ -103,7 +103,6 @@ namespace blib
 		init();
 
 		blib::gl::GlResizeRegister::ResizeRegisteredObjects(window->getWidth(), window->getHeight());
-		wglMakeCurrent(NULL, NULL);
 		frameTimeIndex = 0;
 		running = true;
 	}
@@ -167,6 +166,7 @@ namespace blib
 
 		Texture* gear = Texture::loadCached("assets/textures/gear.png");
 		Font* font = Font::getFontInstance("tahoma");
+		wglMakeCurrent(NULL, NULL);
 
 		semaphore->signal();
 		while(app->running)
@@ -184,12 +184,14 @@ namespace blib
 				break;
 			app->draw();
 
+			int frame = ((int)(blib::util::Profiler::getAppTime()*50)) % (12*12);
+
 			app->spriteBatch->begin();
+			app->spriteBatch->draw(gear, glm::translate(glm::mat4(), glm::vec3(app->window->getWidth()-80, app->window->getHeight()-80,0)), glm::vec2(0,0), blib::math::Rectangle(1/12.0f * (frame%12),1/12.0f * (frame/12),1/12.0f,1/12.0f));
 			app->spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::mat4());
 			app->spriteBatch->draw(font, "draw time",	glm::translate(glm::mat4(), glm::vec3(220, 20,0)), glm::vec4(1,0,0,1));
 			app->spriteBatch->draw(font, "update time", glm::translate(glm::mat4(), glm::vec3(220, 40,0)), glm::vec4(0,1,0,1));
 
-			app->spriteBatch->draw(gear, glm::translate(glm::mat4(), glm::vec3(300, 300,0)), glm::vec2(0,0), blib::math::Rectangle(0,0,1/8.0f,1/8.0f));
 
 
 			app->spriteBatch->end();

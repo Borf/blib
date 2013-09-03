@@ -141,7 +141,19 @@ namespace blib
 			block->state = renderState.activeShader->state;
 			toRender[activeLayer].push_back(block);
 		}
-
+		template<class T>
+		void drawTriangles(const RenderState& renderState, T* first, int count)
+		{
+			RenderBlock<T>* block = new RenderBlock<T>();
+			block->command = Render::DrawTriangles;	//TODO : move to constructor
+			block->renderState = renderState;
+			block->state = renderState.activeShader->state;
+			block->vertexStart = vertexIndex[activeLayer];
+			block->count = count;
+			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], first, sizeof(T) * count);
+			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * count;
+			toRender[activeLayer].push_back(block);
+		}
 		void clear(const RenderState& renderState, const glm::vec4 &color, int bits)
 		{
 			RenderClear* block = new RenderClear();

@@ -42,22 +42,7 @@ void main()\
 }\
 ");
 		vertices.reserve(MAX_SPRITES);
-	/*	int index = 0;
-		unsigned short* indices = new unsigned short[MAX_SPRITES*6];
-		for(int i = 0; i < MAX_SPRITES; i+=6)
-		{
-			indices[i+0] = index+0;
-			indices[i+1] = index+1;
-			indices[i+2] = index+2;
 
-			indices[i+3] = index+1;
-			indices[i+4] = index+3;
-			indices[i+5] = index+2;
-
-			index+=4;
-		}
-		vio.setData(MAX_SPRITES*6, indices, GL_STATIC_DRAW);
-		delete[] indices;*/
 	}
 
 	void SpriteBatch::begin(glm::mat4 matrix)
@@ -69,47 +54,27 @@ void main()\
 		currentTexture = NULL;
 		this->matrix = matrix;
 		materialIndices.clear();
-		//vbo.mapData(GL_WRITE_ONLY);		
 		vertices.clear();
 	}
 
 	void SpriteBatch::end()
 	{
 		assert(active);
-	//	vbo.unmapData();
 		active = false;
 
 		if(spriteCount == 0)
 			return;
 
-		materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, (spriteCount/4) * 6));
-
-
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-	//	glEnableVertexAttribArray(2);
-		shader->use();
+		materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, spriteCount));
 		shader->setUniform("matrix", matrix);
-		//vbo.bind();
-		//vio.bind();
-		//vertexDef::setAttribPointers();
-
 		int lastIndex = 0;
 		for(size_t i = 0; i < materialIndices.size(); i++)
 		{
-			//materialIndices[i].first->use();
-//			glBindTexture(GL_TEXTURE_2D, materialIndices[i].first->texid);
-//			glDrawElements(GL_TRIANGLES, materialIndices[i].second - lastIndex, GL_UNSIGNED_SHORT, (GLvoid*)(lastIndex * sizeof(unsigned short)));
-			
 			RenderState::activeRenderState->activeTexture[0] = materialIndices[i].first;
 			RenderState::activeRenderState->activeShader = shader;
-
-
-			renderer->drawTriangles<vertexDef>(*RenderState::activeRenderState, vertices);
-
+			renderer->drawTriangles<vertexDef>(*RenderState::activeRenderState, &vertices[lastIndex], materialIndices[i].second - lastIndex);
 			lastIndex = materialIndices[i].second;
 		}
-
 		active = false;
 	}
 
@@ -123,46 +88,8 @@ void main()\
 		float fh = (float)src.height();
 
 		if(currentTexture != texture && currentTexture != NULL)
-			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, (spriteCount/4) * 6));
+			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, spriteCount));
 		currentTexture = texture;
-
-/*		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1));		//1
-		vertices[spriteCount].texCoord = glm::vec2(src.topleft.x,src.topleft.y);
-		vertices[spriteCount].color = color;
-//			vbo[spriteCount].position.z = (float)depth*0.01f;
-		spriteCount++;
-
-		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1));			//2
-		vertices[spriteCount].texCoord = glm::vec2(src.topleft.x,src.bottomright.y);
-		vertices[spriteCount].color = color;
-//			vbo[spriteCount].position.z = (float)depth*0.01f;
-		spriteCount++;
-
-		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1));			//3
-		vertices[spriteCount].texCoord = glm::vec2(src.bottomright.x,src.topleft.y);
-		vertices[spriteCount].color = color;
-//			vbo[spriteCount].position.z = (float)depth*0.01f;
-		spriteCount++;
-
-
-		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1));			//2
-		vertices[spriteCount].texCoord = glm::vec2(src.topleft.x,src.bottomright.y);
-		vertices[spriteCount].color = color;
-		//			vbo[spriteCount].position.z = (float)depth*0.01f;
-		spriteCount++;
-
-		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1));			//3
-		vertices[spriteCount].texCoord = glm::vec2(src.bottomright.x,src.topleft.y);
-		vertices[spriteCount].color = color;
-		//			vbo[spriteCount].position.z = (float)depth*0.01f;
-		spriteCount++;
-
-		vertices[spriteCount].position = glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*texture->originalHeight - center.y,	0,1));				//4
-		vertices[spriteCount].texCoord = glm::vec2(src.bottomright.x,src.bottomright.y);
-		vertices[spriteCount].color = color;
-//			vbo[spriteCount].position.z = (float)depth*0.01f;
-		spriteCount++;*/
-
 
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1)),	glm::vec2(src.topleft.x,src.topleft.y), color)); // 1
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1)),		glm::vec2(src.topleft.x,src.bottomright.y), color)); // 2
@@ -180,7 +107,6 @@ void main()\
 	void SpriteBatch::draw( gl::TextureMap::TexInfo* texture, glm::mat4 transform )
 	{
 		assert(active);
-
 	}
 
 	void SpriteBatch::draw( Font* font, std::string text, glm::mat4 transform, glm::vec4 color )
@@ -240,15 +166,14 @@ void main()\
 
 	void SpriteBatch::Shader::resizeGl( int width, int height )
 	{
-		use();
 		setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
 
 	void SpriteBatch::Shader::init()
 	{
+		bindAttributeLocation("a_position", 0);
+		bindAttributeLocation("a_texture", 1);
+		bindAttributeLocation("a_color", 2);
 		link();
-		use();
-		setUniform("a_position", 0);
-		setUniform("a_texture", 1);
 	}
 }
