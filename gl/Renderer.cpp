@@ -14,6 +14,21 @@ namespace blib
 {
 	namespace gl
 	{
+		int toGlEnum(blib::RenderState::BlendOptions option)
+		{
+			if(option == RenderState::ZERO)
+				return GL_ZERO;
+			if(option == RenderState::ONE)
+				return GL_ONE;
+			if(option == RenderState::SRC_ALPHA)
+				return GL_SRC_ALPHA;
+			if(option == RenderState::ONE_MINUS_SRC_ALPHA)
+				return GL_ONE_MINUS_SRC_ALPHA;
+			
+			return -1;
+		}
+
+
 		void Renderer::flush()
 		{
 			int totalVerts = 0;
@@ -97,7 +112,14 @@ namespace blib
 					if(r->renderState.blendEnabled)
 					{
 						glEnable(GL_BLEND);
-						glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+
+						int srcBlendColor = toGlEnum(r->renderState.srcBlendColor);
+						int srcBlendAlpha = toGlEnum(r->renderState.srcBlendAlpha);
+						int dstBlendColor = toGlEnum(r->renderState.dstBlendColor);
+						int dstBlendAlpha = toGlEnum(r->renderState.dstBlendAlpha);
+
+						glBlendFuncSeparate(srcBlendColor, dstBlendColor, srcBlendAlpha, dstBlendAlpha);
+						//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
 					}
 					else
 						glDisable(GL_BLEND);
