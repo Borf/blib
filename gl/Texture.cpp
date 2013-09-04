@@ -141,26 +141,6 @@ namespace blib
 						}
 					}
 				}
-
-				glGenTextures(1, &texid);
-				glBindTexture(GL_TEXTURE_2D, texid);		
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-
-				if((loadOptions & TextureWrap) == 0)
-				{
-					glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-					glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-				}
-
-				if((loadOptions & KeepData) == 0)
-				{
-					delete[] data;
-					data = NULL;
-				}
-
 				center = glm::vec2(originalWidth/2.0f, originalHeight/2.0f);
 			}
 		}
@@ -202,16 +182,6 @@ namespace blib
 				}
 				fclose(shot);
 			}*/
-
-
-			glGenTextures(1, &texid);
-			glBindTexture(GL_TEXTURE_2D, texid);		
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 			center = glm::vec2(originalWidth/2.0f, originalHeight/2.0f);
 		}
 
@@ -228,6 +198,28 @@ namespace blib
 
 		void Texture::use()
 		{
+			if(texid == 0 && data != NULL)
+			{
+
+				glGenTextures(1, &texid);
+				glBindTexture(GL_TEXTURE_2D, texid);		
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+
+				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+			/*	if((loadOptions & TextureWrap) == 0)
+				{
+					glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+					glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+				}*/
+
+				//if((loadOptions & KeepData) == 0)
+				{
+					delete[] data;
+					data = NULL;
+				}
+			}
 			glBindTexture(GL_TEXTURE_2D, texid);
 		}
 
