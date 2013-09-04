@@ -390,15 +390,7 @@ namespace blib
 			this->height = height;
 			this->count = 0;
 			this->maxCount = 64;
-
-			glGenTextures(1,&texid);
-			glBindTexture(GL_TEXTURE_2D_ARRAY,texid);
-			glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA8, width, height, maxCount);
-
-			glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_S,GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_T,GL_REPEAT);
+			texid = 0;
 		}
 
 
@@ -408,7 +400,6 @@ namespace blib
 			if(info.find(filename) != info.end())
 				return info[filename];
 
-			glBindTexture(GL_TEXTURE_2D_ARRAY, texid);
 			char* fileData = NULL;
 			int length = blib::util::FileSystem::getData(filename, fileData);
 			if(length <= 0)
@@ -428,12 +419,11 @@ namespace blib
 				Log::err<<"Error loading texture "<<filename<<", height is not a multiple of 32"<<Log::newline;
 
 
-			glBindTexture(GL_TEXTURE_2D_ARRAY, texid);
-			glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, count, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-			stbi_image_free(data);
+//			stbi_image_free(data);
 			count++;
 
 			TexInfo* texinfo = new TexInfo();
+			texinfo->data = data;
 			texinfo->filename = filename;
 			texinfo->t1 = glm::vec2(0,0);
 			texinfo->t2 = glm::vec2(1,1);
@@ -450,7 +440,28 @@ namespace blib
 
 		void MultiTextureMap::use()
 		{
+			if(texid == 0)
+			{
+				glGenTextures(1,&texid);
+				glBindTexture(GL_TEXTURE_2D_ARRAY,texid);
+				glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA8, width, height, maxCount);
+
+				glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_S,GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D_ARRAY,GL_TEXTURE_WRAP_T,GL_REPEAT);
+			}
 			glBindTexture(GL_TEXTURE_2D_ARRAY, texid);
+			for(std::map<std::string, TexInfo*>::iterator it = info.begin(); it != info.end(); it++)
+			{
+				if(it->second->data)
+				{
+					glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, it->second->depth, width, height, 1, GL_RGBA, GL_UNSIGNED_BYTE, it->second->data);
+					stbi_image_free(it->second->data);
+					it->second->data = NULL;
+
+				}
+			}
 		}
 
 

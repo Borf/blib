@@ -67,6 +67,8 @@ namespace blib
 		Widget* getComponent(std::string name);
 		Widget* getComponent(int x, int y);
 		bool inComponent( int x, int y );
+
+		friend class Widget;
 	};
 	}
 }

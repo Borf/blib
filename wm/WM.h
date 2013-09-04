@@ -5,7 +5,7 @@
 #include <blib/util/Singleton.h>
 #include <json/value.h>
 #include <glm/glm.hpp>
-
+#include <blib/util/FastDelegate.h>
 
 namespace blib
 {
@@ -27,6 +27,8 @@ namespace blib
 			Widget* clickWidget;
 			Widget* hoverWidget;
 
+			std::list<fastdelegate::FastDelegate0<> > tasks;
+
 		public:
 			WM();
 			~WM();
@@ -36,7 +38,7 @@ namespace blib
 			void setSkin(std::string skinFile);
 			void setFont(Font* font);
 
-
+			void addTask(fastdelegate::FastDelegate0<> task);
 			void draw(SpriteBatch &spriteBatch);
 			bool mousedown(int x, int y);
 			bool mouseup(int x, int y, int clickcount);
@@ -65,6 +67,8 @@ namespace blib
 				RESIZE_BL,
 			} currentCursor;
 
+
+			friend class Widget;
 
 		};
 	}

@@ -21,6 +21,8 @@ namespace blib
 
 				void setTexture(Texture*);
 				Texture* getTexture();
+
+				bool showBorder;
 			};
 		}
 	}

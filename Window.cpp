@@ -5,8 +5,11 @@
 #include <blib/KeyListener.h>
 #include <blib/MouseListener.h>
 #include <blib/util/Log.h>
+#include <resource.h>
 using blib::util::Log;
 #include <map>
+
+
 
 namespace blib
 {
@@ -22,6 +25,21 @@ namespace blib
 		opened = false;
 		mouseButtons = 0;
 	}
+
+	BOOL _SetConsoleIcon(HICON hIcon)
+	{
+		typedef BOOL (WINAPI *SetConsoleIcon_t)(HICON handle);
+		SetConsoleIcon_t SetConsoleIcon;
+		HMODULE hDll = GetModuleHandleA("kernel32");
+		if(hDll)
+		{
+			SetConsoleIcon = (SetConsoleIcon_t)GetProcAddress(hDll, "SetConsoleIcon");
+			if(SetConsoleIcon)
+				return SetConsoleIcon(hIcon);
+		}
+		return false;
+	}
+
 
 	void Window::create()
 	{
@@ -43,12 +61,13 @@ namespace blib
 		windowClass.cbClsExtra = 0;
 		windowClass.cbWndExtra = 0;
 		windowClass.hInstance = hInstance;
-		windowClass.hIcon = LoadIcon(NULL, IDI_WINLOGO);
+		windowClass.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
 		windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 		windowClass.hbrBackground = NULL;
 		windowClass.lpszMenuName = NULL;
 		windowClass.lpszClassName = "asdasdasd";
-
+		
+		_SetConsoleIcon(LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1))); //scary shit yo
 		if (!RegisterClass(&windowClass)) {
 			Log::out<<"Error loading window class"<<Log::newline;
 			return;

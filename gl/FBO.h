@@ -8,7 +8,6 @@
 #endif
 
 #include <blib/gl/GlInitRegister.h>
-#include <blib/gl/Texture.h>
 #include <blib/FBO.h>
 
 namespace blib

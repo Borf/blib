@@ -57,6 +57,7 @@ namespace blib
 			PositionHelp positionHelpBottom;
 	
 			Widget();
+			virtual ~Widget();
 			virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix) = 0;
 			virtual Widget* getComponent(std::string name);
 			virtual bool inComponent(int x, int y); // x,y are relative to the widget's base, no recursion

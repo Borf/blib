@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <list>
+#include <vector>
 
 #include <blib/util/StreamInFile.h>
 #include <blib/util/StreamSeekable.h>
@@ -23,8 +24,9 @@ namespace blib
 			std::string name;
 			FileSystemHandler(std::string name) : name(name) {};
 
-			virtual StreamInFile* openRead(std::string fileName) { return NULL; };
-			virtual StreamOut* openWrite(std::string fileName) { return NULL; };
+			virtual StreamInFile* openRead(const std::string &fileName) { return NULL; };
+			virtual StreamOut* openWrite(const std::string &fileName) { return NULL; };
+			virtual void getFileList(const std::string &path, std::vector<std::string> &files) {};
 		};
 
 		class PhysicalFileSystemHandler : public FileSystemHandler
@@ -45,8 +47,9 @@ namespace blib
 			std::string directory;
 		public:
 			PhysicalFileSystemHandler(std::string directory = ".") : FileSystemHandler("physical"), directory(directory) {}
-			virtual StreamInFile* openRead( std::string fileName );
-			virtual StreamOut* openWrite( std::string fileName );
+			virtual StreamInFile* openRead( const std::string &fileName );
+			virtual StreamOut* openWrite( const std::string &fileName );
+			virtual void getFileList(const std::string &path, std::vector<std::string> &files);
 		};
 
 		class FileSystem
@@ -54,12 +57,13 @@ namespace blib
 		private:
 			static std::list<FileSystemHandler*> handlers;
 		public:
-			static StreamInFile* openRead(std::string fileName);
-			static StreamOut* openWrite(std::string fileName);
+			static StreamInFile* openRead(const std::string &fileName);
+			static StreamOut* openWrite(const std::string &fileName);
 			static void registerHandler(FileSystemHandler* handler);
-			static int getData(std::string fileName, char* &data);
-			static std::string getData(std::string fileName);
-			static Json::Value getJson(std::string fileName);
+			static int getData(const std::string &fileName, char* &data);
+			static std::string getData(const std::string &fileName);
+			static Json::Value getJson(const std::string &fileName);
+			static std::vector<std::string> getFileList(const std::string &path);
 		};
 	}
 }

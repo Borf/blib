@@ -53,6 +53,9 @@ namespace blib
 
 		void WM::draw( SpriteBatch &spriteBatch )
 		{
+			for(std::list<fastdelegate::FastDelegate0<> >::iterator it = tasks.begin(); it != tasks.end(); it++)
+				(*it)();
+
 			for(std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
 			{
 				if(!(*it)->enabled)
@@ -324,6 +327,11 @@ namespace blib
 			float g = (digits.find(hexColor[2])<<4 | digits.find(hexColor[3])) / 255.0f;
 			float b = (digits.find(hexColor[4])<<4 | digits.find(hexColor[5])) / 255.0f;
 			return glm::vec4(r,g,b,1);
+		}
+
+		void WM::addTask( fastdelegate::FastDelegate0<> task )
+		{
+			tasks.push_back(task);
 		}
 
 

@@ -1,5 +1,6 @@
 #include "Widget.h"
-
+#include "../WM.h"
+#include "../Window.h"
 namespace blib
 {
 	namespace wm
@@ -13,6 +14,15 @@ namespace blib
 
 			selected = false;
 			hover = false;
+		}
+
+		Widget::~Widget()
+		{
+			if(WM::getInstance()->hoverWidget == this)
+				WM::getInstance()->hoverWidget = NULL;
+			for(std::list<blib::wm::Window*>::iterator it = WM::getInstance()->windows.begin(); it != WM::getInstance()->windows.end(); it++)
+				if((*it)->selectedWidget == this)
+					(*it)->selectedWidget = NULL;
 		}
 
 		Widget* Widget::getComponent( std::string name )

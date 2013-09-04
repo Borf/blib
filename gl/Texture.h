@@ -99,6 +99,8 @@ namespace blib
 
 				int depth;
 				std::string filename;
+
+				unsigned char* data;
 			};
 
 			void use();

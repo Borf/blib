@@ -24,7 +24,8 @@ namespace blib
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					(*it)->draw(spriteBatch, matrix);
+					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+						(*it)->draw(spriteBatch, matrix);
 				}
 			}
 
@@ -45,9 +46,12 @@ namespace blib
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					Widget* widget = (*it)->getComponent(x-this->x, y - this->y);
-					if(widget)
-						return widget;
+					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+					{
+						Widget* widget = (*it)->getComponent(x-this->x, y - this->y);
+						if(widget)
+							return widget;
+					}
 				}
 
 				if(inComponent(x, y))
@@ -60,11 +64,12 @@ namespace blib
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					if((*it)->inComponent(x-this->x, y - this->y))
-					{
-						(*it)->mousewheel(direction, x-this->x, y-this->y);
-						return;
-					}
+					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+						if((*it)->inComponent(x-this->x, y - this->y))
+						{
+							(*it)->mousewheel(direction, x-this->x, y-this->y);
+							return;
+						}
 				}
 			}
 
@@ -72,33 +77,36 @@ namespace blib
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					if((*it)->inComponent(x-this->x, y - this->y))
-					{
-						(*it)->mousedown(x-this->x, y-this->y);
-						return;
-					}
+					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+						if((*it)->inComponent(x-this->x, y - this->y))
+						{
+							(*it)->mousedown(x-this->x, y-this->y);
+							return;
+						}
 				}
 			}
 			void ContainerWidget::mouseup(int x, int y )
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					if((*it)->inComponent(x-this->x, y - this->y))
-					{
-						(*it)->mouseup(x-this->x, y-this->y);
-						return;
-					}
+					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+						if((*it)->inComponent(x-this->x, y - this->y))
+						{
+							(*it)->mouseup(x-this->x, y-this->y);
+							return;
+						}
 				}
 			}
 			void ContainerWidget::mousedrag(int x, int y )
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					if((*it)->inComponent(x-this->x, y - this->y))
-					{
-						(*it)->mousedrag(x-this->x, y-this->y);
-						return;
-					}
+					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+						if((*it)->inComponent(x-this->x, y - this->y))
+						{
+							(*it)->mousedrag(x-this->x, y-this->y);
+							return;
+						}
 				}
 			}
 
@@ -106,11 +114,12 @@ namespace blib
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					if((*it)->inComponent(x-this->x, y - this->y))
-					{
-						(*it)->mouseclick(x-this->x, y-this->y, clickcount);
-						return;
-					}
+					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+						if((*it)->inComponent(x-this->x, y - this->y))
+						{
+							(*it)->mouseclick(x-this->x, y-this->y, clickcount);
+							return;
+						}
 				}
 			}
 		}

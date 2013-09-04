@@ -1,7 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <blib/gl/Texture.h>
+#include <blib/Texture.h>
+#include <blib/gl/Texture.h>//texturemap
 #include <blib/gl/Vertex.h>
 #include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
