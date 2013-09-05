@@ -98,9 +98,9 @@ namespace blib
 		spriteBatch = new SpriteBatch(renderer);
 		lineBatch = new LineBatch(renderer);
 
-		blib::gl::GlInitRegister::initRegisteredObjects();
 
 		init();
+		blib::gl::GlInitRegister::initRegisteredObjects();
 
 		blib::gl::GlResizeRegister::ResizeRegisteredObjects(window->getWidth(), window->getHeight());
 		frameTimeIndex = 0;
