@@ -7,8 +7,6 @@
 #include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/gl/Shader.h>
-#include <blib/gl/VBO.h>
-#include <blib/gl/VIO.h>
 #include <blib/math/Rectangle.h>
 #include <queue>
 

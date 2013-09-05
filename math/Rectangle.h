@@ -1,7 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
-#include <blib/LineBatch.h>
+#include <blib/IDrawableLine.h>
 #include <clipper/clipper.hpp>
 
 namespace p2t { struct Point; }
@@ -15,7 +15,7 @@ namespace blib
 		class Ray;
 		class Triangle;
 
-		class Rectangle : public blib::ILineDrawable
+		class Rectangle : public blib::IDrawableLine
 		{
 		public:
 			Rectangle(float x, float y, float width, float height);

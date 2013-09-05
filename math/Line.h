@@ -1,13 +1,13 @@
 #pragma once
 #include <glm/glm.hpp>
-#include <blib/LineBatch.h>
+#include <blib/IDrawableLine.h>
 
 namespace blib
 {
 	namespace math
 	{
 
-		class Line : public blib::ILineDrawable
+		class Line : public blib::IDrawableLine
 		{
 		public:
 			glm::vec2 p1;

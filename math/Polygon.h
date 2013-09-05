@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <glm/glm.hpp>
-#include <blib/LineBatch.h>
+#include <blib/IDrawableLine.h>
 #include <clipper/clipper.hpp>
 
 namespace p2t { struct Point; class Triangle; }
@@ -14,7 +14,7 @@ namespace blib
 		class Line;
 		class Rectangle;
 
-		class Polygon : public std::vector<glm::vec2>, public blib::ILineDrawable
+		class Polygon : public std::vector<glm::vec2>, public blib::IDrawableLine
 		{
 		public:
 			Polygon() { }

@@ -1,6 +1,7 @@
 #include "LineBatch.h"
 #include "Shader.h"
 #include <blib/Renderer.h>
+#include <blib/IDrawableLine.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -75,11 +76,11 @@ void main()\
 		lineCount++;
 	}
 
-	void LineBatch::draw(blib::ILineDrawable& drawable, glm::vec4 color, bool showNormal, glm::mat4 transform)
+	void LineBatch::draw(blib::IDrawableLine& drawable, glm::vec4 color, bool showNormal, glm::mat4 transform)
 	{
 		assert(active);
-		std::list<blib::ILineDrawable::LinePart>& lines = drawable.getLines();
-		for(std::list<blib::ILineDrawable::LinePart>::iterator it = lines.begin(); it != lines.end(); it++)
+		std::list<blib::IDrawableLine::LinePart>& lines = drawable.getLines();
+		for(std::list<blib::IDrawableLine::LinePart>::iterator it = lines.begin(); it != lines.end(); it++)
 		{
 			verts[lineCount].position = glm::vec2(transform * glm::vec4(it->p1,0,1));
 			verts[lineCount].color = color;

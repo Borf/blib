@@ -58,7 +58,7 @@ namespace blib
 			for(size_t i = 0; i < size(); i++)
 			{
 				int ii = (i+1)%size();
-				lines.push_back(blib::ILineDrawable::LinePart(at(i), at(ii)));
+				lines.push_back(blib::IDrawableLine::LinePart(at(i), at(ii)));
 			}
 		}
 
