@@ -2,8 +2,9 @@
 #include "Line.h"
 #include "Rectangle.h"
 #include <limits>
+#ifdef clipper_hpp
 #include <poly2tri/poly2tri.h>
-
+#endif
 
 namespace blib
 {
@@ -62,6 +63,7 @@ namespace blib
 			}
 		}
 
+#ifdef clipper_hpp
 		ClipperLib::Polygon Polygon::toClipperPolygon() const
 		{
 			ClipperLib::Polygon ret;
@@ -76,14 +78,7 @@ namespace blib
 			for(size_t i = 0; i < p.size(); i++)
 				push_back(p.at(i)());
 		}
-
-
-		Polygon::Polygon( p2t::Triangle *t)
-		{
-			for(int i = 0; i < 3; i++)
-				push_back(glm::vec2(t->GetPoint(i)->x, t->GetPoint(i)->y));
-		}
-
+#endif
 
 		blib::math::Rectangle Polygon::getBoundingBox() const
 		{
@@ -97,12 +92,22 @@ namespace blib
 			return ret;
 		}
 
+#ifdef POLY2TRI_H
+		Polygon::Polygon( p2t::Triangle *t)
+		{
+			for(int i = 0; i < 3; i++)
+				push_back(glm::vec2(t->GetPoint(i)->x, t->GetPoint(i)->y));
+		}
+
+
 		std::vector<p2t::Point*> Polygon::toP2TPolygon() const
 		{
 			std::vector<p2t::Point*> ret;
 			for(size_t i = 0; i < size(); i++)
 				ret.push_back(new p2t::Point(at(i)));
-			return ret;		}
+			return ret;		
+		}
+#endif
 
 	}
 }

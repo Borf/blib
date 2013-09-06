@@ -1,6 +1,6 @@
 #include "Rectangle.h"
 
-#include <poly2tri/poly2tri.h>
+//#include <poly2tri/poly2tri.h>
 
 namespace blib
 {
@@ -39,6 +39,7 @@ namespace blib
 			return point.x >= topleft.x && point.y >= topleft.y && point.x < bottomright.x && point.y < bottomright.y;
 		}
 
+#ifdef clipper_hpp
 		ClipperLib::Polygon Rectangle::toClipperPolygon() const
 		{
 			ClipperLib::Polygon ret;
@@ -48,7 +49,9 @@ namespace blib
 			ret.push_back(glm::vec2(bottomright.x, topleft.y));
 			return ret;
 		}
+#endif
 
+#ifdef POLY2TRI_H
 		std::vector<p2t::Point*> Rectangle::toP2TPolygon() const
 		{
 			std::vector<p2t::Point*> ret;
@@ -58,6 +61,7 @@ namespace blib
 			ret.push_back(new p2t::Point(glm::vec2(bottomright.x, topleft.y)));
 			return ret;
 		}
+#endif
 
 	}
 }

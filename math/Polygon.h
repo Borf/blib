@@ -3,7 +3,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <blib/IDrawableLine.h>
-#include <clipper/clipper.hpp>
+//#include <clipper/clipper.hpp>
 
 namespace p2t { struct Point; class Triangle; }
 
@@ -18,11 +18,13 @@ namespace blib
 		{
 		public:
 			Polygon() { }
+#ifdef clipper_hpp
 			Polygon(const ClipperLib::Polygon &p);
+			ClipperLib::Polygon toClipperPolygon() const;
+#endif
 			Polygon(p2t::Triangle *t);
 
 
-			ClipperLib::Polygon toClipperPolygon() const;
 			std::vector<p2t::Point*> toP2TPolygon() const;
 			bool contains(glm::vec2 point) const;
 			bool intersects(const Line& line) const;

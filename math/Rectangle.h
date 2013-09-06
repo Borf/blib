@@ -2,10 +2,10 @@
 
 #include <glm/glm.hpp>
 #include <blib/IDrawableLine.h>
-#include <clipper/clipper.hpp>
+#include <vector>
 
 namespace p2t { struct Point; }
-
+namespace ClipperLib { class Polygon; }
 namespace blib
 {
 	namespace math
