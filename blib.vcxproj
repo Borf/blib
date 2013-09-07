@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="blib\Animation.h" />
+    <ClInclude Include="blib\App.h" />
+    <ClInclude Include="blib\audio\AudioManager.h" />
+    <ClInclude Include="blib\audio\AudioManagerWindows.h" />
+    <ClInclude Include="blib\blib.h" />
+    <ClInclude Include="blib\FBO.h" />
+    <ClInclude Include="blib\Font.h" />
+    <ClInclude Include="blib\gl\Camera.h" />
+    <ClInclude Include="blib\gl\FBO.h" />
+    <ClInclude Include="blib\gl\GlInitRegister.h" />
+    <ClInclude Include="blib\gl\GlResizeRegister.h" />
+    <ClInclude Include="blib\gl\Renderer.h" />
+    <ClInclude Include="blib\gl\Shader.h" />
+    <ClInclude Include="blib\gl\Texture.h" />
+    <ClInclude Include="blib\gl\VAO.h" />
+    <ClInclude Include="blib\gl\VBO.h" />
+    <ClInclude Include="blib\gl\Vertex.h" />
+    <ClInclude Include="blib\gl\VIO.h" />
+    <ClInclude Include="blib\gl\Window.h" />
+    <ClInclude Include="blib\IDrawableLine.h" />
+    <ClInclude Include="blib\KeyListener.h" />
+    <ClInclude Include="blib\LineBatch.h" />
+    <ClInclude Include="blib\math\Circle.h" />
+    <ClInclude Include="blib\math\Line.h" />
+    <ClInclude Include="blib\math\Plane.h" />
+    <ClInclude Include="blib\math\Polygon.h" />
+    <ClInclude Include="blib\math\Random.h" />
+    <ClInclude Include="blib\math\Ray.h" />
+    <ClInclude Include="blib\math\Rectangle.h" />
+    <ClInclude Include="blib\MouseListener.h" />
+    <ClInclude Include="blib\Renderer.h" />
+    <ClInclude Include="blib\RenderState.h" />
+    <ClInclude Include="blib\Shader.h" />
+    <ClInclude Include="blib\SpriteBatch.h" />
+    <ClInclude Include="blib\Texture.h" />
+    <ClInclude Include="blib\Util.h" />
+    <ClInclude Include="blib\util\FastDelegate.h" />
+    <ClInclude Include="blib\util\FastDelegateBind.h" />
+    <ClInclude Include="blib\util\FileSystem.h" />
+    <ClInclude Include="blib\util\Log.h" />
+    <ClInclude Include="blib\util\Mutex.h" />
+    <ClInclude Include="blib\util\NotCopyable.h" />
+    <ClInclude Include="blib\util\Profiler.h" />
+    <ClInclude Include="blib\util\Semaphore.h" />
+    <ClInclude Include="blib\util\Signal.h" />
+    <ClInclude Include="blib\util\Singleton.h" />
+    <ClInclude Include="blib\util\stb_image.h" />
+    <ClInclude Include="blib\util\Stream.h" />
+    <ClInclude Include="blib\util\StreamIn.h" />
+    <ClInclude Include="blib\util\StreamInFile.h" />
+    <ClInclude Include="blib\util\StreamOut.h" />
+    <ClInclude Include="blib\util\StreamOutFile.h" />
+    <ClInclude Include="blib\util\StreamReader.h" />
+    <ClInclude Include="blib\util\StreamSeekable.h" />
+    <ClInclude Include="blib\util\StreamWriter.h" />
+    <ClInclude Include="blib\util\Thread.h" />
+    <ClInclude Include="blib\VBO.h" />
+    <ClInclude Include="blib\VIO.h" />
+    <ClInclude Include="blib\Window.h" />
+    <ClInclude Include="blib\wm\widgets\button.h" />
+    <ClInclude Include="blib\wm\widgets\ContainerWidget.h" />
+    <ClInclude Include="blib\wm\widgets\Image.h" />
+    <ClInclude Include="blib\wm\widgets\Label.h" />
+    <ClInclude Include="blib\wm\widgets\list.h" />
+    <ClInclude Include="blib\wm\widgets\Panel.h" />
+    <ClInclude Include="blib\wm\widgets\ScrollPanel.h" />
+    <ClInclude Include="blib\wm\widgets\textbox.h" />
+    <ClInclude Include="blib\wm\widgets\Widget.h" />
+    <ClInclude Include="blib\wm\Window.h" />
+    <ClInclude Include="blib\wm\WM.h" />
+    <ClInclude Include="externals\clipper\clipper.hpp" />
+    <ClInclude Include="externals\glew\include\GL\glew.h" />
+    <ClInclude Include="externals\glew\include\GL\glxew.h" />
+    <ClInclude Include="externals\glew\include\GL\wglew.h" />
+    <ClInclude Include="externals\json\assertions.h" />
+    <ClInclude Include="externals\json\autolink.h" />
+    <ClInclude Include="externals\json\config.h" />
+    <ClInclude Include="externals\json\features.h" />
+    <ClInclude Include="externals\json\forwards.h" />
+    <ClInclude Include="externals\json\json.h" />
+    <ClInclude Include="externals\json\json_batchallocator.h" />
+    <ClInclude Include="externals\json\json_tool.h" />
+    <ClInclude Include="externals\json\reader.h" />
+    <ClInclude Include="externals\json\value.h" />
+    <ClInclude Include="externals\json\version.h" />
+    <ClInclude Include="externals\json\writer.h" />
+    <ClInclude Include="externals\poly2tri\common\shapes.h" />
+    <ClInclude Include="externals\poly2tri\common\utils.h" />
+    <ClInclude Include="externals\poly2tri\poly2tri.h" />
+    <ClInclude Include="externals\poly2tri\sweep\advancing_front.h" />
+    <ClInclude Include="externals\poly2tri\sweep\cdt.h" />
+    <ClInclude Include="externals\poly2tri\sweep\sweep.h" />
+    <ClInclude Include="externals\poly2tri\sweep\sweep_context.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="blib\Animation.cpp" />
+    <ClCompile Include="blib\App.cpp" />
+    <ClCompile Include="blib\audio\AudioManagerWindows.cpp" />
+    <ClCompile Include="blib\Font.cpp" />
+    <ClCompile Include="blib\gl\FBO.cpp" />
+    <ClCompile Include="blib\gl\GlInitRegister.cpp" />
+    <ClCompile Include="blib\gl\GlResizeRegister.cpp" />
+    <ClCompile Include="blib\gl\Renderer.cpp" />
+    <ClCompile Include="blib\gl\Shader.cpp" />
+    <ClCompile Include="blib\gl\Texture.cpp" />
+    <ClCompile Include="blib\gl\Vertex.cpp" />
+    <ClCompile Include="blib\gl\Window.cpp" />
+    <ClCompile Include="blib\LineBatch.cpp" />
+    <ClCompile Include="blib\math\Line.cpp" />
+    <ClCompile Include="blib\math\Polygon.cpp" />
+    <ClCompile Include="blib\math\Random.cpp" />
+    <ClCompile Include="blib\math\Rectangle.cpp" />
+    <ClCompile Include="blib\Renderer.cpp" />
+    <ClCompile Include="blib\RenderState.cpp" />
+    <ClCompile Include="blib\Shader.cpp" />
+    <ClCompile Include="blib\SpriteBatch.cpp" />
+    <ClCompile Include="blib\Util.cpp" />
+    <ClCompile Include="blib\util\FileSystem.cpp" />
+    <ClCompile Include="blib\util\Log.cpp" />
+    <ClCompile Include="blib\util\Mutex.cpp" />
+    <ClCompile Include="blib\util\Profiler.cpp" />
+    <ClCompile Include="blib\util\Semaphore.cpp" />
+    <ClCompile Include="blib\util\Signal.cpp" />
+    <ClCompile Include="blib\util\stb_image.c" />
+    <ClCompile Include="blib\util\Stream.cpp" />
+    <ClCompile Include="blib\util\StreamInFile.cpp" />
+    <ClCompile Include="blib\util\Thread.cpp" />
+    <ClCompile Include="blib\Window.cpp" />
+    <ClCompile Include="blib\wm\widgets\button.cpp" />
+    <ClCompile Include="blib\wm\widgets\ContainerWidget.cpp" />
+    <ClCompile Include="blib\wm\widgets\Image.cpp" />
+    <ClCompile Include="blib\wm\widgets\Label.cpp" />
+    <ClCompile Include="blib\wm\widgets\list.cpp" />
+    <ClCompile Include="blib\wm\widgets\Panel.cpp" />
+    <ClCompile Include="blib\wm\widgets\ScrollPanel.cpp" />
+    <ClCompile Include="blib\wm\widgets\textbox.cpp" />
+    <ClCompile Include="blib\wm\widgets\Widget.cpp" />
+    <ClCompile Include="blib\wm\Window.cpp" />
+    <ClCompile Include="blib\wm\WM.cpp" />
+    <ClCompile Include="externals\clipper\clipper.cpp" />
+    <ClCompile Include="externals\json\json_reader.cpp" />
+    <ClCompile Include="externals\json\json_value.cpp" />
+    <ClCompile Include="externals\json\json_writer.cpp" />
+    <ClCompile Include="externals\poly2tri\common\shapes.cc" />
+    <ClCompile Include="externals\poly2tri\sweep\advancing_front.cc" />
+    <ClCompile Include="externals\poly2tri\sweep\cdt.cc" />
+    <ClCompile Include="externals\poly2tri\sweep\sweep.cc" />
+    <ClCompile Include="externals\poly2tri\sweep\sweep_context.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="externals\glew\doc\credits.html" />
+    <None Include="externals\json\json_internalarray.inl" />
+    <None Include="externals\json\json_internalmap.inl" />
+    <None Include="externals\json\json_valueiterator.inl" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{22D5CA69-1AFF-4025-AC86-A4F056D79B53}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>blib</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>$(SolutionDir)$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>$(SolutionDir)$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
+      <AdditionalIncludeDirectories>.;externals\glew\include;externals</AdditionalIncludeDirectories>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="gl">
+      <UniqueIdentifier>{ddae79ee-17a8-428f-b83f-a01d5973267e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audio">
+      <UniqueIdentifier>{074d2aae-fd82-4c41-9091-f427ae7d3f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="math">
+      <UniqueIdentifier>{62ec93f8-e387-4ea6-af82-f4d1b17f969b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="util">
+      <UniqueIdentifier>{320257ed-c49d-4b8b-9c40-786f388aaa7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wm">
+      <UniqueIdentifier>{750aa160-704c-4b1b-9b9f-45f39fd80253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wm\widgets">
+      <UniqueIdentifier>{ffb529b2-b1ca-4992-85a4-ed3335be7262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{25dcd8f6-0a7f-42c9-90b3-fabd4df5af20}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="blib\VIO.h" />
+    <ClInclude Include="blib\Window.h" />
+    <ClInclude Include="blib\Animation.h" />
+    <ClInclude Include="blib\App.h" />
+    <ClInclude Include="blib\blib.h" />
+    <ClInclude Include="blib\FBO.h" />
+    <ClInclude Include="blib\Font.h" />
+    <ClInclude Include="blib\IDrawableLine.h" />
+    <ClInclude Include="blib\KeyListener.h" />
+    <ClInclude Include="blib\LineBatch.h" />
+    <ClInclude Include="blib\MouseListener.h" />
+    <ClInclude Include="blib\Renderer.h" />
+    <ClInclude Include="blib\RenderState.h" />
+    <ClInclude Include="blib\Shader.h" />
+    <ClInclude Include="blib\SpriteBatch.h" />
+    <ClInclude Include="blib\Texture.h" />
+    <ClInclude Include="blib\Util.h" />
+    <ClInclude Include="blib\VBO.h" />
+    <ClInclude Include="blib\gl\Camera.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\FBO.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\GlInitRegister.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\GlResizeRegister.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\Renderer.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\Shader.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\Texture.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\VAO.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\VBO.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\Vertex.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\VIO.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\gl\Window.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\audio\AudioManager.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\audio\AudioManagerWindows.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\math\Circle.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\math\Line.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\math\Plane.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\math\Polygon.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\math\Random.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\math\Ray.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\math\Rectangle.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\FastDelegate.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\FastDelegateBind.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\FileSystem.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\Log.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\Mutex.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\NotCopyable.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\Profiler.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\Semaphore.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\Signal.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\Singleton.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\stb_image.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\Stream.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\StreamIn.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\StreamInFile.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\StreamOut.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\StreamOutFile.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\StreamReader.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\StreamSeekable.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\StreamWriter.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\Thread.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\WM.h">
+      <Filter>wm</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\Window.h">
+      <Filter>wm</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\widgets\button.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\widgets\ContainerWidget.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\widgets\Image.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\widgets\Label.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\widgets\list.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\widgets\Panel.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\widgets\ScrollPanel.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\widgets\textbox.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\widgets\Widget.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\glew\include\GL\glew.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\glew\include\GL\glxew.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\glew\include\GL\wglew.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\assertions.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\autolink.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\config.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\features.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\forwards.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\json.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\json_batchallocator.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\json_tool.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\reader.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\value.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\version.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\json\writer.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\poly2tri\common\shapes.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\poly2tri\common\utils.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\poly2tri\poly2tri.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\poly2tri\sweep\advancing_front.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\poly2tri\sweep\cdt.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\poly2tri\sweep\sweep.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\poly2tri\sweep\sweep_context.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\clipper\clipper.hpp">
+      <Filter>external</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="blib\Window.cpp" />
+    <ClCompile Include="blib\Animation.cpp" />
+    <ClCompile Include="blib\App.cpp" />
+    <ClCompile Include="blib\Font.cpp" />
+    <ClCompile Include="blib\LineBatch.cpp" />
+    <ClCompile Include="blib\Renderer.cpp" />
+    <ClCompile Include="blib\RenderState.cpp" />
+    <ClCompile Include="blib\Shader.cpp" />
+    <ClCompile Include="blib\SpriteBatch.cpp" />
+    <ClCompile Include="blib\Util.cpp" />
+    <ClCompile Include="blib\gl\FBO.cpp">
+      <Filter>gl</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\gl\GlInitRegister.cpp">
+      <Filter>gl</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\gl\GlResizeRegister.cpp">
+      <Filter>gl</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\gl\Renderer.cpp">
+      <Filter>gl</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\gl\Shader.cpp">
+      <Filter>gl</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\gl\Texture.cpp">
+      <Filter>gl</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\gl\Vertex.cpp">
+      <Filter>gl</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\gl\Window.cpp">
+      <Filter>gl</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\audio\AudioManagerWindows.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\Line.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\Polygon.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\Random.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\Rectangle.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\FileSystem.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\Log.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\Mutex.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\Profiler.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\Semaphore.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\Signal.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\stb_image.c">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\Stream.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\StreamInFile.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\Thread.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\WM.cpp">
+      <Filter>wm</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\Window.cpp">
+      <Filter>wm</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\button.cpp">
+      <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\ContainerWidget.cpp">
+      <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\Image.cpp">
+      <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\Label.cpp">
+      <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\list.cpp">
+      <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\Panel.cpp">
+      <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\ScrollPanel.cpp">
+      <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\textbox.cpp">
+      <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\Widget.cpp">
+      <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\json\json_reader.cpp">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\json\json_value.cpp">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\json\json_writer.cpp">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\poly2tri\common\shapes.cc">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\poly2tri\sweep\advancing_front.cc">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\poly2tri\sweep\cdt.cc">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\poly2tri\sweep\sweep.cc">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\poly2tri\sweep\sweep_context.cc">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\clipper\clipper.cpp">
+      <Filter>external</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="externals\glew\doc\credits.html">
+      <Filter>external</Filter>
+    </None>
+    <None Include="externals\json\json_internalarray.inl">
+      <Filter>external</Filter>
+    </None>
+    <None Include="externals\json\json_internalmap.inl">
+      <Filter>external</Filter>
+    </None>
+    <None Include="externals\json\json_valueiterator.inl">
+      <Filter>external</Filter>
+    </None>
+  </ItemGroup>
+</Project>
