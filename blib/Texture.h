@@ -21,6 +21,5 @@ namespace blib
 		static Texture* loadCached(std::string fileName, int loadOptions = 0);
 		static void clearCache();
 
-
 	};
 }

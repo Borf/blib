@@ -237,8 +237,8 @@ namespace blib
 
 		TextureMap::TextureMap()
 		{
-			width = 128;
-			height = 128;
+			width = 2048;
+			height = 2048;
 			glGenTextures(1, &texid);
 			glBindTexture(GL_TEXTURE_2D, texid);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
@@ -317,7 +317,10 @@ namespace blib
 						yoffset++;
 					}
 					if(yoffset >= height/32)
+					{
+						Log::out<<"No more room on texture map"<<Log::newline;
 						return NULL;
+					}
 				}
 			}
 
@@ -328,8 +331,8 @@ namespace blib
 			glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset*32, yoffset*32, w, h, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 			TexInfo* newInfo = new TexInfo(this);
-			newInfo->t1 = glm::vec2((xoffset*32+0.25f) / (float)width, (yoffset*32+0.25f) / (float)height);
-			newInfo->t2 = newInfo->t1 + glm::vec2((w-0.5f)/(float)width, (h-0.5f)/(float)height);
+			newInfo->t1 = glm::vec2((xoffset*32+0.5f) / (float)width, (yoffset*32+0.5f) / (float)height);
+			newInfo->t2 = newInfo->t1 + glm::vec2((w-1)/(float)width, (h-1)/(float)height);
 
 			newInfo->width = w;
 			newInfo->height = h;
@@ -339,6 +342,11 @@ namespace blib
 
 			stbi_image_free(data);
 			return newInfo;
+		}
+
+		void TextureMap::use()
+		{
+			glBindTexture(GL_TEXTURE_2D, texid);
 		}
 
 

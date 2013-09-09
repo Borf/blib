@@ -408,6 +408,7 @@
     <ClCompile Include="externals\clipper\clipper.cpp">
       <Filter>external</Filter>
     </ClCompile>
+    <ClCompile Include="blib\util\StreamIn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

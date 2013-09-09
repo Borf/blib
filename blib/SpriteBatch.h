@@ -54,7 +54,7 @@ namespace blib
 		virtual void end();
 
 		virtual void draw(Texture* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0), blib::math::Rectangle src = blib::math::Rectangle(0,0,1,1), glm::vec4 color = glm::vec4(1,1,1,1));
-		virtual void draw(gl::TextureMap::TexInfo* sprite, glm::mat4 transform);
+		virtual void draw(gl::TextureMap::TexInfo* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0), glm::vec4 color = glm::vec4(1,1,1,1));
 		virtual void draw(Font* font, std::string text, glm::mat4 transform, glm::vec4 color = glm::vec4(1,1,1,1));
 
 		virtual void drawStretchyRect(Texture* sprite, glm::mat4 transform, blib::math::Rectangle src, blib::math::Rectangle innerSrc, glm::vec2 size, glm::vec4 color = glm::vec4(1,1,1,1));

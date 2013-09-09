@@ -183,7 +183,6 @@ namespace blib
 			if(!app->running)
 				break;
 			app->draw();
-
 			int frame = ((int)(blib::util::Profiler::getAppTime()*50)) % (12*12);
 
 			app->spriteBatch->begin();
@@ -232,8 +231,6 @@ namespace blib
 			}
 
 			app->lineBatch->end();
-
-
 
 			frameTime = util::Profiler::getAppTime() - frameStart;
 			app->semaphore->signal();

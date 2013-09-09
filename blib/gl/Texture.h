@@ -49,12 +49,9 @@ namespace blib
 		};
 		
 
-		class TextureMap
+		class TextureMap : public blib::Texture
 		{
 		public:
-			int width;
-			int height;
-
 			class TexInfo
 			{
 			public:
@@ -78,6 +75,7 @@ namespace blib
 			TextureMap();
 			~TextureMap();
 			TexInfo* addTexture(std::string filename);
+			void use();
 		};
 
 

@@ -104,9 +104,31 @@ void main()\
 		depth++;
 	}
 
-	void SpriteBatch::draw( gl::TextureMap::TexInfo* texture, glm::mat4 transform )
+	void SpriteBatch::draw( gl::TextureMap::TexInfo* texture, glm::mat4 transform, glm::vec2 center, glm::vec4 color)
 	{
 		assert(active);
+
+		float fw = (float)1;
+		float fh = (float)1;
+
+		if(currentTexture != texture->texMap && currentTexture != NULL)
+			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, spriteCount));
+		currentTexture = texture->texMap;
+
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,					0,1)),		glm::vec2(texture->t1.x,texture->t1.y), color)); // 1
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->height - center.y,		0,1)),		glm::vec2(texture->t1.x,texture->t2.y), color)); // 2
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->width - center.x,			fh*0 - center.y,					0,1)),		glm::vec2(texture->t2.x,texture->t1.y), color)); // 3
+
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->height - center.y,		0,1)), 		glm::vec2(texture->t1.x,texture->t2.y), color)); // 2
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->width - center.x,			fh*0 - center.y,					0,1)),		glm::vec2(texture->t2.x,texture->t1.y), color)); // 3
+		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->width - center.x,			fh*texture->height - center.y,		0,1)),		glm::vec2(texture->t2.x,texture->t2.y), color)); //4
+
+		spriteCount+=6;
+
+		depth++;
+
+
+
 	}
 
 	void SpriteBatch::draw( Font* font, std::string text, glm::mat4 transform, glm::vec4 color )
