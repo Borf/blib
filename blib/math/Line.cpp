@@ -71,6 +71,14 @@ namespace blib
 			float t = glm::clamp(ap_dot_ab / ab2, 0.0f, 1.0f);
 			return p1 + AB * t;
 		}
+		float Line::projectFactor( const glm::vec2& point ) const
+		{
+			glm::vec2 AB = p2 - p1;
+			float ab2 = glm::dot(AB, AB);
+			glm::vec2 AP(point - p1);
+			float ap_dot_ab = glm::dot(AP, AB);
+			return ap_dot_ab / ab2;
+		}
 
 		bool Line::side( const glm::vec2 &point ) const
 		{
