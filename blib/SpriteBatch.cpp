@@ -1,10 +1,12 @@
-#include "SpriteBatch.h"
-#include "Shader.h"
-#include "Font.h"
-#include "Renderer.h"
+#include <blib/SpriteBatch.h>
+#include <blib/Shader.h>
+#include <blib/Font.h>
+#include <blib/Renderer.h>
+#include <blib/Texture.h>
+#include <blib/gl/Vertex.h>
+
 #include <glm/gtc/matrix_transform.hpp>
 #include <json/json.h>
-#include <blib/Texture.h>
 
 namespace blib
 {
@@ -104,7 +106,7 @@ void main()\
 		depth++;
 	}
 
-	void SpriteBatch::draw( gl::TextureMap::TexInfo* texture, glm::mat4 transform, glm::vec2 center, glm::vec4 color)
+	void SpriteBatch::draw( TextureMap::TexInfo* texture, glm::mat4 transform, glm::vec2 center, glm::vec4 color)
 	{
 		assert(active);
 

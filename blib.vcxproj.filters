@@ -267,6 +267,15 @@
     <ClInclude Include="externals\clipper\clipper.hpp">
       <Filter>external</Filter>
     </ClInclude>
+    <ClInclude Include="blib\ResourceManager.h" />
+    <ClInclude Include="blib\Resource.h" />
+    <ClInclude Include="blib\gl\ResourceManager.h">
+      <Filter>gl</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\TextureMap.h" />
+    <ClInclude Include="blib\gl\TextureMap.h">
+      <Filter>gl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -409,6 +418,12 @@
       <Filter>external</Filter>
     </ClCompile>
     <ClCompile Include="blib\util\StreamIn.cpp" />
+    <ClCompile Include="blib\gl\ResourceManager.cpp">
+      <Filter>gl</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\gl\TextureMap.cpp">
+      <Filter>gl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

@@ -49,34 +49,6 @@ namespace blib
 		};
 		
 
-		class TextureMap : public blib::Texture
-		{
-		public:
-			class TexInfo
-			{
-			public:
-				TexInfo(TextureMap* texMap);
-				TextureMap* texMap;
-				glm::vec2 t1;
-				glm::vec2 t2;
-
-
-				int x,y,width,height;
-			};
-			GLuint texid;
-			std::map<std::string, TexInfo*> info;
-
-
-			bool* taken;
-			inline bool &isTaken(int x, int y);
-
-			void save(std::string filename);
-
-			TextureMap();
-			~TextureMap();
-			TexInfo* addTexture(std::string filename);
-			void use();
-		};
 
 
 		class MultiTextureMap : public blib::Texture

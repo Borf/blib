@@ -12,6 +12,7 @@ namespace blib
 	class RenderState;
 	class App;
 	class LineBatch;
+	class ResourceManager;
 
 	namespace util
 	{
@@ -57,6 +58,21 @@ namespace blib
 			int width, height;
 			bool border;
 			int icon;
+			enum RendererPreference
+			{
+				NullRenderer,
+				GlRenderer,
+				DxRenderer,
+			} renderer;
+
+			AppSetup()
+			{
+				width = 1280;
+				height = 720;
+				border = false;
+				icon = 0;
+				renderer = NullRenderer;
+			}
 		} appSetup;
 
 
@@ -102,6 +118,8 @@ namespace blib
 	protected:
 		void addKeyListener(KeyListener* keyListener);
 		void addMouseListener(MouseListener* mouseListener);
+		
+		ResourceManager* resourceManager;
 
 		SpriteBatch* spriteBatch;
 		LineBatch* lineBatch;

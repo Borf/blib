@@ -3,11 +3,11 @@
 #include <blib/gl/Window.h>
 #include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
-#include <blib/gl/Renderer.h>
 #include <blib/util/Profiler.h>
 #include <blib/RenderState.h>
 #include <blib/MouseListener.h>
 #include <blib/SpriteBatch.h>
+#include <blib/Renderer.h>
 #include <blib/util/Signal.h>
 #include <blib/util/Mutex.h>
 #include <blib/util/Log.h>
@@ -17,6 +17,7 @@
 #include <blib/LineBatch.h>
 #include <blib/Font.h>
 #include <blib/util.h>
+#include <blib/gl/ResourceManager.h>
 using blib::util::Log;
 
 namespace blib
@@ -25,6 +26,15 @@ namespace blib
 	void App::start(bool looping)
 	{
 		util::Profiler();
+
+		if(appSetup.renderer == AppSetup::NullRenderer)
+			resourceManager = new NullResource();
+		else if (appSetup.renderer == AppSetup::GlRenderer)
+			resourceManager = new gl::ResourceManager();
+		else if(appSetup.renderer == AppSetup::DxRenderer)
+			resourceManager = new gl::ResourceManager();
+
+
 		semaphore = new util::Semaphore(0,2);
 		updateThread = new UpdateThread(this);	//will create the window in the right thread
 		updateThread->start();
@@ -93,7 +103,7 @@ namespace blib
 		mouseState.x = 0;
 		mouseState.y = 0;
 
-		renderer = new gl::Renderer();
+		renderer = resourceManager->getResource<Renderer>("");
 		renderState = RenderState::activeRenderState;
 		spriteBatch = new SpriteBatch(renderer);
 		lineBatch = new LineBatch(renderer);

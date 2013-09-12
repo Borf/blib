@@ -2,12 +2,11 @@
 
 #include <glm/glm.hpp>
 #include <blib/Texture.h>
-#include <blib/gl/Texture.h>//texturemap
-#include <blib/gl/Vertex.h>
 #include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/gl/Shader.h>
 #include <blib/math/Rectangle.h>
+#include <blib/TextureMap.h>
 #include <queue>
 
 namespace Json { class Value; }
@@ -18,6 +17,8 @@ namespace blib
 	class Shader;
 	class Font;
 	class Renderer;
+
+	class VertexP2T2C4;
 
 
 	class SpriteBatch : public gl::GlInitRegister
@@ -54,7 +55,7 @@ namespace blib
 		virtual void end();
 
 		virtual void draw(Texture* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0), blib::math::Rectangle src = blib::math::Rectangle(0,0,1,1), glm::vec4 color = glm::vec4(1,1,1,1));
-		virtual void draw(gl::TextureMap::TexInfo* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0), glm::vec4 color = glm::vec4(1,1,1,1));
+		virtual void draw(TextureMap::TexInfo* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0), glm::vec4 color = glm::vec4(1,1,1,1));
 		virtual void draw(Font* font, std::string text, glm::mat4 transform, glm::vec4 color = glm::vec4(1,1,1,1));
 
 		virtual void drawStretchyRect(Texture* sprite, glm::mat4 transform, blib::math::Rectangle src, blib::math::Rectangle innerSrc, glm::vec2 size, glm::vec4 color = glm::vec4(1,1,1,1));

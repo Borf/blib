@@ -23,8 +23,10 @@
     <ClInclude Include="blib\gl\GlInitRegister.h" />
     <ClInclude Include="blib\gl\GlResizeRegister.h" />
     <ClInclude Include="blib\gl\Renderer.h" />
+    <ClInclude Include="blib\gl\ResourceManager.h" />
     <ClInclude Include="blib\gl\Shader.h" />
     <ClInclude Include="blib\gl\Texture.h" />
+    <ClInclude Include="blib\gl\TextureMap.h" />
     <ClInclude Include="blib\gl\VAO.h" />
     <ClInclude Include="blib\gl\VBO.h" />
     <ClInclude Include="blib\gl\Vertex.h" />
@@ -43,9 +45,12 @@
     <ClInclude Include="blib\MouseListener.h" />
     <ClInclude Include="blib\Renderer.h" />
     <ClInclude Include="blib\RenderState.h" />
+    <ClInclude Include="blib\Resource.h" />
+    <ClInclude Include="blib\ResourceManager.h" />
     <ClInclude Include="blib\Shader.h" />
     <ClInclude Include="blib\SpriteBatch.h" />
     <ClInclude Include="blib\Texture.h" />
+    <ClInclude Include="blib\TextureMap.h" />
     <ClInclude Include="blib\Util.h" />
     <ClInclude Include="blib\util\FastDelegate.h" />
     <ClInclude Include="blib\util\FastDelegateBind.h" />
@@ -114,8 +119,10 @@
     <ClCompile Include="blib\gl\GlInitRegister.cpp" />
     <ClCompile Include="blib\gl\GlResizeRegister.cpp" />
     <ClCompile Include="blib\gl\Renderer.cpp" />
+    <ClCompile Include="blib\gl\ResourceManager.cpp" />
     <ClCompile Include="blib\gl\Shader.cpp" />
     <ClCompile Include="blib\gl\Texture.cpp" />
+    <ClCompile Include="blib\gl\TextureMap.cpp" />
     <ClCompile Include="blib\gl\Vertex.cpp" />
     <ClCompile Include="blib\gl\Window.cpp" />
     <ClCompile Include="blib\LineBatch.cpp" />

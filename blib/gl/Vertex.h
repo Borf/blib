@@ -1,27 +1,22 @@
 #ifndef __VERTEX_H__
 #define __VERTEX_H__
 
-#ifdef ANDROID
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-#else
-#include <GL/glew.h>
-#endif
 
 #include <glm/glm.hpp>
 
-
-class Vertex
+namespace blib
 {
-protected:
-	static bool enabledVertexAttributes[10];
-
-public:
-	static void setAttribPointers(void* offset = NULL, int *index = NULL, int totalSize = size())
+	class Vertex
 	{
-	}
-	static const int size() { return 0; };
-};
+	protected:
+		static bool enabledVertexAttributes[10];
+
+	public:
+		static void setAttribPointers(void* offset = NULL, int *index = NULL, int totalSize = size())
+		{
+		}
+		static const int size() { return 0; };
+	};
 
 
 #define VertexDefBegin(className, memberName, memberType, count, base)	\
@@ -30,27 +25,8 @@ public:
 	public: \
 	\
 		className() {} \
-		static void setAttribPointers(void* offset = NULL, int *index = NULL, int totalSize = size()) \
-		{\
-			int tmpIndex = 0;\
-			if(!index)\
-				index = &tmpIndex;\
-			base::setAttribPointers(offset, index, totalSize);\
-			if(!Vertex::enabledVertexAttributes[*index])\
-				glEnableVertexAttribArray(*index);\
-			Vertex::enabledVertexAttributes[*index] = true;\
-			glVertexAttribPointer((*index)++, count, GL_FLOAT, GL_FALSE, totalSize, (void*)((char*)offset + base::size()));\
-			if(index == &tmpIndex)\
-			{\
-				for(int i = *index; i < 10; i++)\
-					if(Vertex::enabledVertexAttributes[i])\
-					{\
-						Vertex::enabledVertexAttributes[i] = false;\
-						glDisableVertexAttribArray(i);\
-					}\
-			}\
-		}\
-		static int size() { return base::size() + count*sizeof(GL_FLOAT); }\
+		static void setAttribPointers(void* offset = NULL, int *index = NULL, int totalSize = size());\
+		static int size();\
 		\
 		memberType memberName; \
 		\
@@ -58,6 +34,28 @@ public:
 #define VertexDefEnd() }
 
 
+#define VertexDef(className, memberName, memberType, count, base)	\
+	void className::setAttribPointers(void* offset, int *index, int totalSize) \
+{\
+	int tmpIndex = 0;\
+	if(!index)\
+	index = &tmpIndex;\
+	base::setAttribPointers(offset, index, totalSize);\
+	if(!Vertex::enabledVertexAttributes[*index])\
+	glEnableVertexAttribArray(*index);\
+	Vertex::enabledVertexAttributes[*index] = true;\
+	glVertexAttribPointer((*index)++, count, GL_FLOAT, GL_FALSE, totalSize, (void*)((char*)offset + base::size()));\
+	if(index == &tmpIndex)\
+{\
+	for(int i = *index; i < 10; i++)\
+	if(Vertex::enabledVertexAttributes[i])\
+{\
+	Vertex::enabledVertexAttributes[i] = false;\
+	glDisableVertexAttribArray(i);\
+}\
+}\
+}\
+	int className::size() { return base::size() + count*sizeof(GL_FLOAT); }\
 
 
 
@@ -114,4 +112,6 @@ VertexDefBegin(VertexP2T2C4,								color,		glm::vec4, 4, VertexP2T2)
 	VertexP2T2C4(glm::vec2 position, glm::vec2 texCoord, glm::vec4 color) : VertexP2T2(position, texCoord), color(color) {};
 VertexDefEnd();
 
+
+}
 #endif
