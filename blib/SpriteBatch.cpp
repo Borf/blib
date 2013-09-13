@@ -3,6 +3,7 @@
 #include <blib/Font.h>
 #include <blib/Renderer.h>
 #include <blib/Texture.h>
+#include <blib/ResourceManager.h>
 #include <blib/gl/Vertex.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -51,9 +52,8 @@ void main()\
 	{
 		assert(!active);
 		active = true;
-		depth = 0;
-		spriteCount = 0;
 		currentTexture = NULL;
+		cacheActive = false;
 		this->matrix = matrix;
 		materialIndices.clear();
 		vertices.clear();
@@ -64,10 +64,10 @@ void main()\
 		assert(active);
 		active = false;
 
-		if(spriteCount == 0)
+		if(vertices.size() == 0)
 			return;
 
-		materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, spriteCount));
+		materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
 		shader->setUniform("matrix", matrix);
 		int lastIndex = 0;
 		for(size_t i = 0; i < materialIndices.size(); i++)
@@ -90,7 +90,7 @@ void main()\
 		float fh = (float)src.height();
 
 		if(currentTexture != texture && currentTexture != NULL)
-			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, spriteCount));
+			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
 		currentTexture = texture;
 
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1)),	glm::vec2(src.topleft.x,src.topleft.y), color)); // 1
@@ -100,10 +100,6 @@ void main()\
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->originalHeight - center.y,		0,1)), 		glm::vec2(src.topleft.x,src.bottomright.y), color)); // 2
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*0 - center.y,							0,1)),		glm::vec2(src.bottomright.x,src.topleft.y), color)); // 3
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*texture->originalHeight - center.y,	0,1)),			glm::vec2(src.bottomright.x,src.bottomright.y), color)); //4
-	
-		spriteCount+=6;
-
-		depth++;
 	}
 
 	void SpriteBatch::draw( TextureMap::TexInfo* texture, glm::mat4 transform, glm::vec2 center, glm::vec4 color)
@@ -114,7 +110,7 @@ void main()\
 		float fh = (float)1;
 
 		if(currentTexture != texture->texMap && currentTexture != NULL)
-			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, spriteCount));
+			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
 		currentTexture = texture->texMap;
 
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,					0,1)),		glm::vec2(texture->t1.x,texture->t1.y), color)); // 1
@@ -124,11 +120,6 @@ void main()\
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->height - center.y,		0,1)), 		glm::vec2(texture->t1.x,texture->t2.y), color)); // 2
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->width - center.x,			fh*0 - center.y,					0,1)),		glm::vec2(texture->t2.x,texture->t1.y), color)); // 3
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->width - center.x,			fh*texture->height - center.y,		0,1)),		glm::vec2(texture->t2.x,texture->t2.y), color)); //4
-
-		spriteCount+=6;
-
-		depth++;
-
 
 
 	}
@@ -185,6 +176,33 @@ void main()\
 			color);
 	}
 
+	void SpriteBatch::startCache()
+	{
+		assert(active);
+		assert(!cacheActive);
+		cacheActive = true;
+	}
+
+	SpriteBatch::Cache* SpriteBatch::getCache()
+	{
+		assert(cacheActive);
+		assert(active);
+		cacheActive = false;
+
+		Cache* cache = new Cache();
+		cache->verts = vertices;
+		cache->materialIndices = materialIndices;
+		cache->materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
+		return cache;
+	}
+
+
+	void SpriteBatch::drawCache(Cache* cache)
+	{
+		assert(active);
+		vertices.insert(vertices.end(), cache->verts.begin(), cache->verts.end());
+		materialIndices.insert(materialIndices.end(), cache->materialIndices.begin(), cache->materialIndices.end());
+	}
 
 
 

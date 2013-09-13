@@ -103,11 +103,10 @@ namespace blib
 		mouseState.x = 0;
 		mouseState.y = 0;
 
-		renderer = resourceManager->getResource<Renderer>("");
+		renderer = resourceManager->getResource<Renderer>();
 		renderState = RenderState::activeRenderState;
 		spriteBatch = new SpriteBatch(renderer);
 		lineBatch = new LineBatch(renderer);
-
 
 		init();
 		blib::gl::GlInitRegister::initRegisteredObjects();

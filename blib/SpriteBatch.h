@@ -18,12 +18,24 @@ namespace blib
 	class Font;
 	class Renderer;
 
+	class ResourceManager;
 	class VertexP2T2C4;
+	class VBO;
 
 
 	class SpriteBatch : public gl::GlInitRegister
 	{
+	private:
 		typedef VertexP2T2C4 vertexDef;
+	public:
+		class Cache
+		{
+		public:
+			std::vector<std::pair<Texture*, unsigned short> > materialIndices;
+			std::vector<vertexDef> verts;
+		};
+	private:
+
 
 #define MAX_SPRITES 110000
 		class Shader : public blib::gl::Shader, gl::GlResizeRegister
@@ -38,9 +50,8 @@ namespace blib
 		Texture* currentTexture;
 		Renderer* renderer;
 
-		int spriteCount;
 		bool active;
-		int depth;
+		bool cacheActive;
 
 		glm::mat4 matrix;
 
@@ -53,6 +64,10 @@ namespace blib
 
 		virtual void begin(glm::mat4 matrix = glm::mat4());
 		virtual void end();
+
+		virtual void startCache();
+		virtual Cache* getCache();
+		virtual void drawCache(Cache* cache);
 
 		virtual void draw(Texture* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0), blib::math::Rectangle src = blib::math::Rectangle(0,0,1,1), glm::vec4 color = glm::vec4(1,1,1,1));
 		virtual void draw(TextureMap::TexInfo* sprite, glm::mat4 transform, glm::vec2 center = glm::vec2(0,0), glm::vec4 color = glm::vec4(1,1,1,1));

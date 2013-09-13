@@ -64,11 +64,6 @@ namespace blib
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			}
 
-			int elementSize()
-			{
-				return T::getSize();
-			}
-
 			int getLength()
 			{
 				return length;

@@ -2,6 +2,7 @@
 
 #include <blib/util/FastDelegate.h>
 #include <string>
+#include <blib/VBO.h>
 
 namespace blib
 {
@@ -24,10 +25,20 @@ namespace blib
 		template<class T>
 		inline T* getResource(const std::string &name)
 		{
+			throw "Invalid resource";
 			return NULL;
 		}
+		template<class T>
+		inline T* getResource()
+		{
+			throw "Invalid resource";
+			return NULL;
+		}
+		
+
+
 		template<>
-		inline Renderer* getResource<Renderer>(const std::string &name)
+		inline Renderer* getResource<Renderer>()
 		{
 			return renderer();
 		}
@@ -37,7 +48,7 @@ namespace blib
 			return texture(name);
 		}
 		template<>
-		inline TextureMap* getResource<TextureMap>(const std::string &name)
+		inline TextureMap* getResource<TextureMap>()
 		{
 			return texturemap();
 		}
@@ -46,11 +57,16 @@ namespace blib
 		{
 			return shader(name);
 		}	
+
 		template<>
-		inline VBO* getResource<VBO>(const std::string &name)
+		inline VBO* getResource<VBO>()
 		{
 			return vbo();
 		}
+
+
+
+
 
 		fastdelegate::FastDelegate0<Renderer*>	renderer;
 		fastdelegate::FastDelegate1<const std::string &, Texture*>	texture;

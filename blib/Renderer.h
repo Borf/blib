@@ -73,7 +73,7 @@ namespace blib
 		class RenderSetVbo : public Render
 		{
 		public:
-			VBO_<T>* vbo;
+			VBO* vbo;
 			int vertexStart;
 			int count;
 
@@ -167,7 +167,7 @@ namespace blib
 		}
 
 		template<class T>
-		void setVbo(VBO_<T>* vbo, const std::vector<T> &vertices)
+		void setVbo(VBO* vbo, const std::vector<T> &vertices)
 		{
 			RenderSetVbo<T>* block = new RenderSetVbo<T>();
 			block->command = Render::SetVbo;	//TODO : move to constructor

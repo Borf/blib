@@ -10,6 +10,7 @@
 
 #include <blib/VBO.h>
 #include <blib/util/NotCopyable.h>
+#include <blib/util/FastDelegate.h>
 #include <blib/gl/GlInitRegister.h>
 
 namespace blib
@@ -17,19 +18,15 @@ namespace blib
 	namespace gl
 	{
 
-		template <class T>
-		class VBO : public blib::VBO_<T>, public blib::util::NotCopyable, public GlInitRegister
+		class VBO : public blib::VBO, public blib::util::NotCopyable, public GlInitRegister
 		{
 		private:
 			GLuint vbo;
-
-			T* element;
 			int length;
 		public:
 			VBO()
 			{
 				length = 0;
-				element = NULL;
 				vbo = -1;
 			}
 			~VBO()
@@ -43,18 +40,18 @@ namespace blib
 					glGenBuffers(1, &vbo);
 			}
 
-			void setData(int length, T* data)
+			void setData(int length, void* data)
 			{
 				this->length = length;
 				bind();
-				int size = T::size() * length;
-				glBufferData(GL_ARRAY_BUFFER, T::size() * length, data, GL_STATIC_DRAW);
+				int size = elementSize() * length;
+				glBufferData(GL_ARRAY_BUFFER, elementSize() * length, data, GL_STATIC_DRAW);
 			}
 
-			void setSubData(int offset, int length, T* data)
+			void setSubData(int offset, int length, void* data)
 			{
 				bind();
-				glBufferSubData(GL_ARRAY_BUFFER, T::size() * offset, T::size() * length, data);
+				glBufferSubData(GL_ARRAY_BUFFER, elementSize() * offset, elementSize() * length, data);
 			}
 
 
@@ -70,42 +67,9 @@ namespace blib
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
 			}
 
-			int elementSize()
-			{
-				return T::getSize();
-			}
-
 			int getLength()
 			{
 				return length;
-			}
-#ifndef ANDROID
-			T* mapData(GLenum access)
-			{
-				bind();
-				element = (T*)glMapBuffer(GL_ARRAY_BUFFER, access);
-				return element;
-			}
-			void unmapData()
-			{
-				bind();
-				glUnmapBuffer(GL_ARRAY_BUFFER);
-				element = NULL;
-			}
-
-			T& operator [](int index)
-			{
-				if(element == NULL)
-					throw "Use mapData before accessing";
-				return element[index];
-			}
-#endif
-
-
-
-			void setVAO()
-			{
-				T::setVAO(T::getSize());
 			}
 
 		};
