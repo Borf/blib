@@ -55,6 +55,8 @@ namespace blib
 
 		glm::mat4 matrix;
 
+		int cacheStart;
+
 
 		blib::gl::Shader* shader;
 	public:

@@ -181,6 +181,7 @@ void main()\
 		assert(active);
 		assert(!cacheActive);
 		cacheActive = true;
+		cacheStart = vertices.size();
 	}
 
 	SpriteBatch::Cache* SpriteBatch::getCache()
@@ -190,9 +191,15 @@ void main()\
 		cacheActive = false;
 
 		Cache* cache = new Cache();
-		cache->verts = vertices;
-		cache->materialIndices = materialIndices;
+		cache->verts.insert(cache->verts.begin(), vertices.begin() + cacheStart, vertices.end());
 		cache->materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
+
+		for(size_t i = 0; i < cache->materialIndices.size(); i++)
+			cache->materialIndices[i].second -= cacheStart;
+		while(!cache->materialIndices.empty() && cache->materialIndices[0].second < 0)
+			cache->materialIndices.erase(cache->materialIndices.begin());
+			
+
 		return cache;
 	}
 
@@ -200,8 +207,17 @@ void main()\
 	void SpriteBatch::drawCache(Cache* cache)
 	{
 		assert(active);
+
+		size_t currentSize = vertices.size();
 		vertices.insert(vertices.end(), cache->verts.begin(), cache->verts.end());
-		materialIndices.insert(materialIndices.end(), cache->materialIndices.begin(), cache->materialIndices.end());
+
+		for(size_t i = 0; i < cache->materialIndices.size(); i++)
+		{
+			if(cache->materialIndices[i].second < 0)
+				throw "argh";
+			materialIndices.push_back(cache->materialIndices[i]);
+			materialIndices[materialIndices.size()-1].second += currentSize;
+		}
 	}
 
 
