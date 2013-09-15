@@ -174,6 +174,7 @@ namespace blib
 		app->createWindow();
 
 		Texture* gear = Texture::loadCached("assets/textures/gear.png");
+		Texture* white = Texture::loadCached("assets/textures/whitepixel.png");
 		Font* font = Font::getFontInstance("tahoma");
 		wglMakeCurrent(NULL, NULL);
 
@@ -195,12 +196,13 @@ namespace blib
 			int frame = ((int)(blib::util::Profiler::getAppTime()*50)) % (12*12);
 
 			app->spriteBatch->begin();
+			app->spriteBatch->draw(white, glm::scale(glm::translate(glm::mat4(), glm::vec3(20,20,0)), glm::vec3(200.0f,100.0f,1.0f)), glm::vec2(0,0), blib::math::Rectangle(0,0,1,1), glm::vec4(0,0,0,1));
+
 			app->spriteBatch->draw(gear, glm::translate(glm::mat4(), glm::vec3(app->window->getWidth()-80, app->window->getHeight()-80,0)), glm::vec2(0,0), blib::math::Rectangle(1/12.0f * (frame%12),1/12.0f * (frame/12),1/12.0f,1/12.0f));
+			app->spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::translate(glm::mat4(), glm::vec3(1,1,0)), glm::vec4(0,0,0,1));
 			app->spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::mat4());
-			app->spriteBatch->draw(font, "draw time",	glm::translate(glm::mat4(), glm::vec3(220, 20,0)), glm::vec4(1,0,0,1));
-			app->spriteBatch->draw(font, "update time", glm::translate(glm::mat4(), glm::vec3(220, 40,0)), glm::vec4(0,1,0,1));
-
-
+			app->spriteBatch->draw(font, "draw time",	glm::scale(glm::translate(glm::mat4(), glm::vec3(20, 20,0)), glm::vec3(0.8f, 0.8f, 1)), glm::vec4(1,0,0,1));
+			app->spriteBatch->draw(font, "update time", glm::scale(glm::translate(glm::mat4(), glm::vec3(20, 30,0)), glm::vec3(0.8f, 0.8f, 1)), glm::vec4(0,1,0,1));
 
 			app->spriteBatch->end();
 			app->lineBatch->begin();
