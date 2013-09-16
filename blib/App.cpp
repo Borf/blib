@@ -15,6 +15,7 @@
 #include <blib/util/Profiler.h>
 #include <blib/SpriteBatch.h>
 #include <blib/LineBatch.h>
+#include <blib/Box2DDebug.h>
 #include <blib/Font.h>
 #include <blib/util.h>
 #include <blib/gl/ResourceManager.h>
@@ -41,6 +42,8 @@ namespace blib
 		updateThread->semaphore->wait(); //wait until it is initialized
 		renderThread = new RenderThread(this);
 		renderThread->start();
+
+		blib::Box2DDebug::getInstance()->init(lineBatch);
 
 		if(looping)
 			run();

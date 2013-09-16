@@ -59,7 +59,7 @@ struct Point {
 	  x = o.x;
 	  y = o.y;
   }
-  glm::vec2 operator () ()
+  operator glm::vec2()
   {
 	  return glm::vec2(x,y);
   }

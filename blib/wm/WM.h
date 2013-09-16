@@ -19,7 +19,7 @@ namespace blib
 		class Widget;
 
 
-		class WM : public Singleton<WM>
+		class WM : public util::Singleton<WM>
 		{
 			std::list<Window*> windows;
 

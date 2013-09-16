@@ -68,7 +68,7 @@ public:
 	  Y = (long64) (v.y * 1000);
   }
 
-  glm::vec2 operator () () const
+  operator  glm::vec2() const
   {
 	  return glm::vec2(X/1000.0f, Y/1000.0f);
   }

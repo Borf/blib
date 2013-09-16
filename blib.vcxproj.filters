@@ -417,6 +417,7 @@
     <ClInclude Include="externals\box2d\Box2D\Collision\Shapes\b2Shape.h">
       <Filter>external\box2d</Filter>
     </ClInclude>
+    <ClInclude Include="blib\Box2DDebug.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -700,6 +701,7 @@
     <ClCompile Include="externals\box2d\Box2D\Collision\Shapes\b2PolygonShape.cpp">
       <Filter>external\box2d</Filter>
     </ClCompile>
+    <ClCompile Include="blib\Box2DDebug.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

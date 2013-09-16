@@ -1,13 +1,21 @@
 #pragma once
 
-template <class T>
-class Singleton
+namespace blib
 {
-public:
-	static T* getInstance()
+	namespace util
 	{
-		static T* t = new T();
-		return t;
-	}
-};
 
+		template <class T>
+		class Singleton
+		{
+		public:
+			static T* getInstance()
+			{
+				static T* t = new T();
+				return t;
+			}
+		};
+
+
+	}
+}

@@ -74,7 +74,7 @@ namespace blib
 		{
 			reserve(p.size());
 			for(size_t i = 0; i < p.size(); i++)
-				push_back(p.at(i)());
+				push_back(p.at(i));
 		}
 
 		blib::math::Rectangle Polygon::getBoundingBox() const

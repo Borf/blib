@@ -26,6 +26,8 @@
 #include <cstddef>
 #include <limits>
 
+#include <glm/glm.hpp>
+
 /// This function is used to ensure that a floating point number is
 /// not a NaN or infinity.
 inline bool b2IsValid(float32 x)
@@ -74,6 +76,8 @@ struct b2Vec2
 
 	/// Set this vector to some specified coordinates.
 	void Set(float32 x_, float32 y_) { x = x_; y = y_; }
+	
+	operator glm::vec2() { return glm::vec2(x,y); }
 
 	/// Negate this vector.
 	b2Vec2 operator -() const { b2Vec2 v; v.Set(-x, -y); return v; }

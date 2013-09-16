@@ -16,6 +16,7 @@
     <ClInclude Include="blib\audio\AudioManager.h" />
     <ClInclude Include="blib\audio\AudioManagerWindows.h" />
     <ClInclude Include="blib\blib.h" />
+    <ClInclude Include="blib\Box2DDebug.h" />
     <ClInclude Include="blib\FBO.h" />
     <ClInclude Include="blib\Font.h" />
     <ClInclude Include="blib\gl\Camera.h" />
@@ -160,6 +161,7 @@
     <ClCompile Include="blib\Animation.cpp" />
     <ClCompile Include="blib\App.cpp" />
     <ClCompile Include="blib\audio\AudioManagerWindows.cpp" />
+    <ClCompile Include="blib\Box2DDebug.cpp" />
     <ClCompile Include="blib\Font.cpp" />
     <ClCompile Include="blib\gl\FBO.cpp" />
     <ClCompile Include="blib\gl\GlInitRegister.cpp" />
