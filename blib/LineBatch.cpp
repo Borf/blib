@@ -49,6 +49,7 @@ void main()\
 	void LineBatch::end()
 	{
 		assert(active);
+		active = false;
 		if(lineCount == 0)
 			return;
 
@@ -59,7 +60,6 @@ void main()\
 		renderer->drawLines<vertexDef>(*RenderState::activeRenderState, verts, lineCount);
 
 		int lastIndex = 0;
-		active = false;
 	}
 
 
