@@ -9,6 +9,8 @@ namespace blib
 	namespace util
 	{
 		glm::vec2 fromAngle(float angle);
+		float wrapAngleRad(float angle);
+		float wrapAngleDeg(float angle);
 
 		std::string toString(int number);
 
