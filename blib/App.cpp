@@ -19,6 +19,7 @@
 #include <blib/Font.h>
 #include <blib/util.h>
 #include <blib/gl/ResourceManager.h>
+#include <gl/wglew.h>
 using blib::util::Log;
 
 namespace blib
@@ -105,6 +106,10 @@ namespace blib
 		mouseState.middleButton = false;
 		mouseState.x = 0;
 		mouseState.y = 0;
+
+
+		wglSwapIntervalEXT(appSetup.vsync ? 1 : 0);
+
 
 		renderer = resourceManager->getResource<Renderer>();
 		renderState = RenderState::activeRenderState;

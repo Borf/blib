@@ -90,7 +90,6 @@ namespace blib
 
 			glViewport(0,0,width, height);
 
-			wglSwapIntervalEXT(0);
 
 		}
 
