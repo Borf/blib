@@ -40,10 +40,9 @@ namespace blib
 	}
 
 
-	void Window::create(int icon)
+	void Window::create(int icon, std::string title)
 	{
 		showBorder = true;
-		title = "Blib demo";
 		if(className == "")
 		{
 			className = "blib_";

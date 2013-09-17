@@ -43,7 +43,7 @@ namespace blib
 		renderThread = new RenderThread(this);
 		renderThread->start();
 
-		blib::Box2DDebug::getInstance()->init(lineBatch);
+		blib::Box2DDebug::getInstance()->init(lineBatch, renderer);
 
 		if(looping)
 			run();
@@ -73,7 +73,7 @@ namespace blib
 		window = new blib::gl::Window();
 		window->setSize(appSetup.width, appSetup.height);
 		window->setBorder(appSetup.border);
-		window->create(appSetup.icon);
+		window->create(appSetup.icon, appSetup.title);
 
 		{
 			for(int i = 0; i < 255; i++)

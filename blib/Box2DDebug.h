@@ -6,15 +6,17 @@
 namespace blib
 {
 	class LineBatch;
+	class Renderer;
 
 	class Box2DDebug : public b2Draw, public util::Singleton<Box2DDebug>
 	{
 		LineBatch* lineBatch;
+		Renderer* renderer;
 		float alpha;
 	public:
 
 		Box2DDebug();
-		void init(LineBatch* lineBatch);
+		void init(LineBatch* lineBatch, Renderer* renderer);
 
 		virtual void DrawPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color );
 		virtual void DrawSolidPolygon( const b2Vec2* vertices, int32 vertexCount, const b2Color& color );

@@ -31,11 +31,11 @@ namespace blib
 		int lineCount;
 		bool active;
 
-		glm::mat4 matrix;
 	public:
 		LineBatch(Renderer* renderer);
 
 		blib::Shader* shader;
+		glm::mat4 matrix;			//TODO: make private
 
 		virtual void initGl();
 

@@ -58,6 +58,7 @@ namespace blib
 			int width, height;
 			bool border;
 			int icon;
+			std::string title;
 			enum RendererPreference
 			{
 				NullRenderer,
@@ -72,6 +73,7 @@ namespace blib
 				border = false;
 				icon = 0;
 				renderer = NullRenderer;
+				title = "Blib App";
 			}
 		} appSetup;
 

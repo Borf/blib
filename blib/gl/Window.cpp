@@ -25,9 +25,9 @@ namespace blib
 			printf("%s\n", message);
 		}
 
-		void Window::create(int icon)
+		void Window::create(int icon, std::string title)
 		{
-			blib::Window::create(icon);
+			blib::Window::create(icon, title);
 
 			PIXELFORMATDESCRIPTOR pfd; // Create a new PIXELFORMATDESCRIPTOR (PFD)
 			memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR)); // Clear our  PFD

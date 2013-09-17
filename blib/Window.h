@@ -53,7 +53,7 @@ namespace blib
 		virtual int getWidth() { return width; }
 		virtual int getHeight() { return height; }
 
-		virtual void create(int icon);
+		virtual void create(int icon, std::string title);
 		virtual void swapBuffers() = 0;
 		virtual void tick() = 0;
 
