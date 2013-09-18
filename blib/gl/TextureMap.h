@@ -9,6 +9,8 @@
 #include <gl/glew.h>
 #endif
 
+#include <list>
+
 namespace blib
 {
 	namespace gl
@@ -16,8 +18,21 @@ namespace blib
 		class TextureMap : public blib::TextureMap
 		{
 		public:
+			class TexInfo : public blib::TextureMap::TexInfo
+			{
+			public:
+				TexInfo(TextureMap* texMap) : blib::TextureMap::TexInfo(texMap)
+				{
+					data = NULL;
+				}
+				unsigned char* data;
+			};
+
+
 			GLuint texid;
 			std::map<std::string, TexInfo*> info;
+
+			std::list<TexInfo*> toLoad;
 
 
 			bool* taken;
@@ -26,8 +41,8 @@ namespace blib
 
 			TextureMap();
 			~TextureMap();
-			TexInfo* addTexture(std::string filename);
-			void use();		
+			blib::TextureMap::TexInfo* addTexture(std::string filename);
+			void use();
 		};
 
 	}

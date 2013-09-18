@@ -15,16 +15,9 @@ namespace blib
 
 		TextureMap::TextureMap()
 		{
+			texid = 0;
 			width = 2048;
 			height = 2048;
-			glGenTextures(1, &texid);
-			glBindTexture(GL_TEXTURE_2D, texid);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-
 			taken = new bool[width/32*height/32];
 			for(int i = 0; i < width/32*height/32; i++)
 				taken[i] = false;
@@ -49,12 +42,11 @@ namespace blib
 
 
 
-		TextureMap::TexInfo* TextureMap::addTexture( std::string filename )
+		blib::TextureMap::TexInfo* TextureMap::addTexture( std::string filename )
 		{
 			if(info.find(filename) != info.end())
 				return info[filename];
 
-			glBindTexture(GL_TEXTURE_2D, texid);
 			char* fileData = NULL;
 			int length = blib::util::FileSystem::getData(filename, fileData);
 			if(length < 0)
@@ -106,25 +98,51 @@ namespace blib
 				for(int y = 0; y < h / 32; y++)
 					isTaken(xoffset+x, yoffset+y) = true;
 
-			glTexSubImage2D(GL_TEXTURE_2D, 0, xoffset*32, yoffset*32, w, h, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 			TexInfo* newInfo = new TexInfo(this);
 			newInfo->t1 = glm::vec2((xoffset*32+0.5f) / (float)width, (yoffset*32+0.5f) / (float)height);
 			newInfo->t2 = newInfo->t1 + glm::vec2((w-1)/(float)width, (h-1)/(float)height);
-
+			newInfo->data = data;
 			newInfo->width = w;
 			newInfo->height = h;
+			newInfo->x = xoffset;
+			newInfo->y = yoffset;
+
+
+			toLoad.push_back(newInfo);
+
 
 			info[filename] = newInfo;
 
 
-			stbi_image_free(data);
 			return newInfo;
 		}
 
 		void TextureMap::use()
 		{
+			if(texid == 0)
+			{
+				glGenTextures(1, &texid);
+				glBindTexture(GL_TEXTURE_2D, texid);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+			}
+
 			glBindTexture(GL_TEXTURE_2D, texid);
+
+			if(!toLoad.empty())
+			{
+				for(std::list<TexInfo*>::iterator it = toLoad.begin(); it != toLoad.end(); it++)
+				{
+					TexInfo* newData = *it;
+					glTexSubImage2D(GL_TEXTURE_2D, 0, newData->x*32, newData->y*32, newData->width, newData->height, GL_RGBA, GL_UNSIGNED_BYTE, newData->data);
+					stbi_image_free(newData->data);
+				}
+				toLoad.clear();
+			}
 		}
 
 
