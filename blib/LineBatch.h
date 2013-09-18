@@ -17,7 +17,7 @@ namespace blib
 	{
 		typedef VertexP2C4 vertexDef;
 
-#define MAX_LINES 10000
+#define MAX_LINES 40000
 		class Shader : public blib::gl::Shader, gl::GlResizeRegister
 		{
 		public:
