@@ -1,6 +1,6 @@
 #include <blib/gl/Renderer.h>
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 #include <blib/gl/Shader.h>
 #include <blib/RenderState.h>
 #include <blib/Texture.h>
@@ -45,10 +45,10 @@ namespace blib
 
 					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
-					glClearColor(	((blib::Renderer::RenderClear*)r)->color.r, 
-									((blib::Renderer::RenderClear*)r)->color.g, 
-									((blib::Renderer::RenderClear*)r)->color.b, 
-									((blib::Renderer::RenderClear*)r)->color.a);
+					glClearColor(	((blib::Renderer::RenderClear*)r)->color.x, 
+									((blib::Renderer::RenderClear*)r)->color.y, 
+									((blib::Renderer::RenderClear*)r)->color.z, 
+									((blib::Renderer::RenderClear*)r)->color.w);
 					int bits = 0;
 					if(((Renderer::RenderClear*)r)->clearColor)
 						bits |= GL_COLOR_BUFFER_BIT;

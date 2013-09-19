@@ -2,8 +2,8 @@
 
 
 #ifdef WIN32
-
 #include <Windowsx.h>
+#endif
 
 #include <blib/KeyListener.h>
 #include <blib/MouseListener.h>
@@ -15,19 +15,13 @@ using blib::util::Log;
 
 namespace blib
 {
+#ifdef WIN32
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 		if(message == WM_NCCREATE)
 			SetWindowLongPtr(hWnd, GWL_USERDATA, (LONG_PTR) ((CREATESTRUCT*)lParam)->lpCreateParams);
 		return ((Window*) GetWindowLongPtr(hWnd, GWL_USERDATA))->wndProc(hWnd, message, wParam, lParam);
 //		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
-
-	Window::Window()
-	{
-		opened = false;
-		mouseButtons = 0;
-	}
-
 	BOOL _SetConsoleIcon(HICON hIcon)
 	{
 		typedef BOOL (WINAPI *SetConsoleIcon_t)(HICON handle);
@@ -41,10 +35,18 @@ namespace blib
 		}
 		return false;
 	}
+#endif
+
+	Window::Window()
+	{
+		opened = false;
+		mouseButtons = 0;
+	}
 
 
 	void Window::create(int icon, std::string title)
 	{
+#ifdef WIN32
 		showBorder = true;
 		if(className == "")
 		{
@@ -97,11 +99,14 @@ namespace blib
 		hdc = GetDC(hWnd); // Get the device context for our window
 
 		ShowWindow(hWnd, SW_SHOW);
+#else
+
+#endif
 		opened = true;
 		lastButton = 0;
 	}
 
-
+#ifdef WIN32
 	LRESULT Window::wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		size_t clickCount = 0;
@@ -178,6 +183,7 @@ namespace blib
 
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
+#endif
 
 
 
@@ -225,4 +231,3 @@ namespace blib
 
 }
 
-#endif

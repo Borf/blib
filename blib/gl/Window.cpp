@@ -1,7 +1,9 @@
-#include "window.h"
+#include "Window.h"
 
-#include <gl/glew.h>
-#include <gl/wglew.h>
+#include <GL/glew.h>
+#ifdef WIN32
+#include <GL/wglew.h>
+#endif
 #include <blib/util/Log.h>
 
 using blib::util::Log;
@@ -20,15 +22,20 @@ namespace blib
 		{
 			Log::out<<"GlWindow Destroyed"<<Log::newline;
 		}
+		
+#ifdef WIN32		
 		void APIENTRY onDebug(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
+#else
+		void onDebug(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
+#endif
 		{
-			printf("%s\n", message);
+			util::Log::out<<message<<Log::newline;
 		}
 
 		void Window::create(int icon, std::string title)
 		{
 			blib::Window::create(icon, title);
-
+#ifdef WIN32
 			PIXELFORMATDESCRIPTOR pfd; // Create a new PIXELFORMATDESCRIPTOR (PFD)
 			memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR)); // Clear our  PFD
 			pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR); // Set the size of the PFD to the size of the class
@@ -79,6 +86,12 @@ namespace blib
 //			ShowCursor(FALSE);
 			ShowWindow(hWnd, SW_SHOW);
 			UpdateWindow(hWnd);
+#else
+
+
+
+
+#endif
 
 			if(GLEW_ARB_debug_output)
 			{
@@ -95,12 +108,17 @@ namespace blib
 
 		void Window::swapBuffers()
 		{
+#ifdef WIN32
 			SwapBuffers(hdc);
+#else
+	//TODO
+#endif
 		}
 
 
 		void Window::tick()
 		{
+#ifdef WIN32
 			MSG msg;
 			if (PeekMessage(&msg, hWnd, 0, 0, PM_REMOVE)) { // If we have a message to process, process it
 				if (msg.message == WM_QUIT) {
@@ -111,6 +129,9 @@ namespace blib
 					DispatchMessage(&msg);
 				}
 			}
+#else
+
+#endif
 		}
 
 	}

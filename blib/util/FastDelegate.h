@@ -51,7 +51,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#pragma GCC diagnostic ignored "-Wreorder"
+//#pragma GCC diagnostic ignored "-Wreorder"
 
 #include <memory.h> // to allow <,> comparisons
 
