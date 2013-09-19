@@ -15,9 +15,10 @@ namespace blib
 				this->texMap = texMap;
 			}
 			TextureMap* texMap;
-			glm::vec2 t1;
-			glm::vec2 t2;
-			int x,y,width,height;
+			glm::vec2 t1; //uv
+			glm::vec2 t2; //uv
+			int x,y,width,height; // in texels
+			glm::vec2 center;//center in texels
 		};
 
 

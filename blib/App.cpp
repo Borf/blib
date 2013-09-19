@@ -1,4 +1,6 @@
+#ifndef WIN32
 #pragma GCC diagnostic ignored "-Wmissing-braces"
+#endif
 
 #include "App.h"
 #include <glm/gtc/matrix_transform.hpp>

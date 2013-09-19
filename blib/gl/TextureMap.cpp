@@ -108,6 +108,8 @@ namespace blib
 			newInfo->x = xoffset;
 			newInfo->y = yoffset;
 
+			newInfo->center = glm::vec2(w/2.0f, h/2.0f);
+
 
 			toLoad.push_back(newInfo);
 
