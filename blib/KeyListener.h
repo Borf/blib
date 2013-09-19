@@ -10,8 +10,9 @@ namespace blib
 	{
 #ifdef WIN32
 		KEY_ESC = VK_ESCAPE,
-#endif
+#else
 		KEY_ESC
+#endif
 
 	};
 
