@@ -191,6 +191,12 @@ void main()\
 		cacheActive = false;
 
 		Cache* cache = new Cache();
+		if(cacheStart == vertices.size())
+		{
+			cache->materialIndices.clear();
+			return cache;
+		}
+
 		cache->verts.insert(cache->verts.begin(), vertices.begin() + cacheStart, vertices.end());
 		cache->materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
 
@@ -207,6 +213,9 @@ void main()\
 	void SpriteBatch::drawCache(Cache* cache)
 	{
 		assert(active);
+
+		if(cache->materialIndices.size() == 0)
+			return;
 
 		size_t currentSize = vertices.size();
 		vertices.insert(vertices.end(), cache->verts.begin(), cache->verts.end());
