@@ -43,7 +43,7 @@ namespace blib
 		virtual void end();
 
 		virtual void draw(glm::vec2 v1, glm::vec2 v2, glm::vec4 color = glm::vec4(1,1,0,1), glm::mat4 transform = glm::mat4());
-		virtual void draw(blib::IDrawableLine &drawable, glm::vec4 color = glm::vec4(1,1,0,1), bool drawNormal = false, glm::mat4 transform = glm::mat4());
+		virtual void draw(const blib::IDrawableLine &drawable, glm::vec4 color = glm::vec4(1,1,0,1), bool drawNormal = false, glm::mat4 transform = glm::mat4());
 
 	};
 

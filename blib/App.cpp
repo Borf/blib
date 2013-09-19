@@ -1,3 +1,5 @@
+#pragma GCC diagnostic ignored "-Wmissing-braces"
+
 #include "App.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <blib/gl/Window.h>
@@ -17,9 +19,11 @@
 #include <blib/LineBatch.h>
 #include <blib/Box2DDebug.h>
 #include <blib/Font.h>
-#include <blib/util.h>
+#include <blib/Util.h>
 #include <blib/gl/ResourceManager.h>
+#ifdef WIN32
 #include <gl/wglew.h>
+#endif
 using blib::util::Log;
 
 namespace blib
@@ -108,7 +112,11 @@ namespace blib
 		mouseState.y = 0;
 
 
+#ifdef WIN32
 		wglSwapIntervalEXT(appSetup.vsync ? 1 : 0);
+#else
+
+#endif
 
 
 		renderer = resourceManager->getResource<Renderer>();
@@ -155,6 +163,7 @@ namespace blib
 
 	int App::RenderThread::run()
 	{
+#ifdef WIN32
 		if(!wglMakeCurrent(app->window->hdc, ((blib::gl::Window*)app->window)->hrc))
 		{
 			Log::out<<"ERROR MAKING CURRENT"<<Log::newline;
@@ -162,6 +171,10 @@ namespace blib
 			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	GetLastError(),	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
 			Log::out<<"Error: "<<lpMsgBuf<<Log::newline;
 		}
+#else
+
+
+#endif
 		while(app->running)
 		{
 			semaphore->wait();
@@ -184,7 +197,11 @@ namespace blib
 		Texture* gear = Texture::loadCached("assets/textures/gear.png");
 		Texture* white = Texture::loadCached("assets/textures/whitepixel.png");
 		Font* font = Font::getFontInstance("tahoma");
+#ifdef WIN32
 		wglMakeCurrent(NULL, NULL);
+#else
+
+#endif
 
 		semaphore->signal();
 		while(app->running)
@@ -216,7 +233,7 @@ namespace blib
 			app->lineBatch->begin();
 			app->lineBatch->draw(math::Rectangle(glm::vec2(20,20), 200,100), glm::vec4(1,1,1,1));
 
-			PerformanceInfo minValues = { 99999999999, 99999999999, 99999999999 };
+			PerformanceInfo minValues = { 99999999999,  99999999999,  99999999999 };
 			PerformanceInfo maxValues = { -99999999999, -99999999999, -99999999999 };
 			for(int i = 0; i < 1000; i++)
 			{
@@ -245,7 +262,7 @@ namespace blib
 						app->lineBatch->draw(glm::vec2(19 + i*.2f, 120 - timeFactor*prevAccum.updateTime), glm::vec2(20 + i*.2f, 120 - timeFactor*accum.updateTime), glm::vec4(0,1,0,1));
 					}
 					prevAccum = accum;
-					ZeroMemory(&accum, sizeof(PerformanceInfo));
+					memset(&accum, 0, sizeof(PerformanceInfo));
 				}
 			}
 

@@ -46,7 +46,7 @@ std::string blib::util::StreamIn::readLine()
 	} while(bufje[i-1] != '\n');
 
 	if(i > 0)
-		while(i > 0 && bufje[i-1] == '\n' || bufje[i-1] == '\r')
+		while(i > 0 && (bufje[i-1] == '\n' || bufje[i-1] == '\r'))
 			i--;
 	return std::string(bufje, i);
 }

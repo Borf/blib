@@ -11,7 +11,9 @@ namespace blib
 		{
 		public:
 
+#ifdef WIN32
 			HGLRC hrc;
+#endif
 
 			Window();
 			virtual ~Window();

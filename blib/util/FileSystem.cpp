@@ -5,6 +5,13 @@
 
 #ifdef WIN32
 #include <Windows.h>
+#else
+#include <dirent.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
 #endif
 
 namespace blib
@@ -13,7 +20,7 @@ namespace blib
 	{
 		StreamInFile* PhysicalFileSystemHandler::openRead( const std::string &fileName )
 		{
-			std::ifstream* stream = new std::ifstream(directory + "/" + fileName, std::ios_base::binary);
+			std::ifstream* stream = new std::ifstream((directory + "/" + fileName).c_str(), std::ios_base::binary);
 			if(stream->is_open())
 			{
 				return new StreamInFilePhysical(stream);
@@ -25,7 +32,7 @@ namespace blib
 
 		StreamOut* PhysicalFileSystemHandler::openWrite( const std::string &fileName )
 		{
-			throw std::exception("The method or operation is not implemented.");
+			throw "The method or operation is not implemented.";
 		}
 
 		void PhysicalFileSystemHandler::getFileList(const std::string &path, std::vector<std::string> &files)
@@ -60,7 +67,7 @@ namespace blib
 				closedir(dp);
 			}
 			else
-				cLog::add("Could not open directory '%s'", directory.c_str());
+				Log::out<<"Could not open directory '"<<directory<<"'"<<Log::newline;
 #else
 			WIN32_FIND_DATA FileData;													// thingy for searching through a directory
 			HANDLE hSearch;	

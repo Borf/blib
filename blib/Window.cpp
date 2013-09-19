@@ -1,5 +1,8 @@
 #include "Window.h"
 
+
+#ifdef WIN32
+
 #include <Windowsx.h>
 
 #include <blib/KeyListener.h>
@@ -221,3 +224,5 @@ namespace blib
 
 
 }
+
+#endif

@@ -1,4 +1,4 @@
-#include "thread.h"
+#include "Thread.h"
 
 #ifndef WIN32
 #include <sys/prctl.h>
@@ -10,6 +10,7 @@ namespace blib
 	namespace util
 	{
 
+#ifdef WIN32
 		const DWORD MS_VC_EXCEPTION=0x406D1388;
 
 #pragma pack(push,8)
@@ -38,6 +39,7 @@ namespace blib
 			{
 			}
 		}
+#endif
 
 
 
@@ -79,13 +81,13 @@ namespace blib
 			return ((Thread*)lpParam)->run();
 		}
 #else
-		void* cThread::threadStarter(void* lpParam)
+		void* Thread::threadStarter(void* lpParam)
 		{
 #ifdef WIN32
 #else
-			prctl(PR_SET_NAME, (unsigned long)((cThread*)lpParam)->name.substr(0, math::min(16, (int)((cThread*)lpParam)->name.size())).c_str());
+			prctl(PR_SET_NAME, (unsigned long)((Thread*)lpParam)->name.substr(0, std::min(16, (int)((Thread*)lpParam)->name.size())).c_str());
 #endif
-			pthread_exit((void*)((cThread*)lpParam)->run());
+			pthread_exit((void*)((Thread*)lpParam)->run());
 		}
 #endif
 

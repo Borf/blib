@@ -37,36 +37,6 @@ namespace blib
 		
 
 
-		template<>
-		inline Renderer* getResource<Renderer>()
-		{
-			return renderer();
-		}
-		template<>
-		inline Texture* getResource<Texture>(const std::string &name)
-		{
-			return texture(name);
-		}
-		template<>
-		inline TextureMap* getResource<TextureMap>()
-		{
-			return texturemap();
-		}
-		template<>
-		inline Shader* getResource<Shader>(const std::string &name)
-		{
-			return shader(name);
-		}	
-
-		template<>
-		inline VBO* getResource<VBO>()
-		{
-			return vbo();
-		}
-
-
-
-
 
 		fastdelegate::FastDelegate0<Renderer*>	renderer;
 		fastdelegate::FastDelegate1<const std::string &, Texture*>	texture;
@@ -74,6 +44,34 @@ namespace blib
 		fastdelegate::FastDelegate0<VBO*>		vbo;
 		fastdelegate::FastDelegate0<TextureMap*>		texturemap;
 	};
+
+	template<>
+	inline Renderer* ResourceManager::getResource<Renderer>()
+	{
+		return renderer();
+	}
+	template<>
+	inline Texture* ResourceManager::getResource<Texture>(const std::string &name)
+	{
+		return texture(name);
+	}
+	template<>
+	inline TextureMap* ResourceManager::getResource<TextureMap>()
+	{
+		return texturemap();
+	}
+	template<>
+	inline Shader* ResourceManager::getResource<Shader>(const std::string &name)
+	{
+		return shader(name);
+	}	
+
+	template<>
+	inline VBO* ResourceManager::getResource<VBO>()
+	{
+		return vbo();
+	}
+
 
 
 	class NullResource : public ResourceManager

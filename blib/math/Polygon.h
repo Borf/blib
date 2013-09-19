@@ -42,11 +42,13 @@ namespace blib
 				lines.clear();
 			}
 
+#ifdef WIN32
 			void push_back(value_type&& _Val)
 			{
 				std::vector<glm::vec2>::push_back(_Val);
 				lines.clear();
 			}
+#endif
 
 			void clear()
 			{

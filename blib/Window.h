@@ -8,6 +8,7 @@
 #include <Windows.h>
 #endif
 
+#include <string>
 #include <list>
 #include <vector>
 
@@ -36,10 +37,17 @@ namespace blib
 		bool opened;
 		std::string title;
 		std::string className;
+#ifdef WIN32
 		HWND hWnd;
-
 	public:
 		HDC hdc;
+#else
+
+	public:
+#endif
+
+
+
 
 
 		Window();
@@ -57,7 +65,9 @@ namespace blib
 		virtual void swapBuffers() = 0;
 		virtual void tick() = 0;
 
+#ifdef WIN32
 		LRESULT wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+#endif
 
 		void addListener(KeyListener* keyListener);
 		void addListener(MouseListener* keyListener);

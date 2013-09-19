@@ -1,6 +1,6 @@
 #pragma once
 
-#include <blib/texture.h>
+#include <blib/Texture.h>
 
 namespace blib
 {
@@ -23,6 +23,6 @@ namespace blib
 
 		virtual void use() = 0;
 		virtual void save(std::string filename) {};
-		virtual TexInfo* addTexture(std::string filename) = NULL;
+		virtual TexInfo* addTexture(std::string filename) = 0;
 	};
 }

@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 #include <map>
+#include <string>
 
 namespace blib
 {

@@ -1,12 +1,17 @@
 #pragma once
 
+#ifdef WIN32
 #include <Windows.h>
+#endif
 
 namespace blib
 {
 	enum Key
 	{
+#ifdef WIN32
 		KEY_ESC = VK_ESCAPE,
+#endif
+		KEY_ESC
 
 	};
 

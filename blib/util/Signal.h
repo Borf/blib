@@ -5,7 +5,7 @@
 #include <windows.h>
 #else
 #include <pthread.h>
-#include <bengine/util/mutex.h>
+#include <blib/util/Mutex.h>
 #endif
 
 namespace blib
