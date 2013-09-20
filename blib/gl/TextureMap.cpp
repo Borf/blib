@@ -59,6 +59,11 @@ namespace blib
 			int w,h;
 			unsigned char* data = stbi_load_from_memory((stbi_uc*)fileData, length, &w, &h, &depth, 4);
 			delete[] fileData;
+			if(data == NULL)
+			{
+				Log::err<<"Error loading texture "<<filename<<", invalid texture file"<<Log::newline;
+			}
+
 
 			if(w%32 != 0)
 				Log::err<<"Error loading texture "<<filename<<", width is not a multiple of 32"<<Log::newline;

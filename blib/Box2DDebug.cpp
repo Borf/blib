@@ -39,14 +39,18 @@ namespace blib
 		for(int i = 1; i < vertexCount-1; i++)
 		{
 			verts.push_back(VertexP2C4((b2Vec2)vertices[0], glm::vec4(color.r, color.g, color.b, alpha)));
-			for(int iii = i; iii < i+2; iii++)
+			for(int ii = i; ii < i+2; ii++)
 			{
-				verts.push_back(VertexP2C4((b2Vec2)vertices[iii], glm::vec4(color.r, color.g, color.b, alpha)));
+				verts.push_back(VertexP2C4((b2Vec2)vertices[ii], glm::vec4(color.r, color.g, color.b, alpha)));
 			}
-
+		}
+		for(int i = 0; i < vertexCount; i++)
+		{
 			int ii = (i+1)%vertexCount;
 			lineBatch->draw((b2Vec2)vertices[i], (b2Vec2)vertices[ii], glm::vec4(color.r, color.g, color.b, 1));
 		}
+
+
 		RenderState::activeRenderState->activeShader = lineBatch->shader;
 		renderer->drawTriangles(*RenderState::activeRenderState, verts);
 	}
