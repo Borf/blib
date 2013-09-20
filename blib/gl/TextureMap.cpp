@@ -62,6 +62,7 @@ namespace blib
 			if(data == NULL)
 			{
 				Log::err<<"Error loading texture "<<filename<<", invalid texture file"<<Log::newline;
+				return NULL;
 			}
 
 

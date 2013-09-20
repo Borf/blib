@@ -220,13 +220,22 @@ void main()\
 		size_t currentSize = vertices.size();
 		vertices.insert(vertices.end(), cache->verts.begin(), cache->verts.end());
 
-		for(size_t i = 0; i < cache->materialIndices.size(); i++)
+
+		if(currentTexture != cache->materialIndices[0].first && currentTexture != NULL)
+			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, currentSize));
+		currentTexture = cache->materialIndices[0].first;
+
+
+
+		for(size_t i = 0; i < cache->materialIndices.size()-1; i++)
 		{
 			if(cache->materialIndices[i].second < 0)
 				throw "argh";
 			materialIndices.push_back(cache->materialIndices[i]);
 			materialIndices[materialIndices.size()-1].second += currentSize;
 		}
+		currentTexture = cache->materialIndices[cache->materialIndices.size()-1].first;
+
 	}
 
 

@@ -16,6 +16,15 @@ namespace blib
 		std::string toString(int number);
 		std::vector<std::string> split(std::string toSplit, std::string seperator);
 
+		template<class T>
+		T swapByteOrder( T val)
+		{
+			char* buf = (char*)&val;
+			std::swap(buf[0], buf[3]);
+			std::swap(buf[1], buf[2]);
+			return val;
+		}
+
 #define H1(s,i,x)   (x*65599u+(uint8_t)s[(i)<strlen(s)?strlen(s)-1-(i):strlen(s)])
 #define H4(s,i,x)   H1(s,i,H1(s,i+1,H1(s,i+2,H1(s,i+3,x))))
 #define H16(s,i,x)  H4(s,i,H4(s,i+4,H4(s,i+8,H4(s,i+12,x))))
