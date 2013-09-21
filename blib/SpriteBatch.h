@@ -7,6 +7,7 @@
 #include <blib/gl/Shader.h>
 #include <blib/math/Rectangle.h>
 #include <blib/TextureMap.h>
+#include <blib/RenderState.h>
 #include <queue>
 
 namespace Json { class Value; }
@@ -17,6 +18,7 @@ namespace blib
 	class Shader;
 	class Font;
 	class Renderer;
+	class RenderState;
 
 	class ResourceManager;
 	class VertexP2T2C4;
@@ -26,6 +28,8 @@ namespace blib
 	class SpriteBatch : public gl::GlInitRegister
 	{
 	private:
+		RenderState renderState;
+
 		typedef VertexP2T2C4 vertexDef;
 	public:
 		class Cache

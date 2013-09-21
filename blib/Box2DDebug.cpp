@@ -14,6 +14,8 @@ namespace blib
 	Box2DDebug::Box2DDebug()
 	{
 		alpha = 0.5f;
+		lineBatch = NULL;
+		renderer = NULL;
 	}
 
 	void Box2DDebug::init( LineBatch* lineBatch, Renderer* renderer )

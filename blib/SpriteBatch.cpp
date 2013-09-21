@@ -15,6 +15,12 @@ namespace blib
 	{
 		active = false;
 		this->renderer = renderer;
+
+		renderState.blendEnabled = true;
+		renderState.srcBlendColor = blib::RenderState::SRC_ALPHA;
+		renderState.srcBlendAlpha = blib::RenderState::SRC_ALPHA;
+		renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
+		renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 	}
 
 	void SpriteBatch::initGl()
@@ -44,6 +50,7 @@ void main()\
 	gl_FragColor = color*texture2D(s_texture, texCoord);\
 }\
 ");
+		renderState.activeShader = shader;
 		vertices.reserve(MAX_SPRITES);
 
 	}
@@ -72,9 +79,8 @@ void main()\
 		int lastIndex = 0;
 		for(size_t i = 0; i < materialIndices.size(); i++)
 		{
-			RenderState::activeRenderState->activeTexture[0] = materialIndices[i].first;
-			RenderState::activeRenderState->activeShader = shader;
-			renderer->drawTriangles<vertexDef>(*RenderState::activeRenderState, &vertices[lastIndex], materialIndices[i].second - lastIndex);
+			renderState.activeTexture[0] = materialIndices[i].first;
+			renderer->drawTriangles<vertexDef>(renderState, &vertices[lastIndex], materialIndices[i].second - lastIndex);
 			lastIndex = materialIndices[i].second;
 		}
 		active = false;

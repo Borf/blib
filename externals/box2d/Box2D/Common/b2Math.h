@@ -71,6 +71,8 @@ struct b2Vec2
 	/// Construct using coordinates.
 	b2Vec2(float32 x, float32 y) : x(x), y(y) {}
 
+	b2Vec2(const glm::vec2 &vec) { x = vec.x; y = vec.y; }
+
 	/// Set this vector to all zeros.
 	void SetZero() { x = 0.0f; y = 0.0f; }
 
