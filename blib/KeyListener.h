@@ -14,12 +14,14 @@ namespace blib
 		KEY_RIGHT = VK_RIGHT,
 		KEY_UP = VK_UP,
 		KEY_DOWN = VK_DOWN,
+		KEY_SPACE = VK_SPACE,
 #else
 		KEY_ESC,
 		KEY_LEFT,
 		KEY_RIGHT,
 		KEY_UP,
 		KEY_DOWN,
+		KEY_SPACE,
 #endif
 
 	};

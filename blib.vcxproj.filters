@@ -418,6 +418,7 @@
       <Filter>external\box2d</Filter>
     </ClInclude>
     <ClInclude Include="blib\Box2DDebug.h" />
+    <ClInclude Include="blib\Color.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -702,6 +703,7 @@
       <Filter>external\box2d</Filter>
     </ClCompile>
     <ClCompile Include="blib\Box2DDebug.cpp" />
+    <ClCompile Include="blib\Color.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

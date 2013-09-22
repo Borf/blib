@@ -53,6 +53,20 @@ namespace blib
 		}
 
 
+
+		bool compareVec4::operator()( const glm::vec4 &a, const glm::vec4 &b ) const
+		{
+			if(a.x != b.x)
+				return a.x < b.x;
+			if(a.y != b.y)
+				return a.y < b.y;
+			if(a.z != b.z)
+				return a.z < b.z;
+			if(a.w != b.w)
+				return a.w < b.w;
+			return false;
+		}
+
 	}
 }
 
