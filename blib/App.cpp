@@ -216,6 +216,33 @@ namespace blib
 			double elapsedTime = blib::util::Profiler::getTime();
 			blib::util::Profiler::startFrame();
 			app->time += elapsedTime;
+
+
+			int joystickCount = joyGetNumDevs();
+			for(int i = 0; i < 4; i++)
+			{
+				JOYINFOEX info;
+				MMRESULT res = joyGetPosEx(i, &info);
+//				if(res == JOYERR_UNPLUGGED)
+//					Log::out<<"Unplugged joystick "<<i<<Log::newline;
+				if(res != JOYERR_NOERROR)
+				{
+					app->joyStates[i].connected = false;
+					continue;
+				}
+				app->joyStates[i].connected = true;
+				app->joyStates[i].leftStick.x = 2*(info.dwXpos/65535.0f)-1;
+				app->joyStates[i].leftStick.y = 2*(info.dwYpos/65535.0f)-1;
+
+				app->joyStates[i].leftTrigger = glm::max(0.0f, 2*info.dwZpos/65535.0f-1);
+				app->joyStates[i].rightTrigger = glm::max(0.0f, 1-2*info.dwZpos/65535.0f);
+
+				app->joyStates[i].rightStick.x = 2*(info.dwUpos/65535.0f)-1;
+				app->joyStates[i].rightStick.y = 2*(info.dwVpos/65535.0f)-1;
+
+				app->joyStates[i].button = info.dwButtons;
+			}
+
 			app->update(elapsedTime);
 			if(!app->running)
 				break;

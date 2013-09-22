@@ -25,6 +25,15 @@ namespace blib
 					startValue,  // initial count
 					maxValue,  // maximum count
 					NULL);          // unnamed semaphore
+
+				int errorId = GetLastError();
+				if(errorId != 0)
+				{
+					char* lpMsgBuf;
+					FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	errorId,	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
+					Log::out<<"ReleaseSemaphore Error: "<<lpMsgBuf<<Log::newline;
+				}
+
 #else
 
 #endif
@@ -47,7 +56,9 @@ namespace blib
 					1,            // increase count by one
 					NULL) )       // not interested in previous count
 				{
-					printf("ReleaseSemaphore error: %d\n", GetLastError());
+					char* lpMsgBuf;
+					FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	GetLastError(),	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
+					Log::out<<"ReleaseSemaphore Error: "<<lpMsgBuf<<Log::newline;
 				}
 #else
 
