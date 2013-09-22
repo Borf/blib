@@ -234,6 +234,14 @@ namespace blib
 				app->joyStates[i].leftStick.x = 2*(info.dwXpos/65535.0f)-1;
 				app->joyStates[i].leftStick.y = 2*(info.dwYpos/65535.0f)-1;
 
+				float len = glm::length(app->joyStates[i].leftStick);
+				float angle = atan2(app->joyStates[i].leftStick.y, app->joyStates[i].leftStick.x);
+
+				if(len >= 0.25f)
+					app->joyStates[i].leftStick = glm::vec2((len - 0.25f) * (1.0f / (1-0.25f)) * cos(angle), (len - 0.25f) * (1.0f / (1-0.25f)) * sin(angle));
+				else
+					app->joyStates[i].leftStick = glm::vec2(0,0);
+
 				app->joyStates[i].leftTrigger = glm::max(0.0f, 2*info.dwZpos/65535.0f-1);
 				app->joyStates[i].rightTrigger = glm::max(0.0f, 1-2*info.dwZpos/65535.0f);
 
