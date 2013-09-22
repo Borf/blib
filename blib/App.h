@@ -51,6 +51,15 @@ namespace blib
 		};
 
 
+		class JoystickThread : public blib::util::Thread
+		{
+			App* app;
+		public:
+			JoystickThread(App* app);
+			int run();
+		};
+
+
 
 		Window* window;
 		double time;
@@ -168,6 +177,7 @@ namespace blib
 		util::Semaphore* semaphore;
 		RenderThread* renderThread;
 		UpdateThread* updateThread;
+		JoystickThread* joystickThread;
 
 		struct PerformanceInfo
 		{
