@@ -20,7 +20,12 @@ namespace blib
 	{
 		StreamInFile* PhysicalFileSystemHandler::openRead( const std::string &fileName )
 		{
-			std::ifstream* stream = new std::ifstream((directory + "/" + fileName).c_str(), std::ios_base::binary);
+			std::ifstream* stream = NULL;
+			if(directory != "")
+				stream = new std::ifstream((directory + "/" + fileName).c_str(), std::ios_base::binary);
+			else
+				stream = new std::ifstream(fileName.c_str(), std::ios_base::binary);
+
 			if(stream->is_open())
 			{
 				return new StreamInFilePhysical(stream);
@@ -71,7 +76,10 @@ namespace blib
 #else
 			WIN32_FIND_DATA FileData;													// thingy for searching through a directory
 			HANDLE hSearch;	
-			hSearch = FindFirstFile(std::string(directory + "/" + path + "/*.*").c_str(), &FileData);
+			if(directory != "")
+				hSearch = FindFirstFile(std::string(directory + "/" + path + "/*.*").c_str(), &FileData);
+			else
+				hSearch = FindFirstFile(std::string(path + "/*.*").c_str(), &FileData);
 			if (hSearch != INVALID_HANDLE_VALUE)										// if there are results...
 			{
 				while (true)														// loop through all the files
