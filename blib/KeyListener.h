@@ -15,6 +15,7 @@ namespace blib
 		KEY_UP = VK_UP,
 		KEY_DOWN = VK_DOWN,
 		KEY_SPACE = VK_SPACE,
+		KEY_ENTER = VK_RETURN,
 #else
 		KEY_ESC,
 		KEY_LEFT,
@@ -22,6 +23,7 @@ namespace blib
 		KEY_UP,
 		KEY_DOWN,
 		KEY_SPACE,
+		KEY_ENTER,
 #endif
 
 	};
