@@ -1,5 +1,5 @@
 #include "Math.h"
-
+#include <stdlib.h>
 namespace blib
 {
 	namespace math
