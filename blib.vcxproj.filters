@@ -419,6 +419,7 @@
     </ClInclude>
     <ClInclude Include="blib\Box2DDebug.h" />
     <ClInclude Include="blib\Color.h" />
+    <ClInclude Include="blib\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -704,6 +705,7 @@
     </ClCompile>
     <ClCompile Include="blib\Box2DDebug.cpp" />
     <ClCompile Include="blib\Color.cpp" />
+    <ClCompile Include="blib\Math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">
