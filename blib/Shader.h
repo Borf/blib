@@ -30,6 +30,11 @@ namespace blib
 			inline void setValue(std::string name,			const glm::mat4 &value)	{	mat4Values[name] = value;	};
 		}	state;
 
+
+		std::map<std::string, int> attributes;
+		std::string vertexShader;
+		std::string fragmentShader;
+
 		template <class T>
 		inline void setUniform(std::string name,			const T& value)
 		{
@@ -37,6 +42,10 @@ namespace blib
 		//	doUniform(name, value);
 		}
 		virtual void use() = 0;
+		virtual void initFromData(std::string vertexShader, std::string fragmentShader);
+		virtual void bindAttributeLocation(std::string name, int index);
+
+
 		virtual void setState(State& state);
 	protected:
 		virtual void doUniform(const std::string &name,			const glm::mat4& value) = 0;

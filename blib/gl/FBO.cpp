@@ -8,26 +8,34 @@ namespace blib
 {
 	namespace gl
 	{
-		FBO::FBO(int width, int height, bool depth, bool stencil)
+		FBO::FBO()
 		{
 			depthBuffer = 0;
 			stencilBuffer = 0;
 			texid = 0;
 			fbo = 0;
-			this->width = width;
-			this->height = height;
-			this->originalHeight = height;
-			this->originalWidth = width;
-			this->depth = depth;
-			this->stencil = stencil;
+			this->width = 0;
+			this->height = 0;
+			this->originalHeight = 0;
+			this->originalWidth = 0;
+			this->depth = false;
+			this->stencil = false;
 		}
 		FBO::~FBO()
 		{
 
 		}
 
+		void FBO::setSize(int width, int height)
+		{
+			this->width = width;
+			this->height = height;
+			this->originalWidth = width;
+			this->originalHeight = height;
+		}
 
-		void blib::gl::FBO::initGl()
+
+		void FBO::init()
 		{
 			glGenTextures(1, &texid);
 			glBindTexture(GL_TEXTURE_2D, texid);
@@ -36,7 +44,7 @@ namespace blib
 			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 			//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
 			//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-	
+
 
 			glGenFramebuffers(1, &fbo);
 			glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -47,16 +55,16 @@ namespace blib
 			{
 				glGenRenderbuffers(1, &depthBuffer);
 				glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
-		#ifdef ANDROID
+#ifdef ANDROID
 				glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
-		#else
+#else
 				if(depth && !stencil)
 					glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
 				else if(!depth && stencil)
 					glRenderbufferStorage( GL_RENDERBUFFER, GL_STENCIL_INDEX8, width, height);
 				else if (depth && stencil)
 					glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_STENCIL, width, height);
-		#endif
+#endif
 				if(depth)
 					glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depthBuffer);
 				if(stencil)
@@ -66,14 +74,18 @@ namespace blib
 			unbind();
 		}
 
-		void FBO::bind()
+		void FBO::bind() //todo: keep a stack of FBOs
 		{
+			if(fbo == 0)
+			{
+				init();
+			}
 			glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 			if(depthBuffer > 0)
 				glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
 		}
 
-		void FBO::unbind()
+		void FBO::unbind() //todo: pop the FBOs
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			if(depthBuffer > 0)
@@ -92,6 +104,8 @@ namespace blib
 
 		void FBO::use()
 		{
+			if(texid == 0)
+				init();
 			glBindTexture(GL_TEXTURE_2D, texid);
 		}
 	}

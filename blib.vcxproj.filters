@@ -51,9 +51,6 @@
     <ClInclude Include="blib\gl\FBO.h">
       <Filter>gl</Filter>
     </ClInclude>
-    <ClInclude Include="blib\gl\GlInitRegister.h">
-      <Filter>gl</Filter>
-    </ClInclude>
     <ClInclude Include="blib\gl\GlResizeRegister.h">
       <Filter>gl</Filter>
     </ClInclude>
@@ -433,9 +430,6 @@
     <ClCompile Include="blib\SpriteBatch.cpp" />
     <ClCompile Include="blib\Util.cpp" />
     <ClCompile Include="blib\gl\FBO.cpp">
-      <Filter>gl</Filter>
-    </ClCompile>
-    <ClCompile Include="blib\gl\GlInitRegister.cpp">
       <Filter>gl</Filter>
     </ClCompile>
     <ClCompile Include="blib\gl\GlResizeRegister.cpp">

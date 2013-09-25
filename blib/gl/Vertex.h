@@ -9,10 +9,8 @@ namespace blib
 	class Vertex
 	{
 	protected:
-		static bool enabledVertexAttributes[10];
-
 	public:
-		static void setAttribPointers(void* offset = NULL, int *index = NULL, int totalSize = size())
+		static void setAttribPointers(bool enabledVertexAttributes[10], void* offset = NULL, int *index = NULL, int totalSize = size())
 		{
 		}
 		static const int size() { return 0; };
@@ -25,7 +23,7 @@ namespace blib
 	public: \
 	\
 		className() {} \
-		static void setAttribPointers(void* offset = NULL, int *index = NULL, int totalSize = size());\
+		static void setAttribPointers(bool enabledVertexAttributes[10], void* offset = NULL, int *index = NULL, int totalSize = size());\
 		static int size();\
 		\
 		memberType memberName; \
@@ -35,22 +33,22 @@ namespace blib
 
 
 #define VertexDef(className, memberName, memberType, count, base)	\
-	void className::setAttribPointers(void* offset, int *index, int totalSize) \
+	void className::setAttribPointers(bool enabledVertexAttributes[10], void* offset, int *index, int totalSize) \
 {\
 	int tmpIndex = 0;\
 	if(!index)\
 	index = &tmpIndex;\
-	base::setAttribPointers(offset, index, totalSize);\
-	if(!Vertex::enabledVertexAttributes[*index])\
+	base::setAttribPointers(enabledVertexAttributes, offset, index, totalSize);\
+	if(!enabledVertexAttributes[*index])\
 	glEnableVertexAttribArray(*index);\
-	Vertex::enabledVertexAttributes[*index] = true;\
+	enabledVertexAttributes[*index] = true;\
 	glVertexAttribPointer((*index)++, count, GL_FLOAT, GL_FALSE, totalSize, (void*)((char*)offset + base::size()));\
 	if(index == &tmpIndex)\
 {\
 	for(int i = *index; i < 10; i++)\
-	if(Vertex::enabledVertexAttributes[i])\
+	if(enabledVertexAttributes[i])\
 {\
-	Vertex::enabledVertexAttributes[i] = false;\
+	enabledVertexAttributes[i] = false;\
 	glDisableVertexAttribArray(i);\
 }\
 }\

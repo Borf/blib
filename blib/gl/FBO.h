@@ -7,14 +7,13 @@
 #include <GL/glew.h>
 #endif
 
-#include <blib/gl/GlInitRegister.h>
 #include <blib/FBO.h>
 
 namespace blib
 {
 	namespace gl
 	{
-		class FBO : public blib::FBO, public GlInitRegister
+		class FBO : public blib::FBO
 		{
 			bool depth;
 			bool stencil;
@@ -24,10 +23,10 @@ namespace blib
 			GLuint depthBuffer;
 			GLuint stencilBuffer;
 		public:
-			FBO(int width, int height, bool depth = false, bool stencil = true);
+			FBO();
 			~FBO();
 
-			void initGl();
+			virtual void setSize(int width, int height);
 
 			void bind();
 			void unbind();
@@ -36,7 +35,8 @@ namespace blib
 			int getWidth();
 
 			void use();
-
+		private:
+			void init();
 		};
 
 	}

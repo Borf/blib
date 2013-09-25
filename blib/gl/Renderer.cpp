@@ -124,12 +124,11 @@ namespace blib
 					else
 						glDisable(GL_BLEND);
 
-
 					if(r->renderState.activeVbo)
 						r->renderState.activeVbo->bind();
 					else
 						glBindBuffer(GL_ARRAY_BUFFER, 0);
-					r->setVertexAttributes(vertices[1-activeLayer]);
+					r->setVertexAttributes(enabledVertexAttributes, vertices[1-activeLayer]);
 
 					totalVerts += r->vertexCount();
 					if(r->command == Render::DrawTriangles)

@@ -10,7 +10,14 @@ namespace blib
 	{
 		Shader::Shader()
 		{
-			programId = glCreateProgram();
+			programId = 0;
+		}
+
+		Shader::Shader(std::string vertex, std::string fragment)
+		{
+			programId = 0;
+			this->vertexShader = vertex;
+			this->fragmentShader = fragment;
 		}
 
 
@@ -26,9 +33,35 @@ namespace blib
 	
 	
 		}
+		
 
+		//called from renderer
 		void Shader::use()
 		{
+			if(programId == 0)
+			{
+				if(vertexShader == "" || fragmentShader == "")
+				{
+					Log::out<<"Fragment shader is still empty"<<Log::newline;
+				}
+
+				programId = glCreateProgram();
+				if(programId == 0)
+					return;
+
+				shaders.push_back(SubShader::fromData(vertexShader.c_str(), SubShader::Vertex));
+				shaders.push_back(SubShader::fromData(fragmentShader.c_str(), SubShader::Fragment));
+				for(std::list<SubShader*>::iterator it = shaders.begin(); it != shaders.end(); it++)
+					(*it)->attach(programId);
+				
+				if(attributes.empty())
+					Log::out<<"No attributes for shader!"<<Log::newline;
+				for(auto it = attributes.begin(); it != attributes.end(); it++)
+					glBindAttribLocation(programId, it->second, it->first.c_str());
+				link();
+				glUseProgram(programId);
+				setState(state);
+			}
 			glUseProgram(programId);
 		}
 
@@ -108,11 +141,6 @@ namespace blib
 			glAttachShader(programId, shaderId);
 		}
 
-
-		void Shader::bindAttributeLocation(std::string name, int position)
-		{
-			glBindAttribLocation(programId, position, name.c_str());
-		}
 
 		/*void Shader::bindFragLocation( std::string name, int position )
 		{

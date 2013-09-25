@@ -11,21 +11,21 @@
 
 namespace blib
 {
-	SpriteBatch::SpriteBatch(Renderer* renderer)
+	SpriteBatch::SpriteBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState)
 	{
 		active = false;
+		cacheActive = false;
 		this->renderer = renderer;
 
+		renderState = baseRenderState;
 		renderState.blendEnabled = true;
 		renderState.srcBlendColor = blib::RenderState::SRC_ALPHA;
 		renderState.srcBlendAlpha = blib::RenderState::SRC_ALPHA;
 		renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 		renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
-	}
 
-	void SpriteBatch::initGl()
-	{
-		shader = Shader::fromData<Shader>("\
+		shader = resourceManager->getResource<Shader>();
+		shader->initFromData("\
 precision mediump float;\
 attribute vec2 a_position;\
 attribute vec2 a_texture;\
@@ -50,9 +50,13 @@ void main()\
 	gl_FragColor = color*texture2D(s_texture, texCoord);\
 }\
 ");
+		shader->bindAttributeLocation("a_position", 0);
+		shader->bindAttributeLocation("a_texture", 1);
+		shader->bindAttributeLocation("a_color", 2);
+		shader->setUniform("s_texture", 0);
 		renderState.activeShader = shader;
-		vertices.reserve(MAX_SPRITES);
 
+		vertices.reserve(MAX_SPRITES);
 	}
 
 	void SpriteBatch::begin(glm::mat4 matrix)
@@ -75,7 +79,7 @@ void main()\
 			return;
 
 		materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
-		shader->setUniform("matrix", matrix);
+		renderState.activeShader->setUniform("matrix", matrix);
 		int lastIndex = 0;
 		for(size_t i = 0; i < materialIndices.size(); i++)
 		{
@@ -245,17 +249,8 @@ void main()\
 	}
 
 
-
-	void SpriteBatch::Shader::resizeGl( int width, int height )
+	void SpriteBatch::resizeGl( int width, int height )
 	{
-		setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
-	}
-
-	void SpriteBatch::Shader::init()
-	{
-		bindAttributeLocation("a_position", 0);
-		bindAttributeLocation("a_texture", 1);
-		bindAttributeLocation("a_color", 2);
-		link();
+		renderState.activeShader->setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
 }

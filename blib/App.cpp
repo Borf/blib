@@ -5,7 +5,6 @@
 #include "App.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include <blib/gl/Window.h>
-#include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/util/Profiler.h>
 #include <blib/RenderState.h>
@@ -30,6 +29,10 @@ using blib::util::Log;
 
 namespace blib
 {
+	App::App()
+	{
+		time = 0;
+	}
 
 	void App::start(bool looping)
 	{
@@ -126,11 +129,10 @@ namespace blib
 
 		renderer = resourceManager->getResource<Renderer>();
 		renderState = RenderState::activeRenderState;
-		spriteBatch = new SpriteBatch(renderer);
-		lineBatch = new LineBatch(renderer);
+		spriteBatch = new SpriteBatch(renderer, resourceManager);
+		lineBatch = new LineBatch(renderer, resourceManager);
 
 		init();
-		blib::gl::GlInitRegister::initRegisteredObjects();
 
 		blib::gl::GlResizeRegister::ResizeRegisteredObjects(window->getWidth(), window->getHeight());
 		frameTimeIndex = 0;

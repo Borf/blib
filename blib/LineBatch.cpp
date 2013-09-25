@@ -2,21 +2,19 @@
 #include "Shader.h"
 #include <blib/Renderer.h>
 #include <blib/IDrawableLine.h>
+#include <blib/ResourceManager.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
 
 namespace blib
 {
-	LineBatch::LineBatch(Renderer* renderer)
+	LineBatch::LineBatch(Renderer* renderer, ResourceManager* resourceManager)
 	{
 		active = false;
 		this->renderer = renderer;
-	}
-
-	void LineBatch::initGl()
-	{
-		shader = gl::Shader::fromData<Shader>("\
+		shader = resourceManager->getResource<Shader>();
+		shader->initFromData("\
 precision mediump float;\
 attribute vec2 a_position;\
 attribute vec4 a_color;\
@@ -36,7 +34,10 @@ void main()\
 	gl_FragColor = color;\
 }\
 ");
+		shader->bindAttributeLocation("a_position", 0);
+		shader->bindAttributeLocation("a_color", 1);
 	}
+
 
 	void LineBatch::begin(glm::mat4 matrix)
 	{
@@ -109,17 +110,8 @@ void main()\
 	}
 
 
-	void LineBatch::Shader::resizeGl( int width, int height )
+	void LineBatch::resizeGl( int width, int height )
 	{
-		setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
+		shader->setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
-
-	void LineBatch::Shader::init()
-	{
-		link();
-		use();
-		setUniform("a_position", 0);
-		setUniform("a_color", 1);
-	}
-
 }

@@ -44,9 +44,11 @@ namespace blib
 	 
 			GLuint getUniformLocation(const std::string &name);
 			std::string id;
-			Shader();
 		public:
-			template<class T>
+			Shader();
+			Shader(std::string vertex, std::string fragment);
+			
+/*			template<class T>
 			static T* fromFile(std::string vertex, std::string fragment)
 			{
 				T* shader = new T();
@@ -69,13 +71,13 @@ namespace blib
 					(*it)->attach(shader->programId);
 				shader->init();
 				return shader;
-			}
+			}*/
 			virtual ~Shader();
 			virtual void init(){};
 			void use();
 			void link();
 
-			void bindAttributeLocation(std::string name, int position);
+			//void bindAttributeLocation(std::string name, int position);
 			//void bindFragLocation( std::string name, int position );
 		
 		

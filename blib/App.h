@@ -151,6 +151,7 @@ namespace blib
 
 
 	public:
+		App();
 		void start(bool looping = true);
 		void run();
 		void step();

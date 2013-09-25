@@ -2,7 +2,6 @@
 
 #include <glm/glm.hpp>
 #include <blib/Texture.h>
-#include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/gl/Shader.h>
 #include <blib/math/Rectangle.h>
@@ -25,10 +24,9 @@ namespace blib
 	class VBO;
 
 
-	class SpriteBatch : public gl::GlInitRegister
+	class SpriteBatch : public blib::gl::GlResizeRegister
 	{
 	private:
-		RenderState renderState;
 
 		typedef VertexP2T2C4 vertexDef;
 	public:
@@ -42,12 +40,6 @@ namespace blib
 
 
 #define MAX_SPRITES 110000
-		class Shader : public blib::gl::Shader, gl::GlResizeRegister
-		{
-		public:
-			void resizeGl(int width, int height);
-			void init();
-		};
 		std::vector<vertexDef> vertices;
 		std::vector<std::pair<Texture*, unsigned short> > materialIndices;
 		
@@ -62,11 +54,11 @@ namespace blib
 		int cacheStart;
 
 
-		blib::gl::Shader* shader;
 	public:
-		SpriteBatch(Renderer* renderer);
+		RenderState renderState;
+		blib::Shader* shader;
 
-		virtual void initGl();
+		SpriteBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState = RenderState());
 
 		virtual void begin(glm::mat4 matrix = glm::mat4());
 		virtual void end();
@@ -82,6 +74,6 @@ namespace blib
 		virtual void drawStretchyRect(Texture* sprite, glm::mat4 transform, blib::math::Rectangle src, blib::math::Rectangle innerSrc, glm::vec2 size, glm::vec4 color = glm::vec4(1,1,1,1));
 		virtual void drawStretchyRect(Texture* sprite, glm::mat4 transform, Json::Value skin, glm::vec2 size, glm::vec4 color = glm::vec4(1,1,1,1));
 
-
+		virtual void resizeGl( int width, int height );
 	};
 }

@@ -12,13 +12,6 @@
 namespace blib
 {
 
-bool Vertex::enabledVertexAttributes[10] = { false, false, false, false, false, false, false, false, false, false };
-
-
-
-
-
-
 VertexDef(VertexP3,								position,	glm::vec3, 3, Vertex)
 VertexDef(VertexP2,								position,	glm::vec2, 2, Vertex)
 VertexDef(VertexP3T2,							texCoord,	glm::vec2, 2, VertexP3)

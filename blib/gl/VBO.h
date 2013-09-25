@@ -11,14 +11,13 @@
 #include <blib/VBO.h>
 #include <blib/util/NotCopyable.h>
 #include <blib/util/FastDelegate.h>
-#include <blib/gl/GlInitRegister.h>
 
 namespace blib
 {
 	namespace gl
 	{
 
-		class VBO : public blib::VBO, public blib::util::NotCopyable, public GlInitRegister
+		class VBO : public blib::VBO, public blib::util::NotCopyable
 		{
 		private:
 			GLuint vbo;

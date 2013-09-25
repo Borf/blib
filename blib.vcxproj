@@ -22,7 +22,6 @@
     <ClInclude Include="blib\Font.h" />
     <ClInclude Include="blib\gl\Camera.h" />
     <ClInclude Include="blib\gl\FBO.h" />
-    <ClInclude Include="blib\gl\GlInitRegister.h" />
     <ClInclude Include="blib\gl\GlResizeRegister.h" />
     <ClInclude Include="blib\gl\Renderer.h" />
     <ClInclude Include="blib\gl\ResourceManager.h" />
@@ -167,7 +166,6 @@
     <ClCompile Include="blib\Color.cpp" />
     <ClCompile Include="blib\Font.cpp" />
     <ClCompile Include="blib\gl\FBO.cpp" />
-    <ClCompile Include="blib\gl\GlInitRegister.cpp" />
     <ClCompile Include="blib\gl\GlResizeRegister.cpp" />
     <ClCompile Include="blib\gl\Renderer.cpp" />
     <ClCompile Include="blib\gl\ResourceManager.cpp" />

@@ -20,5 +20,16 @@ namespace blib
 			doUniform(it->first, it->second);
 	}
 
+	void Shader::bindAttributeLocation( std::string name, int index )
+	{
+		attributes[name] = index;
+	}
+
+	void Shader::initFromData( std::string vertexShader, std::string fragmentShader )
+	{
+		this->vertexShader = vertexShader;
+		this->fragmentShader = fragmentShader;
+	}
+
 
 }

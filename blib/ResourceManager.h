@@ -12,7 +12,7 @@ namespace blib
 	class Renderer;
 	class Shader;
 	class TextureMap;
-
+	class FBO;
 
 	class ResourceManager
 	{
@@ -38,11 +38,13 @@ namespace blib
 
 
 
-		fastdelegate::FastDelegate0<Renderer*>	renderer;
+		fastdelegate::FastDelegate0<Renderer*>						renderer;
 		fastdelegate::FastDelegate1<const std::string &, Texture*>	texture;
 		fastdelegate::FastDelegate1<const std::string &, Shader*>	shader;
-		fastdelegate::FastDelegate0<VBO*>		vbo;
-		fastdelegate::FastDelegate0<TextureMap*>		texturemap;
+		fastdelegate::FastDelegate0<Shader*>						emptyshader;
+		fastdelegate::FastDelegate0<VBO*>							vbo;
+		fastdelegate::FastDelegate0<FBO*>							fbo;
+		fastdelegate::FastDelegate0<TextureMap*>					texturemap;
 	};
 
 	template<>
@@ -67,11 +69,21 @@ namespace blib
 	}	
 
 	template<>
+	inline Shader* ResourceManager::getResource<Shader>()
+	{
+		return emptyshader();
+	}
+
+	template<>
 	inline VBO* ResourceManager::getResource<VBO>()
 	{
 		return vbo();
 	}
-
+	template<>
+	inline FBO* ResourceManager::getResource<FBO>()
+	{
+		return fbo();
+	}
 
 
 	class NullResource : public ResourceManager

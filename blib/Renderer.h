@@ -12,6 +12,8 @@ namespace blib
 	class Renderer
 	{
 	protected:
+		bool enabledVertexAttributes[10];
+
 		class Render
 		{
 		public:
@@ -25,7 +27,7 @@ namespace blib
 			RenderState renderState;
 			Shader::State state;
 
-			virtual void setVertexAttributes(float* firstVertex) = 0;
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex) = 0;
 			virtual int vertexCount() = 0;
 			virtual void perform(float* firstVertex) {};
 		};
@@ -36,12 +38,12 @@ namespace blib
 		public:
 			int vertexStart;
 			int count;
-			virtual void setVertexAttributes(float* firstVertex)
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
 			{
 				if(renderState.activeVbo != NULL)
-					T::setAttribPointers();
+					T::setAttribPointers(enabledVertices);
 				else
-					T::setAttribPointers(firstVertex + vertexStart);
+					T::setAttribPointers(enabledVertices, firstVertex + vertexStart);
 			}
 			virtual int vertexCount()
 			{
@@ -59,7 +61,7 @@ namespace blib
 			bool clearDepth;
 			bool clearStencil;
 
-			virtual void setVertexAttributes(float* firstVertex)
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
 			{
 			}
 
@@ -77,7 +79,7 @@ namespace blib
 			int vertexStart;
 			int count;
 
-			virtual void setVertexAttributes(float* firstVertex)
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
 			{
 			}
 			virtual int vertexCount()
@@ -115,6 +117,9 @@ namespace blib
 			vertices[1] = new float[1024*1024*10]; // 10M floats
 			vertexIndex[0] = 0;
 			vertexIndex[1] = 0;
+			for(int i = 0; i < 10; i++)
+				enabledVertexAttributes[i] = false;
+
 		}
 
 		template<class T>

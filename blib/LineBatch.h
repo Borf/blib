@@ -2,7 +2,6 @@
 
 #include <glm/glm.hpp>
 #include <blib/gl/Vertex.h>
-#include <blib/gl/GlInitRegister.h>
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/gl/Shader.h>
 #include <queue>
@@ -12,18 +11,14 @@ namespace blib
 	namespace gl { class Shader; }
 	class Renderer;
 	class IDrawableLine;
+	class ResourceManager;
 
-	class LineBatch : public gl::GlInitRegister
+	class LineBatch : public gl::GlResizeRegister
 	{
 		typedef VertexP2C4 vertexDef;
 
 #define MAX_LINES 40000
-		class Shader : public blib::gl::Shader, gl::GlResizeRegister
-		{
-		public:
-			void resizeGl(int width, int height);
-			void init();
-		};
+
 
 		Renderer*	renderer;
 		vertexDef	verts[MAX_LINES];
@@ -32,12 +27,12 @@ namespace blib
 		bool active;
 
 	public:
-		LineBatch(Renderer* renderer);
+		LineBatch(Renderer* renderer, ResourceManager* resourceManager);
 
 		blib::Shader* shader;
 		glm::mat4 matrix;			//TODO: make private
 
-		virtual void initGl();
+		virtual void resizeGl(int width, int height);
 
 		virtual void begin(glm::mat4 matrix = glm::mat4());
 		virtual void end();
