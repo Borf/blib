@@ -306,6 +306,8 @@ namespace blib
 				if(res != JOYERR_NOERROR)
 				{
 					newState.connected = false;
+					newState.button = 0;
+					app->joyStates[i] = newState;
 					continue;
 				}
 				newState.connected = true;
@@ -327,7 +329,6 @@ namespace blib
 				newState.rightStick.y = 2*(info.dwVpos/65535.0f)-1;
 
 				newState.button = info.dwButtons;
-
 
 				//TODO: this is kind of thread unsafe...
 				app->joyStates[i] = newState;

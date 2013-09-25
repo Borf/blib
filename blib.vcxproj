@@ -36,6 +36,7 @@
     <ClInclude Include="blib\IDrawableLine.h" />
     <ClInclude Include="blib\KeyListener.h" />
     <ClInclude Include="blib\LineBatch.h" />
+    <ClInclude Include="blib\linq.h" />
     <ClInclude Include="blib\Math.h" />
     <ClInclude Include="blib\math\Circle.h" />
     <ClInclude Include="blib\math\Line.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="blib\gl\Vertex.cpp" />
     <ClCompile Include="blib\gl\Window.cpp" />
     <ClCompile Include="blib\LineBatch.cpp" />
+    <ClCompile Include="blib\linq.cpp" />
     <ClCompile Include="blib\Math.cpp" />
     <ClCompile Include="blib\math\Line.cpp" />
     <ClCompile Include="blib\math\Polygon.cpp" />
