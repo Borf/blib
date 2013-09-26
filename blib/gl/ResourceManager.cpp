@@ -5,6 +5,7 @@
 #include <blib/gl/Renderer.h>
 #include <blib/gl/Shader.h>
 #include <blib/gl/FBO.h>
+#include <blib/Font.h>
 
 
 namespace blib
@@ -23,6 +24,7 @@ namespace blib
 			fbo			= fastdelegate::MakeDelegate(this, &ResourceManager::getFBO);
 
 			texturemap = fastdelegate::MakeDelegate(this, &ResourceManager::getTextureMap);
+			font		= fastdelegate::MakeDelegate(this, &ResourceManager::getFont);
 		}
 
 		blib::Renderer* ResourceManager::getRenderer()
@@ -53,6 +55,11 @@ namespace blib
 		blib::FBO* ResourceManager::getFBO()
 		{
 			return new FBO();
+		}
+
+		blib::Font* ResourceManager::getFont(const std::string &name)
+		{
+			return Font::getFontInstance(name);
 		}
 
 	}

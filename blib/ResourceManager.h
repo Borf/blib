@@ -13,6 +13,7 @@ namespace blib
 	class Shader;
 	class TextureMap;
 	class FBO;
+	class Font;
 
 	class ResourceManager
 	{
@@ -41,6 +42,7 @@ namespace blib
 		fastdelegate::FastDelegate0<Renderer*>						renderer;
 		fastdelegate::FastDelegate1<const std::string &, Texture*>	texture;
 		fastdelegate::FastDelegate1<const std::string &, Shader*>	shader;
+		fastdelegate::FastDelegate1<const std::string &, Font*>		font;
 		fastdelegate::FastDelegate0<Shader*>						emptyshader;
 		fastdelegate::FastDelegate0<VBO*>							vbo;
 		fastdelegate::FastDelegate0<FBO*>							fbo;
@@ -67,6 +69,12 @@ namespace blib
 	{
 		return shader(name);
 	}	
+
+	template<>
+	inline Font* ResourceManager::getResource<Font>(const std::string &name)
+	{
+		return font(name);
+	}
 
 	template<>
 	inline Shader* ResourceManager::getResource<Shader>()

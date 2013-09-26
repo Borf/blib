@@ -100,6 +100,18 @@ namespace blib
 			}
 			return ret;
 		}
+
+		template<class Return, class Storage, class Operator>
+		Return select(const Storage& data, Operator func)
+		{
+			Return ret;
+			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			{
+				ret.insert(ret.end(), func(*it));
+			}
+			return ret;
+		}
+
 	}
 
 

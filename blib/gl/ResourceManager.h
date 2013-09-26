@@ -15,6 +15,7 @@ namespace blib
 			Renderer* getRenderer();
 			Texture* getTexture(const std::string &name);
 			Shader* getShader(const std::string &name);
+			Font* getFont(const std::string &name);
 			Shader* getShaderEmpty();
 			TextureMap* getTextureMap();
 			FBO* getFBO();
