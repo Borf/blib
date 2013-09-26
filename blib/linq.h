@@ -43,6 +43,16 @@ namespace blib
 			return ret;
 		}
 
+		template<class Return, class Storage, class Operator>
+		Return sum(const Storage& data, Operator func)
+		{
+			Return ret = 0;
+			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+				ret += func(*it);
+			return ret;
+		}
+
+
 		template<class Storage, class Operator>
 		int count(const Storage& data, Operator func)
 		{
@@ -105,7 +115,7 @@ namespace blib
 		Return select(const Storage& data, Operator func)
 		{
 			Return ret;
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(Storage::const_iterator it = data.cbegin(); it != data.cend(); it++)
 			{
 				ret.insert(ret.end(), func(*it));
 			}
