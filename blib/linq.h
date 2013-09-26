@@ -121,7 +121,14 @@ namespace blib
 			}
 			return ret;
 		}
-
+		template<class Storage, class Operator>
+		void foreach(const Storage& data, Operator func)
+		{
+			for(Storage::const_iterator it = data.cbegin(); it != data.cend(); it++)
+			{
+				func(*it);
+			}
+		}
 	}
 
 

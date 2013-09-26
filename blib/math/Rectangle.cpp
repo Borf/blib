@@ -40,7 +40,7 @@ namespace blib
 			lines.push_back(blib::IDrawableLine::LinePart(glm::vec2(bottomright.x,topleft.y), topleft));
 		}
 
-		bool Rectangle::contains( glm::vec2 point )
+		bool Rectangle::contains( const glm::vec2 &point ) const
 		{
 			return point.x >= topleft.x && point.y >= topleft.y && point.x < bottomright.x && point.y < bottomright.y;
 		}
@@ -68,6 +68,16 @@ namespace blib
 			return ret;
 		}
 #endif
+
+		bool Rectangle::intersect( const blib::math::Rectangle &other ) const
+		{
+			return other.contains(topleft) || other.contains(bottomright) || other.contains(glm::vec2(topleft.x, bottomright.y)) || other.contains(glm::vec2(bottomright.x, topleft.y)) ||
+				contains(other.topleft) || contains(other.bottomright) || contains(glm::vec2(other.topleft.x, other.bottomright.y)) || contains(glm::vec2(other.bottomright.x, other.topleft.y));
+				;
+
+
+		}
+
 
 	}
 }

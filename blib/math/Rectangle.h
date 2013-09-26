@@ -34,12 +34,12 @@ namespace blib
 			inline float height() const { return bottomright.y - topleft.y; };
 
 
-			bool contains(glm::vec2 point);
-			bool intersect(const blib::math::Rectangle &other);
-			bool intersect(const blib::math::Circle &other);
-			bool intersect(const blib::math::Line &other);
-			bool intersect(const blib::math::Ray &other);
-			bool intersect(const blib::math::Triangle &other);
+			bool contains(const glm::vec2 &point) const;
+			bool intersect(const blib::math::Rectangle &other) const;
+			bool intersect(const blib::math::Circle &other) const;
+			bool intersect(const blib::math::Line &other) const;
+			bool intersect(const blib::math::Ray &other) const;
+			bool intersect(const blib::math::Triangle &other) const;
 
 			void buildLines();
 			ClipperLib::Polygon toClipperPolygon() const;
