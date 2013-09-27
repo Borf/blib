@@ -68,6 +68,8 @@ namespace blib
 		{
 			step();
 		}
+		joystickThread->waitForTermination();
+
 	}
 
 
@@ -291,7 +293,7 @@ namespace blib
 
 	int App::JoystickThread::run()
 	{
-		while(true)
+		while(app->running)
 		{
 			int joystickCount = joyGetNumDevs();
 			for(int i = 0; i < joystickCount; i++)

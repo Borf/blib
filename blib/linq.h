@@ -41,6 +41,23 @@ namespace blib
 					ret = v;
 			}
 			return ret;
+		}	
+		
+		template<class CompareType, class Return, class Storage, class Operator, class Operator2>
+			Return min(const Storage& data, Operator comperator, Operator2 toReturn)
+		{
+			Return ret = toReturn(*std::begin(data));
+			CompareType minValue = comperator(*std::begin(data));
+			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			{
+				CompareType v = comperator(*it);
+				if(v < minValue)
+				{
+					minValue = v;
+					ret = toReturn(*it);
+				}
+			}
+			return ret;
 		}
 
 		template<class Return, class Storage, class Operator>
