@@ -1,4 +1,5 @@
 #include <blib/Animation.h>
+#include <blib/ResourceManager.h>
 #include <blib/util/FileSystem.h>
 #include <blib/util/Log.h>
 using blib::util::Log;
@@ -8,10 +9,10 @@ using blib::util::Log;
 
 namespace blib
 {
-	Animation::Animation( std::string filename )
+	Animation::Animation( std::string filename, ResourceManager* resourceManager )
 	{
 		Json::Value config = blib::util::FileSystem::getJson(filename);
-		texture = Texture::loadCached("assets/textures/player.png");
+		texture = resourceManager->getResource<Texture>("assets/textures/player.png");
 
 			
 		for(size_t i = 0; i < config["frames"].size(); i++)

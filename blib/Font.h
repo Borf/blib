@@ -6,7 +6,8 @@
 namespace blib
 {
 	class Texture;
-
+	class ResourceManager;
+	namespace gl { class ResourceManager; };
 	class Glyph
 	{
 	public:
@@ -16,19 +17,21 @@ namespace blib
 
 	class Font
 	{
-	public:
 		static std::map<std::string, Font*> fonts;
-		static Font* getFontInstance(std::string name);
+		static Font* getFontInstance(std::string name, ResourceManager* resourceManager);
 		static void clearCache();
-
 	//	void render(std::string text, float scale);
-		float textlen(std::string text);
 		std::map<char, Glyph*> charmap;
 		Texture* texture;
-
-	private:
-		Font(std::string file);
+		Font(std::string file, ResourceManager* resourceManager);
 		~Font();
+
+
+		friend class gl::ResourceManager;
+		friend class SpriteBatch;
+
+	public:
+		float textlen(std::string text);
 
 	};
 }

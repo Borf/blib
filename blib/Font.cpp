@@ -3,6 +3,7 @@
 #include <blib/util/FileSystem.h>
 #include <blib/util/StreamReader.h>
 #include <blib/util/Log.h>
+#include <blib/ResourceManager.h>
 
 using blib::util::Log;
 
@@ -19,12 +20,12 @@ namespace blib
 {
 	std::map<std::string, Font*> Font::fonts;
 
-	Font* Font::getFontInstance(std::string name)
+	Font* Font::getFontInstance(std::string name, ResourceManager* resourceManager)
 	{
 		std::map<std::string, Font*>::iterator it = fonts.find(name);
 		if(it == fonts.end())
 		{
-			Font* font = new Font("assets/fonts/"+name+".fnt");
+			Font* font = new Font("assets/fonts/"+name+".fnt", resourceManager);
 			fonts[name] = font;
 			return font;
 		}
@@ -55,7 +56,7 @@ namespace blib
 
 
 
-	Font::Font(std::string fileName)
+	Font::Font(std::string fileName, ResourceManager* resourceManager)
 	{
 		blib::util::StreamReader* file = new blib::util::StreamReader(blib::util::FileSystem::openRead(fileName));
 		if(!file)
@@ -106,7 +107,7 @@ namespace blib
 
 		Log::out<<"Loaded font "<<fileName<<", "<<charmap.size()<<" glyphs"<<Log::newline;
 
-		texture = Texture::loadCached("assets/fonts/"+textureFileName);
+		texture = resourceManager->getResource<Texture>("assets/fonts/"+textureFileName);
 		delete file;
 	}
 

@@ -11,6 +11,7 @@
 
 #include <blib/wm/WM.h>
 #include <blib/Texture.h>
+#include <blib/ResourceManager.h>
 #include <blib/SpriteBatch.h>
 #include <blib/util/Log.h>
 #include <blib/util/FileSystem.h>
@@ -33,7 +34,7 @@ namespace blib
 	namespace wm
 	{
 
-		Window::Window( std::string title, std::string skinFile )
+		Window::Window( std::string title, std::string skinFile, ResourceManager* resourceManager )
 		{
 			this->title = title;
 			Json::Value skin = util::FileSystem::getJson("assets/windows/" + skinFile);
@@ -60,7 +61,7 @@ namespace blib
 			selectedWidget = NULL;
 
 			if(skinFile != "")
-				this->addWidgets(this->rootPanel, skin["widgets"]);
+				this->addWidgets(this->rootPanel, skin["widgets"], resourceManager);
 
 			WM::getInstance()->addWindow(this);
 		}
@@ -107,7 +108,7 @@ namespace blib
 			rootPanel->draw(spriteBatch, glm::translate(matrix, glm::vec3(WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), WM::getInstance()->skin["window"]["offsets"]["top"].asInt(),0)));
 		}
 
-		void Window::addWidgets( widgets::Panel* panel, Json::Value skin )
+		void Window::addWidgets( widgets::Panel* panel, Json::Value skin, ResourceManager* resourceManager )
 		{
 			Json::Value::Members members = skin.getMemberNames();
 			for(unsigned int i = 0; i < members.size(); i++)
@@ -139,7 +140,7 @@ namespace blib
 				else if(type == "scrollpanel")
 					widget = new widgets::ScrollPanel();
 				else if(type == "image")
-					widget = new widgets::Image(Texture::loadCached(widgetSkin["src"].asString()));
+					widget = new widgets::Image(resourceManager->getResource<blib::Texture>(widgetSkin["src"].asString()));
 				else
 				{
 					Log::out<<"Unknown widget type: "<<type<<Log::newline;

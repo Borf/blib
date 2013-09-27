@@ -10,11 +10,11 @@ namespace blib
 		class TexInfo
 		{
 		public:
-			TexInfo(TextureMap* texMap)
+			TexInfo(Texture* texMap)
 			{
 				this->texMap = texMap;
 			}
-			TextureMap* texMap;
+			Texture* texMap;
 			glm::vec2 t1; //uv
 			glm::vec2 t2; //uv
 			int x,y,width,height; // in texels

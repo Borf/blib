@@ -4,6 +4,7 @@
 #include <blib/SpriteBatch.h>
 #include <blib/Texture.h>
 #include <blib/Font.h>
+#include <blib/ResourceManager.h>
 #include <blib/util/FileSystem.h>
 #include <blib/util/Log.h>
 using blib::util::Log;
@@ -94,11 +95,11 @@ namespace blib
 			spriteBatch.end();
 		}
 
-		void WM::setSkin( std::string skinFile )
+		void WM::setSkin( std::string skinFile, ResourceManager* resourceManager )
 		{
 			skin = util::FileSystem::getJson(skinFile);
-			skinTexture = Texture::loadCached(skin["texture"].asString());
-			font = Font::getFontInstance("tahoma");
+			skinTexture = resourceManager->getResource<Texture>(skin["texture"].asString());
+			font = resourceManager->getResource<Font>("tahoma");
 		}
 
 		void WM::setFont( Font* font )

@@ -62,7 +62,7 @@ namespace blib
 
 
 	public:
-		Animation(std::string filename);
+		Animation(std::string filename, ResourceManager* resourceManager);
 
 		void draw(SpriteBatch &spritebatch, glm::mat4 transform);
 		void update(double elapsedTime);

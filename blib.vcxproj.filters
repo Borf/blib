@@ -268,7 +268,6 @@
       <Filter>external</Filter>
     </ClInclude>
     <ClInclude Include="blib\ResourceManager.h" />
-    <ClInclude Include="blib\Resource.h" />
     <ClInclude Include="blib\gl\ResourceManager.h">
       <Filter>gl</Filter>
     </ClInclude>
@@ -418,6 +417,7 @@
     <ClInclude Include="blib\Color.h" />
     <ClInclude Include="blib\Math.h" />
     <ClInclude Include="blib\linq.h" />
+    <ClInclude Include="blib\SpriteSheet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -702,6 +702,7 @@
     <ClCompile Include="blib\Color.cpp" />
     <ClCompile Include="blib\Math.cpp" />
     <ClCompile Include="blib\linq.cpp" />
+    <ClCompile Include="blib\SpriteSheet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

@@ -13,6 +13,7 @@ namespace blib
 			ResourceManager();
 
 			Renderer* getRenderer();
+			SpriteSheet* getSpriteSheet(const std::string &name);
 			Texture* getTexture(const std::string &name);
 			Shader* getShader(const std::string &name);
 			Font* getFont(const std::string &name);

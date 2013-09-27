@@ -5,19 +5,14 @@
 using blib::util::Log;
 #include <blib/util/FileSystem.h>
 #include <blib/util/stb_image.h>
+#include <blib/SpriteSheet.h>
 #include <string.h>
 
 
 namespace blib
 {
-	std::map<std::string, Texture*> Texture::textureCache;
+	std::map<std::string, blib::Texture*> Texture::textureCache;
 
-	Texture* Texture::loadCached(std::string fileName, int loadOptions)
-	{
-		if(textureCache.find(fileName) == textureCache.end())
-			textureCache[fileName] = new gl::Texture(fileName, loadOptions);
-		return textureCache[fileName];
-	}
 
 
 	void Texture::clearCache()
@@ -33,14 +28,15 @@ namespace blib
 	namespace gl
 	{
 
-
-		Texture::Texture()
+		template <class T>
+		Texture<T>::Texture()
 		{
 			this->texid = 0;
 			this->data = NULL;
 		}
 
-		Texture::Texture(std::string fileName, int loadOptions)
+		template <class T>
+		Texture<T>::Texture(std::string fileName, int loadOptions)
 		{
 			this->texid = 0;
 			this->data = NULL;
@@ -48,7 +44,8 @@ namespace blib
 		}
 
 
-		Texture::Texture(unsigned char* data, int width, int height)
+		template <class T>
+		Texture<T>::Texture(unsigned char* data, int width, int height)
 		{
 			this->texid = 0;
 			this->data = NULL;
@@ -59,7 +56,8 @@ namespace blib
 
 
 
-		void Texture::fromFile(std::string fileName, int loadOptions)
+		template <class T>
+		void Texture<T>::fromFile(std::string fileName, int loadOptions)
 		{
 			char* fileData = NULL;
 			int length = blib::util::FileSystem::getData(fileName, fileData);
@@ -147,7 +145,8 @@ namespace blib
 
 
 
-		void Texture::fromData(unsigned char* data, int width, int height)
+		template <class T>
+		void Texture<T>::fromData(unsigned char* data, int width, int height)
 		{
 			this->width = this->originalWidth = width;
 			this->height = this->originalHeight = height;
@@ -186,7 +185,8 @@ namespace blib
 		}
 
 
-		Texture::~Texture(void)
+		template <class T>
+		Texture<T>::~Texture(void)
 		{
 			if(data != NULL)
 				delete[] data;
@@ -196,7 +196,8 @@ namespace blib
 			texid = 0;
 		}
 
-		void Texture::use()
+		template <class T>
+		void Texture<T>::use()
 		{
 			if(texid == 0 && data != NULL)
 			{
@@ -231,6 +232,8 @@ namespace blib
 
 
 
+		template class Texture<blib::Texture>;
+		template class Texture<blib::SpriteSheet>;
 
 
 

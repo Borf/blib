@@ -205,9 +205,9 @@ namespace blib
 	{
 		app->createWindow();
 
-		Texture* gear = Texture::loadCached("assets/textures/gear.png");
-		Texture* white = Texture::loadCached("assets/textures/whitepixel.png");
-		Font* font = Font::getFontInstance("tahoma");
+		Texture* gear = app->resourceManager->getResource<Texture>("assets/textures/gear.png");
+		Texture* white = app->resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
+		Font* font = app->resourceManager->getResource<Font>("tahoma");
 #ifdef WIN32
 		wglMakeCurrent(NULL, NULL);
 #else

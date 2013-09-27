@@ -129,6 +129,15 @@ namespace blib
 				func(*it);
 			}
 		}
+		template<class Storage>
+		void deleteall(Storage& data)
+		{
+			for(Storage::iterator it = data.begin(); it != data.end(); it++)
+			{
+				delete *it;
+			}
+			data.clear();
+		}
 	}
 
 

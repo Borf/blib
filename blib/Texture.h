@@ -18,8 +18,15 @@ namespace blib
 
 		glm::vec2 center;
 
-		static std::map<std::string, Texture*> textureCache;
-		static Texture* loadCached(std::string fileName, int loadOptions = 0);
+		static std::map<std::string, blib::Texture*> textureCache;
+		
+		template<class T>
+		static T* loadCached(std::string fileName, int loadOptions = 0)
+		{
+			if(textureCache.find(fileName) == textureCache.end())
+				textureCache[fileName] = new T(fileName, loadOptions);
+			return (T*)textureCache[fileName];
+		}
 		static void clearCache();
 
 	};

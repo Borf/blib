@@ -48,10 +48,10 @@
     <ClInclude Include="blib\MouseListener.h" />
     <ClInclude Include="blib\Renderer.h" />
     <ClInclude Include="blib\RenderState.h" />
-    <ClInclude Include="blib\Resource.h" />
     <ClInclude Include="blib\ResourceManager.h" />
     <ClInclude Include="blib\Shader.h" />
     <ClInclude Include="blib\SpriteBatch.h" />
+    <ClInclude Include="blib\SpriteSheet.h" />
     <ClInclude Include="blib\Texture.h" />
     <ClInclude Include="blib\TextureMap.h" />
     <ClInclude Include="blib\Util.h" />
@@ -186,6 +186,7 @@
     <ClCompile Include="blib\RenderState.cpp" />
     <ClCompile Include="blib\Shader.cpp" />
     <ClCompile Include="blib\SpriteBatch.cpp" />
+    <ClCompile Include="blib\SpriteSheet.cpp" />
     <ClCompile Include="blib\Util.cpp" />
     <ClCompile Include="blib\util\FileSystem.cpp" />
     <ClCompile Include="blib\util\Log.cpp" />

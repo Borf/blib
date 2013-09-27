@@ -12,6 +12,7 @@ namespace blib
 	class Font; 
 	class Texture; 
 	class SpriteBatch;
+	class ResourceManager;
 
 	namespace wm
 	{
@@ -35,7 +36,7 @@ namespace blib
 
 			void addWindow(Window* window);
 			void removeWindow(Window* window);
-			void setSkin(std::string skinFile);
+			void setSkin(std::string skinFile, ResourceManager* resourceManager);
 			void setFont(Font* font);
 
 			void addTask(fastdelegate::FastDelegate0<> task);

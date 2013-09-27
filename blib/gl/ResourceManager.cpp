@@ -5,7 +5,11 @@
 #include <blib/gl/Renderer.h>
 #include <blib/gl/Shader.h>
 #include <blib/gl/FBO.h>
+#include <blib/SpriteSheet.h>
 #include <blib/Font.h>
+
+#include <json/json.h>
+#include <blib/util/FileSystem.h>
 
 
 namespace blib
@@ -23,6 +27,8 @@ namespace blib
 			//	vbo      = fastdelegate::MakeDelegate(this, &ResourceManager::getVbo);
 			fbo			= fastdelegate::MakeDelegate(this, &ResourceManager::getFBO);
 
+			spritesheet = fastdelegate::MakeDelegate(this, &ResourceManager::getSpriteSheet);
+
 			texturemap = fastdelegate::MakeDelegate(this, &ResourceManager::getTextureMap);
 			font		= fastdelegate::MakeDelegate(this, &ResourceManager::getFont);
 		}
@@ -34,7 +40,7 @@ namespace blib
 
 		blib::Texture* ResourceManager::getTexture( const std::string &name )
 		{
-			return Texture::loadCached(name);
+			return Texture<blib::Texture>::loadCached<Texture<blib::Texture> >(name);
 		}
 
 		blib::Shader* ResourceManager::getShader( const std::string &name )
@@ -59,7 +65,29 @@ namespace blib
 
 		blib::Font* ResourceManager::getFont(const std::string &name)
 		{
-			return Font::getFontInstance(name);
+			return Font::getFontInstance(name, this);
+		}
+
+		blib::SpriteSheet* ResourceManager::getSpriteSheet(const std::string &name)
+		{
+			Json::Value v = util::FileSystem::getJson(name + ".json");
+			std::string directory = name;
+			
+			if(directory.find('/') != std::string::npos)
+				directory = directory.substr(0, directory.rfind('/')+1);
+			else if(directory.find('\\') != std::string::npos)
+				directory = directory.substr(0, directory.rfind('\\')+1);
+
+
+			blib::SpriteSheet* spriteSheet = blib::Texture::loadCached<blib::gl::Texture<blib::SpriteSheet> >(directory + v["tex"].asString());
+
+			spriteSheet->spriteCountX = v["count"][0u].asInt();
+			spriteSheet->spriteCountY = v["count"][1u].asInt();
+
+			spriteSheet->spriteWidth = spriteSheet->originalWidth / v["count"][0u].asInt();
+			spriteSheet->spriteHeight = spriteSheet->originalHeight / v["count"][1u].asInt();
+			spriteSheet->spriteCenter = glm::vec2(spriteSheet->spriteWidth / 2, spriteSheet->spriteHeight/2);
+			return spriteSheet;
 		}
 
 	}

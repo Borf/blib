@@ -14,6 +14,7 @@ namespace blib
 	class TextureMap;
 	class FBO;
 	class Font;
+	class SpriteSheet;
 
 	class ResourceManager
 	{
@@ -39,14 +40,15 @@ namespace blib
 
 
 
-		fastdelegate::FastDelegate0<Renderer*>						renderer;
-		fastdelegate::FastDelegate1<const std::string &, Texture*>	texture;
-		fastdelegate::FastDelegate1<const std::string &, Shader*>	shader;
-		fastdelegate::FastDelegate1<const std::string &, Font*>		font;
-		fastdelegate::FastDelegate0<Shader*>						emptyshader;
-		fastdelegate::FastDelegate0<VBO*>							vbo;
-		fastdelegate::FastDelegate0<FBO*>							fbo;
-		fastdelegate::FastDelegate0<TextureMap*>					texturemap;
+		fastdelegate::FastDelegate0<Renderer*>							renderer;
+		fastdelegate::FastDelegate1<const std::string &, Texture*>		texture;
+		fastdelegate::FastDelegate1<const std::string &, SpriteSheet*>	spritesheet;
+		fastdelegate::FastDelegate1<const std::string &, Shader*>		shader;
+		fastdelegate::FastDelegate1<const std::string &, Font*>			font;
+		fastdelegate::FastDelegate0<Shader*>							emptyshader;
+		fastdelegate::FastDelegate0<VBO*>								vbo;
+		fastdelegate::FastDelegate0<FBO*>								fbo;
+		fastdelegate::FastDelegate0<TextureMap*>						texturemap;
 	};
 
 	template<>
@@ -58,6 +60,11 @@ namespace blib
 	inline Texture* ResourceManager::getResource<Texture>(const std::string &name)
 	{
 		return texture(name);
+	}
+	template<>
+	inline SpriteSheet* ResourceManager::getResource<SpriteSheet>(const std::string &name)
+	{
+		return spritesheet(name);
 	}
 	template<>
 	inline TextureMap* ResourceManager::getResource<TextureMap>()

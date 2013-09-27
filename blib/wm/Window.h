@@ -6,15 +6,15 @@
 
 namespace blib
 {
+	class ResourceManager;
 	namespace wm
 	{
-
 	namespace widgets {	class Panel; }
 
 	class Window
 	{
 		friend class WM;
-		void addWidgets( widgets::Panel* panel, Json::Value skin );
+		void addWidgets( widgets::Panel* panel, Json::Value skin, ResourceManager* resourceManager );
 
 	protected:
 		std::string title;
@@ -34,7 +34,7 @@ namespace blib
 		Widget* selectedWidget;
 
 	public:
-		Window(std::string title, std::string skinFile);
+		Window(std::string title, std::string skinFile, ResourceManager* resourceManager);
 
 		void setSize(int width, int height);
 		void center();

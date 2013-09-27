@@ -18,7 +18,8 @@ namespace blib
 
 	namespace gl
 	{
-		class Texture : public blib::Texture
+		template<class T>
+		class Texture : public T
 		{
 		public: //TODO: make protected
 			Texture();
@@ -48,8 +49,6 @@ namespace blib
 
 		};
 		
-
-
 
 		class MultiTextureMap : public blib::Texture
 		{
