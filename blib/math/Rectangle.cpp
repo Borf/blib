@@ -78,6 +78,14 @@ namespace blib
 
 		}
 
+		void Rectangle::inflate( float x, float y )
+		{
+			topleft.x -= x;
+			topleft.y -= y;
+			bottomright.x += x;
+			bottomright.y += y;
+		}
+
 
 	}
 }

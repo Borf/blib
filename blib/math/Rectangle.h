@@ -41,6 +41,8 @@ namespace blib
 			bool intersect(const blib::math::Ray &other) const;
 			bool intersect(const blib::math::Triangle &other) const;
 
+			void inflate(float x, float y);
+
 			void buildLines();
 			ClipperLib::Polygon toClipperPolygon() const;
 			std::vector<p2t::Point*> toP2TPolygon() const;
