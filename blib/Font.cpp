@@ -187,4 +187,10 @@ namespace blib
 		}
 		return posX;
 	}
+
+	const Glyph* Font::getGlyph( const char &character ) const
+	{
+		return charmap.at(character);
+	}
+
 }

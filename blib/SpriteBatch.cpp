@@ -78,12 +78,12 @@ void main()\
 		if(vertices.size() == 0)
 			return;
 
-		materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
+		materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
 		renderState.activeShader->setUniform("matrix", matrix);
 		int lastIndex = 0;
 		for(size_t i = 0; i < materialIndices.size(); i++)
 		{
-			renderState.activeTexture[0] = materialIndices[i].first;
+			renderState.activeTexture[0] = const_cast<Texture*>(materialIndices[i].first);
 			renderer->drawTriangles<vertexDef>(renderState, &vertices[lastIndex], materialIndices[i].second - lastIndex);
 			lastIndex = materialIndices[i].second;
 		}
@@ -92,7 +92,7 @@ void main()\
 
 
 	//TODO: make overload without src rectangle, so it doesn't have to clean it up
-	void SpriteBatch::draw( Texture* texture, glm::mat4 transform, glm::vec2 center, blib::math::Rectangle src, glm::vec4 color)
+	void SpriteBatch::draw( const Texture* texture, const glm::mat4 &transform, const glm::vec2 &center, const blib::math::Rectangle &src, const glm::vec4 &color)
 	{
 		assert(active);
 
@@ -100,7 +100,7 @@ void main()\
 		float fh = (float)src.height();
 
 		if(currentTexture != texture && currentTexture != NULL)
-			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
+			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
 		currentTexture = texture;
 
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1)),	glm::vec2(src.topleft.x,src.topleft.y), color)); // 1
@@ -112,7 +112,7 @@ void main()\
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*texture->originalHeight - center.y,	0,1)),			glm::vec2(src.bottomright.x,src.bottomright.y), color)); //4
 	}
 
-	void SpriteBatch::draw( TextureMap::TexInfo* texture, glm::mat4 transform, glm::vec2 center, glm::vec4 color)
+	void SpriteBatch::draw( const TextureMap::TexInfo* texture, const glm::mat4 &transform, const glm::vec2 &center, const glm::vec4 &color)
 	{
 		assert(active);
 
@@ -120,7 +120,7 @@ void main()\
 		float fh = (float)1;
 
 		if(currentTexture != texture->texMap && currentTexture != NULL)
-			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
+			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
 		currentTexture = texture->texMap;
 
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,					0,1)),		glm::vec2(texture->t1.x,texture->t1.y), color)); // 1
@@ -134,7 +134,7 @@ void main()\
 
 	}
 
-	void SpriteBatch::draw( Font* font, std::string text, glm::mat4 transform, glm::vec4 color )
+	void SpriteBatch::draw( const Font* font, const std::string &text, const glm::mat4 &transform, const glm::vec4 &color )
 	{
 		glm::vec2 texFactor(1.0f / font->texture->width, 1.0f / font->texture->height);
 
@@ -143,7 +143,7 @@ void main()\
 		{
 			if(font->charmap.find(text[i]) == font->charmap.end())
 				continue;
-			Glyph* g = font->charmap[text[i]];
+			const Glyph* g = font->getGlyph(text[i]);
 			draw(font->texture, glm::translate(transform, glm::vec3(x+g->xoffset,g->yoffset,0)), glm::vec2(0,0), blib::math::Rectangle(g->x*texFactor.x,g->y*texFactor.y,g->width*texFactor.x,g->height*texFactor.y), color);
 
 			x+=g->xadvance;
@@ -208,7 +208,8 @@ void main()\
 		}
 
 		cache->verts.insert(cache->verts.begin(), vertices.begin() + cacheStart, vertices.end());
-		cache->materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, vertices.size()));
+		std::pair<const Texture*, unsigned short> p(currentTexture, vertices.size());
+		cache->materialIndices.push_back(p);
 
 		for(size_t i = 0; i < cache->materialIndices.size(); i++)
 			cache->materialIndices[i].second -= cacheStart;
@@ -232,7 +233,7 @@ void main()\
 
 
 		if(currentTexture != cache->materialIndices[0].first && currentTexture != NULL)
-			materialIndices.push_back(std::pair<Texture*, unsigned short>(currentTexture, currentSize));
+			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, currentSize));
 		currentTexture = cache->materialIndices[0].first;
 
 

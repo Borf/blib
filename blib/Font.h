@@ -26,6 +26,8 @@ namespace blib
 		Font(std::string file, ResourceManager* resourceManager);
 		~Font();
 
+		const Glyph* getGlyph( const char &character ) const;
+
 
 		friend class gl::ResourceManager;
 		friend class SpriteBatch;

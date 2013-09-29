@@ -11,6 +11,8 @@ namespace blib
 		static const glm::vec4 green;
 		static const glm::vec4 blue;
 		static const glm::vec4 purple;
+		static const glm::vec4 white;
+		static const glm::vec4 black;
 
 	};
 
