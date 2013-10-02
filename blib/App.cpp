@@ -314,6 +314,10 @@ namespace blib
 				newState.leftStick.x = 2*(info.dwXpos/65535.0f)-1;
 				newState.leftStick.y = 2*(info.dwYpos/65535.0f)-1;
 
+				if(glm::length(newState.leftStick) > 1)
+					newState.leftStick = glm::normalize(newState.leftStick);
+
+
 				float len = glm::length(newState.leftStick);
 				float angle = atan2(newState.leftStick.y, newState.leftStick.x);
 
@@ -327,6 +331,8 @@ namespace blib
 
 				newState.rightStick.x = 2*(info.dwUpos/65535.0f)-1;
 				newState.rightStick.y = 2*(info.dwRpos/65535.0f)-1;
+				if(glm::length(newState.rightStick) > 1)
+					newState.rightStick = glm::normalize(newState.leftStick);
 
 				newState.button = info.dwButtons;
 
