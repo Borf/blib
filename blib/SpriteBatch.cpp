@@ -59,7 +59,7 @@ void main()\
 		vertices.reserve(MAX_SPRITES);
 	}
 
-	void SpriteBatch::begin(glm::mat4 matrix)
+	void SpriteBatch::begin(const glm::mat4 &matrix)
 	{
 		assert(!active);
 		active = true;
@@ -150,7 +150,7 @@ void main()\
 		}
 	}
 
-	void SpriteBatch::drawStretchyRect( Texture* sprite, glm::mat4 transform, blib::math::Rectangle src, blib::math::Rectangle innerSrc, glm::vec2 size, glm::vec4 color )
+	void SpriteBatch::drawStretchyRect( Texture* sprite, const glm::mat4 &transform, const blib::math::Rectangle &src, const blib::math::Rectangle &innerSrc, const glm::vec2 &size, const glm::vec4 &color )
 	{
 
 		glm::vec2 factor(1.0f / sprite->width, 1.0f / sprite->height);
@@ -175,7 +175,7 @@ void main()\
 		draw(sprite, glm::scale(glm::translate(transform, glm::vec3(marginTopLeft,0)), glm::vec3(facWidth,facHeight,1)), glm::vec2(0,0), blib::math::Rectangle(innerSrc.topleft * factor, innerSrc.bottomright * factor), color); //center
 	}
 
-	void SpriteBatch::drawStretchyRect(Texture* sprite, glm::mat4 transform, Json::Value skin, glm::vec2 size, glm::vec4 color)
+	void SpriteBatch::drawStretchyRect(Texture* sprite, const glm::mat4 &transform, Json::Value skin, const glm::vec2 &size, const glm::vec4 &color)
 	{
 		drawStretchyRect(
 			sprite, 

@@ -60,7 +60,7 @@ namespace blib
 
 		SpriteBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState = RenderState());
 
-		virtual void begin(glm::mat4 matrix = glm::mat4());
+		virtual void begin(const glm::mat4 &matrix = glm::mat4());
 		virtual void end();
 
 		virtual void startCache();
@@ -71,8 +71,8 @@ namespace blib
 		virtual void draw(const TextureMap::TexInfo* sprite, const glm::mat4 &transform, const glm::vec2 &center = glm::vec2(0,0), const glm::vec4 &color = glm::vec4(1,1,1,1));
 		virtual void draw(const Font* font, const std::string& text, const glm::mat4 &transform, const glm::vec4 &color = glm::vec4(1,1,1,1));
 
-		virtual void drawStretchyRect(Texture* sprite, glm::mat4 transform, blib::math::Rectangle src, blib::math::Rectangle innerSrc, glm::vec2 size, glm::vec4 color = glm::vec4(1,1,1,1));
-		virtual void drawStretchyRect(Texture* sprite, glm::mat4 transform, Json::Value skin, glm::vec2 size, glm::vec4 color = glm::vec4(1,1,1,1));
+		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, const blib::math::Rectangle &src, const blib::math::Rectangle &innerSrc, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));
+		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, Json::Value skin, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));
 
 		virtual void resizeGl( int width, int height );
 	};

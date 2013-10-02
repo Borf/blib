@@ -123,7 +123,7 @@ namespace blib
 		}
 
 		template<class T>
-		void drawTriangles(const RenderState& renderState, std::vector<T> &vertices)
+		void drawTriangles(const RenderState& renderState, const std::vector<T> &vertices)
 		{
 			RenderBlock<T>* block = new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
