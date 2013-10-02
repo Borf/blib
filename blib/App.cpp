@@ -328,7 +328,7 @@ namespace blib
 				newState.rightTrigger = glm::max(0.0f, 1-2*info.dwZpos/65535.0f);
 
 				newState.rightStick.x = 2*(info.dwUpos/65535.0f)-1;
-				newState.rightStick.y = 2*(info.dwVpos/65535.0f)-1;
+				newState.rightStick.y = 2*(info.dwRpos/65535.0f)-1;
 
 				newState.button = info.dwButtons;
 
