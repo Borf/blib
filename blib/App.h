@@ -118,6 +118,14 @@ namespace blib
 		struct JoyState
 		{
 		public:
+			JoyState()
+			{
+				leftTrigger = 0;
+				rightTrigger = 0;
+				button = 0;
+				connected = false;
+			}
+
 			glm::vec2 leftStick;
 			glm::vec2 rightStick;
 

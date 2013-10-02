@@ -307,11 +307,7 @@ namespace blib
 
 				if(res != JOYERR_NOERROR)
 				{
-					if(i == 0) // ugly hack for the keyboard override
-						newState = app->joyStates[i];
-
-					newState.connected = false;
-					app->joyStates[i] = newState;
+					app->joyStates[i].connected = false;
 					continue;
 				}
 				newState.connected = true;
