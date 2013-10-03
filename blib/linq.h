@@ -31,8 +31,11 @@ namespace blib
 			return ret;
 		}
 		template<class Return, class Storage, class Operator>
-		Return min(const Storage& data, Operator func)
+		Return min(const Storage& data, Operator func, Return ifEmpty = 0)
 		{
+			if(data.empty())
+				return ifEmpty;
+
 			Return ret = func(*std::begin(data));
 			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
@@ -155,6 +158,17 @@ namespace blib
 			}
 			data.clear();
 		}
+
+		template<class Return, class A, class B>
+		Return merge(const A &a, const B &b)
+		{
+			Return ret;
+			ret.insert(ret.end(), a.begin(), a.end());
+			ret.insert(ret.end(), b.begin(), b.end());
+			return ret;
+		}
+
+
 	}
 
 

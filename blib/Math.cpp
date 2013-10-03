@@ -48,5 +48,10 @@ namespace blib
 			return matrix;
 		}
 
+		glm::mat4 easyMatrix( const glm::vec2 &position, glm::mat4 matrix /*= glm::mat4()*/ )
+		{
+			return glm::translate(matrix, glm::vec3(position, 0));
+		}
+
 	}
 }
