@@ -25,6 +25,11 @@ namespace blib
 			this->topleft = topleft;
 			this->bottomright = topleft + glm::vec2(width, height);
 		}
+		Rectangle::Rectangle( glm::vec2 topleft, int width, int height )
+		{
+			this->topleft = topleft;
+			this->bottomright = topleft + glm::vec2(width, height);
+		}
 
 		Rectangle::Rectangle( glm::vec2 topleft, glm::vec2 bottomright )
 		{
@@ -42,7 +47,7 @@ namespace blib
 
 		bool Rectangle::contains( const glm::vec2 &point ) const
 		{
-			return point.x >= topleft.x && point.y >= topleft.y && point.x < bottomright.x && point.y < bottomright.y;
+			return point.x > topleft.x && point.y > topleft.y && point.x < bottomright.x && point.y < bottomright.y;
 		}
 
 #ifdef clipper_hpp
