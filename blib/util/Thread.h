@@ -42,6 +42,5 @@ namespace blib
 #endif
 		};
 
-
 	}
 }

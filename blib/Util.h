@@ -38,6 +38,8 @@ namespace blib
 
 #define HASH(s)    ((uint32_t)(H256(s,0,0)^(H256(s,0,0)>>16)))
 
+		void fixConsole();
+
 
 	}
 }

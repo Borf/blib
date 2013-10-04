@@ -53,8 +53,8 @@ namespace blib
 		}
 
 
-		RenderState::activeRenderState->activeShader = lineBatch->shader;
-		renderer->drawTriangles(*RenderState::activeRenderState, verts);
+		renderer->renderState.activeShader = lineBatch->shader;
+		renderer->drawTriangles(verts);
 	}
 
 	void Box2DDebug::DrawCircle( const b2Vec2& center, float32 radius, const b2Color& color )
@@ -79,9 +79,9 @@ namespace blib
 			verts.push_back(VertexP2C4(c, clr));
 			lineBatch->draw(c + util::fromAngle(i)*radius, c + util::fromAngle(i+inc)*radius, glm::vec4(color.r, color.g, color.b, 1));
 		}
-		RenderState::activeRenderState->activeShader = lineBatch->shader;
+		renderer->renderState.activeShader = lineBatch->shader;
 		lineBatch->shader->setUniform("matrix", lineBatch->matrix);
-		renderer->drawTriangles(*RenderState::activeRenderState, verts);
+		renderer->drawTriangles(verts);
 	}
 
 	void Box2DDebug::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, const b2Color& color )

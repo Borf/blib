@@ -110,6 +110,8 @@ namespace blib
 		};
 
 
+		RenderState renderState;
+
 		Renderer()
 		{
 			activeLayer = 0;
@@ -123,7 +125,13 @@ namespace blib
 		}
 
 		template<class T>
-		void drawTriangles(const RenderState& renderState, const std::vector<T> &vertices)
+		void drawTriangles(const std::vector<T> &vertices)
+		{
+			drawTriangles(vertices, renderState);
+		}
+
+		template<class T>
+		void drawTriangles(const std::vector<T> &vertices, const RenderState& renderState)
 		{
 			RenderBlock<T>* block = new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
@@ -137,7 +145,13 @@ namespace blib
 		}
 
 		template<class T>
-		void drawTriangles(const RenderState& renderState, int count)
+		void drawTriangles(int count)
+		{
+			drawTriangles<T>(count, renderState);
+		}
+
+		template<class T>
+		void drawTriangles(int count, const RenderState& renderState)
 		{
 			RenderBlock<T>* block = new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
@@ -146,8 +160,16 @@ namespace blib
 			block->state = renderState.activeShader->state;
 			toRender[activeLayer].push_back(block);
 		}
+
+
 		template<class T>
-		void drawTriangles(const RenderState& renderState, T* first, int count)
+		void drawTriangles(T* first, int count)
+		{
+			drawTriangles(first, count, renderState);
+		}
+
+		template<class T>
+		void drawTriangles(T* first, int count, const RenderState& renderState)
 		{
 			RenderBlock<T>* block = new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
@@ -159,7 +181,11 @@ namespace blib
 			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * count;
 			toRender[activeLayer].push_back(block);
 		}
-		void clear(const RenderState& renderState, const glm::vec4 &color, int bits)
+		void clear(const glm::vec4 &color, int bits)
+		{
+			clear(color, bits, renderState);
+		}
+		void clear(const glm::vec4 &color, int bits, const RenderState& renderState)
 		{
 			RenderClear* block = new RenderClear();
 			block->command = Render::Clear;
@@ -184,8 +210,15 @@ namespace blib
 			toRender[activeLayer].push_back(block);
 		}
 
+
 		template<class T>
-		void drawLines(const RenderState& renderState, T* first, int count)
+		void drawLines(T* first, int count)
+		{
+			drawLines(first, count, renderState);
+		}
+
+		template<class T>
+		void drawLines(T* first, int count, const RenderState& renderState)
 		{
 			RenderBlock<T>* block = new RenderBlock<T>();
 			block->command = Render::DrawLines;	//TODO : move to constructor

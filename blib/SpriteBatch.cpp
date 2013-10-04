@@ -84,7 +84,7 @@ void main()\
 		for(size_t i = 0; i < materialIndices.size(); i++)
 		{
 			renderState.activeTexture[0] = const_cast<Texture*>(materialIndices[i].first);
-			renderer->drawTriangles<vertexDef>(renderState, &vertices[lastIndex], materialIndices[i].second - lastIndex);
+			renderer->drawTriangles<vertexDef>(&vertices[lastIndex], materialIndices[i].second - lastIndex, renderState);
 			lastIndex = materialIndices[i].second;
 		}
 		active = false;

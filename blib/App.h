@@ -180,7 +180,7 @@ namespace blib
 		SpriteBatch* spriteBatch;
 		LineBatch* lineBatch;
 		Renderer* renderer;
-		RenderState* renderState;
+//		RenderState* renderState;
 
 
 		util::Semaphore* semaphore;
@@ -201,6 +201,8 @@ namespace blib
 			};
 		}frameTimes[1000];
 		int frameTimeIndex;
+
+		bool showProfiler;
 	};
 
 

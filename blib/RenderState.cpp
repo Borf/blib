@@ -2,7 +2,6 @@
 
 namespace blib
 {
-	RenderState* RenderState::activeRenderState = new RenderState();
 
 
 }

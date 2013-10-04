@@ -55,10 +55,10 @@ void main()\
 			return;
 
 		shader->setUniform("matrix", matrix);
-		RenderState::activeRenderState->activeShader = shader;
+		renderer->renderState.activeShader = shader;
 
 
-		renderer->drawLines<vertexDef>(*RenderState::activeRenderState, verts, lineCount);
+		renderer->drawLines<vertexDef>(verts, lineCount);
 	}
 
 

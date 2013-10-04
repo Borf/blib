@@ -2,6 +2,10 @@
 
 #include <blib/Util.h>
 
+#ifdef WIN32
+#include <Windows.h>
+#endif
+
 
 namespace blib
 {
@@ -65,6 +69,50 @@ namespace blib
 			if(a.w != b.w)
 				return a.w < b.w;
 			return false;
+		}
+
+#ifdef WIN32
+		static int posX = -1;
+		static int posY = -1;
+		BOOL CALLBACK enumProc(HMONITOR monitor, HDC hdc, LPRECT rect, LPARAM param)
+		{
+			MONITORINFO monitorInfo;
+			monitorInfo.cbSize = sizeof(MONITORINFO);
+			GetMonitorInfo(monitor, &monitorInfo);
+			if((monitorInfo.dwFlags & MONITORINFOF_PRIMARY) == 0)
+			{
+				posX = rect->left;
+				posY = rect->top;
+			}
+			return TRUE;
+		}
+
+		HWND GetConsoleHwnd()
+		{
+			HWND hwndFound;
+			char TempWindowTitle[1024];
+			char WindowTitle[1024];
+			GetConsoleTitleA(WindowTitle, 1024);
+			sprintf_s(TempWindowTitle,1024, "%d/%d", GetTickCount(), GetCurrentProcessId());
+			SetConsoleTitleA(TempWindowTitle);
+			Sleep(10);
+			hwndFound=FindWindowA(NULL, TempWindowTitle);
+			SetConsoleTitleA(WindowTitle);
+			return(hwndFound);
+		}
+
+#endif
+
+
+		void fixConsole()
+		{
+#ifdef WIN32
+			if(GetSystemMetrics(80) > 1)
+			{
+				EnumDisplayMonitors(NULL, NULL, enumProc, NULL);
+				SetWindowPos(GetConsoleHwnd(), GetConsoleHwnd(), posX, posY,0,0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
+			}
+#endif
 		}
 
 	}

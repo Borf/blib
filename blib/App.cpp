@@ -32,6 +32,7 @@ namespace blib
 	App::App()
 	{
 		time = 0;
+		showProfiler = true;
 	}
 
 	void App::start(bool looping)
@@ -97,7 +98,11 @@ namespace blib
 				App* app;
 			public:
 				AppKeyListener(App* app)			{			this->app = app;							}
-				void onKeyDown( blib::Key key )		{			app->keyState.pressedKeys[key] = true;		}
+				void onKeyDown( blib::Key key )		{			app->keyState.pressedKeys[key] = true;	
+					if(key == 'P')
+						app->showProfiler = !app->showProfiler;
+				
+				}
 				void onKeyUp( blib::Key key )		{			app->keyState.pressedKeys[key] = false;		}
 			};
 			addKeyListener(new AppKeyListener(this));
@@ -130,7 +135,7 @@ namespace blib
 
 
 		renderer = resourceManager->getResource<Renderer>();
-		renderState = RenderState::activeRenderState;
+		//renderState = renderer->renderState;
 		spriteBatch = new SpriteBatch(renderer, resourceManager);
 		lineBatch = new LineBatch(renderer, resourceManager);
 
@@ -232,56 +237,59 @@ namespace blib
 			if(!app->running)
 				break;
 			app->draw();
-			int frame = ((int)(blib::util::Profiler::getAppTime()*50)) % (12*12);
 
-			app->spriteBatch->begin();
-			app->spriteBatch->draw(white, glm::scale(glm::translate(glm::mat4(), glm::vec3(20,20,0)), glm::vec3(200.0f,100.0f,1.0f)), glm::vec2(0,0), blib::math::Rectangle(0,0,1,1), glm::vec4(0,0,0,1));
-
-			app->spriteBatch->draw(gear, glm::translate(glm::mat4(), glm::vec3(app->window->getWidth()-80, app->window->getHeight()-80,0)), glm::vec2(0,0), blib::math::Rectangle(1/12.0f * (frame%12),1/12.0f * (frame/12),1/12.0f,1/12.0f));
-			app->spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::translate(glm::mat4(), glm::vec3(1,1,0)), glm::vec4(0,0,0,1));
-			app->spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::mat4());
-			app->spriteBatch->draw(font, "draw time",	glm::scale(glm::translate(glm::mat4(), glm::vec3(20, 20,0)), glm::vec3(0.8f, 0.8f, 1)), glm::vec4(1,0,0,1));
-			app->spriteBatch->draw(font, "update time", glm::scale(glm::translate(glm::mat4(), glm::vec3(20, 30,0)), glm::vec3(0.8f, 0.8f, 1)), glm::vec4(0,1,0,1));
-
-			app->spriteBatch->end();
-			app->lineBatch->begin();
-			app->lineBatch->draw(math::Rectangle(glm::vec2(20,20), 200,100), glm::vec4(1,1,1,1));
-
-			PerformanceInfo minValues = { 99999999999,  99999999999,  99999999999 };
-			PerformanceInfo maxValues = { -99999999999, -99999999999, -99999999999 };
-			for(int i = 0; i < 1000; i++)
+			if(app->showProfiler)
 			{
-				for(int ii = 0; ii < 3; ii++)
-				{
-					minValues.data[ii] = glm::min(minValues.data[ii], app->frameTimes[i].data[ii]);
-					maxValues.data[ii] = glm::max(maxValues.data[ii], app->frameTimes[i].data[ii]);
-				}
-			}
+				int frame = ((int)(blib::util::Profiler::getAppTime()*50)) % (12*12);
 
-			float timeFactor = 100 / (float)glm::max(maxValues.updateTime, maxValues.drawTime);
-			PerformanceInfo prevAccum = { 0, 0, 0 };
-			PerformanceInfo accum = { 0, 0, 0 };
-			for(int i = 0; i < 1000; i++)
-			{
-				for(int ii = 0; ii < 3; ii++)
-					accum.data[ii] += app->frameTimes[i].data[ii];
-				if(i%5 == 0 && i > 0)
+				app->spriteBatch->begin();
+				app->spriteBatch->draw(white, glm::scale(glm::translate(glm::mat4(), glm::vec3(20,20,0)), glm::vec3(200.0f,100.0f,1.0f)), glm::vec2(0,0), blib::math::Rectangle(0,0,1,1), glm::vec4(0,0,0,1));
+
+				app->spriteBatch->draw(gear, glm::translate(glm::mat4(), glm::vec3(app->window->getWidth()-80, app->window->getHeight()-80,0)), glm::vec2(0,0), blib::math::Rectangle(1/12.0f * (frame%12),1/12.0f * (frame/12),1/12.0f,1/12.0f));
+				app->spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::translate(glm::mat4(), glm::vec3(1,1,0)), glm::vec4(0,0,0,1));
+				app->spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::mat4());
+				app->spriteBatch->draw(font, "draw time",	glm::scale(glm::translate(glm::mat4(), glm::vec3(20, 20,0)), glm::vec3(0.8f, 0.8f, 1)), glm::vec4(1,0,0,1));
+				app->spriteBatch->draw(font, "update time", glm::scale(glm::translate(glm::mat4(), glm::vec3(20, 30,0)), glm::vec3(0.8f, 0.8f, 1)), glm::vec4(0,1,0,1));
+
+				app->spriteBatch->end();
+				app->lineBatch->begin();
+				app->lineBatch->draw(math::Rectangle(glm::vec2(20,20), 200,100), glm::vec4(1,1,1,1));
+
+				PerformanceInfo minValues = { 99999999999,  99999999999,  99999999999 };
+				PerformanceInfo maxValues = { -99999999999, -99999999999, -99999999999 };
+				for(int i = 0; i < 1000; i++)
 				{
 					for(int ii = 0; ii < 3; ii++)
-						accum.data[ii] /= 5.0;
-
-					if(i != 5)
 					{
-						app->lineBatch->draw(glm::vec2(19 + i*.2f, 120 - timeFactor*prevAccum.drawTime), glm::vec2(20 + i*.2f, 120 - timeFactor*accum.drawTime), glm::vec4(1,0,0,1));
-						app->lineBatch->draw(glm::vec2(19 + i*.2f, 120 - timeFactor*prevAccum.updateTime), glm::vec2(20 + i*.2f, 120 - timeFactor*accum.updateTime), glm::vec4(0,1,0,1));
+						minValues.data[ii] = glm::min(minValues.data[ii], app->frameTimes[i].data[ii]);
+						maxValues.data[ii] = glm::max(maxValues.data[ii], app->frameTimes[i].data[ii]);
 					}
-					prevAccum = accum;
-					memset(&accum, 0, sizeof(PerformanceInfo));
 				}
+
+				float timeFactor = 100 / (float)glm::max(maxValues.updateTime, maxValues.drawTime);
+				PerformanceInfo prevAccum = { 0, 0, 0 };
+				PerformanceInfo accum = { 0, 0, 0 };
+				for(int i = 0; i < 1000; i++)
+				{
+					for(int ii = 0; ii < 3; ii++)
+						accum.data[ii] += app->frameTimes[i].data[ii];
+					if(i%5 == 0 && i > 0)
+					{
+						for(int ii = 0; ii < 3; ii++)
+							accum.data[ii] /= 5.0;
+
+						if(i != 5)
+						{
+							app->lineBatch->draw(glm::vec2(19 + i*.2f, 120 - timeFactor*prevAccum.drawTime), glm::vec2(20 + i*.2f, 120 - timeFactor*accum.drawTime), glm::vec4(1,0,0,1));
+							app->lineBatch->draw(glm::vec2(19 + i*.2f, 120 - timeFactor*prevAccum.updateTime), glm::vec2(20 + i*.2f, 120 - timeFactor*accum.updateTime), glm::vec4(0,1,0,1));
+						}
+						prevAccum = accum;
+						memset(&accum, 0, sizeof(PerformanceInfo));
+					}
+				}
+
+				app->lineBatch->end();
 			}
-
-			app->lineBatch->end();
-
 			frameTime = util::Profiler::getAppTime() - frameStart;
 			app->semaphore->signal();
 		}

@@ -55,7 +55,6 @@ namespace blib
 
 			stencilTestEnabled = false;
 		}
-		static RenderState* activeRenderState;
 	};
 
 
