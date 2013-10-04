@@ -2,6 +2,8 @@
 
 #include <stdlib.h>
 
+#include <stack>
+
 namespace blib
 {
 	class Shader;
@@ -15,7 +17,7 @@ namespace blib
 	public:
 		Shader* activeShader;
 		Texture* activeTexture[10];
-		FBO* activeFbo;
+		std::stack<FBO*> activeFbo;
 		VBO* activeVbo;
 		VIO* activeVio;
 
@@ -43,7 +45,6 @@ namespace blib
 			activeShader = NULL;
 			for(int i = 0; i < 10; i++)
 				activeTexture[i] = NULL;
-			activeFbo = NULL;
 			activeVbo = NULL;
 			activeVio = NULL;
 

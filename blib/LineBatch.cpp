@@ -9,8 +9,9 @@
 
 namespace blib
 {
-	LineBatch::LineBatch(Renderer* renderer, ResourceManager* resourceManager)
+	LineBatch::LineBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState)
 	{
+		renderState = baseRenderState;
 		active = false;
 		this->renderer = renderer;
 		shader = resourceManager->getResource<Shader>();
@@ -36,6 +37,8 @@ void main()\
 ");
 		shader->bindAttributeLocation("a_position", 0);
 		shader->bindAttributeLocation("a_color", 1);
+
+		renderState.activeShader = shader;
 	}
 
 
@@ -54,11 +57,8 @@ void main()\
 		if(lineCount == 0)
 			return;
 
-		shader->setUniform("matrix", matrix);
-		renderer->renderState.activeShader = shader;
-
-
-		renderer->drawLines<vertexDef>(verts, lineCount);
+		renderState.activeShader->setUniform("matrix", matrix);
+		renderer->drawLines<vertexDef>(verts, lineCount, renderState);
 	}
 
 
@@ -112,6 +112,6 @@ void main()\
 
 	void LineBatch::resizeGl( int width, int height )
 	{
-		shader->setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
+		renderState.activeShader->setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
 }

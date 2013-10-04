@@ -38,10 +38,12 @@ namespace blib
 				Render* r = toRender[1-activeLayer][i];
 				if(r->command == Render::Clear)
 				{
-					if(r->renderState.activeFbo != NULL)
-						r->renderState.activeFbo->bind();
-					else
+					if(r->renderState.activeFbo.empty())
 						glBindFramebuffer(GL_FRAMEBUFFER, 0);
+					else
+					{
+						r->renderState.activeFbo.top()->bind();
+					}
 
 					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
@@ -69,10 +71,10 @@ namespace blib
 					r->renderState.activeShader->use();
 					r->renderState.activeShader->setState(r->state);
 
-					if(r->renderState.activeFbo != NULL)
-						r->renderState.activeFbo->bind();
-					else
+					if(r->renderState.activeFbo.empty())
 						glBindFramebuffer(GL_FRAMEBUFFER, 0);
+					else
+						r->renderState.activeFbo.top()->bind();
 
 					if(r->renderState.stencilTestEnabled)
 					{
@@ -117,7 +119,6 @@ namespace blib
 						int srcBlendAlpha = toGlEnum(r->renderState.srcBlendAlpha);
 						int dstBlendColor = toGlEnum(r->renderState.dstBlendColor);
 						int dstBlendAlpha = toGlEnum(r->renderState.dstBlendAlpha);
-
 						glBlendFuncSeparate(srcBlendColor, dstBlendColor, srcBlendAlpha, dstBlendAlpha);
 						//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
 					}

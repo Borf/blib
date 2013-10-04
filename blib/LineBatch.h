@@ -4,6 +4,7 @@
 #include <blib/gl/Vertex.h>
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/gl/Shader.h>
+#include <blib/RenderState.h>
 #include <queue>
 
 namespace blib
@@ -27,8 +28,9 @@ namespace blib
 		bool active;
 
 	public:
-		LineBatch(Renderer* renderer, ResourceManager* resourceManager);
+		LineBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState = RenderState());
 
+		RenderState renderState;
 		blib::Shader* shader;
 		glm::mat4 matrix;			//TODO: make private
 
