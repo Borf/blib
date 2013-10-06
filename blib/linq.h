@@ -159,6 +159,18 @@ namespace blib
 			data.clear();
 		}
 
+		template<class Storage, class Func>
+		void deletewhere(Storage& data, Func func)
+		{
+			for(Storage::iterator it = data.begin(); it != data.end(); it++)
+			{
+				if(func(*it))
+				{
+					delete *it;
+					it = data.erase(it);
+				}
+			}
+		}
 		template<class Return, class A, class B>
 		Return merge(const A &a, const B &b)
 		{
