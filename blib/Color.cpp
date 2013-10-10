@@ -9,5 +9,6 @@ namespace blib
 	const glm::vec4 Color::white =	glm::vec4(1,1,1,1);
 	const glm::vec4 Color::black =	glm::vec4(0,0,0,1);
 	const glm::vec4 Color::gray =	glm::vec4(0.5f,0.5f,0.5f,1);
+	const glm::vec4 Color::yellow = glm::vec4(1,1,0,1);
 
 }
