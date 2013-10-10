@@ -14,6 +14,7 @@ namespace blib
 		float wrapAngleDeg(float angle);
 
 		std::string toString(int number);
+		std::string toString(float number);
 		std::vector<std::string> split(std::string toSplit, std::string seperator);
 
 		template<class T>

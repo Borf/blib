@@ -41,7 +41,12 @@ namespace blib
 			sprintf(buf, "%d", number);
 			return buf;
 		}
-
+		std::string toString( float number )
+		{
+			char buf[32];
+			sprintf(buf, "%f", number);
+			return buf;
+		}
 		std::vector<std::string> split( std::string value, std::string seperator )
 		{
 			std::vector<std::string> ret;

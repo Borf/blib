@@ -53,5 +53,15 @@ namespace blib
 			return glm::translate(matrix, glm::vec3(position, 0));
 		}
 
+		float round( float number, int digits )
+		{
+			for(int i = 0; i < digits; i++)
+				number *= 10;
+			number = glm::round(number);
+			for(int i = 0; i < digits; i++)
+				number /= 10;
+			return number;
+		}
+
 	}
 }
