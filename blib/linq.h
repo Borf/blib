@@ -5,19 +5,6 @@ namespace blib
 {
 	namespace linq
 	{
-		template<class Return, class Iterator, class Operator>
-		Return max(Iterator begin, Iterator end, Operator func)
-		{
-			Return ret = func(*begin);
-			for(Iterator it = begin; it != end; it++)
-			{
-				Return v = func(*it);
-				if(v > ret)
-					ret = v;
-			}
-			return ret;
-		}
-
 		template<class Return, class Storage, class Operator>
 		Return max(const Storage& data, Operator func)
 		{
@@ -30,6 +17,24 @@ namespace blib
 			}
 			return ret;
 		}
+		template<class CompareType, class Return, class Storage, class Operator, class Operator2>
+		Return max(const Storage& data, Operator comperator, Operator2 toReturn)
+		{
+			Return ret = toReturn(*std::begin(data));
+			CompareType minValue = comperator(*std::begin(data));
+			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			{
+				CompareType v = comperator(*it);
+				if(v > minValue)
+				{
+					minValue = v;
+					ret = toReturn(*it);
+				}
+			}
+			return ret;
+		}
+
+
 		template<class Return, class Storage, class Operator>
 		Return min(const Storage& data, Operator func, Return ifEmpty = 0)
 		{
