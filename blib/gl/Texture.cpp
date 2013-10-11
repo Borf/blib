@@ -59,6 +59,7 @@ namespace blib
 		template <class T>
 		void Texture<T>::fromFile(std::string fileName, int loadOptions)
 		{
+			loaded = false;
 			char* fileData = NULL;
 			int length = blib::util::FileSystem::getData(fileName, fileData);
 			if(length <= 0)
@@ -141,6 +142,7 @@ namespace blib
 				}
 				center = glm::vec2(originalWidth/2.0f, originalHeight/2.0f);
 			}
+			loaded = true;
 		}
 
 
@@ -148,6 +150,7 @@ namespace blib
 		template <class T>
 		void Texture<T>::fromData(unsigned char* data, int width, int height)
 		{
+			loaded = false;
 			this->width = this->originalWidth = width;
 			this->height = this->originalHeight = height;
 
@@ -182,6 +185,7 @@ namespace blib
 				fclose(shot);
 			}*/
 			center = glm::vec2(originalWidth/2.0f, originalHeight/2.0f);
+			loaded = true;
 		}
 
 

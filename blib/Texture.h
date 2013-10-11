@@ -10,7 +10,7 @@ namespace blib
 	{
 	public:
 		virtual void use() = 0;
-
+		bool loaded;
 		int width;
 		int height;
 		int originalWidth;
