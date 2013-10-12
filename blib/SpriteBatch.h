@@ -67,8 +67,13 @@ namespace blib
 		virtual Cache* getCache();
 		virtual void drawCache(Cache* cache);
 
-		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const glm::vec2 &center = glm::vec2(0,0), const blib::math::Rectangle &src = blib::math::Rectangle(0,0,1,1), const glm::vec4 &color = glm::vec4(1,1,1,1));
-		virtual void draw(const TextureMap::TexInfo* sprite, const glm::mat4 &transform, const glm::vec2 &center = glm::vec2(0,0), const glm::vec4 &color = glm::vec4(1,1,1,1));
+
+		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const glm::vec4 &color = glm::vec4(1,1,1,1));
+		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const glm::vec2 &center,  const glm::vec4 &color = glm::vec4(1,1,1,1));
+		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const glm::vec2 &center, const blib::math::Rectangle &src, const glm::vec4 &color = glm::vec4(1,1,1,1));
+
+		virtual void draw(const TextureMap::TexInfo* sprite, const glm::mat4 &transform, const glm::vec4 &color = glm::vec4(1,1,1,1));
+		virtual void draw(const TextureMap::TexInfo* sprite, const glm::mat4 &transform, const glm::vec2 &center, const glm::vec4 &color = glm::vec4(1,1,1,1));
 		virtual void draw(const Font* font, const std::string& text, const glm::mat4 &transform, const glm::vec4 &color = glm::vec4(1,1,1,1));
 
 		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, const blib::math::Rectangle &src, const blib::math::Rectangle &innerSrc, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));

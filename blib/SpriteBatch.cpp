@@ -112,6 +112,16 @@ void main()\
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->originalWidth - center.x,	fh*texture->originalHeight - center.y,	0,1)),			glm::vec2(src.bottomright.x,src.bottomright.y), color)); //4
 	}
 
+	void SpriteBatch::draw( const Texture* texture, const glm::mat4 &transform, const glm::vec4 &color)
+	{
+		draw(texture, transform, glm::vec2(0,0), blib::math::Rectangle(0,0,1,1), color);
+	}
+	void SpriteBatch::draw( const Texture* texture, const glm::mat4 &transform, const glm::vec2 &center, const glm::vec4 &color)
+	{
+		draw(texture, transform, center, blib::math::Rectangle(0,0,1,1), color);
+	}
+
+
 	void SpriteBatch::draw( const TextureMap::TexInfo* texture, const glm::mat4 &transform, const glm::vec2 &center, const glm::vec4 &color)
 	{
 		assert(active);
@@ -130,8 +140,11 @@ void main()\
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*texture->height - center.y,		0,1)), 		glm::vec2(texture->t1.x,texture->t2.y), color)); // 2
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->width - center.x,			fh*0 - center.y,					0,1)),		glm::vec2(texture->t2.x,texture->t1.y), color)); // 3
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*texture->width - center.x,			fh*texture->height - center.y,		0,1)),		glm::vec2(texture->t2.x,texture->t2.y), color)); //4
+	}
 
-
+	void SpriteBatch::draw( const TextureMap::TexInfo* texture, const glm::mat4 &transform, const glm::vec4 &color)
+	{
+		draw(texture, transform, glm::vec2(0,0), color);
 	}
 
 	void SpriteBatch::draw( const Font* font, const std::string &text, const glm::mat4 &transform, const glm::vec4 &color )

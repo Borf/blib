@@ -53,6 +53,11 @@ namespace blib
 			return glm::translate(matrix, glm::vec3(position, 0));
 		}
 
+		glm::mat4 easyMatrix( const glm::vec2 &position, float rotation, const glm::vec2 &scale, glm::mat4 matrix /*= glm::mat4()*/ )
+		{
+			return glm::scale(glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), rotation, glm::vec3(0,0,1)), glm::vec3(scale,1));
+		}
+
 		float round( float number, int digits )
 		{
 			for(int i = 0; i < digits; i++)
