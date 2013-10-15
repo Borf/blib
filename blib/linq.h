@@ -154,6 +154,15 @@ namespace blib
 				func(*it);
 			}
 		}
+		template<class Storage, class Operator>
+		void foreach(Storage& data, Operator func)
+		{
+			for(Storage::iterator it = data.begin(); it != data.end(); it++)
+			{
+				func(*it);
+			}
+		}
+
 		template<class Storage>
 		void deleteall(Storage& data)
 		{
