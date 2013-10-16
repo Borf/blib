@@ -20,6 +20,7 @@ namespace blib
 		{
 		public:
 			Rectangle(float x, float y, float width, float height);
+			Rectangle(int x, int y, int width, int height);
 			Rectangle(glm::vec2 topleft, float width, float height);
 			Rectangle(glm::vec2 topleft, int width, int height);
 			Rectangle(glm::vec2 topleft, glm::vec2 bottomright);

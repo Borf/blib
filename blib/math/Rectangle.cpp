@@ -19,6 +19,11 @@ namespace blib
 			topleft = glm::vec2(x,y);
 			bottomright = topleft + glm::vec2(width, height);
 		}
+		Rectangle::Rectangle( int x, int y, int width, int height )
+		{
+			topleft = glm::vec2(x,y);
+			bottomright = topleft + glm::vec2(width, height);
+		}
 
 		Rectangle::Rectangle( glm::vec2 topleft, float width, float height )
 		{

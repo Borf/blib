@@ -1,6 +1,8 @@
 #include "Math.h"
 #include <stdlib.h>
 
+#include <blib/math/Rectangle.h>
+#include <blib/Texture.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <Box2D/Box2D.h>
 
@@ -53,9 +55,27 @@ namespace blib
 			return glm::translate(matrix, glm::vec3(position, 0));
 		}
 
+		glm::mat4 easyMatrix( const glm::vec2 &position, float rotation, glm::mat4 matrix /*= glm::mat4()*/ )
+		{
+			return glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), rotation, glm::vec3(0,0,1));
+		}
+
+
 		glm::mat4 easyMatrix( const glm::vec2 &position, float rotation, const glm::vec2 &scale, glm::mat4 matrix /*= glm::mat4()*/ )
 		{
 			return glm::scale(glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), rotation, glm::vec3(0,0,1)), glm::vec3(scale,1));
+		}
+
+		glm::mat4 easyMatrix( const Texture* texture, const Rectangle &rect )
+		{
+			glm::vec2 scale = rect.size() / glm::vec2(texture->originalWidth,texture->originalHeight);
+			return glm::scale(glm::translate(glm::mat4(), glm::vec3(rect.topleft,0)), glm::vec3(scale,1));
+		}
+
+		glm::mat4 easyMatrix( const TextureMap::TexInfo* info, const Rectangle &rect )
+		{
+			glm::vec2 scale = rect.size() / glm::vec2(info->width,info->height);
+			return glm::scale(glm::translate(glm::mat4(), glm::vec3(rect.topleft,0)), glm::vec3(scale,1));
 		}
 
 		float round( float number, int digits )

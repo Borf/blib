@@ -193,6 +193,16 @@ namespace blib
 			ret.insert(ret.end(), b.begin(), b.end());
 			return ret;
 		}
+		template<class Return, class Storage, class Func>
+		Return firstOrDefault(const Storage& data, Func func, Return default = NULL)
+		{
+			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			{
+				if(func(*it))
+					return *it;
+			}
+			return default;
+		}
 
 
 	}
