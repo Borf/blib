@@ -49,7 +49,7 @@ namespace blib
 
 		};
 		
-
+#ifndef ANDROID
 		class MultiTextureMap : public blib::Texture
 		{
 		public:
@@ -82,7 +82,7 @@ namespace blib
 
 
 		};
-
+#endif
 
 	}
 }

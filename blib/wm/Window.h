@@ -3,13 +3,13 @@
 #include <string>
 #include <json/value.h>
 #include <blib/wm/widgets/Widget.h>
+#include <blib/wm/widgets/Panel.h>
 
 namespace blib
 {
 	class ResourceManager;
 	namespace wm
 	{
-	namespace widgets {	class Panel; }
 
 	class Window
 	{

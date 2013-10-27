@@ -4,12 +4,16 @@
 #include <blib/Texture.h>
 #include <blib/SpriteBatch.h>
 #include <blib/math/Rectangle.h>
+#include <blib/KeyListener.h>
 
-#include <gl/glew.h>
+//#include <gl/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #define NOMINMAX
+
+#ifdef WIN32
 #include <windows.h>
+#endif
 
 namespace blib
 {
@@ -134,9 +138,9 @@ namespace blib
 			void List::keyboardSpecial( int key )
 			{
 				Widget::keyboardSpecial(key);
-				if(key == VK_DOWN)
+				if(key == blib::KEY_DOWN)
 					selectedItem = glm::min((int)items.size()-1, selectedItem+1);
-				if(key == VK_UP)
+				if(key == blib::KEY_UP)
 					selectedItem = glm::max(0, selectedItem-1);
 
 			}

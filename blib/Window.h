@@ -1,6 +1,7 @@
 #pragma once
 
 #include <blib/Window.h>
+#include <string.h>
 #include <blib/util/FastDelegate.h>
 
 

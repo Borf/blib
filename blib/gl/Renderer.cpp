@@ -1,6 +1,12 @@
 #include <blib/gl/Renderer.h>
 
+#ifdef ANDROID
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#else
 #include <GL/glew.h>
+#endif
+
 #include <blib/gl/Shader.h>
 #include <blib/RenderState.h>
 #include <blib/Texture.h>

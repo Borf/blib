@@ -1,13 +1,15 @@
 #include "Textbox.h"
 
-#include <gl/glew.h>
+//#include <gl/glew.h>
 
 #include <blib/wm/wm.h>
 #include <blib/Texture.h>
 #include <blib/Shader.h>
 #include <blib/Font.h>
+#ifdef WIN32
 #include <windows.h>
-
+#endif
+#include <blib/KeyListener.h>
 
 namespace blib
 {
@@ -102,9 +104,9 @@ namespace blib
 
 			void Textbox::keyboardSpecial( int key )
 			{
-				if(key == VK_HOME)
+				if(key == blib::KEY_HOME)
 					cursor = 0;
-				else if(key == VK_END)
+				else if(key == blib::KEY_HOME)
 					cursor = text.size();
 				Widget::keyboardSpecial(key);
 			}

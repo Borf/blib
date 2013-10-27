@@ -56,7 +56,7 @@ namespace blib
 				
 				if(attributes.empty())
 					Log::out<<"No attributes for shader!"<<Log::newline;
-				for(auto it = attributes.begin(); it != attributes.end(); it++)
+				for(std::map<std::string, int>::iterator it = attributes.begin(); it != attributes.end(); it++)
 					glBindAttribLocation(programId, it->second, it->first.c_str());
 				link();
 				glUseProgram(programId);

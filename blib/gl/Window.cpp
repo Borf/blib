@@ -1,11 +1,16 @@
 #include "Window.h"
 
-#include <GL/glew.h>
-#ifdef WIN32
-#include <GL/wglew.h>
+#ifdef ANDROID
+	#include <GLES2/gl2.h>
+	#include <GLES2/gl2ext.h>
+#else
+	#include <GL/glew.h>
+	#ifdef WIN32
+	#include <GL/wglew.h>
+	#endif
 #endif
-#include <blib/util/Log.h>
 
+#include <blib/util/Log.h>
 using blib::util::Log;
 
 namespace blib
@@ -93,13 +98,14 @@ namespace blib
 
 #endif
 
+#ifdef __GLEW_H__
 			if(GLEW_ARB_debug_output)
 			{
 				glDebugMessageCallback(&onDebug, NULL);
 				glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 				glEnable(GL_DEBUG_OUTPUT);
 			}
-
+#endif
 
 			glViewport(0,0,width, height);
 

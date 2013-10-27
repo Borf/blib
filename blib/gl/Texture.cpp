@@ -5,9 +5,10 @@
 using blib::util::Log;
 #include <blib/util/FileSystem.h>
 #include <blib/util/stb_image.h>
-#include <blib/SpriteSheet.h>
 #include <string.h>
 
+#include <blib/Texture.h>
+#include <blib/SpriteSheet.h>
 
 namespace blib
 {
@@ -27,6 +28,8 @@ namespace blib
 
 	namespace gl
 	{
+		template class Texture<blib::Texture>;
+		template class Texture<blib::SpriteSheet>;
 
 		template <class T>
 		Texture<T>::Texture()
@@ -59,7 +62,7 @@ namespace blib
 		template <class T>
 		void Texture<T>::fromFile(std::string fileName, int loadOptions)
 		{
-			loaded = false;
+			T::loaded = false;
 			char* fileData = NULL;
 			int length = blib::util::FileSystem::getData(fileName, fileData);
 			if(length <= 0)
@@ -69,28 +72,32 @@ namespace blib
 			}
 
 			int depth;
+
+			int &originalWidth = T::originalWidth;
+			int &originalHeight = T::originalHeight;
+
 			unsigned char* tmpData = stbi_load_from_memory((stbi_uc*)fileData, length, &originalWidth, &originalHeight, &depth, 0);
 			delete[] fileData;
-			data = new unsigned char[originalWidth*originalHeight*depth];
-			memcpy(data, tmpData, originalWidth*originalHeight*depth);
+			data = new unsigned char[T::originalWidth*T::originalHeight*depth];
+			memcpy(data, tmpData, T::originalWidth*T::originalHeight*depth);
 			stbi_image_free(tmpData);
 
 			if(data)
 			{
-				width = originalWidth;
-				height = originalHeight;
+				T::width = T::originalWidth;
+				T::height = T::originalHeight;
 				//make 4 bits
 				if(depth == 3)
 				{
-					unsigned char* newData = new unsigned char[width*height*4];
-					for(int y = 0; y < height; y++)
+					unsigned char* newData = new unsigned char[T::width*T::height*4];
+					for(int y = 0; y < T::height; y++)
 					{
-						for(int x = 0; x < width; x++)
+						for(int x = 0; x < T::width; x++)
 						{
-							newData[4*(x+width*y)+0] = data[3*(x+width*y)+0];
-							newData[4*(x+width*y)+1] = data[3*(x+width*y)+1];
-							newData[4*(x+width*y)+2] = data[3*(x+width*y)+2];
-							newData[4*(x+width*y)+3] = 255;
+							newData[4*(x+T::width*y)+0] = data[3*(x+T::width*y)+0];
+							newData[4*(x+T::width*y)+1] = data[3*(x+T::width*y)+1];
+							newData[4*(x+T::width*y)+2] = data[3*(x+T::width*y)+2];
+							newData[4*(x+T::width*y)+3] = 255;
 						}
 					}
 					delete[] data;
@@ -102,11 +109,11 @@ namespace blib
 				//TODO: resize texture to power of 2 texture
 
 				//fix transparency
-				for(int y = 0; y < height; y++)
+				for(int y = 0; y < T::height; y++)
 				{
-					for(int x = 0; x < width; x++)
+					for(int x = 0; x < T::width; x++)
 					{
-						if(data[4*(x+width*y)+0] > 250 && data[4*(x+width*y)+1] < 5 && data[4*(x+width*y)+2] > 250)
+						if(data[4*(x+T::width*y)+0] > 250 && data[4*(x+T::width*y)+1] < 5 && data[4*(x+T::width*y)+2] > 250)
 						{
 							int totalr = 0;
 							int totalg = 0;
@@ -118,31 +125,31 @@ namespace blib
 								{
 									int xxx = x+xx;
 									int yyy = y+yy;
-									if(xxx < 0 || xxx >= width || yyy < 0 || yyy >= height)
+									if(xxx < 0 || xxx >= T::width || yyy < 0 || yyy >= T::height)
 										continue;
-									if(data[4*(xxx+width*yyy)+0] > 250 && data[4*(xxx+width*yyy)+1] < 5 && data[4*(xxx+width*yyy)+2] > 250)
+									if(data[4*(xxx+T::width*yyy)+0] > 250 && data[4*(xxx+T::width*yyy)+1] < 5 && data[4*(xxx+T::width*yyy)+2] > 250)
 										continue;
-									if(data[4*(xxx+width*yyy)+3] == 0)
+									if(data[4*(xxx+T::width*yyy)+3] == 0)
 										continue;
-									totalr += data[4*(xxx+width*yyy)+0];
-									totalg += data[4*(xxx+width*yyy)+1];
-									totalb += data[4*(xxx+width*yyy)+2];
+									totalr += data[4*(xxx+T::width*yyy)+0];
+									totalg += data[4*(xxx+T::width*yyy)+1];
+									totalb += data[4*(xxx+T::width*yyy)+2];
 									total++;
 								}
 							}
 							if(total > 0)
 							{
-								data[4*(x+width*y)+0] = totalr / total;
-								data[4*(x+width*y)+1] = totalg / total;
-								data[4*(x+width*y)+2] = totalb / total;
+								data[4*(x+T::width*y)+0] = totalr / total;
+								data[4*(x+T::width*y)+1] = totalg / total;
+								data[4*(x+T::width*y)+2] = totalb / total;
 							}
-							data[4*(x+width*y)+3] = 0;
+							data[4*(x+T::width*y)+3] = 0;
 						}
 					}
 				}
-				center = glm::vec2(originalWidth/2.0f, originalHeight/2.0f);
+				T::center = glm::vec2(T::originalWidth/2.0f, T::originalHeight/2.0f);
 			}
-			loaded = true;
+			T::loaded = true;
 		}
 
 
@@ -150,7 +157,7 @@ namespace blib
 		template <class T>
 		void Texture<T>::fromData(unsigned char* data, int width, int height)
 		{
-			loaded = false;
+			T::loaded = false;
 			this->width = this->originalWidth = width;
 			this->height = this->originalHeight = height;
 
@@ -184,8 +191,8 @@ namespace blib
 				}
 				fclose(shot);
 			}*/
-			center = glm::vec2(originalWidth/2.0f, originalHeight/2.0f);
-			loaded = true;
+			T::center = glm::vec2(T::originalWidth/2.0f, T::originalHeight/2.0f);
+			T::loaded = true;
 		}
 
 
@@ -208,7 +215,7 @@ namespace blib
 
 				glGenTextures(1, &texid);
 				glBindTexture(GL_TEXTURE_2D, texid);		
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, T::width, T::height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
@@ -236,8 +243,6 @@ namespace blib
 
 
 
-		template class Texture<blib::Texture>;
-		template class Texture<blib::SpriteSheet>;
 
 
 
@@ -245,7 +250,7 @@ namespace blib
 
 
 
-
+#ifndef ANDROID
 		MultiTextureMap::MultiTextureMap(int width, int height)
 		{
 			this->width = width;
@@ -325,6 +330,7 @@ namespace blib
 				}
 			}
 		}
+#endif
 
 
 

@@ -1,6 +1,6 @@
 #include "Image.h"
 
-#include <gl/glew.h>
+//#include <gl/glew.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 

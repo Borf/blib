@@ -11,7 +11,9 @@ using blib::util::Log;
 
 #include <cctype>
 #include <algorithm>
+#ifdef WIN32
 #include <windows.h>
+#endif
 
 namespace blib
 {
@@ -155,6 +157,7 @@ namespace blib
 				//if(currentCursor != newCursor)
 				{
 					currentCursor = newCursor;
+#ifdef WIN32 //todo: make abstract thingy here
 					if(currentCursor == ARROW)
 						SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW)));
 					else if(currentCursor == RESIZE_H)
@@ -165,7 +168,7 @@ namespace blib
 						SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENWSE)));
 					else if(currentCursor == RESIZE_BL)
 						SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENESW)));
-
+#endif
 
 				}
 

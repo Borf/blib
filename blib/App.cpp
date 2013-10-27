@@ -301,6 +301,7 @@ namespace blib
 
 	int App::JoystickThread::run()
 	{
+#ifdef WIN32
 		while(app->running)
 		{
 			int joystickCount = joyGetNumDevs();
@@ -349,6 +350,7 @@ namespace blib
 			}
 			Sleep(0);
 		}
+#endif
 
 		return 0;
 	}

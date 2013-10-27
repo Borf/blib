@@ -54,6 +54,7 @@
 //#pragma GCC diagnostic ignored "-Wreorder"
 
 #include <memory.h> // to allow <,> comparisons
+#include <string.h> // memcmp
 
 ////////////////////////////////////////////////////////////////////////////////
 //						Configuration options

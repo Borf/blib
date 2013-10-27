@@ -5,7 +5,12 @@
 #include <algorithm>
 #include <cctype>
 
-#include <gl/glew.h>
+#ifdef ANDROID
+	#include <GLES2/gl2.h>
+	#include <GLES2/gl2ext.h>
+#else
+	#include <gl/glew.h>
+#endif
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -24,7 +29,6 @@
 #include <blib/wm/widgets/list.h>
 #include <blib/wm/widgets/ScrollPanel.h>
 #include <blib/wm/widgets/Image.h>
-
 
 using blib::util::Log;
 

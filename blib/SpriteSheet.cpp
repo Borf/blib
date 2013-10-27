@@ -6,10 +6,10 @@ namespace blib
 	{
 		assert(x >= 0 && x < spriteCountX && y >= 0 && y < spriteCountY);
 		
-		auto xIt = texMapCache.find(x);
+		std::map<int, std::map<int, TextureMap::TexInfo*> >::iterator xIt = texMapCache.find(x);
 		if(xIt != texMapCache.end())
 		{
-			auto yIt = xIt->second.find(y);
+			std::map<int, TextureMap::TexInfo*>::iterator yIt = xIt->second.find(y);
 			if(yIt != xIt->second.end())
 				return yIt->second;
 			else
