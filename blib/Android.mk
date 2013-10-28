@@ -13,65 +13,60 @@
 # limitations under the License.
 #
 LOCAL_PATH := $(call my-dir)
-
 include $(CLEAR_VARS)
-
+LOCAL_CPP_FEATURES += exceptions
 LOCAL_MODULE    := blib
 LOCAL_SRC_FILES :=\
-	Animation.cpp\
-	Box2DDebug.cpp\
-	Color.cpp\
-	Font.cpp\
-	LineBatch.cpp\
-	linq.cpp\
-	Math.cpp\
-	Renderer.cpp\
-	RenderState.cpp\
-	Shader.cpp\
-	SpriteBatch.cpp\
-	SpriteSheet.cpp\
-	Util.cpp\
-	Window.cpp\
-	util/FileSystem.cpp\
-	util/Log.cpp\
-	util/Mutex.cpp\
-	util/Profiler.cpp\
-	util/Semaphore.cpp\
-	util/Signal.cpp\
-	util/Stream.cpp\
-	util/StreamIn.cpp\
-	util/StreamInFile.cpp\
-	util/Thread.cpp\
-	gl/FBO.cpp\
-	gl/GlResizeRegister.cpp\
-	gl/Renderer.cpp\
-	gl/ResourceManager.cpp\
-	gl/Shader.cpp\
-	gl/TextureMap.cpp\
-	gl/Vertex.cpp\
-	gl/Window.cpp\
-	math/Line.cpp\
-	math/Polygon.cpp\
-	math/Random.cpp\
-	math/Rectangle.cpp\
-	wm/Window.cpp\
-	wm/WM.cpp\
-	wm/widgets/button.cpp\
-	wm/widgets/ContainerWidget.cpp\
-	wm/widgets/Image.cpp\
-	wm/widgets/Label.cpp\
-	wm/widgets/list.cpp\
-	wm/widgets/Panel.cpp\
-	wm/widgets/ScrollPanel.cpp\
-	wm/widgets/textbox.cpp\
-	wm/widgets/Widget.cpp\
-	gl/Texture.cpp\
-	App.cpp
-
-
-
-LOCAL_CPPFLAGS += -fexceptions
-LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) jni/blib jni/blib/externals jni/blib/externals/box2d
+	./Animation.cpp\
+	./Box2DDebug.cpp\
+	./Color.cpp\
+	./Font.cpp\
+	./LineBatch.cpp\
+	./linq.cpp\
+	./Math.cpp\
+	./Renderer.cpp\
+	./RenderState.cpp\
+	./Shader.cpp\
+	./SpriteBatch.cpp\
+	./SpriteSheet.cpp\
+	./Util.cpp\
+	./Window.cpp\
+	./util/FileSystem.cpp\
+	./util/Log.cpp\
+	./util/Mutex.cpp\
+	./util/Profiler.cpp\
+	./util/Semaphore.cpp\
+	./util/Signal.cpp\
+	./util/Stream.cpp\
+	./util/StreamIn.cpp\
+	./util/StreamInFile.cpp\
+	./util/Thread.cpp\
+	./gl/FBO.cpp\
+	./gl/GlResizeRegister.cpp\
+	./gl/Renderer.cpp\
+	./gl/ResourceManager.cpp\
+	./gl/Shader.cpp\
+	./gl/TextureMap.cpp\
+	./gl/Vertex.cpp\
+	./gl/Window.cpp\
+	./math/Line.cpp\
+	./math/Polygon.cpp\
+	./math/Random.cpp\
+	./math/Rectangle.cpp\
+	./wm/Window.cpp\
+	./wm/WM.cpp\
+	./wm/widgets/button.cpp\
+	./wm/widgets/ContainerWidget.cpp\
+	./wm/widgets/Image.cpp\
+	./wm/widgets/Label.cpp\
+	./wm/widgets/list.cpp\
+	./wm/widgets/Panel.cpp\
+	./wm/widgets/ScrollPanel.cpp\
+	./wm/widgets/textbox.cpp\
+	./wm/widgets/Widget.cpp\
+	./gl/Texture.cpp\
+	./App.cpp
+LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/../ $(LOCAL_PATH)/../externals $(LOCAL_PATH)/../externals/box2d
 
 #include $(BUILD_SHARED_LIBRARY)
 include $(BUILD_STATIC_LIBRARY)
