@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Line.h"
 
 namespace blib
