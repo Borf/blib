@@ -29,6 +29,30 @@ namespace blib
 
 
 
+	struct KeyState
+	{
+		bool pressedKeys[255];
+		inline bool isPressed(int index)
+		{
+			return pressedKeys[index];
+		}
+	};
+	struct MouseState
+	{
+		union
+		{
+			bool buttons[3];
+			struct 
+			{
+				bool leftButton;
+				bool middleButton;
+				bool rightButton;
+			};
+		};
+		int x;
+		int y;
+	};
+
 
 	class App
 	{
@@ -97,29 +121,8 @@ namespace blib
 		} appSetup;
 
 
-		struct KeyState
-		{
-			bool pressedKeys[255];
-			inline bool isPressed(int index)
-			{
-				return pressedKeys[index];
-			}
-		} keyState;
-		struct MouseState
-		{
-			union
-			{
-				bool buttons[3];
-				struct 
-				{
-					bool leftButton;
-					bool middleButton;
-					bool rightButton;
-				};
-			};
-			int x;
-			int y;
-		} mouseState;
+		KeyState keyState;
+		MouseState mouseState;
 	public:
 
 	protected:
