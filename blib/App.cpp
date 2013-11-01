@@ -21,7 +21,11 @@
 #include <blib/Box2DDebug.h>
 #include <blib/Font.h>
 #include <blib/Util.h>
+
+//platform specific...kinda
 #include <blib/gl/ResourceManager.h>
+#include <blib/drivers/joystick/WinMM.h>
+
 #ifdef WIN32
 #include <gl/wglew.h>
 #endif
@@ -33,7 +37,20 @@ namespace blib
 	{
 		time = 0;
 		showProfiler = true;
+		joystickDriver = NULL;
 	}
+
+	App::~App()
+	{
+		if(joystickDriver)
+			delete joystickDriver;
+		joystickDriver = NULL;
+
+		renderThread->waitForTermination();
+		updateThread->waitForTermination();
+
+	}
+
 
 	void App::start(bool looping)
 	{
@@ -53,10 +70,11 @@ namespace blib
 		updateThread->semaphore->wait(); //wait until it is initialized
 		renderThread = new RenderThread(this);
 		renderThread->start();
-		joystickThread = new JoystickThread(this);
-		joystickThread->start();
 
-
+		if(appSetup.joystickDriver == AppSetup::NullJoystick)
+			joystickDriver = NULL;
+		else if(appSetup.joystickDriver == AppSetup::WinMM)
+			joystickDriver = new drivers::joystick::WinMM();
 		blib::Box2DDebug::getInstance()->init(lineBatch, renderer);
 
 		if(looping)
@@ -69,8 +87,6 @@ namespace blib
 		{
 			step();
 		}
-		joystickThread->waitForTermination();
-
 	}
 
 
@@ -312,7 +328,7 @@ namespace blib
 				//				if(res == JOYERR_UNPLUGGED)
 				//					Log::out<<"Unplugged joystick "<<i<<Log::newline;
 
-				App::JoyState newState;
+				JoyState newState;
 
 				if(res != JOYERR_NOERROR)
 				{

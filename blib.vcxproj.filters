@@ -25,6 +25,12 @@
     <Filter Include="external\box2d">
       <UniqueIdentifier>{8a5f0b62-f19f-4d30-b7e8-98c8c1ca9a42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="drivers">
+      <UniqueIdentifier>{bc7b0ed1-84a8-46c1-a583-529216c5ac1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="drivers\joystick">
+      <UniqueIdentifier>{6eb82ce0-bad3-47cb-bd4e-40bacf0a24b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="blib\VIO.h" />
@@ -418,6 +424,13 @@
     <ClInclude Include="blib\Math.h" />
     <ClInclude Include="blib\linq.h" />
     <ClInclude Include="blib\SpriteSheet.h" />
+    <ClInclude Include="blib\JoyState.h" />
+    <ClInclude Include="blib\drivers\joystick\Driver.h">
+      <Filter>drivers\joystick</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\drivers\joystick\WinMM.h">
+      <Filter>drivers\joystick</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -703,6 +716,9 @@
     <ClCompile Include="blib\Math.cpp" />
     <ClCompile Include="blib\linq.cpp" />
     <ClCompile Include="blib\SpriteSheet.cpp" />
+    <ClCompile Include="blib\drivers\joystick\WinMM.cpp">
+      <Filter>drivers\joystick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

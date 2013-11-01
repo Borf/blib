@@ -3,7 +3,9 @@
 #include <glm/glm.hpp>
 
 #include <blib/KeyListener.h>
+#include <blib/JoyState.h>
 #include <blib/util/Thread.h>
+
 
 namespace blib
 {
@@ -19,6 +21,10 @@ namespace blib
 	namespace util
 	{
 		class Semaphore;
+	}
+	namespace drivers
+	{
+		namespace joystick		{			class Driver;		}
 	}
 
 
@@ -78,6 +84,15 @@ namespace blib
 				DxRenderer,
 			} renderer;
 
+			enum JoystickPreference
+			{
+				NullJoystick,
+				WinMM,
+				DirectInput,
+				XInput,
+			} joystickDriver;
+
+
 			AppSetup()
 			{
 				width = 1280;
@@ -86,6 +101,7 @@ namespace blib
 				vsync = false;
 				icon = 0;
 				renderer = NullRenderer;
+				joystickDriver = NullJoystick;
 				title = "Blib App";
 			}
 		} appSetup;
@@ -115,43 +131,7 @@ namespace blib
 			int y;
 		} mouseState;
 	public:
-		struct JoyState
-		{
-		public:
-			JoyState()
-			{
-				leftTrigger = 0;
-				rightTrigger = 0;
-				button = 0;
-				connected = false;
-			}
 
-			glm::vec2 leftStick;
-			glm::vec2 rightStick;
-
-			float leftTrigger;
-			float rightTrigger;
-
-			bool connected;
-			union
-			{
-				int button;
-				struct 
-				{
-					unsigned a : 1;
-					unsigned b : 1;
-					unsigned x : 1;
-					unsigned y : 1;
-
-					unsigned l : 1;
-					unsigned r : 1;
-					unsigned select : 1;
-					unsigned start : 1;
-					unsigned leftStickButton : 1;
-					unsigned rightStickButton : 1;
-				};
-			};
-		};
 	protected:
 		JoyState joyStates[32];
 
@@ -160,6 +140,7 @@ namespace blib
 
 	public:
 		App();
+		virtual ~App();
 		void start(bool looping = true);
 		void run();
 		void step();
@@ -186,7 +167,7 @@ namespace blib
 		util::Semaphore* semaphore;
 		RenderThread* renderThread;
 		UpdateThread* updateThread;
-		JoystickThread* joystickThread;
+		drivers::joystick::Driver* joystickDriver;
 
 		struct PerformanceInfo
 		{
