@@ -1,6 +1,7 @@
 #pragma once
 
 #include <blib/drivers/joystick/Driver.h>
+#include <blib/util/Thread.h>
 
 namespace blib
 {
@@ -11,8 +12,19 @@ namespace blib
 #ifdef WIN32
 			class WinMM : public Driver
 			{
-				JoyState joyStates[8];
+				class JoystickThread : public util::Thread
+				{
+				public:
+					JoyState joyStates[32];
+					bool running;
 
+					JoystickThread();
+					int run();
+				};
+
+
+
+				JoystickThread* thread;
 			public:
 				WinMM();
 				virtual ~WinMM();

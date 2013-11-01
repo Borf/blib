@@ -57,16 +57,6 @@ namespace blib
 		};
 
 
-		class JoystickThread : public blib::util::Thread
-		{
-			App* app;
-		public:
-			JoystickThread(App* app);
-			int run();
-		};
-
-
-
 		Window* window;
 		double time;
 
