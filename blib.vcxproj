@@ -49,6 +49,7 @@
     <ClInclude Include="blib\math\Ray.h" />
     <ClInclude Include="blib\math\Rectangle.h" />
     <ClInclude Include="blib\MouseListener.h" />
+    <ClInclude Include="blib\ParticleSystem.h" />
     <ClInclude Include="blib\Renderer.h" />
     <ClInclude Include="blib\RenderState.h" />
     <ClInclude Include="blib\ResourceManager.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="blib\math\Polygon.cpp" />
     <ClCompile Include="blib\math\Random.cpp" />
     <ClCompile Include="blib\math\Rectangle.cpp" />
+    <ClCompile Include="blib\ParticleSystem.cpp" />
     <ClCompile Include="blib\Renderer.cpp" />
     <ClCompile Include="blib\RenderState.cpp" />
     <ClCompile Include="blib\Shader.cpp" />

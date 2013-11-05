@@ -424,6 +424,7 @@
     <ClInclude Include="blib\Math.h" />
     <ClInclude Include="blib\linq.h" />
     <ClInclude Include="blib\SpriteSheet.h" />
+    <ClInclude Include="blib\ParticleSystem.h" />
     <ClInclude Include="blib\JoyState.h" />
     <ClInclude Include="blib\drivers\joystick\Driver.h">
       <Filter>drivers\joystick</Filter>
@@ -716,6 +717,7 @@
     <ClCompile Include="blib\Math.cpp" />
     <ClCompile Include="blib\linq.cpp" />
     <ClCompile Include="blib\SpriteSheet.cpp" />
+    <ClCompile Include="blib\ParticleSystem.cpp" />
     <ClCompile Include="blib\drivers\joystick\WinMM.cpp">
       <Filter>drivers\joystick</Filter>
     </ClCompile>
