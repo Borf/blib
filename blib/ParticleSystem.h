@@ -3,12 +3,23 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
+#include <blib/RenderState.h>
 
 namespace blib
 {
 	class Renderer;
+	class ResourceManager;
 	class EmitterTemplate;
+	class Shader;
 
+
+	struct ParticleData
+	{
+		glm::vec2 position;
+		glm::vec4 color;
+		float rotation;
+		float size;
+	};
 
 	class ParticleBase
 	{
@@ -80,6 +91,7 @@ namespace blib
 			float rotationMax;
 
 			float friction;
+			float rotationFriction;
 			float fadeSpeedMin;
 			float fadeSpeedMax;
 
@@ -92,8 +104,10 @@ namespace blib
 	class ParticleSystem
 	{
 		Renderer* renderer;
+		Shader* shader;
+		RenderState renderState;
 	public:
-		ParticleSystem(Renderer* renderer);
+		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager);
 		void update(double elapsedTime);
 		void draw();
 
