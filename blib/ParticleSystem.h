@@ -7,6 +7,7 @@
 namespace blib
 {
 	class Renderer;
+	class EmitterTemplate;
 
 
 	class ParticleBase
@@ -25,7 +26,9 @@ namespace blib
 
 	class Emitter
 	{
-
+		EmitterTemplate* emitterTemplate;
+	public:
+		Emitter(EmitterTemplate* emitterTemplate);
 	};
 
 	class Attractor
@@ -36,11 +39,13 @@ namespace blib
 	class EmitterTemplate
 	{
 	public:
+		EmitterTemplate(std::string filename);
+
 		enum ParticleType
 		{
 				Fading
 		} particleType;
-		std::string texture;
+		std::vector<std::string> textures;
 
 		enum TextureOrder
 		{
@@ -81,6 +86,7 @@ namespace blib
 			std::vector<float> size;
 			std::vector<glm::vec4> colors;
 		} particleProps;
+		Emitter* getEmitter();
 	};
 
 	class ParticleSystem
