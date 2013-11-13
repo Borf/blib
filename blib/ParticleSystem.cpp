@@ -76,38 +76,42 @@ void main()\
 		{
 			particles[nParticles].life = 1;
 			particles[nParticles].position = glm::vec2(1280, 720) / 2.0f;
-			particles[nParticles].prevPosition = particles[nParticles].position + 0.1f * blib::util::fromAngle(blib::math::randomFloat(2*M_PI));
+			particles[nParticles].prevPosition = particles[nParticles].position + blib::math::randomFloat(0.1f) * blib::util::fromAngle(blib::math::randomFloat(2*M_PI));
 			particles[nParticles].emitter = NULL;
 			nParticles++;
 		}
 
 		int oldParticleCount = nParticles;
 		int deadCount = 0;
-		for(size_t i = 0; i < oldParticleCount; i++)
+		for(int i = 0; i < oldParticleCount; i++)
 		{
 			if(particles[i].life <= 0)
 			{
 				deadCount++;
+ 				nParticles--;
 				continue;
 			}
 
 
 			glm::vec2 pos = particles[i].position;
-			particles[i].position = pos + 0.9999f * (pos - particles[i].prevPosition) + glm::vec2(0,0.0001f);
+			particles[i].position = pos + 0.9998f * (pos - particles[i].prevPosition) + glm::vec2(0,0.0001f);
 			particles[i].prevPosition = pos;
-
+			particles[i].life -= 0.001f * blib::math::randomFloat();
 
 
 
 			particles[i].vertex.position = particles[i].position;
 			particles[i].vertex.color = Color::white;
+			particles[i].vertex.color.a = particles[i].life;
 			particles[i].vertex._size = 10;
 
 			//maybe use memcpy for this?
 			if(deadCount > 0)
 				particles[i-deadCount] = particles[i];
 		}
-		nParticles = oldParticleCount;
+
+		if(nParticles %100 == 0)
+			printf("Particles: %i\n", nParticles);
 	}
 
 
