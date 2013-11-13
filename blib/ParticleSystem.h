@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <blib/RenderState.h>
+#include <blib/gl/GlResizeRegister.h>
 
 namespace blib
 {
@@ -101,7 +102,7 @@ namespace blib
 		Emitter* getEmitter();
 	};
 
-	class ParticleSystem
+	class ParticleSystem : public gl::GlResizeRegister
 	{
 		Renderer* renderer;
 		Shader* shader;
@@ -119,6 +120,8 @@ namespace blib
 		Attractor* addAttractor();
 		void removeAttractor();
 
+
+		void resizeGl( int width, int height );
 	};
 
 

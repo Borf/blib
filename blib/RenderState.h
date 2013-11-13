@@ -38,8 +38,6 @@ namespace blib
 		bool stencilTestEnabled;
 		bool stencilWrite;
 
-
-
 		RenderState()
 		{
 			activeShader = NULL;

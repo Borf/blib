@@ -72,7 +72,7 @@ namespace blib
 				{
 					r->perform(vertices[1-activeLayer]);
 				}
-				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines)
+				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints)
 				{
 					r->renderState.activeShader->use();
 					r->renderState.activeShader->setState(r->state);
@@ -140,8 +140,13 @@ namespace blib
 					totalVerts += r->vertexCount();
 					if(r->command == Render::DrawTriangles)
 						glDrawArrays(GL_TRIANGLES, 0, r->vertexCount());
-					else//if(r->command == Renderer::DrawLines)
+					else if(r->command == Render::DrawLines)
 						glDrawArrays(GL_LINES, 0, r->vertexCount());
+					else if(r->command == Render::DrawPoints)
+					{
+						glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+						glDrawArrays(GL_POINTS, 0, r->vertexCount());
+					}
 				}
 
 			}

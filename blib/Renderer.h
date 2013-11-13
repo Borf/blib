@@ -19,9 +19,10 @@ namespace blib
 		public:
 			enum Command {
 				Clear,
-				DrawTriangles,
 				SetVbo,
+				DrawTriangles,
 				DrawLines,
+				DrawPoints,
 			} command;
 			virtual ~Render() {};
 			RenderState renderState;
@@ -230,6 +231,21 @@ namespace blib
 			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * count;
 			toRender[activeLayer].push_back(block);
 		}
+
+		template<class T>
+		void drawPoints(const std::vector<T> &vertices, const RenderState& renderState)
+		{
+			RenderBlock<T>* block = new RenderBlock<T>();
+			block->command = Render::DrawPoints;	//TODO : move to constructor
+			block->renderState = renderState;
+			block->state = renderState.activeShader->state;
+			block->vertexStart = vertexIndex[activeLayer];
+			block->count = vertices.size();
+			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
+			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * vertices.size();
+			toRender[activeLayer].push_back(block);
+		}
+
 
 
 		virtual void flush() = 0;

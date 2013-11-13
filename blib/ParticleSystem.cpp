@@ -4,8 +4,16 @@
 #include <blib/ResourceManager.h>
 #include <blib/Shader.h>
 #include <blib/Util.h>
+#include <blib/gl/Vertex.h>
+#include <blib/Color.h>
+#include <blib/Renderer.h>
 #include <json/json.h>
 #include <tuple>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 namespace blib
 {
@@ -36,7 +44,7 @@ void main()\
 {\
 	size = a_size;\
 	color = a_color;\
-	gl_PointSize = 10;/*a_size * (width / (zoom * 3.0));*/\
+	gl_PointSize = 2;/*a_size * (width / (zoom * 3.0));*/\
 	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\
 }",			
 "precision mediump float;\
@@ -48,12 +56,13 @@ void main()\
 	if(size < 0.0)\
 		discard;\
 	vec4 col = texture2D(s_texture, gl_PointCoord);\
-	col.a *= alpha;\
-	gl_FragColor = col;\
+	gl_FragColor = color;\
 }");
 		shader->bindAttributeLocation("a_position", 0);
 		shader->bindAttributeLocation("a_texture", 1);
-		shader->bindAttributeLocation("a_color", 2);
+		shader->bindAttributeLocation("a_rotation", 2);
+		shader->bindAttributeLocation("a_size", 3);
+		shader->setUniform("s_texture", 0);
 		shader->setUniform("s_texture", 0);
 		renderState.activeShader = shader;
 
@@ -64,8 +73,21 @@ void main()\
 
 	}
 
+
+	float f = 0.1f;
+
 	void ParticleSystem::draw()
 	{
+		f += 0.02f;
+		std::vector<VertexP2C4F1F1> vertices;
+
+		for(double i = 0; i < 2 * M_PI; i += 0.0001f)
+			vertices.push_back(VertexP2C4F1F1(glm::vec2(640 + 300*sin(f*i) * cos(i),360 + 300*sin(f*i) * sin(i)), glm::vec4(i / (2*M_PI),1-(i / (2*M_PI)),i / (2*M_PI),1),  10, 10));
+
+		renderState.activeShader->setUniform("matrix", glm::mat4());
+
+
+		renderer->drawPoints(vertices, renderState);
 
 	}
 
@@ -156,6 +178,10 @@ void main()\
 
 		for(size_t i = 0; i < data["particle"]["colors"].size(); i++)
 			particleProps.colors.push_back(glm::vec4(data["particle"]["colors"][i][0u].asFloat(), data["particle"]["colors"][i][1u].asFloat(), data["particle"]["colors"][i][2u].asFloat(), data["particle"]["colors"][i][3u].asFloat()));
+	}
+	void ParticleSystem::resizeGl( int width, int height )
+	{
+		renderState.activeShader->setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
 
 }
