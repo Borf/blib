@@ -5,42 +5,40 @@
 #include <vector>
 #include <blib/RenderState.h>
 #include <blib/gl/GlResizeRegister.h>
+#include <blib/gl/Vertex.h>
+
+#define MAX_PARTICLES 1000000
 
 namespace blib
 {
 	class Renderer;
 	class ResourceManager;
 	class EmitterTemplate;
+	class Emitter;
 	class Shader;
 
 
-	struct ParticleData
-	{
-		glm::vec2 position;
-		glm::vec4 color;
-		float rotation;
-		float size;
-	};
-
-	class ParticleBase
+	class Particle
 	{
 	public:
 		glm::vec2 position;
 		glm::vec2 prevPosition;
 		float life;
 
+		VertexP2C4F1F1 vertex;
 
-		ParticleBase()
+		Particle()
 		{
 			life = 1;
 		}
+		Emitter* emitter;
 	};
 
 	class Emitter
 	{
-		EmitterTemplate* emitterTemplate;
 	public:
 		Emitter(EmitterTemplate* emitterTemplate);
+		EmitterTemplate* emitterTemplate;
 	};
 
 	class Attractor
@@ -79,6 +77,9 @@ namespace blib
 
 		glm::vec2 gravity;
 		bool collision;
+		int particleCountPerSecondMin;
+		int particleCountPerSecondMax;
+
 
 		struct ParticleProps
 		{
@@ -112,6 +113,9 @@ namespace blib
 		void update(double elapsedTime);
 		void draw();
 
+
+		Particle particles[MAX_PARTICLES];
+		int nParticles;
 
 		void clear();
 		Emitter* addEmitter(std::string name);

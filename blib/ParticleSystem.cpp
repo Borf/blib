@@ -7,6 +7,7 @@
 #include <blib/gl/Vertex.h>
 #include <blib/Color.h>
 #include <blib/Renderer.h>
+#include <blib/Math.h>
 #include <json/json.h>
 #include <tuple>
 
@@ -21,7 +22,6 @@ namespace blib
 	ParticleSystem::ParticleSystem( Renderer* renderer, ResourceManager* resourceManager )
 	{
 		this->renderer = renderer;
-
 //		renderState = baseRenderState;
 		renderState.blendEnabled = true;
 		renderState.srcBlendColor = blib::RenderState::SRC_ALPHA;
@@ -66,11 +66,48 @@ void main()\
 		shader->setUniform("s_texture", 0);
 		renderState.activeShader = shader;
 
+		nParticles = 0;
+
 	}
 
 	void ParticleSystem::update( double elapsedTime )
 	{
+		if(rand() % 3 == 0)
+		{
+			particles[nParticles].life = 1;
+			particles[nParticles].position = glm::vec2(1280, 720) / 2.0f;
+			particles[nParticles].prevPosition = particles[nParticles].position + 0.1f * blib::util::fromAngle(blib::math::randomFloat(2*M_PI));
+			particles[nParticles].emitter = NULL;
+			nParticles++;
+		}
 
+		int oldParticleCount = nParticles;
+		int deadCount = 0;
+		for(size_t i = 0; i < oldParticleCount; i++)
+		{
+			if(particles[i].life <= 0)
+			{
+				deadCount++;
+				continue;
+			}
+
+
+			glm::vec2 pos = particles[i].position;
+			particles[i].position = pos + 0.9999f * (pos - particles[i].prevPosition) + glm::vec2(0,0.0001f);
+			particles[i].prevPosition = pos;
+
+
+
+
+			particles[i].vertex.position = particles[i].position;
+			particles[i].vertex.color = Color::white;
+			particles[i].vertex._size = 10;
+
+			//maybe use memcpy for this?
+			if(deadCount > 0)
+				particles[i-deadCount] = particles[i];
+		}
+		nParticles = oldParticleCount;
 	}
 
 
@@ -78,17 +115,14 @@ void main()\
 
 	void ParticleSystem::draw()
 	{
-		f += 0.02f;
-		std::vector<VertexP2C4F1F1> vertices;
-
-		for(double i = 0; i < 2 * M_PI; i += 0.0001f)
-			vertices.push_back(VertexP2C4F1F1(glm::vec2(640 + 300*sin(f*i) * cos(i),360 + 300*sin(f*i) * sin(i)), glm::vec4(i / (2*M_PI),1-(i / (2*M_PI)),i / (2*M_PI),1),  10, 10));
-
-		renderState.activeShader->setUniform("matrix", glm::mat4());
-
-
-		renderer->drawPoints(vertices, renderState);
-
+		if(nParticles > 0)
+		{
+			std::vector<VertexP2C4F1F1> vertices(nParticles);
+			for(size_t i = 0; i < nParticles; i++)
+				vertices.push_back(particles[i].vertex);
+			renderState.activeShader->setUniform("matrix", glm::mat4());
+			renderer->drawPoints(vertices, renderState);
+		}
 	}
 
 	Emitter* ParticleSystem::addEmitter( std::string name )
