@@ -34,6 +34,8 @@ namespace blib
 "precision mediump float;\
 attribute vec2 a_position;\
 attribute vec4 a_color;\
+attribute vec2 a_tex1;\
+attribute vec2 a_tex2;\
 attribute float a_size;\
 attribute float a_rotation;\
 varying vec4 color;\
@@ -44,7 +46,7 @@ void main()\
 {\
 	size = a_size;\
 	color = a_color;\
-	gl_PointSize = 2;/*a_size * (width / (zoom * 3.0));*/\
+	gl_PointSize = a_size;/* * (width / (zoom * 3.0));*/\
 	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\
 }",			
 "precision mediump float;\
@@ -59,15 +61,16 @@ void main()\
 	gl_FragColor = color;\
 }");
 		shader->bindAttributeLocation("a_position", 0);
-		shader->bindAttributeLocation("a_texture", 1);
-		shader->bindAttributeLocation("a_rotation", 2);
-		shader->bindAttributeLocation("a_size", 3);
-		shader->setUniform("s_texture", 0);
+		shader->bindAttributeLocation("a_color", 1);
+		shader->bindAttributeLocation("a_tex1", 2);
+		shader->bindAttributeLocation("a_tex2", 3);
+		shader->bindAttributeLocation("a_rotation", 4);
+		shader->bindAttributeLocation("a_size", 5);
 		shader->setUniform("s_texture", 0);
 		renderState.activeShader = shader;
 
 		nParticles = 0;
-
+		lastElapsedTime = 0;
 	}
 
 	void ParticleSystem::update( double elapsedTime )
@@ -76,7 +79,7 @@ void main()\
 		{
 			particles[nParticles].life = 1;
 			particles[nParticles].position = glm::vec2(1280, 720) / 2.0f;
-			particles[nParticles].prevPosition = particles[nParticles].position + blib::math::randomFloat(0.1f) * blib::util::fromAngle(blib::math::randomFloat(2*M_PI));
+			particles[nParticles].prevPosition = particles[nParticles].position + blib::math::randomFloat(0.1f) * blib::util::fromAngle(blib::math::randomFloat(2*(float)M_PI));
 			particles[nParticles].emitter = NULL;
 			nParticles++;
 		}
@@ -85,33 +88,34 @@ void main()\
 		int deadCount = 0;
 		for(int i = 0; i < oldParticleCount; i++)
 		{
-			if(particles[i].life <= 0)
+			Particle& p = particles[i];
+			if(p.life <= 0)
 			{
 				deadCount++;
  				nParticles--;
 				continue;
 			}
 
-
-			glm::vec2 pos = particles[i].position;
-			particles[i].position = pos + 0.9998f * (pos - particles[i].prevPosition) + glm::vec2(0,0.0001f);
-			particles[i].prevPosition = pos;
-			particles[i].life -= 0.001f * blib::math::randomFloat();
-
+			glm::vec2 pos = p.position;
+			p.position = pos + (pos - p.prevPosition) * (float)(elapsedTime / lastElapsedTime) + p.emitter->emitterTemplate->gravity * (float)elapsedTime;
+			p.prevPosition = pos;
+			p.life -= 0.001f * blib::math::randomFloat();
 
 
-			particles[i].vertex.position = particles[i].position;
-			particles[i].vertex.color = Color::white;
-			particles[i].vertex.color.a = particles[i].life;
-			particles[i].vertex._size = 10;
+
+			p.vertex.position = p.position;
+			p.vertex.color = Color::white;
+			p.vertex.color.a = 1-glm::pow(1-p.life, 0.5f);
+			p.vertex._size = 100 * glm::pow(1-p.life, 1.5f);
 
 			//maybe use memcpy for this?
 			if(deadCount > 0)
-				particles[i-deadCount] = particles[i];
+				particles[i-deadCount] = p;
 		}
 
 		if(nParticles %100 == 0)
 			printf("Particles: %i\n", nParticles);
+		lastElapsedTime = elapsedTime;
 	}
 
 
@@ -121,8 +125,8 @@ void main()\
 	{
 		if(nParticles > 0)
 		{
-			std::vector<VertexP2C4F1F1> vertices(nParticles);
-			for(size_t i = 0; i < nParticles; i++)
+			std::vector<VertexP2C4T2T2F1F1> vertices(nParticles);
+			for(int i = 0; i < nParticles; i++)
 				vertices.push_back(particles[i].vertex);
 			renderState.activeShader->setUniform("matrix", glm::mat4());
 			renderer->drawPoints(vertices, renderState);

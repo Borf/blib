@@ -25,7 +25,7 @@ namespace blib
 		glm::vec2 prevPosition;
 		float life;
 
-		VertexP2C4F1F1 vertex;
+		VertexP2C4T2T2F1F1 vertex;
 
 		Particle()
 		{
@@ -37,8 +37,12 @@ namespace blib
 	class Emitter
 	{
 	public:
-		Emitter(EmitterTemplate* emitterTemplate);
 		EmitterTemplate* emitterTemplate;
+		glm::vec2 position;
+		float direction;
+
+
+		Emitter(EmitterTemplate* emitterTemplate);
 	};
 
 	class Attractor
@@ -96,18 +100,23 @@ namespace blib
 			float rotationFriction;
 			float fadeSpeedMin;
 			float fadeSpeedMax;
+			float fadeSpeedExp;
 
 			std::vector<float> size;
+			float sizeExp;
 			std::vector<glm::vec4> colors;
+			float colorExp;
 		} particleProps;
 		Emitter* getEmitter();
 	};
 
 	class ParticleSystem : public gl::GlResizeRegister
 	{
+		double lastElapsedTime;
 		Renderer* renderer;
 		Shader* shader;
 		RenderState renderState;
+//		TextureMap* textureMap;
 	public:
 		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager);
 		void update(double elapsedTime);
