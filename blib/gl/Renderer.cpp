@@ -144,6 +144,7 @@ namespace blib
 						glDrawArrays(GL_LINES, 0, r->vertexCount());
 					else if(r->command == Render::DrawPoints)
 					{
+						glEnable(GL_POINT_SPRITE);
 						glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 						glDrawArrays(GL_POINTS, 0, r->vertexCount());
 					}

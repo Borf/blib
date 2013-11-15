@@ -22,6 +22,7 @@ namespace blib
 	ParticleSystem::ParticleSystem( Renderer* renderer, ResourceManager* resourceManager )
 	{
 		this->renderer = renderer;
+		textureMap = resourceManager->getResource<TextureMap>();
 //		renderState = baseRenderState;
 		renderState.blendEnabled = true;
 		renderState.srcBlendColor = blib::RenderState::SRC_ALPHA;
@@ -39,26 +40,39 @@ attribute vec2 a_tex2;\
 attribute float a_size;\
 attribute float a_rotation;\
 varying vec4 color;\
+varying vec2 tex1;\
+varying vec2 tex2;\
 varying float size;\
+varying mat2 rotation;\
 uniform mat4 matrix;\
 uniform mat4 projectionmatrix;\
 void main()\
 {\
 	size = a_size;\
 	color = a_color;\
+	tex1 = a_tex1;\
+	tex2 = a_tex2;\
+	rotation = mat2( cos( a_rotation ), -sin( a_rotation ), \
+					 sin( a_rotation ),  cos( a_rotation ));\
 	gl_PointSize = a_size;/* * (width / (zoom * 3.0));*/\
 	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\
 }",			
 "precision mediump float;\
 varying vec4 color;\
 varying float size;\
+varying vec2 tex1;\
+varying vec2 tex2;\
+varying mat2 rotation;\
 uniform sampler2D s_texture;\
 void main()\
 {\
 	if(size < 0.0)\
 		discard;\
-	vec4 col = texture2D(s_texture, gl_PointCoord);\
-	gl_FragColor = color;\
+	vec2 pos = gl_PointCoord - vec2(0.5, 0.5);\
+	pos = pos * rotation;\
+	pos = pos + vec2(0.5, 0.5);\
+	vec4 col = texture2D(s_texture, tex1 + pos * (tex2-tex1));\
+	gl_FragColor = color * col;\
 }");
 		shader->bindAttributeLocation("a_position", 0);
 		shader->bindAttributeLocation("a_color", 1);
@@ -68,19 +82,17 @@ void main()\
 		shader->bindAttributeLocation("a_size", 5);
 		shader->setUniform("s_texture", 0);
 		renderState.activeShader = shader;
-
+		renderState.activeTexture[0] = textureMap;
 		nParticles = 0;
 		lastElapsedTime = 0;
 	}
 
 	void ParticleSystem::update( double elapsedTime )
 	{
-		if(rand() % 3 == 0)
+		//if(rand() % 2 == 0)
 		{
-			particles[nParticles].life = 1;
-			particles[nParticles].position = glm::vec2(1280, 720) / 2.0f;
-			particles[nParticles].prevPosition = particles[nParticles].position + blib::math::randomFloat(0.1f) * blib::util::fromAngle(blib::math::randomFloat(2*(float)M_PI));
-			particles[nParticles].emitter = NULL;
+			Emitter* emitter = *emitters.begin();
+			emitter->newParticle(particles[nParticles]);
 			nParticles++;
 		}
 
@@ -99,22 +111,19 @@ void main()\
 			glm::vec2 pos = p.position;
 			p.position = pos + (pos - p.prevPosition) * (float)(elapsedTime / lastElapsedTime) + p.emitter->emitterTemplate->gravity * (float)elapsedTime;
 			p.prevPosition = pos;
-			p.life -= 0.001f * blib::math::randomFloat();
-
-
+			p.life -= (float)(elapsedTime / particles[i].lifeDec);
 
 			p.vertex.position = p.position;
 			p.vertex.color = Color::white;
 			p.vertex.color.a = 1-glm::pow(1-p.life, 0.5f);
-			p.vertex._size = 100 * glm::pow(1-p.life, 1.5f);
+			p.vertex._size = 10 + 90 * glm::pow(1-p.life, 1.5f);
+			p.vertex.rotation+=elapsedTime * p.rotationSpeed;
 
 			//maybe use memcpy for this?
 			if(deadCount > 0)
 				particles[i-deadCount] = p;
 		}
 
-		if(nParticles %100 == 0)
-			printf("Particles: %i\n", nParticles);
 		lastElapsedTime = elapsedTime;
 	}
 
@@ -135,8 +144,10 @@ void main()\
 
 	Emitter* ParticleSystem::addEmitter( std::string name )
 	{
-		EmitterTemplate* emitterTemplate = new EmitterTemplate(name);
-		return emitterTemplate->getEmitter();
+		EmitterTemplate* emitterTemplate = new EmitterTemplate(name, textureMap);
+		Emitter* emitter = emitterTemplate->getEmitter();
+		emitters.push_back(emitter);
+		return emitter;
 	}
 
 
@@ -149,6 +160,26 @@ void main()\
 	Emitter::Emitter( EmitterTemplate* emitterTemplate )
 	{
 		this->emitterTemplate = emitterTemplate;
+		position = glm::vec2(0,0);
+		direction = 0;
+	}
+
+	void Emitter::newParticle( Particle& particle )
+	{
+		float speed = blib::math::randomFloat(emitterTemplate->particleProps.speedMin, emitterTemplate->particleProps.speedMax);
+
+		particle.life = 1;
+		particle.position = position;
+		particle.prevPosition = position - speed * blib::util::fromAngle(glm::radians(direction + blib::math::randomFloat(emitterTemplate->particleProps.directionMin, emitterTemplate->particleProps.directionMax)));
+		particle.lifeDec = blib::math::randomFloat(emitterTemplate->particleProps.fadeSpeedMin, emitterTemplate->particleProps.fadeSpeedMax);
+		particle.texture = emitterTemplate->textureInfos[rand()%emitterTemplate->textureInfos.size()];
+		particle.rotationSpeed = glm::radians(blib::math::randomFloat(emitterTemplate->particleProps.rotationMin, emitterTemplate->particleProps.rotationMax));
+
+		particle.vertex.tex1 = particle.texture->t1;
+		particle.vertex.tex2 = particle.texture->t2;
+		particle.vertex.rotation = 0;
+
+		particle.emitter = this;
 	}
 
 
@@ -165,7 +196,7 @@ void main()\
 		throw "Invalid value";
 	}
 
-	EmitterTemplate::EmitterTemplate( std::string filename )
+	EmitterTemplate::EmitterTemplate( std::string filename, TextureMap* textureMap )
 	{
 		Json::Value data = util::FileSystem::getJson(filename);
 		if(data.isNull())
@@ -181,6 +212,11 @@ void main()\
 		else
 			for(size_t i = 0; i < data["texture"].size(); i++)
 				textures.push_back(data["texture"][i].asString());
+
+		for(size_t i = 0; i < textures.size(); i++)
+			textureInfos.push_back(textureMap->addTexture("assets/textures/particles/" + textures[i]));
+
+
 
 
 		textureOrder = enumFromString<TextureOrder>(data["textureorder"].asString(), util::make_vector<std::pair<TextureOrder, std::string> >() << 

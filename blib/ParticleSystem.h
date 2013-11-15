@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <blib/RenderState.h>
+#include <blib/TextureMap.h>
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/gl/Vertex.h>
 
@@ -16,6 +17,7 @@ namespace blib
 	class EmitterTemplate;
 	class Emitter;
 	class Shader;
+	class TextureMap;
 
 
 	class Particle
@@ -24,9 +26,11 @@ namespace blib
 		glm::vec2 position;
 		glm::vec2 prevPosition;
 		float life;
+		float lifeDec;
+		TextureMap::TexInfo* texture;
+		float rotationSpeed;
 
 		VertexP2C4T2T2F1F1 vertex;
-
 		Particle()
 		{
 			life = 1;
@@ -43,6 +47,7 @@ namespace blib
 
 
 		Emitter(EmitterTemplate* emitterTemplate);
+		void newParticle(Particle& particle);
 	};
 
 	class Attractor
@@ -53,13 +58,14 @@ namespace blib
 	class EmitterTemplate
 	{
 	public:
-		EmitterTemplate(std::string filename);
+		EmitterTemplate(std::string filename, TextureMap* textureMap);
 
 		enum ParticleType
 		{
 				Fading
 		} particleType;
 		std::vector<std::string> textures;
+		std::vector<TextureMap::TexInfo*> textureInfos;
 
 		enum TextureOrder
 		{
@@ -116,7 +122,8 @@ namespace blib
 		Renderer* renderer;
 		Shader* shader;
 		RenderState renderState;
-//		TextureMap* textureMap;
+		std::list<Emitter*> emitters;
+		TextureMap* textureMap;
 	public:
 		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager);
 		void update(double elapsedTime);
