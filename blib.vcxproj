@@ -340,6 +340,7 @@
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
       <AdditionalIncludeDirectories>.;externals\glew\include;externals;externals\box2d</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

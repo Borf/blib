@@ -84,7 +84,7 @@ void main()\
 		renderState.activeShader = shader;
 		renderState.activeTexture[0] = textureMap;
 		nParticles = 0;
-		lastElapsedTime = 0;
+		lastElapsedTime = 0.1f;
 	}
 
 	void ParticleSystem::update( double elapsedTime )

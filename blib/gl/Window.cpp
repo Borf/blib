@@ -72,7 +72,10 @@ namespace blib
 
 			GLenum error = glewInit(); // Enable GLEW
 			if (error != GLEW_OK) // If GLEW fails
+			{
+				Log::out<<"Error initializing glew"<<Log::newline;
 				return;
+			}
 
 			int attributes[] = {
 				WGL_CONTEXT_MAJOR_VERSION_ARB, 3, // Set the MAJOR version of OpenGL to 3
