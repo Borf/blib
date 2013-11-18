@@ -106,7 +106,6 @@ namespace blib
 			float rotationFriction;
 			float fadeSpeedMin;
 			float fadeSpeedMax;
-			float fadeSpeedExp;
 
 			std::vector<float> size;
 			float sizeExp;

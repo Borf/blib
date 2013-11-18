@@ -114,10 +114,17 @@ void main()\
 			p.life -= (float)(elapsedTime / particles[i].lifeDec);
 
 			p.vertex.position = p.position;
-			p.vertex.color = Color::white;
-			p.vertex.color.a = 1-glm::pow(1-p.life, 0.5f);
+
+			if(p.emitter->emitterTemplate->particleProps.colors.size() > 1 && p.life <= 1 && p.life > 0.00001f)
+			{
+				float colorFac = glm::pow(1-p.life, p.emitter->emitterTemplate->particleProps.colorExp) * (p.emitter->emitterTemplate->particleProps.colors.size()-1);
+				float factor = colorFac - (int)colorFac;
+				p.vertex.color = (1 - factor) * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac] + factor * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac+1];
+			}
+
+
 			p.vertex._size = 10 + 90 * glm::pow(1-p.life, 1.5f);
-			p.vertex.rotation+=elapsedTime * p.rotationSpeed;
+			p.vertex.rotation+= (float)(elapsedTime * p.rotationSpeed);
 
 			//maybe use memcpy for this?
 			if(deadCount > 0)
@@ -175,6 +182,8 @@ void main()\
 		particle.texture = emitterTemplate->textureInfos[rand()%emitterTemplate->textureInfos.size()];
 		particle.rotationSpeed = glm::radians(blib::math::randomFloat(emitterTemplate->particleProps.rotationMin, emitterTemplate->particleProps.rotationMax));
 
+		particle.vertex.position = position;
+		particle.vertex.color = emitterTemplate->particleProps.colors[0];
 		particle.vertex.tex1 = particle.texture->t1;
 		particle.vertex.tex2 = particle.texture->t2;
 		particle.vertex.rotation = 0;
@@ -251,6 +260,8 @@ void main()\
 		particleProps.fadeSpeedMin = data["particle"]["fadespeed"][0u].asFloat();
 		particleProps.fadeSpeedMax = data["particle"]["fadespeed"][1u].asFloat();
 
+	
+		particleProps.colorExp = data["particle"]["colorexp"].asFloat();
 		for(size_t i = 0; i < data["particle"]["size"].size(); i++)
 			particleProps.size.push_back(data["particle"]["size"][i].asFloat());
 
