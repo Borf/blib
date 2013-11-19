@@ -46,6 +46,7 @@ varying float size;\
 varying mat2 rotation;\
 uniform mat4 matrix;\
 uniform mat4 projectionmatrix;\
+/*TODO: get the resize factor out of the matrix-matrix and apply it to the pointsize, might be smart to calculate this in software instead of glsl*/\
 void main()\
 {\
 	size = a_size;\
@@ -115,15 +116,22 @@ void main()\
 
 			p.vertex.position = p.position;
 
-			if(p.emitter->emitterTemplate->particleProps.colors.size() > 1 && p.life <= 1 && p.life > 0.00001f)
+			if(p.life <= 1 && p.life > 0.00001f)
 			{
-				float colorFac = glm::pow(1-p.life, p.emitter->emitterTemplate->particleProps.colorExp) * (p.emitter->emitterTemplate->particleProps.colors.size()-1);
-				float factor = colorFac - (int)colorFac;
-				p.vertex.color = (1 - factor) * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac] + factor * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac+1];
+				if(p.emitter->emitterTemplate->particleProps.colors.size() > 1)
+				{
+					float colorFac = glm::pow(1-p.life, p.emitter->emitterTemplate->particleProps.colorExp) * (p.emitter->emitterTemplate->particleProps.colors.size()-1);
+					float factor = colorFac - (int)colorFac;
+					p.vertex.color = (1 - factor) * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac] + factor * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac+1];
+				}
+
+				if(p.emitter->emitterTemplate->particleProps.size.size() > 1)
+				{
+					float sizeFac = glm::pow(1-p.life, p.emitter->emitterTemplate->particleProps.sizeExp) * (p.emitter->emitterTemplate->particleProps.size.size()-1);
+					float factor = sizeFac - (int)sizeFac;
+					p.vertex._size = (1 - factor) * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac] + factor * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac+1];
+				}
 			}
-
-
-			p.vertex._size = 10 + 90 * glm::pow(1-p.life, 1.5f);
 			p.vertex.rotation+= (float)(elapsedTime * p.rotationSpeed);
 
 			//maybe use memcpy for this?
@@ -265,6 +273,7 @@ void main()\
 		for(size_t i = 0; i < data["particle"]["size"].size(); i++)
 			particleProps.size.push_back(data["particle"]["size"][i].asFloat());
 
+		particleProps.sizeExp = data["particle"]["sizeexp"].asFloat();
 		for(size_t i = 0; i < data["particle"]["colors"].size(); i++)
 			particleProps.colors.push_back(glm::vec4(data["particle"]["colors"][i][0u].asFloat(), data["particle"]["colors"][i][1u].asFloat(), data["particle"]["colors"][i][2u].asFloat(), data["particle"]["colors"][i][3u].asFloat()));
 	}

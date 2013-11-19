@@ -21,12 +21,18 @@
 #include <blib/Box2DDebug.h>
 #include <blib/Font.h>
 #include <blib/Util.h>
+#include <blib/config.h>
 
 //platform specific...kinda
+#ifdef BLIB_OPENGL
 #include <blib/gl/ResourceManager.h>
-#include <blib/drivers/joystick/WinMM.h>
+#endif
 
-#ifdef WIN32
+#ifdef BLIB_WINMM
+#include <blib/drivers/joystick/WinMM.h>
+#endif
+
+#ifdef BLIB_WIN
 #include <gl/wglew.h>
 #endif
 using blib::util::Log;
@@ -49,7 +55,17 @@ namespace blib
 			delete joystickDriver;
 		joystickDriver = NULL;
 
+		delete window;
 
+		delete resourceManager;
+
+		delete spriteBatch;
+		delete lineBatch;
+		delete renderer;
+
+		delete semaphore;
+		delete renderThread;
+		delete updateThread;
 	}
 
 
@@ -59,11 +75,16 @@ namespace blib
 
 		if(appSetup.renderer == AppSetup::NullRenderer)
 			resourceManager = new NullResource();
+#ifdef BLIB_OPENGL
 		else if (appSetup.renderer == AppSetup::GlRenderer)
 			resourceManager = new gl::ResourceManager();
+#endif
+#ifdef BLIB_DIRECTX
 		else if(appSetup.renderer == AppSetup::DxRenderer)
 			resourceManager = new gl::ResourceManager();
-
+#endif
+		else
+			Log::out<<"Invalid renderer"<<Log::newline;
 
 		semaphore = new util::Semaphore(0,2);
 		updateThread = new UpdateThread(this);	//will create the window in the right thread
@@ -74,8 +95,12 @@ namespace blib
 
 		if(appSetup.joystickDriver == AppSetup::NullJoystick)
 			joystickDriver = NULL;
+#ifdef BLIB_WINMM
 		else if(appSetup.joystickDriver == AppSetup::WinMM)
 			joystickDriver = new drivers::joystick::WinMM();
+#endif
+		else
+			Log::out<<"Invalid joystick driver"<<Log::newline;
 		blib::Box2DDebug::getInstance()->init(lineBatch, renderer);
 
 		if(looping)
@@ -194,7 +219,7 @@ namespace blib
 
 	int App::RenderThread::run()
 	{
-#ifdef WIN32
+#ifdef BLIB_WIN
 		if(!wglMakeCurrent(app->window->hdc, ((blib::gl::Window*)app->window)->hrc))
 		{
 			Log::out<<"ERROR MAKING CURRENT"<<Log::newline;

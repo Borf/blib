@@ -6,7 +6,6 @@
 #include <blib/JoyState.h>
 #include <blib/util/Thread.h>
 
-
 namespace blib
 {
 	class Window;
@@ -154,8 +153,6 @@ namespace blib
 		SpriteBatch* spriteBatch;
 		LineBatch* lineBatch;
 		Renderer* renderer;
-//		RenderState* renderState;
-
 
 		util::Semaphore* semaphore;
 		RenderThread* renderThread;

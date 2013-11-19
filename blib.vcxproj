@@ -18,6 +18,7 @@
     <ClInclude Include="blib\blib.h" />
     <ClInclude Include="blib\Box2DDebug.h" />
     <ClInclude Include="blib\Color.h" />
+    <ClInclude Include="blib\config.h" />
     <ClInclude Include="blib\drivers\joystick\Driver.h" />
     <ClInclude Include="blib\drivers\joystick\WinMM.h" />
     <ClInclude Include="blib\FBO.h" />
@@ -36,6 +37,7 @@
     <ClInclude Include="blib\gl\VIO.h" />
     <ClInclude Include="blib\gl\Window.h" />
     <ClInclude Include="blib\IDrawableLine.h" />
+    <ClInclude Include="blib\IWindow.h" />
     <ClInclude Include="blib\JoyState.h" />
     <ClInclude Include="blib\KeyListener.h" />
     <ClInclude Include="blib\LineBatch.h" />
@@ -50,6 +52,8 @@
     <ClInclude Include="blib\math\Rectangle.h" />
     <ClInclude Include="blib\MouseListener.h" />
     <ClInclude Include="blib\ParticleSystem.h" />
+    <ClInclude Include="blib\platform\win32\config.h" />
+    <ClInclude Include="blib\platform\win32\window.h" />
     <ClInclude Include="blib\Renderer.h" />
     <ClInclude Include="blib\RenderState.h" />
     <ClInclude Include="blib\ResourceManager.h" />
@@ -180,6 +184,7 @@
     <ClCompile Include="blib\gl\TextureMap.cpp" />
     <ClCompile Include="blib\gl\Vertex.cpp" />
     <ClCompile Include="blib\gl\Window.cpp" />
+    <ClCompile Include="blib\IWindow.cpp" />
     <ClCompile Include="blib\LineBatch.cpp" />
     <ClCompile Include="blib\linq.cpp" />
     <ClCompile Include="blib\Math.cpp" />
@@ -188,6 +193,7 @@
     <ClCompile Include="blib\math\Random.cpp" />
     <ClCompile Include="blib\math\Rectangle.cpp" />
     <ClCompile Include="blib\ParticleSystem.cpp" />
+    <ClCompile Include="blib\platform\win32\window.cpp" />
     <ClCompile Include="blib\Renderer.cpp" />
     <ClCompile Include="blib\RenderState.cpp" />
     <ClCompile Include="blib\Shader.cpp" />

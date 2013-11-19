@@ -31,6 +31,24 @@
     <Filter Include="drivers\joystick">
       <UniqueIdentifier>{6eb82ce0-bad3-47cb-bd4e-40bacf0a24b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="platform">
+      <UniqueIdentifier>{8b5ba767-1e0a-416e-86cd-c1663b55eb2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\win32">
+      <UniqueIdentifier>{edf7f2a6-e896-4929-a144-5e86f0887621}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\linux">
+      <UniqueIdentifier>{2635d81e-59e3-41e0-8bcb-cbc9cbc23343}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\cafe">
+      <UniqueIdentifier>{e81771f5-c9bf-4ca0-89df-099a89feb8e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\android">
+      <UniqueIdentifier>{3d1cadae-19e5-4f97-9eaf-1e406c83910b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\osx">
+      <UniqueIdentifier>{a20f583e-1180-4584-84f3-c81f00db7217}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="blib\VIO.h" />
@@ -432,6 +450,14 @@
     <ClInclude Include="blib\drivers\joystick\WinMM.h">
       <Filter>drivers\joystick</Filter>
     </ClInclude>
+    <ClInclude Include="blib\platform\win32\config.h">
+      <Filter>platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\platform\win32\window.h">
+      <Filter>platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\config.h" />
+    <ClInclude Include="blib\IWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -721,6 +747,10 @@
     <ClCompile Include="blib\drivers\joystick\WinMM.cpp">
       <Filter>drivers\joystick</Filter>
     </ClCompile>
+    <ClCompile Include="blib\platform\win32\window.cpp">
+      <Filter>platform\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\IWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">
