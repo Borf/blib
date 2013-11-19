@@ -28,6 +28,8 @@
 #include <blib/gl/ResourceManager.h>
 #endif
 
+
+#include <blib/drivers/joystick/Driver.h>
 #ifdef BLIB_WINMM
 #include <blib/drivers/joystick/WinMM.h>
 #endif

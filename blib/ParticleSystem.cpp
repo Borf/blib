@@ -205,7 +205,7 @@ void main()\
 	template <class T>
 	T enumFromString(std::string value, const std::vector<std::pair<T, std::string> > &values)
 	{
-		for(std::vector<std::pair<T, std::string> >::const_iterator it = values.begin(); it != values.end(); it++)
+		for(typename std::vector<std::pair<T, std::string> >::const_iterator it = values.begin(); it != values.end(); it++)
 		{
 			if(it->second == value)
 				return it->first;

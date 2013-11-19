@@ -5,7 +5,7 @@ LD = ar
 CXX = g++
 CC = gcc
 DEFINES = 
-CFLAGS = -Wall -pipe
+CFLAGS = -Wall -pipe -std=c++0x
 LDFLAGS = 
 # where are source files located?
 SOURCE_DIRS= blib \
