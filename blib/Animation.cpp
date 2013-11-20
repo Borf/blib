@@ -12,7 +12,12 @@ namespace blib
 	Animation::Animation( std::string filename, ResourceManager* resourceManager )
 	{
 		Json::Value config = blib::util::FileSystem::getJson(filename);
-		texture = resourceManager->getResource<Texture>("assets/textures/player.png");
+
+		std::string pathName = "";
+		if(filename.find("/") != std::string::npos)
+			pathName = filename.substr(0, filename.rfind("/")+1);
+
+		texture = resourceManager->getResource<Texture>(pathName + config["texture"].asString());
 
 			
 		for(size_t i = 0; i < config["frames"].size(); i++)
