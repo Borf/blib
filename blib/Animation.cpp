@@ -20,7 +20,7 @@ namespace blib
 		texture = resourceManager->getResource<Texture>(pathName + config["texture"].asString());
 
 			
-		for(size_t i = 0; i < config["frames"].size(); i++)
+		for(Json::ArrayIndex i = 0; i < config["frames"].size(); i++)
 		{
 			Json::Value &v = config["frames"][i];
 			frames.push_back(blib::math::Rectangle( v["pos"][0].asFloat() / texture->originalWidth, 
@@ -105,7 +105,7 @@ namespace blib
 	Animation::State::State( const Animation& animation, Json::Value &config )
 	{
 		length = config["length"].asFloat();
-		for(size_t i = 0; i < config["keyframes"].size(); i++)
+		for(Json::ArrayIndex i = 0; i < config["keyframes"].size(); i++)
 			keyFrames.push_back(KeyFrame(animation, config["keyframes"][i]));
 	}
 

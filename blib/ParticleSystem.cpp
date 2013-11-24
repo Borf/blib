@@ -227,7 +227,7 @@ void main()\
 		if(data["texture"].isString())
 			textures.push_back(data["texture"].asString());
 		else
-			for(size_t i = 0; i < data["texture"].size(); i++)
+			for(Json::ArrayIndex i = 0; i < data["texture"].size(); i++)
 				textures.push_back(data["texture"][i].asString());
 
 		for(size_t i = 0; i < textures.size(); i++)
@@ -270,11 +270,11 @@ void main()\
 
 	
 		particleProps.colorExp = data["particle"]["colorexp"].asFloat();
-		for(size_t i = 0; i < data["particle"]["size"].size(); i++)
+		for(Json::ArrayIndex i = 0; i < data["particle"]["size"].size(); i++)
 			particleProps.size.push_back(data["particle"]["size"][i].asFloat());
 
 		particleProps.sizeExp = data["particle"]["sizeexp"].asFloat();
-		for(size_t i = 0; i < data["particle"]["colors"].size(); i++)
+		for(Json::ArrayIndex i = 0; i < data["particle"]["colors"].size(); i++)
 			particleProps.colors.push_back(glm::vec4(data["particle"]["colors"][i][0u].asFloat(), data["particle"]["colors"][i][1u].asFloat(), data["particle"]["colors"][i][2u].asFloat(), data["particle"]["colors"][i][3u].asFloat()));
 	}
 	void ParticleSystem::resizeGl( int width, int height )

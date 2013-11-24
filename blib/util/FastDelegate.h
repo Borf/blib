@@ -51,7 +51,10 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-//#pragma GCC diagnostic ignored "-Wreorder"
+#ifndef WIN32
+#pragma GCC diagnostic ignored "-Wreorder"
+#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#endif
 
 #include <memory.h> // to allow <,> comparisons
 #include <string.h> // memcmp

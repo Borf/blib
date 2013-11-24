@@ -5,7 +5,8 @@ LD = ar
 CXX = g++
 CC = gcc
 DEFINES = 
-CFLAGS = -Wall -pipe -std=c++0x
+CFLAGS = -Wall -pipe
+CPPFLAGS = -Wall -pipe -std=c++0x
 LDFLAGS = 
 # where are source files located?
 SOURCE_DIRS= blib \
@@ -58,6 +59,7 @@ endif
 # Linux 32bit
 ifeq ($(PLATFORM),linux32)
 CFLAGS += -m32
+CPPFLAGS += -m32
 CC=gcc
 CXX=g++
 BINARY_EXT=
@@ -66,6 +68,7 @@ endif
 # Linux 64bit
 ifeq ($(PLATFORM),linux64)
 CFLAGS += -m64
+CPPFLAGS += -m64
 CC=gcc
 CXX=g++
 BINARY_EXT=
@@ -102,9 +105,11 @@ DEBUG=yes
 
 ifeq ($(DEBUG),yes)
 CFLAGS += -g -ggdb -fstack-protector-all -D_DEBUG -rdynamic
+CPPFLAGS += -g -ggdb -fstack-protector-all -D_DEBUG -rdynamic
 else
 # We suppose everyone have SSE. If this cause problems, switch mfpmath back to 387
 CFLAGS += -O3 -fomit-frame-pointer -momit-leaf-frame-pointer -mfpmath=sse
+CPPFLAGS += -O3 -fomit-frame-pointer -momit-leaf-frame-pointer -mfpmath=sse
 endif
 
 TARGET=blib_$(PLATFORM).a
@@ -162,7 +167,7 @@ obj/%_rc_$(PLATFORM).o: %.rc
 
 obj/%_$(PLATFORM).o: %.cpp
 	@echo -e "    [CC]	$<"
-	@$(CXX) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+	@$(CXX) $(CPPFLAGS) $(INCLUDES) -c -o $@ $<
 
 # depencies
 
@@ -172,7 +177,7 @@ obj/%_$(PLATFORM).dep: %.c
 
 obj/%_$(PLATFORM).dep: %.cpp
 	@echo -en "    [DEP]	$<                                    \r"
-	@$(CXX) $(CFLAGS) $(INCLUDES) -MM -MF $@ $<
+	@$(CXX) $(CPPFLAGS) $(INCLUDES) -MM -MF $@ $<
 
 # Main target
 
