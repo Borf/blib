@@ -6,11 +6,13 @@ namespace blib
 {
 	namespace util
 	{
-		class StreamReader : public StreamIn
+		template<class T>
+		class StreamReaderTemplate : public T
 		{
-			StreamIn* baseStream;
+		protected:
+			T* baseStream;
 		public:
-			StreamReader(StreamIn* baseStream) : baseStream(baseStream)
+			StreamReaderTemplate(T* baseStream) : baseStream(baseStream)
 			{
 			}
 
@@ -44,6 +46,34 @@ namespace blib
 			}
 
 		};
+
+
+		class StreamReader : public StreamReaderTemplate<StreamIn>
+		{
+		public:
+			StreamReader(StreamIn* baseStream) : StreamReaderTemplate<StreamIn>(baseStream) {};
+		};
+
+		class StreamReaderFile : public StreamReaderTemplate<StreamInFile>
+		{
+		public:
+			StreamReaderFile(StreamInFile* baseStream) : StreamReaderTemplate<StreamInFile>(baseStream) {};
+
+			virtual unsigned int tell()
+			{
+				return baseStream->tell();
+			}
+
+			virtual void seek( int offset, StreamOffset offsetTo )
+			{
+				return baseStream->seek(offset, offsetTo);
+			}
+
+
+
+		};
+
+
 
 	}
 }
