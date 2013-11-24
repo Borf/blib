@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iterator>
+
 
 namespace blib
 {
@@ -9,7 +11,7 @@ namespace blib
 		Return max(const Storage& data, Operator func)
 		{
 			Return ret = func(*std::begin(data));
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				Return v = func(*it);
 				if(v > ret)
@@ -22,7 +24,7 @@ namespace blib
 		{
 			Return ret = toReturn(*std::begin(data));
 			CompareType minValue = comperator(*std::begin(data));
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				CompareType v = comperator(*it);
 				if(v > minValue)
@@ -42,7 +44,7 @@ namespace blib
 				return ifEmpty;
 
 			Return ret = func(*std::begin(data));
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				Return v = func(*it);
 				if(v < ret)
@@ -56,7 +58,7 @@ namespace blib
 		{
 			Return ret = toReturn(*std::begin(data));
 			CompareType minValue = comperator(*std::begin(data));
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				CompareType v = comperator(*it);
 				if(v < minValue)
@@ -72,7 +74,7 @@ namespace blib
 		Return sum(const Storage& data, Operator func)
 		{
 			Return ret = 0;
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 				ret += func(*it);
 			return ret;
 		}
@@ -82,7 +84,7 @@ namespace blib
 		int count(const Storage& data, Operator func)
 		{
 			int c = 0;
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				if(func(*it))
 					c++;
@@ -93,7 +95,7 @@ namespace blib
 		template<class Storage, class Operator>
 		bool contains(const Storage& data, Operator func)
 		{
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				if(func(*it))
 					return true;
@@ -104,7 +106,7 @@ namespace blib
 		template<class Storage, class Operator>
 		bool any(const Storage& data, Operator func)
 		{
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				if(func(*it))
 					return true;
@@ -116,7 +118,7 @@ namespace blib
 		Storage where(const Storage& data, Operator func)
 		{
 			Storage ret;
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				if(func(*it))
 					ret.insert(ret.end(), *it);
@@ -128,7 +130,7 @@ namespace blib
 		Return where(const Storage& data, Operator func)
 		{
 			Return ret;
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				if(func(*it))
 					ret.insert(ret.end(), *it);
@@ -140,7 +142,7 @@ namespace blib
 		Return select(const Storage& data, Operator func)
 		{
 			Return ret;
-			for(Storage::const_iterator it = data.cbegin(); it != data.cend(); it++)
+			for(typename Storage::const_iterator it = data.cbegin(); it != data.cend(); it++)
 			{
 				ret.insert(ret.end(), func(*it));
 			}
@@ -149,7 +151,7 @@ namespace blib
 		template<class Storage, class Operator>
 		void foreach(const Storage& data, Operator func)
 		{
-			for(Storage::const_iterator it = data.cbegin(); it != data.cend(); it++)
+			for(typename Storage::const_iterator it = data.cbegin(); it != data.cend(); it++)
 			{
 				func(*it);
 			}
@@ -157,7 +159,7 @@ namespace blib
 		template<class Storage, class Operator>
 		void foreach(Storage& data, Operator func)
 		{
-			for(Storage::iterator it = data.begin(); it != data.end(); it++)
+			for(typename Storage::iterator it = data.begin(); it != data.end(); it++)
 			{
 				func(*it);
 			}
@@ -166,7 +168,7 @@ namespace blib
 		template<class Storage>
 		void deleteall(Storage& data)
 		{
-			for(Storage::iterator it = data.begin(); it != data.end(); it++)
+			for(typename Storage::iterator it = data.begin(); it != data.end(); it++)
 			{
 				delete *it;
 			}
@@ -176,7 +178,7 @@ namespace blib
 		template<class Storage, class Func>
 		void deletewhere(Storage& data, Func func)
 		{
-			for(Storage::iterator it = data.begin(); it != data.end(); it++)
+			for(typename Storage::iterator it = data.begin(); it != data.end(); it++)
 			{
 				if(func(*it))
 				{
@@ -194,14 +196,14 @@ namespace blib
 			return ret;
 		}
 		template<class Return, class Storage, class Func>
-		Return firstOrDefault(const Storage& data, Func func, Return default = NULL)
+		Return firstOrDefault(const Storage& data, Func func, Return default_ = NULL)
 		{
-			for(Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				if(func(*it))
 					return *it;
 			}
-			return default;
+			return default_;
 		}
 
 
