@@ -168,7 +168,7 @@ namespace blib
 				glGetIntegerv(GL_VIEWPORT, screenStats);
 				unsigned char TGAheader[12]={0,0,2,0,0,0,0,0,0,0,0,0};
 
-				unsigned char Header[6]={((int)(width%256)),((int)(width/256)),((int)(height%256)),((int)(height/256)),32,0};
+				unsigned char Header[6]={((unsigned char)(width%256)),((unsigned char)(width/256)),((unsigned char)(height%256)),((unsigned char)(height/256)),32,0};
 				fwrite(TGAheader, sizeof(unsigned char), 12, shot);
 				fwrite(Header, sizeof(unsigned char), 6, shot);
 
