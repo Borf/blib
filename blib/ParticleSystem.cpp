@@ -145,14 +145,14 @@ void main()\
 
 	float f = 0.1f;
 
-	void ParticleSystem::draw()
+	void ParticleSystem::draw(glm::mat4 matrix)
 	{
 		if(nParticles > 0)
 		{
 			std::vector<VertexP2C4T2T2F1F1> vertices(nParticles);
 			for(int i = 0; i < nParticles; i++)
 				vertices.push_back(particles[i].vertex);
-			renderState.activeShader->setUniform("matrix", glm::mat4());
+			renderState.activeShader->setUniform("matrix", matrix);
 			renderer->drawPoints(vertices, renderState);
 		}
 	}

@@ -126,7 +126,7 @@ namespace blib
 	public:
 		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager);
 		void update(double elapsedTime);
-		void draw();
+		void draw(glm::mat4 matrix);
 
 
 		Particle particles[MAX_PARTICLES];
