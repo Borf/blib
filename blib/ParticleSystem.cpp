@@ -90,11 +90,16 @@ void main()\
 
 	void ParticleSystem::update( double elapsedTime )
 	{
-		//if(rand() % 2 == 0)
+		for(std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
 		{
-			Emitter* emitter = *emitters.begin();
-			emitter->newParticle(particles[nParticles]);
-			nParticles++;
+			Emitter* emitter = *it;
+			for(int i = glm::floor(emitter->counter * emitter->emitterTemplate->particleCountPerSecondMin); i < glm::floor((emitter->counter + elapsedTime) * emitter->emitterTemplate->particleCountPerSecondMin); i++)
+			{
+				emitter->newParticle(particles[nParticles], elapsedTime);
+				nParticles++;
+			}
+			emitter->prevPosition = emitter->position;
+			emitter->counter += elapsedTime;
 		}
 
 		int oldParticleCount = nParticles;
@@ -110,7 +115,10 @@ void main()\
 			}
 
 			glm::vec2 pos = p.position;
-			p.position = pos + (pos - p.prevPosition) * (float)(elapsedTime / lastElapsedTime) + p.emitter->emitterTemplate->gravity * (float)elapsedTime;
+
+			float friction = (float)glm::pow(1.0 - p.emitter->emitterTemplate->particleProps.friction, elapsedTime);
+
+			p.position = pos + friction * (pos - p.prevPosition) * (float)(lastElapsedTime / elapsedTime)+ p.emitter->emitterTemplate->gravity * (float)elapsedTime;
 			p.prevPosition = pos;
 			p.life -= (float)(elapsedTime / particles[i].lifeDec);
 
@@ -176,16 +184,18 @@ void main()\
 	{
 		this->emitterTemplate = emitterTemplate;
 		position = glm::vec2(0,0);
+		prevPosition = position;
 		direction = 0;
+		counter = 0;
 	}
 
-	void Emitter::newParticle( Particle& particle )
+	void Emitter::newParticle( Particle& particle, double elapsedTime )
 	{
-		float speed = blib::math::randomFloat(emitterTemplate->particleProps.speedMin, emitterTemplate->particleProps.speedMax);
+		float speed = blib::math::randomFloat(emitterTemplate->particleProps.speedMin, emitterTemplate->particleProps.speedMax) * elapsedTime;
 
 		particle.life = 1;
-		particle.position = position;
-		particle.prevPosition = position - speed * blib::util::fromAngle(glm::radians(direction + blib::math::randomFloat(emitterTemplate->particleProps.directionMin, emitterTemplate->particleProps.directionMax)));
+		particle.position = position + blib::math::randomFloat() * (position - prevPosition);
+		particle.prevPosition = particle.position - speed * blib::util::fromAngle(glm::radians(direction + blib::math::randomFloat(emitterTemplate->particleProps.directionMin, emitterTemplate->particleProps.directionMax)));
 		particle.lifeDec = blib::math::randomFloat(emitterTemplate->particleProps.fadeSpeedMin, emitterTemplate->particleProps.fadeSpeedMax);
 		particle.texture = emitterTemplate->textureInfos[rand()%emitterTemplate->textureInfos.size()];
 		particle.rotationSpeed = glm::radians(blib::math::randomFloat(emitterTemplate->particleProps.rotationMin, emitterTemplate->particleProps.rotationMax));
@@ -251,6 +261,7 @@ void main()\
 
 		gravity = glm::vec2(data["gravity"][0u].asFloat(), data["gravity"][1u].asFloat());
 		collision = data["collision"].asBool();
+		particleCountPerSecondMin = data["particlecount"][0u].asInt();
 
 
 		particleProps.directionMin = data["particle"]["direction"][0u].asFloat();

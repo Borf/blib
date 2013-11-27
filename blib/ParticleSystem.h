@@ -43,11 +43,13 @@ namespace blib
 	public:
 		EmitterTemplate* emitterTemplate;
 		glm::vec2 position;
+		glm::vec2 prevPosition;
 		float direction;
 
+		double counter;
 
 		Emitter(EmitterTemplate* emitterTemplate);
-		void newParticle(Particle& particle);
+		void newParticle(Particle& particle, double elapsedTime);
 	};
 
 	class Attractor
