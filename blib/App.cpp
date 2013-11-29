@@ -89,6 +89,7 @@ namespace blib
 		else
 			Log::out<<"Invalid renderer"<<Log::newline;
 
+
 		semaphore = new util::Semaphore(0,2);
 		updateThread = new UpdateThread(this);	//will create the window in the right thread
 		updateThread->start();
@@ -258,8 +259,8 @@ namespace blib
 	int App::UpdateThread::run()
 	{
 		Log::out<<"App::UpdateThread::run"<<Log::newline;
-		app->createWindow();
 
+		app->createWindow();
 		Texture* gear = app->resourceManager->getResource<Texture>("assets/textures/gear.png");
 		Texture* white = app->resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
 		Font* font = app->resourceManager->getResource<Font>("tahoma");
