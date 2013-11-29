@@ -46,6 +46,9 @@ namespace blib
 				Window();
 				virtual ~Window();
 				virtual void create(int icon, std::string title);
+				virtual void tick();
+				virtual void makeCurrent();
+				virtual void unmakeCurrent();
 			};
 		}
 	}

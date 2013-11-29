@@ -43,6 +43,8 @@ namespace blib
 		virtual void create(int icon, std::string title) = 0;
 		virtual void swapBuffers() = 0;
 		virtual void tick() = 0;
+		virtual void makeCurrent() = 0;
+		virtual void unmakeCurrent() = 0;
 		void addListener(KeyListener* keyListener);
 		void addListener(MouseListener* keyListener);
 	};

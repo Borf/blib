@@ -15,7 +15,6 @@ namespace blib
 		{
 			Window::Window()
 			{
-				create(0,"");
 			}
 			Window::~Window()
 			{
@@ -60,21 +59,36 @@ namespace blib
 				glXMakeCurrent(dpy, win, glc);
 				
 				
-				while(true)
+				glewInit();
+				
+			}
+			
+			void Window::makeCurrent()
+			{
+				glXMakeCurrent(dpy, win, glc);
+			}
+			
+			void Window::unmakeCurrent()
+			{
+
+			}
+			
+			void Window::tick()
+			{
+				Log::out<<"WindowTick!"<<Log::newline;
+				XNextEvent(dpy, &xev);
+		
+				if(xev.type == Expose)
 				{
-					XNextEvent(dpy, &xev);
-					
-					if(xev.type == Expose)
-					{
-						glClearColor(1,0,0,1);
-						glClear(GL_COLOR_BUFFER_BIT);
-						glXSwapBuffers(dpy, win);
-					}
-					if(xev.type == KeyPress)
-					{
-						exit(0);
-					}
+					glClearColor(1,0,0,1);
+					glClear(GL_COLOR_BUFFER_BIT);
+					glXSwapBuffers(dpy, win);
 				}
+				if(xev.type == KeyPress)
+				{
+					exit(0);
+				}
+
 			}
 		}
 	}

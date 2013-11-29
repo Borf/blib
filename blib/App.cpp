@@ -229,6 +229,9 @@ namespace blib
 	int App::RenderThread::run()
 	{
 		Log::out<<"App::RenderThread::run"<<Log::newline;
+		
+		app->window->makeCurrent();
+		
 #ifdef BLIB_WIN
 		if(!wglMakeCurrent(app->window->hdc, ((blib::gl::Window*)app->window)->hrc))
 		{
@@ -264,6 +267,8 @@ namespace blib
 		Texture* gear = app->resourceManager->getResource<Texture>("assets/textures/gear.png");
 		Texture* white = app->resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
 		Font* font = app->resourceManager->getResource<Font>("tahoma");
+		
+		app->window->unmakeCurrent();
 #ifdef WIN32
 		wglMakeCurrent(NULL, NULL);
 #else
