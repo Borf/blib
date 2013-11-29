@@ -28,8 +28,6 @@ namespace blib
 
 	namespace gl
 	{
-		template class Texture<blib::Texture>;
-		template class Texture<blib::SpriteSheet>;
 
 		template <class T>
 		Texture<T>::Texture()
@@ -251,6 +249,9 @@ namespace blib
 
 
 #ifndef ANDROID
+		MultiTextureMap::~MultiTextureMap()
+		{
+		}
 		MultiTextureMap::MultiTextureMap(int width, int height)
 		{
 			this->width = width;
@@ -333,6 +334,8 @@ namespace blib
 #endif
 
 
+		template class Texture<blib::Texture>;
+		template class Texture<blib::SpriteSheet>;
 
 	}
 }

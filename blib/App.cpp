@@ -73,6 +73,7 @@ namespace blib
 
 	void App::start(bool looping)
 	{
+		Log::out<<"App::start"<<Log::newline;
 		util::Profiler();
 
 		if(appSetup.renderer == AppSetup::NullRenderer)
@@ -92,6 +93,8 @@ namespace blib
 		updateThread = new UpdateThread(this);	//will create the window in the right thread
 		updateThread->start();
 		updateThread->semaphore->wait(); //wait until it is initialized
+		Log::out<<"Waiting done"<<Log::newline;
+		
 		renderThread = new RenderThread(this);
 		renderThread->start();
 
@@ -111,6 +114,7 @@ namespace blib
 
 	void App::run()
 	{
+		Log::out<<"App::run"<<Log::newline;
 		while(running)
 		{
 			step();
@@ -130,6 +134,7 @@ namespace blib
 
 	void App::createWindow()
 	{
+		Log::out<<"App::createWindow"<<Log::newline;
 		window = new blib::gl::Window();
 		window->setSize(appSetup.width, appSetup.height);
 		window->setBorder(appSetup.border);
@@ -205,6 +210,7 @@ namespace blib
 
 	void App::step()
 	{
+		Log::out<<"App::step"<<Log::newline;
 		renderer->swap();
 		renderThread->semaphore->signal();
 		updateThread->semaphore->signal();
@@ -221,6 +227,7 @@ namespace blib
 
 	int App::RenderThread::run()
 	{
+		Log::out<<"App::RenderThread::run"<<Log::newline;
 #ifdef BLIB_WIN
 		if(!wglMakeCurrent(app->window->hdc, ((blib::gl::Window*)app->window)->hrc))
 		{
@@ -250,6 +257,7 @@ namespace blib
 
 	int App::UpdateThread::run()
 	{
+		Log::out<<"App::UpdateThread::run"<<Log::newline;
 		app->createWindow();
 
 		Texture* gear = app->resourceManager->getResource<Texture>("assets/textures/gear.png");
@@ -262,6 +270,7 @@ namespace blib
 #endif
 
 		semaphore->signal();
+		Log::out<<"App::UpdateThread::looping"<<Log::newline;
 		while(app->running)
 		{
 			semaphore->wait();

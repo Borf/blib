@@ -4,6 +4,10 @@
 #include <Windows.h>
 #else
 #include <pthread.h>
+#include <semaphore.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
 #endif
 
 
@@ -15,6 +19,8 @@ namespace blib
 		{
 #ifdef WIN32
 			HANDLE ghSemaphore;
+#else
+			sem_t* semaphore;
 #endif
 		public:
 			Semaphore(int startValue, int maxValue)
@@ -35,7 +41,12 @@ namespace blib
 				}
 
 #else
-
+				char name[100];
+				sprintf(name, "blib_sem_%i", rand());
+				if((semaphore = sem_open(name, O_CREAT, 0644, startValue)) == SEM_FAILED)
+				{
+					Log::out<<"Error creating semaphore"<<Log::newline;
+				}
 #endif
 			}
 
@@ -44,7 +55,8 @@ namespace blib
 #ifdef WIN32
 				WaitForSingleObject(ghSemaphore, INFINITE);
 #else
-
+				Log::out<<"Waiting semaphore "<<Log::newline;
+				sem_wait(semaphore);
 #endif
 			}
 
@@ -61,7 +73,8 @@ namespace blib
 					Log::out<<"ReleaseSemaphore Error: "<<lpMsgBuf<<Log::newline;
 				}
 #else
-
+				Log::out<<"Signalling semaphore "<<Log::newline;
+				sem_post(semaphore);
 #endif
 			}
 

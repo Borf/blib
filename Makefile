@@ -13,6 +13,7 @@ SOURCE_DIRS= blib \
 blib/util \
 blib/math \
 blib/gl \
+blib/platform/linux \
 externals/json \
 externals/box2d/Box2D/Collision \
 externals/box2d/Box2D/Collision/Shapes \

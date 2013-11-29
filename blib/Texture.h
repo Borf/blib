@@ -9,6 +9,7 @@ namespace blib
 	class Texture
 	{
 	public:
+		virtual ~Texture() { }
 		virtual void use() = 0;
 		bool loaded;
 		int width;

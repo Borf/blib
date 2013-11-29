@@ -27,7 +27,7 @@ namespace blib
 			void fromFile(std::string fileName, int loadOptions);
 
 			Texture(std::string fileName, int loadOptions = 0);
-			~Texture(void);
+			virtual ~Texture(void);
 		public:
 			enum LoadOptions
 			{
