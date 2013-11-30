@@ -31,6 +31,8 @@ namespace blib
 
 
 				virtual void create(int icon, std::string title);
+				virtual void makeCurrent();
+				virtual void unmakeCurrent();
 				LRESULT wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 			};

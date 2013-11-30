@@ -211,7 +211,12 @@ namespace blib
 
 	void App::step()
 	{
-		Log::out<<"App::step"<<Log::newline;
+		static bool bla = true;
+		if(bla == true)
+		{
+			bla = false;
+			Log::out<<"App::step"<<Log::newline;
+		}
 		renderer->swap();
 		renderThread->semaphore->signal();
 		updateThread->semaphore->signal();
@@ -232,18 +237,6 @@ namespace blib
 		
 		app->window->makeCurrent();
 		
-#ifdef BLIB_WIN
-		if(!wglMakeCurrent(app->window->hdc, ((blib::gl::Window*)app->window)->hrc))
-		{
-			Log::out<<"ERROR MAKING CURRENT"<<Log::newline;
-			char* lpMsgBuf;
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	GetLastError(),	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
-			Log::out<<"Error: "<<lpMsgBuf<<Log::newline;
-		}
-#else
-
-
-#endif
 		while(app->running)
 		{
 			semaphore->wait();
@@ -269,11 +262,6 @@ namespace blib
 		Font* font = app->resourceManager->getResource<Font>("tahoma");
 		
 		app->window->unmakeCurrent();
-#ifdef WIN32
-		wglMakeCurrent(NULL, NULL);
-#else
-
-#endif
 
 		semaphore->signal();
 		Log::out<<"App::UpdateThread::looping"<<Log::newline;

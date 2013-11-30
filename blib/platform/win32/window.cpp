@@ -7,6 +7,7 @@
 #include <blib/util/Log.h>
 #include <blib/KeyListener.h>
 #include <blib/MouseListener.h>
+#include <blib/gl/Window.h>
 
 using blib::util::Log;
 
@@ -182,6 +183,20 @@ namespace blib
 				return DefWindowProc(hWnd, message, wParam, lParam);
 			}
 
+			void Window::makeCurrent()
+			{
+				if(!wglMakeCurrent(hdc, ((blib::gl::Window*)this)->hrc))
+				{
+					Log::out<<"ERROR MAKING CURRENT"<<Log::newline;
+					char* lpMsgBuf;
+					FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	GetLastError(),	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
+					Log::out<<"Error: "<<lpMsgBuf<<Log::newline;
+				}
+			}
+			void Window::unmakeCurrent()
+			{
+				wglMakeCurrent(NULL, NULL);
+			}
 
 
 		}
