@@ -33,6 +33,9 @@
 #ifdef BLIB_WINMM
 #include <blib/drivers/joystick/WinMM.h>
 #endif
+#ifdef BLIB_DIRECTINPUT
+#include <blib/drivers/joystick/DirectInput.h>
+#endif
 
 #ifdef BLIB_WIN
 #include <gl/wglew.h>
@@ -104,6 +107,10 @@ namespace blib
 #ifdef BLIB_WINMM
 		else if(appSetup.joystickDriver == AppSetup::WinMM)
 			joystickDriver = new drivers::joystick::WinMM();
+#endif
+#ifdef BLIB_DIRECTINPUT
+		else if(appSetup.joystickDriver == AppSetup::DirectInput)
+			joystickDriver = new drivers::joystick::DirectInput(window);
 #endif
 		else
 			Log::out<<"Invalid joystick driver"<<Log::newline;
@@ -273,7 +280,11 @@ namespace blib
 			double frameStart = util::Profiler::getAppTime();
 			app->window->tick();
 			if(app->joystickDriver)
+			{
 				app->joystickDriver->update();
+				for(int i = 0; i < 32; i++)
+					app->joyStates[i] = app->joystickDriver->getJoyState(i);
+			}
 
 
 			double elapsedTime = blib::util::Profiler::getTime();

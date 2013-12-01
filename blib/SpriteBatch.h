@@ -50,6 +50,7 @@ namespace blib
 		bool cacheActive;
 
 		glm::mat4 matrix;
+		FBO* fbo;
 
 		int cacheStart;
 
@@ -60,7 +61,7 @@ namespace blib
 
 		SpriteBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState = RenderState());
 
-		virtual void begin(const glm::mat4 &matrix = glm::mat4());
+		virtual void begin(const glm::mat4 &matrix = glm::mat4(), FBO* fbo = NULL);
 		virtual void end();
 
 		virtual void startCache();

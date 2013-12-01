@@ -13,7 +13,7 @@ namespace blib
 {
 
 VertexDef(VertexP3,								position,	glm::vec3, 3, Vertex)
-VertexDef(VertexP2,								position,	glm::vec2, 2, Vertex)
+//VertexDef(VertexP2,								position,	glm::vec2, 2, Vertex)
 VertexDef(VertexP3T2,							texCoord,	glm::vec2, 2, VertexP3)
 VertexDef(VertexP2T2,							texCoord,	glm::vec2, 2, VertexP2)
 VertexDef(VertexP2T2T2,							texCoord2,	glm::vec2, 2, VertexP2T2)
@@ -29,5 +29,28 @@ VertexDef(VertexP2C4T2T2,						tex2,		glm::vec2, 2, VertexP2C4T2)
 VertexDef(VertexP2C4T2T2F1,							rotation,	float, 1, VertexP2C4T2T2)
 VertexDef(VertexP2C4T2T2F1F1,						_size,		float, 1, VertexP2C4T2T2F1)
 
+
+
+	void VertexP2::setAttribPointers(bool enabledVertexAttributes[10], void* offset, int *index, int totalSize) \
+	{
+		int tmpIndex = 0;
+		if(!index)
+		index = &tmpIndex;
+		Vertex::setAttribPointers(enabledVertexAttributes, offset, index, totalSize);
+		if(!enabledVertexAttributes[*index])
+		glEnableVertexAttribArray(*index);
+		enabledVertexAttributes[*index] = true;
+		glVertexAttribPointer((*index)++, 2, GL_FLOAT, GL_FALSE, totalSize, (void*)((char*)offset + Vertex::size()));
+		if(index == &tmpIndex)
+		{
+			for(int i = *index; i < 10; i++)
+				if(enabledVertexAttributes[i])
+				{
+					enabledVertexAttributes[i] = false;
+					glDisableVertexAttribArray(i);
+				}
+		}
+	}
+	int VertexP2::size() { return Vertex::size() + 2*sizeof(GL_FLOAT); }\
 
 }

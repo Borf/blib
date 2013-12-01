@@ -59,13 +59,14 @@ void main()\
 		vertices.reserve(MAX_SPRITES);
 	}
 
-	void SpriteBatch::begin(const glm::mat4 &matrix)
+	void SpriteBatch::begin(const glm::mat4 &matrix, FBO* fbo)
 	{
 		assert(!active);
 		active = true;
 		currentTexture = NULL;
 		cacheActive = false;
 		this->matrix = matrix;
+		this->fbo = fbo;
 		materialIndices.clear();
 		vertices.clear();
 	}
@@ -78,6 +79,9 @@ void main()\
 		if(vertices.size() == 0)
 			return;
 
+		if(fbo)
+			renderState.activeFbo.push(fbo);
+
 		materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
 		renderState.activeShader->setUniform("matrix", matrix);
 		int lastIndex = 0;
@@ -87,6 +91,8 @@ void main()\
 			renderer->drawTriangles<vertexDef>(&vertices[lastIndex], materialIndices[i].second - lastIndex, renderState);
 			lastIndex = materialIndices[i].second;
 		}
+		if(fbo)
+			renderState.activeFbo.pop();
 		active = false;
 	}
 

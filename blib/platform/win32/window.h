@@ -22,9 +22,9 @@ namespace blib
 				int lastButton;
 			protected:
 				std::string className;
-				HWND hWnd;
 			public:
 				HDC hdc;
+				HWND hWnd;
 
 				Window();
 				virtual ~Window();

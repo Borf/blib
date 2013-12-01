@@ -19,6 +19,7 @@
     <ClInclude Include="blib\Box2DDebug.h" />
     <ClInclude Include="blib\Color.h" />
     <ClInclude Include="blib\config.h" />
+    <ClInclude Include="blib\drivers\joystick\DirectInput.h" />
     <ClInclude Include="blib\drivers\joystick\Driver.h" />
     <ClInclude Include="blib\drivers\joystick\WinMM.h" />
     <ClInclude Include="blib\FBO.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="blib\audio\AudioManagerWindows.cpp" />
     <ClCompile Include="blib\Box2DDebug.cpp" />
     <ClCompile Include="blib\Color.cpp" />
+    <ClCompile Include="blib\drivers\joystick\DirectInput.cpp" />
     <ClCompile Include="blib\drivers\joystick\WinMM.cpp" />
     <ClCompile Include="blib\Font.cpp" />
     <ClCompile Include="blib\gl\FBO.cpp" />

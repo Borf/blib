@@ -6,4 +6,5 @@
 #define BLIB_DIRECTX
 
 #define BLIB_WINMM
+#define BLIB_DIRECTINPUT
 

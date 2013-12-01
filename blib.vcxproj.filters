@@ -458,6 +458,9 @@
     </ClInclude>
     <ClInclude Include="blib\config.h" />
     <ClInclude Include="blib\IWindow.h" />
+    <ClInclude Include="blib\drivers\joystick\DirectInput.h">
+      <Filter>drivers\joystick</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -751,6 +754,9 @@
       <Filter>platform\win32</Filter>
     </ClCompile>
     <ClCompile Include="blib\IWindow.cpp" />
+    <ClCompile Include="blib\drivers\joystick\DirectInput.cpp">
+      <Filter>drivers\joystick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">
