@@ -23,6 +23,7 @@
 #include <assert.h>
 
 #include <blib/Window.h>
+#include <vector>
 
 
 namespace blib
@@ -46,7 +47,9 @@ namespace blib
 
 				DI_ENUM_CONTEXT			enumContext;
 				LPDIRECTINPUT8          g_pDI;
-				LPDIRECTINPUTDEVICE8    g_pJoystick;
+
+				size_t enumJoyId;
+				std::vector<LPDIRECTINPUTDEVICE8>    joysticks;
 
 
 				DirectInput(blib::Window* window);

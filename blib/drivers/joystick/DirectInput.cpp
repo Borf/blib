@@ -6,8 +6,9 @@
 #include <Windows.h>
 #include <winerror.h>
 
-
+#include <blib/util/Log.h>
 #include <blib/platform/win32/window.h>
+using blib::util::Log;
 
 namespace blib
 {
@@ -61,31 +62,29 @@ namespace blib
 
 			BOOL CALLBACK EnumJoysticksCallback( const DIDEVICEINSTANCE* pdidInstance, VOID* pDirectInput )
 			{
+				Log::out<<"DirectInput: Found joystick "<<pdidInstance->tszProductName<<Log::newline;
 				DirectInput* di = (DirectInput*)pDirectInput;
 
 				DirectInput::DI_ENUM_CONTEXT* pEnumContext = &di->enumContext;
 				HRESULT hr;
+				LPDIRECTINPUTDEVICE8 joystick;
 
-				if( g_bFilterOutXinputDevices && IsXInputDevice( &pdidInstance->guidProduct ) )
-					return DIENUM_CONTINUE;
+				//if( g_bFilterOutXinputDevices && IsXInputDevice( &pdidInstance->guidProduct ) )
+				//	return DIENUM_CONTINUE;
 
 				// Skip anything other than the perferred joystick device as defined by the control panel.  
 				// Instead you could store all the enumerated joysticks and let the user pick.
-				if( pEnumContext->bPreferredJoyCfgValid &&
-					!IsEqualGUID( pdidInstance->guidInstance, pEnumContext->pPreferredJoyCfg->guidInstance ) )
-					return DIENUM_CONTINUE;
+//				if( pEnumContext->bPreferredJoyCfgValid &&
+//					!IsEqualGUID( pdidInstance->guidInstance, pEnumContext->pPreferredJoyCfg->guidInstance ) )
+//					return DIENUM_CONTINUE;
 
-				// Obtain an interface to the enumerated joystick.
-				hr = di->g_pDI->CreateDevice( pdidInstance->guidInstance, &di->g_pJoystick, NULL );
 
-				// If it failed, then we can't use this joystick. (Maybe the user unplugged
-				// it while we were in the middle of enumerating it.)
+				hr = di->g_pDI->CreateDevice( pdidInstance->guidInstance, &joystick, NULL );
 				if( FAILED( hr ) )
 					return DIENUM_CONTINUE;
 
-				// Stop enumeration. Note: we're just taking the first joystick we get. You
-				// could store all the enumerated joysticks and let the user pick.
-				return DIENUM_STOP;
+				di->joysticks.push_back(joystick);
+				return DIENUM_CONTINUE;
 			}
 
 			BOOL CALLBACK EnumObjectsCallback( const DIDEVICEOBJECTINSTANCE* pdidoi, VOID* pContext )
@@ -105,86 +104,13 @@ namespace blib
 					diprg.diph.dwHeaderSize = sizeof( DIPROPHEADER );
 					diprg.diph.dwHow = DIPH_BYID;
 					diprg.diph.dwObj = pdidoi->dwType; // Specify the enumerated axis
-					diprg.lMin = -1000;
-					diprg.lMax = +1000;
+					diprg.lMin = -10000;
+					diprg.lMax = +10000;
 
 					// Set the range for the axis
-					if( FAILED( di->g_pJoystick->SetProperty( DIPROP_RANGE, &diprg.diph ) ) )
+					if( FAILED( di->joysticks[di->enumJoyId]->SetProperty( DIPROP_RANGE, &diprg.diph ) ) )
 						return DIENUM_STOP;
 
-				}
-
-
-				// Set the UI to reflect what objects the joystick supports
-				if( pdidoi->guidType == GUID_XAxis )
-				{
-//					EnableWindow( GetDlgItem( hDlg, IDC_X_AXIS ), TRUE );
-//					EnableWindow( GetDlgItem( hDlg, IDC_X_AXIS_TEXT ), TRUE );
-				}
-				if( pdidoi->guidType == GUID_YAxis )
-				{
-//					EnableWindow( GetDlgItem( hDlg, IDC_Y_AXIS ), TRUE );
-//					EnableWindow( GetDlgItem( hDlg, IDC_Y_AXIS_TEXT ), TRUE );
-				}
-				if( pdidoi->guidType == GUID_ZAxis )
-				{
-//					EnableWindow( GetDlgItem( hDlg, IDC_Z_AXIS ), TRUE );
-//					EnableWindow( GetDlgItem( hDlg, IDC_Z_AXIS_TEXT ), TRUE );
-				}
-				if( pdidoi->guidType == GUID_RxAxis )
-				{
-//					EnableWindow( GetDlgItem( hDlg, IDC_X_ROT ), TRUE );
-//					EnableWindow( GetDlgItem( hDlg, IDC_X_ROT_TEXT ), TRUE );
-				}
-				if( pdidoi->guidType == GUID_RyAxis )
-				{
-//					EnableWindow( GetDlgItem( hDlg, IDC_Y_ROT ), TRUE );
-//					EnableWindow( GetDlgItem( hDlg, IDC_Y_ROT_TEXT ), TRUE );
-				}
-				if( pdidoi->guidType == GUID_RzAxis )
-				{
-//					EnableWindow( GetDlgItem( hDlg, IDC_Z_ROT ), TRUE );
-//					EnableWindow( GetDlgItem( hDlg, IDC_Z_ROT_TEXT ), TRUE );
-				}
-				if( pdidoi->guidType == GUID_Slider )
-				{
-					switch( nSliderCount++ )
-					{
-					case 0 :
-//						EnableWindow( GetDlgItem( hDlg, IDC_SLIDER0 ), TRUE );
-//						EnableWindow( GetDlgItem( hDlg, IDC_SLIDER0_TEXT ), TRUE );
-						break;
-
-					case 1 :
-//						EnableWindow( GetDlgItem( hDlg, IDC_SLIDER1 ), TRUE );
-//						EnableWindow( GetDlgItem( hDlg, IDC_SLIDER1_TEXT ), TRUE );
-						break;
-					}
-				}
-				if( pdidoi->guidType == GUID_POV )
-				{
-					switch( nPOVCount++ )
-					{
-					case 0 :
-//						EnableWindow( GetDlgItem( hDlg, IDC_POV0 ), TRUE );
-//						EnableWindow( GetDlgItem( hDlg, IDC_POV0_TEXT ), TRUE );
-						break;
-
-					case 1 :
-//						EnableWindow( GetDlgItem( hDlg, IDC_POV1 ), TRUE );
-//						EnableWindow( GetDlgItem( hDlg, IDC_POV1_TEXT ), TRUE );
-						break;
-
-					case 2 :
-//						EnableWindow( GetDlgItem( hDlg, IDC_POV2 ), TRUE );
-//						EnableWindow( GetDlgItem( hDlg, IDC_POV2_TEXT ), TRUE );
-						break;
-
-					case 3 :
-//						EnableWindow( GetDlgItem( hDlg, IDC_POV3 ), TRUE );
-//						EnableWindow( GetDlgItem( hDlg, IDC_POV3_TEXT ), TRUE );
-						break;
-					}
 				}
 
 				return DIENUM_CONTINUE;
@@ -222,36 +148,30 @@ namespace blib
 				if( FAILED( hr = g_pDI->EnumDevices( DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, this, DIEDFL_ATTACHEDONLY ) ) )
 					return;
 
-				if( g_bFilterOutXinputDevices )
-					CleanupForIsXInputDevice();
+//				if( g_bFilterOutXinputDevices )
+	//				CleanupForIsXInputDevice();
 
-				// Make sure we got a joystick
-				if( NULL == g_pJoystick )
+				for(enumJoyId = 0; enumJoyId < joysticks.size(); enumJoyId++)
 				{
-					MessageBox( NULL, TEXT( "Joystick not found. The sample will now exit." ),
-						TEXT( "DirectInput Sample" ),
-						MB_ICONERROR | MB_OK );
-					return;
+					// Set the data format to "simple joystick" - a predefined data format 
+					//
+					// A data format specifies which controls on a device we are interested in,
+					// and how they should be reported. This tells DInput that we will be
+					// passing a DIJOYSTATE2 structure to IDirectInputDevice::GetDeviceState().
+					if( FAILED( hr = joysticks[enumJoyId]->SetDataFormat( &c_dfDIJoystick2 ) ) )
+						return;
+
+					// Set the cooperative level to let DInput know how this device should
+					// interact with the system and with other DInput applications.
+					if( FAILED( hr = joysticks[enumJoyId]->SetCooperativeLevel( hWnd, DISCL_EXCLUSIVE | DISCL_BACKGROUND ) ) )
+						return;
+
+					// Enumerate the joystick objects. The callback function enabled user
+					// interface elements for objects that are found, and sets the min/max
+					// values property for discovered axes.
+					if( FAILED( hr = joysticks[enumJoyId]->EnumObjects( EnumObjectsCallback, ( VOID* )this, DIDFT_ALL ) ) )
+						return;
 				}
-
-				// Set the data format to "simple joystick" - a predefined data format 
-				//
-				// A data format specifies which controls on a device we are interested in,
-				// and how they should be reported. This tells DInput that we will be
-				// passing a DIJOYSTATE2 structure to IDirectInputDevice::GetDeviceState().
-				if( FAILED( hr = g_pJoystick->SetDataFormat( &c_dfDIJoystick2 ) ) )
-					return;
-
-				// Set the cooperative level to let DInput know how this device should
-				// interact with the system and with other DInput applications.
-				if( FAILED( hr = g_pJoystick->SetCooperativeLevel( hWnd, DISCL_EXCLUSIVE | DISCL_FOREGROUND | DISCL_BACKGROUND ) ) )
-					return;
-
-				// Enumerate the joystick objects. The callback function enabled user
-				// interface elements for objects that are found, and sets the min/max
-				// values property for discovered axes.
-				if( FAILED( hr = g_pJoystick->EnumObjects( EnumObjectsCallback, ( VOID* )this, DIDFT_ALL ) ) )
-					return;
 			}
 
 
@@ -266,44 +186,54 @@ namespace blib
 			void DirectInput::update()
 			{
 				HRESULT hr;
-				TCHAR strText[512] = {0}; // Device state text
 				DIJOYSTATE2 js;           // DInput joystick state 
 
-				if( NULL == g_pJoystick )
-					return;
 
-				// Poll the device to read the current state
-				hr = g_pJoystick->Poll();
-				if( FAILED( hr ) )
+				for(size_t i = 0; i < joysticks.size(); i++)
 				{
-					// DInput is telling us that the input stream has been
-					// interrupted. We aren't tracking any state between polls, so
-					// we don't have any special reset that needs to be done. We
-					// just re-acquire and try again.
-					hr = g_pJoystick->Acquire();
-					while( hr == DIERR_INPUTLOST )
-						hr = g_pJoystick->Acquire();
+					// Poll the device to read the current state
+					hr = joysticks[i]->Poll();
+					if( FAILED( hr ) )
+					{
+						// DInput is telling us that the input stream has been
+						// interrupted. We aren't tracking any state between polls, so
+						// we don't have any special reset that needs to be done. We
+						// just re-acquire and try again.
+						hr = joysticks[i]->Acquire();
+						while( hr == DIERR_INPUTLOST )
+							hr = joysticks[i]->Acquire();
 
-					// hr may be DIERR_OTHERAPPHASPRIO or other errors.  This
-					// may occur when the app is minimized or in the process of 
-					// switching, so just try again later 
-					return;
+						// hr may be DIERR_OTHERAPPHASPRIO or other errors.  This
+						// may occur when the app is minimized or in the process of 
+						// switching, so just try again later 
+						joystates[i].connected = false;
+						return;
+					}
+
+					// Get the input's device state
+					if( FAILED( hr = joysticks[i]->GetDeviceState( sizeof( DIJOYSTATE2 ), &js ) ) )
+						return; // The device should have been acquired during the Poll()
+
+					joystates[i].connected = true;
+					joystates[i].leftStick.x = js.lX / 10000.0f;
+					joystates[i].leftStick.y = js.lY / 10000.0f;
+					joystates[i].rightStick.x = js.lRx / 10000.0f;
+					joystates[i].rightStick.y = js.lRy / 10000.0f;
+					joystates[i].leftTrigger = js.lZ > 0 ? (js.lZ / 10000.0f) : 0;
+					joystates[i].rightTrigger = js.lZ < 0 ? (-js.lZ / 10000.0f) : 0;
+
+					joystates[i].button = 0;
+					for(int ii = 0; ii < 10; ii++)
+						if(js.rgbButtons[ii] != 0)
+							joystates[i].button |= 1<<ii;
 				}
-
-				// Get the input's device state
-				if( FAILED( hr = g_pJoystick->GetDeviceState( sizeof( DIJOYSTATE2 ), &js ) ) )
-					return; // The device should have been acquired during the Poll()
-
-				joystates[0].leftStick.x = (js.lX-32768) / 32768.0f;
-				joystates[0].leftStick.y = (js.lY-32768) / 32768.0f;
-
 
 			}
 
 
 			JoyState DirectInput::getJoyState(int id)
 			{
-				return joystates[0];
+				return joystates[id];
 			}
 
 		}

@@ -66,6 +66,11 @@ namespace blib
 			return glm::scale(glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), rotation, glm::vec3(0,0,1)), glm::vec3(scale,1));
 		}
 
+		glm::mat4 easyMatrix( const glm::vec2 &position, float rotation, float scale, glm::mat4 matrix /*= glm::mat4()*/ )
+		{
+			return glm::scale(glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), rotation, glm::vec3(0,0,1)), glm::vec3(scale,scale,1));
+		}
+
 		glm::mat4 easyMatrix( const Texture* texture, const Rectangle &rect )
 		{
 			glm::vec2 scale = rect.size() / glm::vec2(texture->originalWidth,texture->originalHeight);
