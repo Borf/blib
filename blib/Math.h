@@ -23,11 +23,12 @@ namespace blib
 		float randomFloat(float min, float max);
 		float round(float number, int digits);
 		glm::mat4 box2dMatrix(b2Body* body, glm::mat4 matrix = glm::mat4());
-		glm::mat4 easyMatrix(const glm::vec2 &position, glm::mat4 matrix = glm::mat4());
-		glm::mat4 easyMatrix(const glm::vec2 &position, float rotation, glm::mat4 matrix = glm::mat4());
-		glm::mat4 easyMatrix(const glm::vec2 &position, float rotation, float scale, glm::mat4 matrix = glm::mat4());
+		glm::mat4 easyMatrix(const glm::vec2 &position,											const glm::mat4 &matrix = glm::mat4());
+		glm::mat4 easyMatrix(const glm::vec2 &position, float rotation,							glm::mat4 matrix = glm::mat4());
+		glm::mat4 easyMatrix(const glm::vec2 &position, const glm::vec3 &rotation,				glm::mat4 matrix = glm::mat4());
+		glm::mat4 easyMatrix(const glm::vec2 &position, float rotation, float scale,			glm::mat4 matrix = glm::mat4());
 		glm::mat4 easyMatrix(const glm::vec2 &position, float rotation, const glm::vec2 &scale, glm::mat4 matrix = glm::mat4());
-		glm::mat4 easyMatrix(const Texture* texture, const blib::math::Rectangle &rect);
+		glm::mat4 easyMatrix(const Texture* texture,const blib::math::Rectangle &rect);
 		glm::mat4 easyMatrix(const TextureMap::TexInfo* texture, const blib::math::Rectangle &rect);
 
 

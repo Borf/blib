@@ -50,7 +50,7 @@ namespace blib
 			return matrix;
 		}
 
-		glm::mat4 easyMatrix( const glm::vec2 &position, glm::mat4 matrix /*= glm::mat4()*/ )
+		glm::mat4 easyMatrix( const glm::vec2 &position, const glm::mat4& matrix /*= glm::mat4()*/ )
 		{
 			return glm::translate(matrix, glm::vec3(position, 0));
 		}
@@ -58,6 +58,11 @@ namespace blib
 		glm::mat4 easyMatrix( const glm::vec2 &position, float rotation, glm::mat4 matrix /*= glm::mat4()*/ )
 		{
 			return glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), rotation, glm::vec3(0,0,1));
+		}
+
+		glm::mat4 easyMatrix( const glm::vec2 &position, const glm::vec3 &rotation, glm::mat4 matrix /*= glm::mat4()*/ )
+		{
+			return glm::translate(glm::rotate(glm::translate(matrix, glm::vec3(position-glm::vec2(rotation), 0)), rotation.z, glm::vec3(0,0,1)), glm::vec3(glm::vec2(rotation),0));
 		}
 
 
@@ -70,6 +75,11 @@ namespace blib
 		{
 			return glm::scale(glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), rotation, glm::vec3(0,0,1)), glm::vec3(scale,scale,1));
 		}
+
+
+
+
+
 
 		glm::mat4 easyMatrix( const Texture* texture, const Rectangle &rect )
 		{

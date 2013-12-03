@@ -93,7 +93,7 @@ void main()\
 		for(std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
 		{
 			Emitter* emitter = *it;
-			for(int i = glm::floor(emitter->counter * emitter->emitterTemplate->particleCountPerSecondMin); i < glm::floor((emitter->counter + elapsedTime) * emitter->emitterTemplate->particleCountPerSecondMin); i++)
+			for(int i = (int)glm::floor(emitter->counter * emitter->emitterTemplate->particleCountPerSecondMin); i < (int)glm::floor((emitter->counter + elapsedTime) * emitter->emitterTemplate->particleCountPerSecondMin); i++)
 			{
 				emitter->newParticle(particles[nParticles], elapsedTime);
 				nParticles++;
