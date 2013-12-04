@@ -1,9 +1,14 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <blib/Util.h>
+#include <blib/config.h>
 
-#ifdef WIN32
+#ifdef BLIB_WIN
 #include <Windows.h>
+
+#include <shlwapi.h>
+#pragma comment(lib,"shlwapi.lib")
+#include <shlobj.h>
 #endif
 
 
@@ -117,6 +122,15 @@ namespace blib
 				EnumDisplayMonitors(NULL, NULL, enumProc, NULL);
 				SetWindowPos(GetConsoleHwnd(), GetConsoleHwnd(), posX, posY,0,0, SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
 			}
+#endif
+		}
+
+		std::string getDataDir()
+		{
+#ifdef BLIB_WIN
+			TCHAR szPath[MAX_PATH];
+			SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, szPath);
+			return std::string(szPath);
 #endif
 		}
 

@@ -17,6 +17,9 @@ namespace blib
 		std::string toString(float number);
 		std::vector<std::string> split(std::string toSplit, std::string seperator);
 
+
+		std::string getDataDir();
+
 		template<class T>
 		T swapByteOrder( T val)
 		{
