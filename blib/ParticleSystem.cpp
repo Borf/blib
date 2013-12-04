@@ -191,7 +191,7 @@ void main()\
 
 	void Emitter::newParticle( Particle& particle, double elapsedTime )
 	{
-		float speed = blib::math::randomFloat(emitterTemplate->particleProps.speedMin, emitterTemplate->particleProps.speedMax) * elapsedTime;
+		float speed = (float)(blib::math::randomDouble(emitterTemplate->particleProps.speedMin, emitterTemplate->particleProps.speedMax) * elapsedTime);
 
 		particle.life = 1;
 		particle.position = position + blib::math::randomFloat() * (position - prevPosition);
