@@ -144,6 +144,10 @@ namespace blib
 					for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
 						(*it)->onKeyUp((blib::Key)wParam);
 					break;
+				case WM_CHAR:
+					for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
+						(*it)->onChar((char)wParam);
+					break;
 				case WM_LBUTTONDOWN:
 					mouseButtons |= MouseListener::Left;
 					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
