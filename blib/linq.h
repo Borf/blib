@@ -103,6 +103,17 @@ namespace blib
 			return false;
 		}
 
+		template<class Storage, class ValueType>
+		bool containsValue(const Storage& data, const ValueType &value)
+		{
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			{
+				if(*it == value)
+					return true;
+			}
+			return false;
+		}
+
 		template<class Storage, class Operator>
 		bool any(const Storage& data, Operator func)
 		{
@@ -204,6 +215,19 @@ namespace blib
 					return *it;
 			}
 			return default_;
+		}
+
+
+		template<class Storage>
+		Storage unique(const Storage &data)
+		{
+			Storage ret;
+			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			{
+				if(!containsValue(ret, *it))
+					ret.push_back(*it);
+			}
+			return ret;
 		}
 
 
