@@ -127,7 +127,6 @@ namespace blib
 	protected:
 		JoyState joyStates[32];
 
-		bool running;
 
 
 	public:
@@ -142,6 +141,7 @@ namespace blib
 		virtual void init() = 0;
 		virtual void update(double elapsedTime) = 0;
 		virtual void draw() = 0;
+		bool running;
 
 
 	protected:

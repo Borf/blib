@@ -15,6 +15,8 @@
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 LOCAL_CPP_FEATURES += exceptions
+LOCAL_CFLAGS += -std=gnu++11
+LOCAL_CPPFLAGS += -std=gnu++11
 LOCAL_MODULE    := blib
 LOCAL_SRC_FILES :=\
 	./Animation.cpp\
@@ -30,6 +32,7 @@ LOCAL_SRC_FILES :=\
 	./SpriteBatch.cpp\
 	./SpriteSheet.cpp\
 	./Util.cpp\
+	./IWindow.cpp\
 	./Window.cpp\
 	./util/FileSystem.cpp\
 	./util/Log.cpp\
@@ -37,6 +40,7 @@ LOCAL_SRC_FILES :=\
 	./util/Profiler.cpp\
 	./util/Semaphore.cpp\
 	./util/Signal.cpp\
+	./util/stb_image.c\
 	./util/Stream.cpp\
 	./util/StreamIn.cpp\
 	./util/StreamInFile.cpp\
@@ -65,6 +69,7 @@ LOCAL_SRC_FILES :=\
 	./wm/widgets/textbox.cpp\
 	./wm/widgets/Widget.cpp\
 	./gl/Texture.cpp\
+	./platform/android/Window.cpp\
 	./App.cpp
 LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/../ $(LOCAL_PATH)/../externals $(LOCAL_PATH)/../externals/box2d
 

@@ -52,8 +52,10 @@
 #endif // _MSC_VER > 1000
 
 #ifndef WIN32
+#ifndef ANDROID
 #pragma GCC diagnostic ignored "-Wreorder"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#endif
 #endif
 
 #include <memory.h> // to allow <,> comparisons

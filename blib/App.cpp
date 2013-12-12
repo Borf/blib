@@ -22,6 +22,7 @@
 #include <blib/Font.h>
 #include <blib/Util.h>
 #include <blib/config.h>
+#include <blib/ResourceManager.h>
 
 //platform specific...kinda
 #ifdef BLIB_OPENGL
