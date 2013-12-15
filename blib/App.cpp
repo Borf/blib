@@ -94,6 +94,14 @@ namespace blib
 			Log::out<<"Invalid renderer"<<Log::newline;
 
 
+		if(!resourceManager || appSetup.renderer == AppSetup::NullRenderer)
+		{
+			Log::out<<"No resource manager....quitting";
+			exit(0);
+			return;
+		}
+
+
 		semaphore = new util::Semaphore(0,2);
 		updateThread = new UpdateThread(this);	//will create the window in the right thread
 		updateThread->start();
@@ -116,6 +124,7 @@ namespace blib
 		else
 			Log::out<<"Invalid joystick driver"<<Log::newline;
 		blib::Box2DDebug::getInstance()->init(lineBatch, renderer);
+
 
 		if(looping)
 			run();
@@ -170,10 +179,10 @@ namespace blib
 			class AppMouseListener : public MouseListener {
 				App* app;
 			public:
-				AppMouseListener(App* app)						{	this->app = app;								}
-				void onMouseDown(int x, int y, Button button)	{	app->mouseState.buttons[button] = true;	};
-				void onMouseUp(int x, int y, Button button)		{	app->mouseState.buttons[button] = true;	};
-				void onMouseMove(int x, int y, Buttons button)	{	app->mouseState.x = x; app->mouseState.y = y;};
+				AppMouseListener(App* app)										{	this->app = app;								}
+				void onMouseDown(int x, int y, Button button, int clickCount)	{	app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = true;	};
+				void onMouseUp(int x, int y, Button button, int clickCount)		{	app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = false; };
+				void onMouseMove(int x, int y, Buttons button)					{	app->mouseState.x = x; app->mouseState.y = y;};
 			};
 			addMouseListener(new AppMouseListener(this));
 		}
@@ -273,6 +282,7 @@ namespace blib
 
 		semaphore->signal();
 		Log::out<<"App::UpdateThread::looping"<<Log::newline;
+		blib::util::Profiler::startFrame();
 		while(app->running)
 		{
 			semaphore->wait();
