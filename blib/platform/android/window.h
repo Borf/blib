@@ -2,10 +2,7 @@
 
 #include <blib/IWindow.h>
 
-
-#ifdef WIN32
-#include <Windows.h>
-#endif
+#include <EGL/egl.h>
 
 
 namespace blib
@@ -17,12 +14,15 @@ namespace blib
 			class Window : public blib::IWindow
 			{
 			private:
+			    EGLDisplay display;
+			    EGLSurface surface;
+			    EGLContext context;
 			protected:
 			public:
 				Window();
 				virtual ~Window();
 
-
+				virtual void swapBuffers();
 				virtual void create(int icon, std::string title);
 				virtual void makeCurrent();
 				virtual void unmakeCurrent();

@@ -20,7 +20,7 @@ namespace blib
 #ifdef WIN32
 			HANDLE ghSemaphore;
 #else
-			sem_t* semaphore;
+			sem_t semaphore;
 #endif
 		public:
 			Semaphore(int startValue, int maxValue)
@@ -41,12 +41,16 @@ namespace blib
 				}
 
 #else
-				char name[100];
+				/*char name[100];
 				sprintf(name, "blib_sem_%i", rand());
 				if((semaphore = sem_open(name, O_CREAT, 0644, startValue)) == SEM_FAILED)
 				{
 					Log::out<<"Error creating semaphore"<<Log::newline;
-				}
+				}*/
+
+				if(sem_init(&semaphore, 0, startValue) == -1)
+					Log::out<<"Error creating semaphore"<<Log::newline;
+
 #endif
 			}
 
@@ -55,8 +59,8 @@ namespace blib
 #ifdef WIN32
 				WaitForSingleObject(ghSemaphore, INFINITE);
 #else
-				Log::out<<"Waiting semaphore "<<Log::newline;
-				sem_wait(semaphore);
+//				Log::out<<"Waiting semaphore "<<Log::newline;
+				sem_wait(&semaphore);
 #endif
 			}
 
@@ -73,8 +77,8 @@ namespace blib
 					Log::out<<"ReleaseSemaphore Error: "<<lpMsgBuf<<Log::newline;
 				}
 #else
-				Log::out<<"Signalling semaphore "<<Log::newline;
-				sem_post(semaphore);
+//				Log::out<<"Signalling semaphore "<<Log::newline;
+				sem_post(&semaphore);
 #endif
 			}
 

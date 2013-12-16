@@ -18,7 +18,6 @@ namespace blib
 			Window();
 			virtual ~Window();
 			virtual void create(int icon, std::string title);
-			virtual void swapBuffers();
 			virtual void tick();
 		};
 	}

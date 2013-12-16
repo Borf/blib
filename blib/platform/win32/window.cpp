@@ -201,6 +201,11 @@ namespace blib
 			{
 				wglMakeCurrent(NULL, NULL);
 			}
+			void Window::swapBuffers()
+			{
+				SwapBuffers(hdc);
+			}
+
 
 
 		}

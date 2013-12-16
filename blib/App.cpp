@@ -156,8 +156,9 @@ namespace blib
 		window = new blib::gl::Window();
 		window->setSize(appSetup.width, appSetup.height);
 		window->setBorder(appSetup.border);
+		Log::out<<"App::createWindow::Creating window"<<Log::newline;
 		window->create(appSetup.icon, appSetup.title);
-
+		Log::out<<"App::createWindow::Created window"<<Log::newline;
 		{
 			for(int i = 0; i < 255; i++)
 				keyState.pressedKeys[i] = false;
@@ -206,7 +207,9 @@ namespace blib
 		spriteBatch = new SpriteBatch(renderer, resourceManager);
 		lineBatch = new LineBatch(renderer, resourceManager);
 
+		Log::out<<"calling init..."<<Log::newline;
 		init();
+		Log::out<<"done calling init..."<<Log::newline;
 
 		blib::gl::GlResizeRegister::ResizeRegisteredObjects(window->getWidth(), window->getHeight());
 		frameTimeIndex = 0;
@@ -250,8 +253,6 @@ namespace blib
 
 	int App::RenderThread::run()
 	{
-		Log::out<<"App::RenderThread::run"<<Log::newline;
-		
 		app->window->makeCurrent();
 		
 		while(app->running)
@@ -274,10 +275,13 @@ namespace blib
 		Log::out<<"App::UpdateThread::run"<<Log::newline;
 
 		app->createWindow();
+		Log::out<<"App::UpdateThread::Created window"<<Log::newline;
 		Texture* gear = app->resourceManager->getResource<Texture>("assets/textures/gear.png");
+		Log::out<<"App::UpdateThread::Loaded texture"<<Log::newline;
 		Texture* white = app->resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
 		Font* font = app->resourceManager->getResource<Font>("tahoma");
 		
+		Log::out<<"App: un make current from updatethread"<<Log::newline;
 		app->window->unmakeCurrent();
 
 		semaphore->signal();

@@ -111,19 +111,11 @@ namespace blib
 			}
 #endif
 #endif
-
+			Log::out<<"glViewPort"<<Log::newline;
 			glViewport(0,0,width, height);
+			Log::out<<"done glViewPort"<<Log::newline;
 
 
-		}
-
-		void Window::swapBuffers()
-		{
-#ifdef WIN32
-			SwapBuffers(hdc);
-#else
-	//TODO
-#endif
 		}
 
 

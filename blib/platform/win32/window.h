@@ -29,7 +29,7 @@ namespace blib
 				Window();
 				virtual ~Window();
 
-
+				virtual void swapBuffers();
 				virtual void create(int icon, std::string title);
 				virtual void makeCurrent();
 				virtual void unmakeCurrent();
