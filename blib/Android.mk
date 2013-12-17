@@ -71,7 +71,7 @@ LOCAL_SRC_FILES :=\
 	./gl/Texture.cpp\
 	./platform/android/Window.cpp\
 	./App.cpp
-LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/../ $(LOCAL_PATH)/../externals $(LOCAL_PATH)/../externals/box2d C:/Android/android-ndk-r9/sources/android/native_app_glue/
+LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/../ $(LOCAL_PATH)/../externals $(LOCAL_PATH)/../externals/box2d $(NDK_ROOT)/sources/android/native_app_glue
 
 #include $(BUILD_SHARED_LIBRARY)
 include $(BUILD_STATIC_LIBRARY)
