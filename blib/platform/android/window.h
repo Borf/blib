@@ -26,6 +26,12 @@ namespace blib
 				virtual void create(int icon, std::string title);
 				virtual void makeCurrent();
 				virtual void unmakeCurrent();
+
+				virtual void touchDownEvent(int x, int y);
+				virtual void touchUpEvent(int x, int y);
+				virtual void touchMoveEvent(int x, int y);
+
+
 			};
 		}
 	}

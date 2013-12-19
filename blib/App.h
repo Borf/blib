@@ -80,7 +80,6 @@ namespace blib
 		};
 
 
-		Window* window;
 		double time;
 
 		struct AppSetup
@@ -143,6 +142,7 @@ namespace blib
 		virtual void draw() = 0;
 		bool running;
 
+		Window* window;
 
 	protected:
 		void addKeyListener(KeyListener* keyListener);
