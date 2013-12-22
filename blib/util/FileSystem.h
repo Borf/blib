@@ -52,6 +52,24 @@ namespace blib
 			virtual void getFileList(const std::string &path, std::vector<std::string> &files);
 		};
 
+
+		class MemoryFile : public StreamInFile
+		{
+			char* data;
+			int length;
+			bool copied;
+			int index;
+		public:
+			MemoryFile(char* data, int lenght, bool copy);
+			~MemoryFile();
+			virtual unsigned int read( char* data, int count );
+			virtual char get();
+			virtual bool eof();
+			virtual void seek( int offset, StreamOffset offsetTo );
+			virtual unsigned int tell();
+			virtual bool opened();
+		};
+
 		class FileSystem
 		{
 		private:

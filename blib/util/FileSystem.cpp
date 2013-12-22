@@ -246,6 +246,72 @@ namespace blib
 			return ret;
 		}
 
+
+		MemoryFile::MemoryFile( char* data, int length, bool copy )
+		{
+			this->data = data;
+			this->length = length;
+			this->copied = copy;
+			this->index = 0;
+			if(copy)
+			{
+				this->data = new char[length];
+				memcpy(this->data, data, length);
+			}
+
+		}
+		MemoryFile::~MemoryFile()
+		{
+			if(copied && data)
+			{
+				delete data;
+				data = NULL;
+			}
+		}
+
+		unsigned int MemoryFile::read( char* data, int count )
+		{
+			int remaining = length - index;
+			if(count > remaining)
+				count = remaining;
+
+			memcpy(data, this->data + index, count);
+			index += count;
+
+			return count;
+		}
+		
+		char MemoryFile::get()
+		{
+			index++;
+			return this->data[index-1];
+		}
+
+		bool MemoryFile::eof()
+		{
+			return index >= length;
+		}
+
+		void MemoryFile::seek( int offset, StreamOffset offsetTo )
+		{
+			if(offsetTo == StreamSeekable::BEGIN)
+				index = offset;
+			else if(offsetTo == StreamSeekable::CURRENT)
+				index += offset;
+			else if(offsetTo == StreamSeekable::END)
+				index = length + offset;
+		}
+
+		unsigned int MemoryFile::tell()
+		{
+			return index;
+		}
+
+		bool MemoryFile::opened()
+		{
+			return true;
+		}
+
 	}
 }
 

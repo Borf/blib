@@ -34,9 +34,6 @@
     <Filter Include="platform">
       <UniqueIdentifier>{8b5ba767-1e0a-416e-86cd-c1663b55eb2c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="platform\win32">
-      <UniqueIdentifier>{edf7f2a6-e896-4929-a144-5e86f0887621}</UniqueIdentifier>
-    </Filter>
     <Filter Include="platform\linux">
       <UniqueIdentifier>{2635d81e-59e3-41e0-8bcb-cbc9cbc23343}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,9 @@
     </Filter>
     <Filter Include="platform\osx">
       <UniqueIdentifier>{a20f583e-1180-4584-84f3-c81f00db7217}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="platform\win32">
+      <UniqueIdentifier>{edf7f2a6-e896-4929-a144-5e86f0887621}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
