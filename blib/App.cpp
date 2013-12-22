@@ -48,7 +48,11 @@ namespace blib
 	App::App()
 	{
 		time = 0;
+#ifdef _DEBUG
 		showProfiler = true;
+#else
+		showProfiler = false;
+#endif
 		joystickDriver = NULL;
 	}
 
