@@ -72,6 +72,10 @@ namespace blib
 						Log::out<<"Unable to eglMakeCurrent"<<Log::newline;
 						return;
 				}
+
+				width = w;
+				height = h;
+
 				Log::out<<"Done creating egl window, surface "<<(int)surface<<Log::newline;
 			}
 

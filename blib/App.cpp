@@ -162,6 +162,11 @@ namespace blib
 		window->setBorder(appSetup.border);
 		Log::out<<"App::createWindow::Creating window"<<Log::newline;
 		window->create(appSetup.icon, appSetup.title);
+
+		appSetup.width = window->getWidth();
+		appSetup.height = window->getHeight();
+
+
 		Log::out<<"App::createWindow::Created window"<<Log::newline;
 		{
 			for(int i = 0; i < 255; i++)
