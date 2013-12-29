@@ -47,6 +47,7 @@ namespace blib
 		float direction;
 
 		double counter;
+		double life;
 
 		Emitter(EmitterTemplate* emitterTemplate);
 		void newParticle(Particle& particle, double elapsedTime);

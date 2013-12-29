@@ -9,7 +9,7 @@
 #include <blib/Renderer.h>
 #include <blib/Math.h>
 #include <json/json.h>
-#include <tuple>
+//#include <tuple>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -100,7 +100,22 @@ void main()\
 			}
 			emitter->prevPosition = emitter->position;
 			emitter->counter += elapsedTime;
+			if(emitter->life > 0 && emitter->life != -1)
+			{
+				emitter->life -= elapsedTime;
+				if(emitter->life <= 0)
+				{
+					//TODO: memory leak! make a list of emitters, and delete it when there's no more particles
+					//delete emitter;
+					it = emitters.erase(it);
+					if(it == emitters.end())
+						break;
+				}
+			}
 		}
+
+
+
 
 		int oldParticleCount = nParticles;
 		int deadCount = 0;
@@ -167,7 +182,10 @@ void main()\
 
 	Emitter* ParticleSystem::addEmitter( std::string name )
 	{
-		EmitterTemplate* emitterTemplate = new EmitterTemplate(name, textureMap);
+		static std::map<std::string, EmitterTemplate*> cache;
+		if(cache.find(name) == cache.end())
+			cache[name] = new EmitterTemplate(name, textureMap);
+		EmitterTemplate* emitterTemplate = cache[name];
 		Emitter* emitter = emitterTemplate->getEmitter();
 		emitters.push_back(emitter);
 		return emitter;
@@ -187,6 +205,7 @@ void main()\
 		prevPosition = position;
 		direction = 0;
 		counter = 0;
+		life = -1;
 	}
 
 	void Emitter::newParticle( Particle& particle, double elapsedTime )
@@ -207,6 +226,14 @@ void main()\
 		particle.vertex.rotation = 0;
 
 		particle.emitter = this;
+	}
+
+	void ParticleSystem::clear()
+	{
+		nParticles = 0;
+		for(std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
+			delete *it;	
+		emitters.clear();
 	}
 
 
