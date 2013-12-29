@@ -52,6 +52,41 @@ namespace blib
 		int y;
 	};
 
+	struct AppSetup
+	{
+		int width, height;
+		bool border;
+		bool vsync;
+		int icon;
+		std::string title;
+		enum RendererPreference
+		{
+			NullRenderer,
+			GlRenderer,
+			DxRenderer,
+		} renderer;
+
+		enum JoystickPreference
+		{
+			NullJoystick,
+			WinMM,
+			DirectInput,
+			XInput,
+		} joystickDriver;
+
+
+		AppSetup()
+		{
+			width = 1280;
+			height = 720;
+			border = false;
+			vsync = false;
+			icon = 0;
+			renderer = NullRenderer;
+			joystickDriver = NullJoystick;
+			title = "Blib App";
+		}
+	};
 
 	class App
 	{
@@ -82,41 +117,7 @@ namespace blib
 
 		double time;
 
-		struct AppSetup
-		{
-			int width, height;
-			bool border;
-			bool vsync;
-			int icon;
-			std::string title;
-			enum RendererPreference
-			{
-				NullRenderer,
-				GlRenderer,
-				DxRenderer,
-			} renderer;
-
-			enum JoystickPreference
-			{
-				NullJoystick,
-				WinMM,
-				DirectInput,
-				XInput,
-			} joystickDriver;
-
-
-			AppSetup()
-			{
-				width = 1280;
-				height = 720;
-				border = false;
-				vsync = false;
-				icon = 0;
-				renderer = NullRenderer;
-				joystickDriver = NullJoystick;
-				title = "Blib App";
-			}
-		} appSetup;
+		AppSetup appSetup;
 
 
 		KeyState keyState;
