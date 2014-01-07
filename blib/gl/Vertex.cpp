@@ -26,8 +26,7 @@ VertexDef(VertexP3T2C1,							filler,			int, 1, VertexP3T2)
 VertexDef(VertexP2T2C4,							color,		glm::vec4, 4, VertexP2T2)
 VertexDef(VertexP2C4T2,							tex1,		glm::vec2, 2, VertexP2C4)
 VertexDef(VertexP2C4T2T2,						tex2,		glm::vec2, 2, VertexP2C4T2)
-VertexDef(VertexP2C4T2T2F1,							rotation,	float, 1, VertexP2C4T2T2)
-VertexDef(VertexP2C4T2T2F1F1,						_size,		float, 1, VertexP2C4T2T2F1)
+VertexDef(VertexP2C4T2T2F1,						_size,		float, 1, VertexP2C4T2T2)
 
 
 

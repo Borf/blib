@@ -119,6 +119,13 @@ namespace blib
 					(*it)->onMouseMove(x,y,MouseListener::Left);
 			}
 
+			void Window::keyDownEvent(blib::Key key)
+			{
+				for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
+					(*it)->onKeyDown(key);
+
+			}
+
 
 
 		}

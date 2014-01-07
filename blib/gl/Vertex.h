@@ -103,14 +103,9 @@ VertexDefBegin(VertexP2C4T2T2,							tex2,		glm::vec2, 2, VertexP2C4T2)
 VertexDefEnd();
 
 
-VertexDefBegin(VertexP2C4T2T2F1,							rotation,		float, 1, VertexP2C4T2T2)
-	VertexP2C4T2T2F1(glm::vec2 position, glm::vec4 color, glm::vec2 tex1, glm::vec2 tex2, float rotation) : VertexP2C4T2T2(position, color, tex1, tex2), rotation(rotation) {};
+VertexDefBegin(VertexP2C4T2T2F1,							_size,		float, 1, VertexP2C4T2T2)
+	VertexP2C4T2T2F1(glm::vec2 position, glm::vec4 color, glm::vec2 tex1, glm::vec2 tex2, float _size) : VertexP2C4T2T2(position, color, tex1, tex2), _size(_size) {};
 VertexDefEnd();
-
-VertexDefBegin(VertexP2C4T2T2F1F1,							_size,		float, 1, VertexP2C4T2T2F1)
-	VertexP2C4T2T2F1F1(glm::vec2 position, glm::vec4 color, glm::vec2 tex1, glm::vec2 tex2, float rotation, float _size) : VertexP2C4T2T2F1(position, color, tex1, tex2, rotation), _size(_size) {};
-VertexDefEnd();
-
 
 
 

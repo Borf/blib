@@ -17,6 +17,7 @@ namespace blib
 	class EmitterTemplate;
 	class Emitter;
 	class Shader;
+	class SpriteBatch;
 	class TextureMap;
 
 
@@ -30,7 +31,7 @@ namespace blib
 		TextureMap::TexInfo* texture;
 		float rotationSpeed;
 
-		VertexP2C4T2T2F1F1 vertex;
+		VertexP2C4T2T2F1 vertex;
 		Particle()
 		{
 			life = 1;
@@ -122,12 +123,13 @@ namespace blib
 	{
 		double lastElapsedTime;
 		Renderer* renderer;
+		SpriteBatch* spriteBatch;
 		Shader* shader;
 		RenderState renderState;
 		std::list<Emitter*> emitters;
 		TextureMap* textureMap;
 	public:
-		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager);
+		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch);
 		void update(double elapsedTime);
 		void draw(glm::mat4 matrix);
 

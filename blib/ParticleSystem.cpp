@@ -8,7 +8,11 @@
 #include <blib/Color.h>
 #include <blib/Renderer.h>
 #include <blib/Math.h>
+#include <blib/util/Log.h>
+#include <blib/SpriteBatch.h>
 #include <json/json.h>
+
+using blib::util::Log;
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -18,8 +22,9 @@
 namespace blib
 {
 
-	ParticleSystem::ParticleSystem( Renderer* renderer, ResourceManager* resourceManager )
+	ParticleSystem::ParticleSystem( Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch )
 	{
+		this->spriteBatch = spriteBatch;
 		this->renderer = renderer;
 		textureMap = resourceManager->getResource<TextureMap>();
 //		renderState = baseRenderState;
@@ -37,7 +42,6 @@ attribute vec4 a_color;\
 attribute vec2 a_tex1;\
 attribute vec2 a_tex2;\
 attribute float a_size;\
-attribute float a_rotation;\
 varying vec4 color;\
 varying vec2 tex1;\
 varying vec2 tex2;\
@@ -49,8 +53,8 @@ void main()\
 {\
 	size = a_size;\
 	color = a_color;\
-	tex1 = a_tex1;\
-	tex2 = a_tex2;\
+	/*tex1 = a_tex1;\
+	tex2 = a_tex2*/;\
 	gl_PointSize = a_size;/* * (width / (zoom * 3.0));*/\
 	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\
 }",			
@@ -62,17 +66,16 @@ varying vec2 tex2;\
 uniform sampler2D s_texture;\
 void main()\
 {\
-	if(size < 0.0)\
-		discard;\
-	vec4 col = texture2D(s_texture, tex1 + gl_PointCoord * (tex2-tex1));\
-	gl_FragColor = color * col;\
+/*	if(size < 0.0)\
+		discard;*/\
+	/*vec4 col = texture2D(s_texture, tex1 + gl_PointCoord * (tex2-tex1))*/;\
+	gl_FragColor = color;/* * col;*/\
 }");
 		shader->bindAttributeLocation("a_position", 0);
 		shader->bindAttributeLocation("a_color", 1);
 		shader->bindAttributeLocation("a_tex1", 2);
 		shader->bindAttributeLocation("a_tex2", 3);
-		shader->bindAttributeLocation("a_rotation", 4);
-		shader->bindAttributeLocation("a_size", 5);
+		shader->bindAttributeLocation("a_size", 4);
 		shader->setUniform("s_texture", 0);
 		renderState.activeShader = shader;
 		renderState.activeTexture[0] = textureMap;
@@ -147,7 +150,7 @@ void main()\
 					p.vertex._size = (1 - factor) * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac] + factor * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac+1];
 				}
 			}
-			p.vertex.rotation+= (float)(elapsedTime * p.rotationSpeed);
+//			p.vertex.rotation+= (float)(elapsedTime * p.rotationSpeed);
 
 			//maybe use memcpy for this?
 			if(deadCount > 0)
@@ -164,11 +167,19 @@ void main()\
 	{
 		if(nParticles > 0)
 		{
-			std::vector<VertexP2C4T2T2F1F1> vertices(nParticles);
+/*
+
+			std::vector<VertexP2C4T2T2F1> vertices(nParticles);
 			for(int i = 0; i < nParticles; i++)
 				vertices.push_back(particles[i].vertex);
 			renderState.activeShader->setUniform("matrix", matrix);
-			renderer->drawPoints(vertices, renderState);
+			renderer->drawPoints(vertices, renderState);*/
+
+			for(int i = 0; i < nParticles; i++)
+			{
+				spriteBatch->draw(particles[i].texture, blib::math::easyMatrix(particles[i].vertex.position, 0, 0.0005 * particles[i].vertex._size), glm::vec2(32,32), particles[i].vertex.color);
+			}
+
 		}
 	}
 
@@ -215,7 +226,6 @@ void main()\
 		particle.vertex.color = emitterTemplate->particleProps.colors[0];
 		particle.vertex.tex1 = particle.texture->t1;
 		particle.vertex.tex2 = particle.texture->t2;
-		particle.vertex.rotation = 0;
 
 		particle.emitter = this;
 	}
