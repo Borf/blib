@@ -9,7 +9,6 @@
 #include <blib/Renderer.h>
 #include <blib/Math.h>
 #include <json/json.h>
-//#include <tuple>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -43,7 +42,6 @@ varying vec4 color;\
 varying vec2 tex1;\
 varying vec2 tex2;\
 varying float size;\
-varying mat2 rotation;\
 uniform mat4 matrix;\
 uniform mat4 projectionmatrix;\
 /*TODO: get the resize factor out of the matrix-matrix and apply it to the pointsize, might be smart to calculate this in software instead of glsl*/\
@@ -53,8 +51,6 @@ void main()\
 	color = a_color;\
 	tex1 = a_tex1;\
 	tex2 = a_tex2;\
-	rotation = mat2( cos( a_rotation ), -sin( a_rotation ), \
-					 sin( a_rotation ),  cos( a_rotation ));\
 	gl_PointSize = a_size;/* * (width / (zoom * 3.0));*/\
 	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\
 }",			
@@ -63,16 +59,12 @@ varying vec4 color;\
 varying float size;\
 varying vec2 tex1;\
 varying vec2 tex2;\
-varying mat2 rotation;\
 uniform sampler2D s_texture;\
 void main()\
 {\
 	if(size < 0.0)\
 		discard;\
-	vec2 pos = gl_PointCoord - vec2(0.5, 0.5);\
-	pos = pos * rotation;\
-	pos = pos + vec2(0.5, 0.5);\
-	vec4 col = texture2D(s_texture, tex1 + pos * (tex2-tex1));\
+	vec4 col = texture2D(s_texture, tex1 + gl_PointCoord * (tex2-tex1));\
 	gl_FragColor = color * col;\
 }");
 		shader->bindAttributeLocation("a_position", 0);
