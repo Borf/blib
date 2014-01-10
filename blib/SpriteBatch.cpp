@@ -273,4 +273,11 @@ void main()\
 	{
 		renderState.activeShader->setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
+
+	SpriteBatch::Cache::~Cache()
+	{
+		verts.clear();
+		materialIndices.clear();
+	}
+
 }

@@ -59,6 +59,7 @@ namespace blib
 		bool vsync;
 		int icon;
 		std::string title;
+		bool threaded;
 		enum RendererPreference
 		{
 			NullRenderer,
@@ -85,6 +86,7 @@ namespace blib
 			renderer = NullRenderer;
 			joystickDriver = NullJoystick;
 			title = "Blib App";
+			threaded = true;
 		}
 	};
 

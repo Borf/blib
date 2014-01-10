@@ -54,12 +54,25 @@ namespace blib
 		showProfiler = false;
 #endif
 		joystickDriver = NULL;
+		window = NULL;
+		resourceManager = NULL;
+		renderer = NULL;
+		spriteBatch = NULL;
+		lineBatch = NULL;
+		semaphore = NULL;
+		renderThread = NULL;
+		updateThread = NULL;
+		
+
 	}
 
 	App::~App()
 	{
-		updateThread->waitForTermination();
-		renderThread->waitForTermination();
+		if(appSetup.threaded)
+		{
+			updateThread->waitForTermination();
+			renderThread->waitForTermination();
+		}
 
 		if(joystickDriver)
 			delete joystickDriver;
@@ -73,9 +86,12 @@ namespace blib
 		delete lineBatch;
 		delete renderer;
 
-		delete semaphore;
-		delete renderThread;
-		delete updateThread;
+		if(appSetup.threaded)
+		{
+			delete semaphore;
+			delete renderThread;
+			delete updateThread;
+		}
 	}
 
 
@@ -105,15 +121,22 @@ namespace blib
 			return;
 		}
 
+		if(appSetup.threaded)
+		{
+			semaphore = new util::Semaphore(0,2);
+			updateThread = new UpdateThread(this);	//will create the window in the right thread
+			updateThread->start();
+			updateThread->semaphore->wait(); //wait until it is initialized
 
-		semaphore = new util::Semaphore(0,2);
-		updateThread = new UpdateThread(this);	//will create the window in the right thread
-		updateThread->start();
-		updateThread->semaphore->wait(); //wait until it is initialized
-		Log::out<<"Waiting done"<<Log::newline;
-		
-		renderThread = new RenderThread(this);
-		renderThread->start();
+			renderThread = new RenderThread(this);
+			renderThread->start();
+		}
+		else
+		{
+			createWindow();
+			window->makeCurrent();
+
+		}
 
 		if(appSetup.joystickDriver == AppSetup::NullJoystick)
 			joystickDriver = NULL;
@@ -128,7 +151,6 @@ namespace blib
 		else
 			Log::out<<"Invalid joystick driver"<<Log::newline;
 		blib::Box2DDebug::getInstance()->init(lineBatch, renderer);
-
 
 		if(looping)
 			run();
@@ -240,22 +262,59 @@ namespace blib
 
 	void App::step()
 	{
-		static bool bla = true;
-		if(bla == true)
+		if(appSetup.threaded)
 		{
-			bla = false;
-			Log::out<<"App::step"<<Log::newline;
-		}
-		renderer->swap();
-		renderThread->semaphore->signal();
-		updateThread->semaphore->signal();
-		semaphore->wait();
-		semaphore->wait();
+			renderer->swap();
+			renderThread->semaphore->signal();
+			updateThread->semaphore->signal();
+			semaphore->wait();
+			semaphore->wait();
 
-		frameTimes[frameTimeIndex].drawTime = renderThread->frameTime;
-		frameTimes[frameTimeIndex].updateTime = updateThread->frameTime;
-		frameTimes[frameTimeIndex].fps = util::Profiler::fps;
-		frameTimeIndex = (frameTimeIndex+1)%1000;
+			frameTimes[frameTimeIndex].drawTime = renderThread->frameTime;
+			frameTimes[frameTimeIndex].updateTime = updateThread->frameTime;
+			frameTimes[frameTimeIndex].fps = util::Profiler::fps;
+			frameTimeIndex = (frameTimeIndex+1)%1000;
+		}
+		else
+		{
+			static Texture* gear = resourceManager->getResource<Texture>("assets/textures/gear.png");
+			static Texture* white = resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
+			static Font* font = resourceManager->getResource<Font>("tahoma");
+
+
+			renderer->swap();
+
+			window->tick();
+			if(joystickDriver)
+			{
+				joystickDriver->update();
+				for(int i = 0; i < 32; i++)
+					joyStates[i] = joystickDriver->getJoyState(i);
+			}
+
+			double elapsedTime = blib::util::Profiler::getTime();
+			blib::util::Profiler::startFrame();
+			time += elapsedTime;
+			update(elapsedTime);
+			if(!running)
+				return;
+			draw();
+
+			if(showProfiler)
+			{
+				int frame = ((int)(blib::util::Profiler::getAppTime()*50)) % (12*12);
+
+				spriteBatch->begin();
+				spriteBatch->draw(gear, glm::translate(glm::mat4(), glm::vec3(window->getWidth()-80, window->getHeight()-80,0)), glm::vec2(0,0), blib::math::Rectangle(1/12.0f * (frame%12),1/12.0f * (frame/12),1/12.0f,1/12.0f));
+				spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::translate(glm::mat4(), glm::vec3(1,1,0)), glm::vec4(0,0,0,1));
+				spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::mat4());
+
+				spriteBatch->end();
+			}
+
+			renderer->flush();
+			window->swapBuffers();
+		}
 	}
 
 
@@ -281,20 +340,12 @@ namespace blib
 
 	int App::UpdateThread::run()
 	{
-		Log::out<<"App::UpdateThread::run"<<Log::newline;
-
 		app->createWindow();
-		Log::out<<"App::UpdateThread::Created window"<<Log::newline;
 		Texture* gear = app->resourceManager->getResource<Texture>("assets/textures/gear.png");
-		Log::out<<"App::UpdateThread::Loaded texture"<<Log::newline;
 		Texture* white = app->resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
 		Font* font = app->resourceManager->getResource<Font>("tahoma");
-		
-		Log::out<<"App: un make current from updatethread"<<Log::newline;
 		app->window->unmakeCurrent();
-
 		semaphore->signal();
-		Log::out<<"App::UpdateThread::looping"<<Log::newline;
 		blib::util::Profiler::startFrame();
 		while(app->running)
 		{

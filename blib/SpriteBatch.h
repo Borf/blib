@@ -35,6 +35,7 @@ namespace blib
 		public:
 			std::vector<std::pair<const Texture*, unsigned short> > materialIndices;
 			std::vector<vertexDef> verts;
+			~Cache();
 		};
 	private:
 
