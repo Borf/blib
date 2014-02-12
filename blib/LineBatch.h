@@ -18,7 +18,7 @@ namespace blib
 	{
 		typedef VertexP2C4 vertexDef;
 
-#define MAX_LINES 40000
+#define MAX_LINES 400000
 
 
 		Renderer*	renderer;
