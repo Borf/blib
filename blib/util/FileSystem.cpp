@@ -246,6 +246,11 @@ namespace blib
 			return ret;
 		}
 
+		const std::list<FileSystemHandler*> FileSystem::getHandlers()
+		{
+			return handlers;
+		}
+
 
 		MemoryFile::MemoryFile( char* data, int length, bool copy )
 		{

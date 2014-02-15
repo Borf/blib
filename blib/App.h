@@ -1,6 +1,8 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <functional>
+#include <list>
 
 #include <blib/KeyListener.h>
 #include <blib/JoyState.h>
@@ -19,6 +21,7 @@ namespace blib
 
 	namespace util
 	{
+		class Mutex;
 		class Semaphore;
 	}
 	namespace drivers
@@ -150,7 +153,15 @@ namespace blib
 	protected:
 		void addKeyListener(KeyListener* keyListener);
 		void addMouseListener(MouseListener* mouseListener);
-		
+		void runBackground( std::function<void()> backgroundTask, std::function<void()> whenDone = [](){});
+		void runLater( std::function<void()> toRun);
+		friend class BackgroundTask;
+	private:
+		util::Mutex* runnerMutex;
+		std::list<std::function<void()> > runners;
+		void runRunners();
+	public:
+
 		ResourceManager* resourceManager;
 
 		SpriteBatch* spriteBatch;

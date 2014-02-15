@@ -15,6 +15,7 @@
     <ClInclude Include="blib\App.h" />
     <ClInclude Include="blib\audio\AudioManager.h" />
     <ClInclude Include="blib\audio\AudioManagerWindows.h" />
+    <ClInclude Include="blib\BackgroundTask.h" />
     <ClInclude Include="blib\blib.h" />
     <ClInclude Include="blib\Box2DDebug.h" />
     <ClInclude Include="blib\Color.h" />
@@ -87,6 +88,10 @@
     <ClInclude Include="blib\VBO.h" />
     <ClInclude Include="blib\VIO.h" />
     <ClInclude Include="blib\Window.h" />
+    <ClInclude Include="blib\wm\Menu.h" />
+    <ClInclude Include="blib\wm\MenuItem.h" />
+    <ClInclude Include="blib\wm\SubMenuMenuItem.h" />
+    <ClInclude Include="blib\wm\ToggleMenuItem.h" />
     <ClInclude Include="blib\wm\widgets\button.h" />
     <ClInclude Include="blib\wm\widgets\ContainerWidget.h" />
     <ClInclude Include="blib\wm\widgets\Image.h" />
@@ -172,6 +177,7 @@
     <ClCompile Include="blib\Animation.cpp" />
     <ClCompile Include="blib\App.cpp" />
     <ClCompile Include="blib\audio\AudioManagerWindows.cpp" />
+    <ClCompile Include="blib\BackgroundTask.cpp" />
     <ClCompile Include="blib\Box2DDebug.cpp" />
     <ClCompile Include="blib\Color.cpp" />
     <ClCompile Include="blib\drivers\joystick\DirectInput.cpp" />
@@ -214,6 +220,8 @@
     <ClCompile Include="blib\util\StreamInFile.cpp" />
     <ClCompile Include="blib\util\Thread.cpp" />
     <ClCompile Include="blib\Window.cpp" />
+    <ClCompile Include="blib\wm\Menu.cpp" />
+    <ClCompile Include="blib\wm\MenuItem.cpp" />
     <ClCompile Include="blib\wm\widgets\button.cpp" />
     <ClCompile Include="blib\wm\widgets\ContainerWidget.cpp" />
     <ClCompile Include="blib\wm\widgets\Image.cpp" />
@@ -326,7 +334,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
       <AdditionalIncludeDirectories>.;externals\glew\include;externals;externals\box2d</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>

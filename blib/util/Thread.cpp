@@ -1,5 +1,9 @@
 #include "Thread.h"
 
+#ifdef WIN32
+#include <blib/linq.h>
+#endif
+
 #ifndef WIN32
 #include <sys/prctl.h>
 #include <unistd.h>
@@ -77,7 +81,21 @@ namespace blib
 #ifdef WIN32
 		DWORD WINAPI Thread::threadStarter( LPVOID lpParam )
 		{
-			SetThreadName(((Thread*)lpParam)->threadId, (char*)((Thread*)lpParam)->name.c_str());
+			int threadId = ((Thread*)lpParam)->threadId;
+			std::string name = ((Thread*)lpParam)->name;
+			SetThreadName(threadId, (char*)name.c_str());
+
+			if(linq::contains(threadNames, [name] (std::pair<int, std::string> p) { return p.second == name; }))
+			{
+				char newName[100];
+				int i = 0;
+				do 
+				{
+					sprintf(newName, "%s%03i", name.c_str(), ++i);
+				} while (linq::contains(threadNames, [&newName] (std::pair<int, std::string> p) { return p.second == newName; }));
+				name = newName;
+			}
+			threadNames[threadId] = name;
 			return ((Thread*)lpParam)->run();
 		}
 #else
@@ -109,6 +127,25 @@ namespace blib
 			Sleep(i*1000);
 #else
 			::sleep(i);
+#endif
+		}
+
+#ifdef WIN32
+		std::map<int, std::string> Thread::threadNames;
+#endif
+		std::string Thread::getCurrentThreadName()
+		{
+#ifdef WIN32
+			return threadNames[GetCurrentThreadId()];
+#else
+			return "";
+#endif
+		}
+
+		void Thread::setMainThread()
+		{
+#ifdef WIN32
+			threadNames[GetCurrentThreadId()] = "MainThread";
 #endif
 		}
 

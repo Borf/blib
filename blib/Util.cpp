@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <blib/Util.h>
 #include <blib/config.h>
 

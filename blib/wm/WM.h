@@ -18,6 +18,7 @@ namespace blib
 	{
 		class Window;
 		class Widget;
+		class Menu;
 
 
 		class WM : public util::Singleton<WM>
@@ -49,6 +50,8 @@ namespace blib
 			bool keyboardSpecial(int key);
 			bool hasModalWindow();
 			glm::vec4 convertHexColor4( std::string hexColor );
+			blib::wm::Menu* loadMenu( std::string filename );
+			void setRadialMenu( blib::wm::Menu* param1 );
 			Json::Value skin;
 			Texture* skinTexture;
 			Font* font;

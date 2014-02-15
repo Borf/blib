@@ -177,7 +177,7 @@ void main()\
 
 			for(int i = 0; i < nParticles; i++)
 			{
-				spriteBatch->draw(particles[i].texture, blib::math::easyMatrix(particles[i].vertex.position, 0, 0.01 * particles[i].vertex._size), glm::vec2(32,32), particles[i].vertex.color);
+				spriteBatch->draw(particles[i].texture, blib::math::easyMatrix(particles[i].vertex.position, 0, 0.01f * particles[i].vertex._size), glm::vec2(32,32), particles[i].vertex.color);
 			}
 
 		}

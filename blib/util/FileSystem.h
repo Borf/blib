@@ -78,6 +78,7 @@ namespace blib
 			static StreamInFile* openRead(const std::string &fileName);
 			static StreamOut* openWrite(const std::string &fileName);
 			static void registerHandler(FileSystemHandler* handler);
+			static const std::list<FileSystemHandler*> getHandlers();
 			static int getData(const std::string &fileName, char* &data);
 			static std::string getData(const std::string &fileName);
 			static Json::Value getJson(const std::string &fileName);

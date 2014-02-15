@@ -23,6 +23,7 @@
 #include <blib/Util.h>
 #include <blib/config.h>
 #include <blib/ResourceManager.h>
+#include <blib/BackgroundTask.h>
 
 //platform specific...kinda
 #ifdef BLIB_OPENGL
@@ -62,7 +63,7 @@ namespace blib
 		semaphore = NULL;
 		renderThread = NULL;
 		updateThread = NULL;
-		
+		runnerMutex = NULL;		
 
 	}
 
@@ -91,6 +92,7 @@ namespace blib
 			delete semaphore;
 			delete renderThread;
 			delete updateThread;
+			delete runnerMutex;
 		}
 	}
 
@@ -123,6 +125,7 @@ namespace blib
 
 		if(appSetup.threaded)
 		{
+			runnerMutex = new util::Mutex();
 			semaphore = new util::Semaphore(0,2);
 			updateThread = new UpdateThread(this);	//will create the window in the right thread
 			updateThread->start();
@@ -281,6 +284,7 @@ namespace blib
 			static Texture* white = resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
 			static Font* font = resourceManager->getResource<Font>("tahoma");
 
+			runRunners();
 
 			renderer->swap();
 
@@ -316,6 +320,29 @@ namespace blib
 			window->swapBuffers();
 		}
 	}
+
+	void App::runBackground( std::function<void()> backgroundTask, std::function<void()> whenDone)
+	{
+		if(appSetup.threaded)
+		{
+			new BackgroundTask(this, backgroundTask, whenDone);
+		}
+		else
+		{
+			backgroundTask();
+			runLater(whenDone);
+		}
+	}
+
+	void App::runLater(std::function<void()> toRun)
+	{
+		if(appSetup.threaded)
+			runnerMutex->lock();
+		runners.push_back(toRun);
+		if(appSetup.threaded)
+			runnerMutex->unLock();
+	}
+
 
 
 
@@ -365,6 +392,7 @@ namespace blib
 			double elapsedTime = blib::util::Profiler::getTime();
 			blib::util::Profiler::startFrame();
 			app->time += elapsedTime;
+			app->runRunners();
 			app->update(elapsedTime);
 			if(!app->running)
 				break;
@@ -427,5 +455,21 @@ namespace blib
 		}
 		app->semaphore->signal();
 		return 0;
+	}
+
+
+
+
+	void App::runRunners()
+	{
+		if(appSetup.threaded)
+			runnerMutex->lock();
+
+		for(std::list<std::function<void()> >::iterator it = runners.begin(); it != runners.end(); it++)
+			(*it)();
+		runners.clear();
+
+		if(appSetup.threaded)
+			runnerMutex->unLock();
 	}
 }

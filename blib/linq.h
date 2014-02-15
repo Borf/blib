@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iterator>
+#undef max
+#undef min
 
 
 namespace blib

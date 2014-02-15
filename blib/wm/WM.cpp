@@ -338,6 +338,15 @@ namespace blib
 			tasks.push_back(task);
 		}
 
+		blib::wm::Menu* WM::loadMenu( std::string filename )
+		{
+			return NULL;
+		}
+
+		void WM::setRadialMenu( blib::wm::Menu* param1 )
+		{
+		}
+
 
 	}
 }

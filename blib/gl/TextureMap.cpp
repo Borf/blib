@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <blib/gl/TextureMap.h>
 
 #include <blib/util/stb_image.h>

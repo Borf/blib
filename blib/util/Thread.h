@@ -2,6 +2,7 @@
 
 #ifdef WIN32
 #include <windows.h>
+#include <map>
 #else
 #include <pthread.h>
 #endif
@@ -18,6 +19,7 @@ namespace blib
 #ifdef WIN32
 			HANDLE	threadHandle;
 			static DWORD WINAPI threadStarter( LPVOID lpParam );
+			static std::map<int, std::string> threadNames;
 #else
 			pthread_t thread;
 			static void* threadStarter(void* param);
@@ -39,6 +41,8 @@ namespace blib
 			std::string name;
 #ifdef WIN32
 			unsigned long threadId;
+			static std::string getCurrentThreadName();
+			static void setMainThread();
 #endif
 		};
 

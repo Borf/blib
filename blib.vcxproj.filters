@@ -461,6 +461,19 @@
     <ClInclude Include="blib\drivers\joystick\DirectInput.h">
       <Filter>drivers\joystick</Filter>
     </ClInclude>
+    <ClInclude Include="blib\wm\Menu.h">
+      <Filter>wm</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\MenuItem.h">
+      <Filter>wm</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\SubMenuMenuItem.h">
+      <Filter>wm</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\ToggleMenuItem.h">
+      <Filter>wm</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\BackgroundTask.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -757,6 +770,13 @@
     <ClCompile Include="blib\drivers\joystick\DirectInput.cpp">
       <Filter>drivers\joystick</Filter>
     </ClCompile>
+    <ClCompile Include="blib\wm\Menu.cpp">
+      <Filter>wm</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\MenuItem.cpp">
+      <Filter>wm</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\BackgroundTask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

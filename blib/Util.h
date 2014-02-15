@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <string.h>
+#include <functional>
 
 namespace blib
 {
@@ -43,7 +44,6 @@ namespace blib
 #define HASH(s)    ((uint32_t)(H256(s,0,0)^(H256(s,0,0)>>16)))
 
 		void fixConsole();
-
 		template <typename T>
 		class make_vector {
 		public:

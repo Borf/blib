@@ -1,3 +1,7 @@
+#ifdef WIN32
+#include <blib/linq.h>
+#endif
+
 #include "Log.h"
 
 #include <stdio.h>
@@ -11,6 +15,7 @@
 
 #ifdef WIN32
 #include <windows.h>
+#include <blib/util/Thread.h>
 #endif
 
 namespace blib
@@ -31,7 +36,6 @@ namespace blib
 
 
 		Log logger;
-
 
 		Log::Log()
 		{
@@ -118,6 +122,15 @@ namespace blib
 		{
 			//logString("%s", "\n");
 			//endline = true;
+
+			SYSTEMTIME beg;
+			GetLocalTime(&beg);
+			buffer = format( "[%02d:%02d:%02d:%03d]\t", beg.wHour, beg.wMinute, beg.wSecond, beg.wMilliseconds) + buffer;
+
+#ifdef WIN32
+			buffer = format("[%20s]",blib::util::Thread::getCurrentThreadName().c_str()) + buffer;
+#endif
+
 
 		#ifdef WIN32
 			OutputDebugStringA(buffer.c_str());
