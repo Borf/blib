@@ -22,20 +22,20 @@ namespace blib
 
 	void AudioManagerWindows::playMusic( std::string filename )
 	{
-		mciSendString("close song1", NULL, 0, 0);
+/*		mciSendString("close song1", NULL, 0, 0);
 		mciSendString(("open "+filename+" type mpegvideo alias song1").c_str(), NULL, 0, 0); 
-		mciSendString("play song1 repeat", NULL, 0, 0);
+		mciSendString("play song1 repeat", NULL, 0, 0);*/
 	}
 
 	void AudioManagerWindows::stopMusic()
 	{
-		mciSendString("stop song1", NULL, 0, 0);
+	//	mciSendString("stop song1", NULL, 0, 0);
 	}
 
 	static int i = 2;
 	void AudioManagerWindows::playSound( std::string filename )
 	{
-		char buf[1024];
+		/*char buf[1024];
 		int r = i;
 		i++;
 		if(i > 10000)
@@ -56,6 +56,6 @@ namespace blib
 		{
 			mciGetErrorString(ret, buf, 1024);
 			printf("%s\n", buf);
-		}
+		}*/
 	}
 }
