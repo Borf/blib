@@ -137,8 +137,9 @@ namespace blib
 					PostQuitMessage(0);
 					break;
 				case WM_KEYDOWN:
-					for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
-						(*it)->onKeyDown((blib::Key)wParam);
+					if((lParam & 0x40000000) == 0)
+						for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
+							(*it)->onKeyDown((blib::Key)wParam);
 					break;
 				case WM_KEYUP:
 					for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
