@@ -42,7 +42,7 @@ namespace blib
 			{
 				if(vertexShader == "" || fragmentShader == "")
 				{
-					Log::out<<"Fragment shader is still empty"<<Log::newline;
+					Log::out<<"a shader is still empty"<<Log::newline;
 				}
 
 				programId = glCreateProgram();

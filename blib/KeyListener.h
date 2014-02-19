@@ -18,6 +18,9 @@ namespace blib
 		KEY_ENTER = VK_RETURN,
 		KEY_HOME = VK_HOME,
 		KEY_END = VK_END,
+		KEY_SHIFT = VK_SHIFT,
+		KEY_CONTROL = VK_CONTROL,
+		KEY_ALT,
 #else
 		KEY_ESC,
 		KEY_LEFT,
@@ -28,8 +31,10 @@ namespace blib
 		KEY_ENTER,
 		KEY_HOME,
 		KEY_END,
+		KEY_SHIFT,
+		KEY_CONTROL,
+		KEY_ALT,
 #endif
-
 	};
 
 	class KeyListener

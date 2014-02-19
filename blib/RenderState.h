@@ -35,6 +35,13 @@ namespace blib
 		BlendOptions srcBlendAlpha;
 		BlendOptions dstBlendAlpha;
 
+		enum RenderStyle
+		{
+			WIREFRAME,
+			FILLED,
+		};
+		RenderStyle renderStyle;
+
 		bool stencilTestEnabled;
 		bool stencilWrite;
 
@@ -53,6 +60,8 @@ namespace blib
 			dstBlendAlpha = ONE_MINUS_SRC_ALPHA;
 
 			stencilTestEnabled = false;
+
+			renderStyle = FILLED;
 		}
 	};
 

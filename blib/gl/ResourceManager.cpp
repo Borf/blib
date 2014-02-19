@@ -45,7 +45,7 @@ namespace blib
 
 		blib::Shader* ResourceManager::getShader( const std::string &name )
 		{
-			return new Shader(name + ".vert", name + ".frag");
+			return new Shader(blib::util::FileSystem::getData(name + ".vert"), blib::util::FileSystem::getData(name + ".frag"));
 		}
 
 		blib::Shader* ResourceManager::getShaderEmpty()

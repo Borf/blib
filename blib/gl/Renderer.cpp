@@ -105,6 +105,10 @@ namespace blib
 						glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 					}
 
+					if(r->renderState.renderStyle == RenderState::WIREFRAME)
+						glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+					else
+						glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
 
 					if(r->renderState.activeTexture[0])
 					{

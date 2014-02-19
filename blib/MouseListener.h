@@ -21,5 +21,6 @@ namespace blib
 		virtual void onMouseDown(int x, int y, Button button, int clickCount) {};
 		virtual void onMouseUp(int x, int y, Button button, int clickCount) {};
 		virtual void onMouseMove(int x, int y, Buttons button) {};
+		virtual void onScroll(int delta) {};
 	};
 }

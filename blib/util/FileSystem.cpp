@@ -2,6 +2,9 @@
 #include <blib/util/Log.h>
 #include <json/json.h>
 #include <fstream>
+#include <iostream>
+
+#include <direct.h>
 
 #ifdef WIN32
 #include <Windows.h>
@@ -25,7 +28,6 @@ namespace blib
 				stream = new std::ifstream((directory + "/" + fileName).c_str(), std::ios_base::binary);
 			else
 				stream = new std::ifstream(fileName.c_str(), std::ios_base::binary);
-
 			if(stream->is_open())
 			{
 				return new StreamInFilePhysical(stream);

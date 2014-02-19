@@ -51,7 +51,6 @@ namespace blib
 
 			void Window::create(int icon, std::string title)
 			{
-				showBorder = true;
 				if(className == "")
 				{
 					className = "blib_";
@@ -60,6 +59,12 @@ namespace blib
 				}
 				WNDCLASS windowClass;
 				DWORD dwExStyle = WS_EX_APPWINDOW ;//| WS_EX_WINDOWEDGE;
+				DWORD dwStyle = WS_POPUP;
+				if(showBorder)
+				{
+					dwExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
+					dwStyle = WS_OVERLAPPEDWINDOW;
+				}
 
 				HINSTANCE hInstance = GetModuleHandle(NULL);
 
@@ -79,7 +84,7 @@ namespace blib
 					Log::out<<"Error loading window class"<<Log::newline;
 					return;
 				}
-				hWnd = CreateWindowEx(dwExStyle, "asdasdasd", title.c_str(), WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_POPUP,
+				hWnd = CreateWindowEx(dwExStyle, "asdasdasd", title.c_str(), WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | dwStyle,
 					CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, hInstance, this);
 				if(!hWnd)
 				{
@@ -183,6 +188,9 @@ namespace blib
 					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 						(*it)->onMouseMove(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),(MouseListener::Buttons)mouseButtons);
 					break;
+				case WM_MOUSEWHEEL:
+					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+						(*it)->onScroll(GET_WHEEL_DELTA_WPARAM(wParam));
 				}
 
 				return DefWindowProc(hWnd, message, wParam, lParam);
