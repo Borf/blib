@@ -4,6 +4,7 @@
 #include <blib/gl/TextureMap.h>
 #include <blib/gl/Renderer.h>
 #include <blib/gl/Shader.h>
+#include <blib/gl/VBO.h>
 #include <blib/gl/FBO.h>
 #include <blib/SpriteSheet.h>
 #include <blib/Font.h>
@@ -24,7 +25,7 @@ namespace blib
 			texture		= fastdelegate::MakeDelegate(this, &ResourceManager::getTexture);
 			shader		= fastdelegate::MakeDelegate(this, &ResourceManager::getShader);
 			emptyshader = fastdelegate::MakeDelegate(this, &ResourceManager::getShaderEmpty);
-			//	vbo      = fastdelegate::MakeDelegate(this, &ResourceManager::getVbo);
+			vbo			= fastdelegate::MakeDelegate(this, &ResourceManager::getVBO);
 			fbo			= fastdelegate::MakeDelegate(this, &ResourceManager::getFBO);
 
 			spritesheet = fastdelegate::MakeDelegate(this, &ResourceManager::getSpriteSheet);
@@ -62,6 +63,12 @@ namespace blib
 		{
 			return new FBO();
 		}
+
+		blib::VBO* ResourceManager::getVBO()
+		{
+			return new blib::gl::VBO();
+		}
+
 
 		blib::Font* ResourceManager::getFont(const std::string &name)
 		{

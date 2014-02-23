@@ -42,7 +42,7 @@ namespace blib
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
 			{
 				if(renderState.activeVbo != NULL)
-					T::setAttribPointers(enabledVertices);
+					T::setAttribPointers(enabledVertices, 0);
 				else
 					T::setAttribPointers(enabledVertices, firstVertex + vertexStart);
 			}
@@ -156,6 +156,19 @@ namespace blib
 		{
 			RenderBlock<T>* block = new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
+			block->vertexStart = 0;
+			block->count = count;
+			block->renderState = renderState;
+			block->state = renderState.activeShader->state;
+			toRender[activeLayer].push_back(block);
+		}
+
+		template<class T>
+		void drawTriangles(int first, int count, const RenderState& renderState)
+		{
+			RenderBlock<T>* block = new RenderBlock<T>();
+			block->command = Render::DrawTriangles;	//TODO : move to constructor
+			block->vertexStart = first;// * (T::size() / sizeof(float));
 			block->count = count;
 			block->renderState = renderState;
 			block->state = renderState.activeShader->state;

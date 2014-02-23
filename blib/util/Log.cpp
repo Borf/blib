@@ -16,13 +16,14 @@
 #ifdef WIN32
 #include <windows.h>
 #include <blib/util/Thread.h>
+#include <blib/util/Mutex.h>
 #endif
+
 
 namespace blib
 {
 	namespace util
 	{
-
 		Log::EndLine Log::newline;
 		Log Log::out;
 		Log Log::err;
@@ -34,25 +35,18 @@ namespace blib
 		#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 		#endif
 
-
+#ifdef WIN32
+		static Mutex* logMutex = new Mutex();
+#endif
 		Log logger;
 
 		Log::Log()
 		{
 			//endline = true;
 		}
-
+//TODO: make a buffer per threadId
 		void Log::logString(const char* fmt, ...)
 		{
-		/*	if(endline)
-			{
-				endline = false;
-
-		//		SYSTEMTIME beg;
-		//		GetLocalTime(&beg);
-		//		logString( "[%02d:%02d:%02d:%03d]\t", beg.wHour, beg.wMinute, beg.wSecond, beg.wMilliseconds);
-			}*/
-
 			char text[10240];
 			va_list ap;
 			if (fmt == NULL)

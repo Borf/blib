@@ -13,6 +13,7 @@
 #include <blib/gl/FBO.h>
 #include <blib/gl/VBO.h>
 #include <blib/util/Log.h>
+#include <blib/gl/Vertex.h>
 
 using blib::util::Log;
 
@@ -142,17 +143,22 @@ namespace blib
 					r->setVertexAttributes(enabledVertexAttributes, vertices[1-activeLayer]);
 
 					totalVerts += r->vertexCount();
+
+					int start = 0;
+					if(r->renderState.activeVbo)
+						start = ((RenderBlock<blib::VertexP3T2>*)r)->vertexStart;	//TODO
+
 					if(r->command == Render::DrawTriangles)
-						glDrawArrays(GL_TRIANGLES, 0, r->vertexCount());
+						glDrawArrays(GL_TRIANGLES, start, r->vertexCount());
 					else if(r->command == Render::DrawLines)
-						glDrawArrays(GL_LINES, 0, r->vertexCount());
+						glDrawArrays(GL_LINES, start, r->vertexCount());
 					else if(r->command == Render::DrawPoints)
 					{
 #ifndef ANDROID
 						glEnable(GL_POINT_SPRITE);
 						glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 #endif
-						glDrawArrays(GL_POINTS, 0, r->vertexCount());
+						glDrawArrays(GL_POINTS, start, r->vertexCount());
 					}
 				}
 

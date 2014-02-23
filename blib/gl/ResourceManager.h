@@ -20,6 +20,7 @@ namespace blib
 			Shader* getShaderEmpty();
 			TextureMap* getTextureMap();
 			FBO* getFBO();
+			VBO* getVBO();
 		};
 
 
