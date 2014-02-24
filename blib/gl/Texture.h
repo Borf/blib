@@ -45,7 +45,8 @@ namespace blib
 			GLuint texid;
 			Texture(unsigned char* data, int width, int height);
 			
-			void use();
+			virtual void use();
+			virtual void setSubImage(int x, int y, int width, int height, char* data);
 
 		};
 		

@@ -48,7 +48,7 @@ namespace blib
 		Texture<T>::Texture(unsigned char* data, int width, int height)
 		{
 			this->texid = 0;
-			this->data = NULL;
+			this->data = data;
 			fromData(data, width, height);
 		}
 
@@ -207,9 +207,8 @@ namespace blib
 		template <class T>
 		void Texture<T>::use()
 		{
-			if(texid == 0 && data != NULL)
+			if(texid == 0)
 			{
-
 				glGenTextures(1, &texid);
 				glBindTexture(GL_TEXTURE_2D, texid);		
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, T::width, T::height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -227,14 +226,23 @@ namespace blib
 				}*/
 
 				//if((loadOptions & KeepData) == 0)
+				if(data)
 				{
 					delete[] data;
 					data = NULL;
 				}
 			}
+
 			glBindTexture(GL_TEXTURE_2D, texid);
 		}
 
+
+		template <class T>
+		void Texture<T>::setSubImage(int x, int y, int width, int height, char* data)
+		{
+			use();
+			glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		}
 
 
 

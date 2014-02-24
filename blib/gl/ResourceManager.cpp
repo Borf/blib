@@ -23,6 +23,7 @@ namespace blib
 		{
 			renderer	= fastdelegate::MakeDelegate(this, &ResourceManager::getRenderer);
 			texture		= fastdelegate::MakeDelegate(this, &ResourceManager::getTexture);
+			emptyTexture= fastdelegate::MakeDelegate(this, &ResourceManager::getEmptyTexture);
 			shader		= fastdelegate::MakeDelegate(this, &ResourceManager::getShader);
 			emptyshader = fastdelegate::MakeDelegate(this, &ResourceManager::getShaderEmpty);
 			vbo			= fastdelegate::MakeDelegate(this, &ResourceManager::getVBO);
@@ -43,6 +44,13 @@ namespace blib
 		{
 			return Texture<blib::Texture>::loadCached<Texture<blib::Texture> >(name);
 		}
+		
+		blib::Texture* ResourceManager::getEmptyTexture( int width, int height )
+		{
+			return new blib::gl::Texture<blib::Texture>(NULL, width, height);
+
+		}
+
 
 		blib::Shader* ResourceManager::getShader( const std::string &name )
 		{

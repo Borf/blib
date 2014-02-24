@@ -45,6 +45,8 @@ namespace blib
 		bool stencilTestEnabled;
 		bool stencilWrite;
 
+		bool depthTest;
+
 		RenderState()
 		{
 			activeShader = NULL;
@@ -62,6 +64,7 @@ namespace blib
 			stencilTestEnabled = false;
 
 			renderStyle = FILLED;
+			depthTest = false;
 		}
 	};
 

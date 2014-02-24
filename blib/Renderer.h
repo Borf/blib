@@ -23,6 +23,7 @@ namespace blib
 				DrawTriangles,
 				DrawLines,
 				DrawPoints,
+				SetSubTexture,
 			} command;
 			virtual ~Render() {};
 			RenderState renderState;
@@ -92,6 +93,25 @@ namespace blib
 			virtual void perform(float* firstVertex)
 			{
 				vbo->setData(count, (T*)(firstVertex + vertexStart));
+			}
+		};
+
+		class RenderSetSubTexture : public Render
+		{
+		public:
+			Texture* texture;
+			int x;
+			int y;
+			int width;
+			int height;
+			char* data;
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
+			{
+			}
+
+			virtual int vertexCount()
+			{
+				return 0;
 			}
 		};
 
@@ -257,6 +277,20 @@ namespace blib
 			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
 			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * vertices.size();
 			toRender[activeLayer].push_back(block);
+		}
+
+		void setTextureSubImage(blib::Texture* texture, int x, int y, int width, int height, char* data)
+		{
+			RenderSetSubTexture* command = new RenderSetSubTexture();
+			command->command = Render::SetSubTexture;
+			command->texture = texture;
+			command->x = x;
+			command->y = y;
+			command->width = width;
+			command->height = height;
+			command->data = new char[width*height*4];
+			memcpy(command->data, data, width*height*4);
+			toRender[activeLayer].push_back(command);
 		}
 
 

@@ -11,6 +11,7 @@ namespace blib
 	public:
 		virtual ~Texture() { }
 		virtual void use() = 0;
+		virtual void setSubImage(int x, int y, int width, int height, char* data)  {};
 		bool loaded;
 		int width;
 		int height;
@@ -29,6 +30,7 @@ namespace blib
 			return (T*)textureCache[fileName];
 		}
 		static void clearCache();
+
 
 	};
 }

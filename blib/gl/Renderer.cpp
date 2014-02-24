@@ -73,10 +73,22 @@ namespace blib
 				{
 					r->perform(vertices[1-activeLayer]);
 				}
+				else if(r->command == Render::SetSubTexture)
+				{
+					RenderSetSubTexture* rst = (RenderSetSubTexture*)r;
+					rst->texture->setSubImage(rst->x, rst->y, rst->width, rst->height, rst->data);
+					delete[] rst->data;
+				}
 				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints)
 				{
 					r->renderState.activeShader->use();
 					r->renderState.activeShader->setState(r->state);
+
+
+					if(r->renderState.depthTest)
+						glEnable(GL_DEPTH_TEST);
+					else
+						glDisable(GL_DEPTH_TEST);
 
 					if(r->renderState.activeFbo.empty())
 						glBindFramebuffer(GL_FRAMEBUFFER, 0);
