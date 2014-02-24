@@ -9,8 +9,6 @@ namespace blib
 	protected:
 		int (*elementSize)();
 	public:
-
-
 		virtual void bind() = 0;
 		virtual void setData(int length, void* data) = 0;
 		virtual int getLength() = 0;

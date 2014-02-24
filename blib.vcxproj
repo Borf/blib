@@ -55,6 +55,7 @@
     <ClInclude Include="blib\MouseListener.h" />
     <ClInclude Include="blib\ParticleSystem.h" />
     <ClInclude Include="blib\platform\win32\config.h" />
+    <ClInclude Include="blib\platform\win32\Registry.h" />
     <ClInclude Include="blib\platform\win32\window.h" />
     <ClInclude Include="blib\Renderer.h" />
     <ClInclude Include="blib\RenderState.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="blib\math\Random.cpp" />
     <ClCompile Include="blib\math\Rectangle.cpp" />
     <ClCompile Include="blib\ParticleSystem.cpp" />
+    <ClCompile Include="blib\platform\win32\Registry.cpp" />
     <ClCompile Include="blib\platform\win32\window.cpp" />
     <ClCompile Include="blib\Renderer.cpp" />
     <ClCompile Include="blib\RenderState.cpp" />

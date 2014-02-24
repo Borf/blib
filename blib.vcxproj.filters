@@ -474,6 +474,9 @@
       <Filter>wm</Filter>
     </ClInclude>
     <ClInclude Include="blib\BackgroundTask.h" />
+    <ClInclude Include="blib\platform\win32\Registry.h">
+      <Filter>platform\win32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -777,6 +780,9 @@
       <Filter>wm</Filter>
     </ClCompile>
     <ClCompile Include="blib\BackgroundTask.cpp" />
+    <ClCompile Include="blib\platform\win32\Registry.cpp">
+      <Filter>platform\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

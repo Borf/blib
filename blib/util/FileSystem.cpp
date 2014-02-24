@@ -253,6 +253,15 @@ namespace blib
 			return handlers;
 		}
 
+		bool FileSystem::exists( const std::string &fileName )
+		{
+			StreamInFile* file = openRead(fileName);
+			bool e = file != NULL;
+			if(file)
+				delete file;
+			return e;
+		}
+
 
 		MemoryFile::MemoryFile( char* data, int length, bool copy )
 		{

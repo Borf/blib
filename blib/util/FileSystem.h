@@ -77,6 +77,7 @@ namespace blib
 		public:
 			static StreamInFile* openRead(const std::string &fileName);
 			static StreamOut* openWrite(const std::string &fileName);
+			static bool exists(const std::string &fileName);
 			static void registerHandler(FileSystemHandler* handler);
 			static const std::list<FileSystemHandler*> getHandlers();
 			static int getData(const std::string &fileName, char* &data);

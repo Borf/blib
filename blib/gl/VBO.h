@@ -26,16 +26,17 @@ namespace blib
 			VBO()
 			{
 				length = 0;
-				vbo = -1;
+				vbo = 0;
 			}
 			~VBO()
 			{
-				if(vbo != -1)
+				if(vbo != 0)
 					glDeleteBuffers(1, &vbo);
+				vbo = 0;
 			}
 			void initGl()
 			{
-				if(vbo == -1)
+				if(vbo == 0)
 					glGenBuffers(1, &vbo);
 			}
 
@@ -56,7 +57,7 @@ namespace blib
 
 			void bind()
 			{
-				if(vbo == -1)
+				if(vbo == 0)
 					initGl();
 				glBindBuffer(GL_ARRAY_BUFFER, vbo);
 			}
