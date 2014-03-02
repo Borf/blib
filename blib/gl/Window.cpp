@@ -17,7 +17,7 @@ namespace blib
 {
 	namespace gl
 	{
-		Window::Window()
+		Window::Window(App* app) : blib::Window(app)
 		{
 			showBorder = true;
 			width = 1024;

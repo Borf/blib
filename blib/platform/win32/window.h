@@ -10,6 +10,7 @@
 
 namespace blib
 {
+	class App;
 	namespace platform
 	{
 		namespace win32
@@ -17,6 +18,7 @@ namespace blib
 			class Window : public blib::IWindow
 			{
 			private:
+				App* app;
 				int mouseButtons;
 				std::vector<long> clicks;
 				int lastButton;
@@ -26,7 +28,7 @@ namespace blib
 				HDC hdc;
 				HWND hWnd;
 
-				Window();
+				Window(App* app);
 				virtual ~Window();
 
 				virtual void swapBuffers();

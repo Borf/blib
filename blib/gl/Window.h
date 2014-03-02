@@ -5,6 +5,8 @@
 
 namespace blib
 {
+	class App;
+
 	namespace gl
 	{
 		class Window : public blib::Window, blib::util::NotCopyable
@@ -15,7 +17,7 @@ namespace blib
 			HGLRC hrc;
 #endif
 
-			Window();
+			Window(App* app);
 			virtual ~Window();
 			virtual void create(int icon, std::string title);
 			virtual void tick();

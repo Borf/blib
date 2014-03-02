@@ -182,7 +182,7 @@ namespace blib
 	void App::createWindow()
 	{
 		Log::out<<"App::createWindow"<<Log::newline;
-		window = new blib::gl::Window();
+		window = new blib::gl::Window(this);
 		window->setSize(appSetup.width, appSetup.height);
 		window->setBorder(appSetup.border);
 		Log::out<<"App::createWindow::Creating window"<<Log::newline;
@@ -321,29 +321,6 @@ namespace blib
 		}
 	}
 
-	void App::runBackground( std::function<void()> backgroundTask, std::function<void()> whenDone)
-	{
-		if(appSetup.threaded)
-		{
-			new BackgroundTask(this, backgroundTask, whenDone);
-		}
-		else
-		{
-			backgroundTask();
-			runLater(whenDone);
-		}
-	}
-
-	void App::runLater(std::function<void()> toRun)
-	{
-		if(appSetup.threaded)
-			runnerMutex->lock();
-		runners.push_back(toRun);
-		if(appSetup.threaded)
-			runnerMutex->unLock();
-	}
-
-
 
 
 	int App::RenderThread::run()
@@ -465,8 +442,11 @@ namespace blib
 		if(appSetup.threaded)
 			runnerMutex->lock();
 
-		for(std::list<std::function<void()> >::iterator it = runners.begin(); it != runners.end(); it++)
-			(*it)();
+		for(std::list<RunnerContainer*>::iterator it = runners.begin(); it != runners.end(); it++)
+		{
+			(*it)->run();
+			delete *it;
+		}		
 		runners.clear();
 
 		if(appSetup.threaded)

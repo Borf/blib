@@ -8,6 +8,7 @@
 #include <blib/KeyListener.h>
 #include <blib/MouseListener.h>
 #include <blib/gl/Window.h>
+#include <blib/App.h>
 
 using blib::util::Log;
 
@@ -39,9 +40,10 @@ namespace blib
 
 
 
-			Window::Window()
+			Window::Window(App* app)
 			{
 				mouseButtons = 0;
+				this->app = app;
 			}
 			Window::~Window()
 			{
@@ -140,6 +142,7 @@ namespace blib
 					break;
 				case WM_DESTROY:
 					PostQuitMessage(0);
+					app->running = false;
 					break;
 				case WM_KEYDOWN:
 					if((lParam & 0x40000000) == 0)

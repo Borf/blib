@@ -7,6 +7,7 @@
 #include <blib/KeyListener.h>
 #include <blib/JoyState.h>
 #include <blib/util/Thread.h>
+#include <blib/util/Mutex.h>
 
 namespace blib
 {
@@ -153,12 +154,47 @@ namespace blib
 	protected:
 		void addKeyListener(KeyListener* keyListener);
 		void addMouseListener(MouseListener* mouseListener);
-		void runBackground( std::function<void()> backgroundTask, std::function<void()> whenDone = [](){});
-		void runLater( std::function<void()> toRun);
+		
+		template <class T>
+		void runBackground( std::function<T()> backgroundTask, std::function<void(T)> whenDone)
+		{
+			if(appSetup.threaded)
+				new BackgroundTask<T>(this, backgroundTask, whenDone);
+			else
+				runLater(whenDone, backgroundTask());
+		}
+		
+		template<class T>
+		void runLater( std::function<void(T)> toRun, T param)
+		{
+			if(appSetup.threaded)
+				runnerMutex->lock();
+			runners.push_back(new RunnerContainerImpl<T>(toRun, param));
+			if(appSetup.threaded)
+				runnerMutex->unLock();
+		}
+
+
+		template<class T>
 		friend class BackgroundTask;
 	private:
 		util::Mutex* runnerMutex;
-		std::list<std::function<void()> > runners;
+
+		class RunnerContainer
+		{
+		public:
+			virtual void run() = 0;
+		};
+		template<class T>
+		class RunnerContainerImpl : public RunnerContainer
+		{
+		public:
+			RunnerContainerImpl(std::function<void(T)> function, T param) { this->function = function; this->param = param; }
+			std::function<void(T)> function;
+			T param;
+			void run() { function(param); }
+		};
+		std::list<RunnerContainer*> runners;
 		void runRunners();
 	public:
 

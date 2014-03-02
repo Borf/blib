@@ -16,16 +16,22 @@
 
 namespace blib
 {
+	class App;
+
 #if defined(BLIB_WIN)
-	class Window : public platform::win32::Window
+	#define WINDOW_SUPER platform::win32::Window
 #elif defined(BLIB_LINUX)
-	class Window : public platform::linux::Window
+	#define WINDOW_SUPER platform::linux::Window
 #elif defined(BLIB_ANDROID)
-	class Window : public platform::android::Window
+	#define WINDOW_SUPER platform::android::Window
 #else
 	class Window : public IWindow
+	#define WINDOW_SUPER IWindow
 #endif
+	class Window : public WINDOW_SUPER
 	{
+	public:
+		Window(App* app);
 	};
 
 }
