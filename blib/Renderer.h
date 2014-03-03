@@ -3,7 +3,9 @@
 #include <blib/Shader.h>
 #include <blib/RenderState.h>
 #include <blib/VBO.h>
+#include <blib/util/ListAllocator.h>
 #include <vector>
+
 
 namespace blib
 {
@@ -121,6 +123,7 @@ namespace blib
 		std::vector<Render*> toRender[2];
 		float* vertices[2];
 		int vertexIndex[2];
+		blib::util::ListAllocator allocators[2];
 
 	public:
 		enum ClearOptions
@@ -154,7 +157,7 @@ namespace blib
 		template<class T>
 		void drawTriangles(const std::vector<T> &vertices, const RenderState& renderState)
 		{
-			RenderBlock<T>* block = new RenderBlock<T>();
+			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->renderState = renderState;
 			block->state = renderState.activeShader->state;
@@ -174,7 +177,7 @@ namespace blib
 		template<class T>
 		void drawTriangles(int count, const RenderState& renderState)
 		{
-			RenderBlock<T>* block = new RenderBlock<T>();
+			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->vertexStart = 0;
 			block->count = count;
@@ -186,7 +189,7 @@ namespace blib
 		template<class T>
 		void drawTriangles(int first, int count, const RenderState& renderState)
 		{
-			RenderBlock<T>* block = new RenderBlock<T>();
+			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->vertexStart = first;// * (T::size() / sizeof(float));
 			block->count = count;
@@ -205,7 +208,7 @@ namespace blib
 		template<class T>
 		void drawTriangles(T* first, int count, const RenderState& renderState)
 		{
-			RenderBlock<T>* block = new RenderBlock<T>();
+			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->renderState = renderState;
 			block->state = renderState.activeShader->state;
@@ -221,7 +224,7 @@ namespace blib
 		}
 		void clear(const glm::vec4 &color, int bits, const RenderState& renderState)
 		{
-			RenderClear* block = new RenderClear();
+			RenderClear* block = allocators[activeLayer].get<RenderClear>(); //new RenderClear();
 			block->command = Render::Clear;
 			block->color = color;
 			block->renderState = renderState;
@@ -234,7 +237,7 @@ namespace blib
 		template<class T>
 		void setVbo(VBO* vbo, const std::vector<T> &vertices)
 		{
-			RenderSetVbo<T>* block = new RenderSetVbo<T>();
+			RenderSetVbo<T>* block = allocators[activeLayer].get<RenderSetVbo<T>>(); //new RenderSetVbo<T>();
 			block->command = Render::SetVbo;	//TODO : move to constructor
 			block->vertexStart = vertexIndex[activeLayer];
 			block->count = vertices.size();
@@ -254,7 +257,7 @@ namespace blib
 		template<class T>
 		void drawLines(T* first, int count, const RenderState& renderState)
 		{
-			RenderBlock<T>* block = new RenderBlock<T>();
+			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawLines;	//TODO : move to constructor
 			block->renderState = renderState;
 			block->state = renderState.activeShader->state;
@@ -268,7 +271,7 @@ namespace blib
 		template<class T>
 		void drawPoints(const std::vector<T> &vertices, const RenderState& renderState)
 		{
-			RenderBlock<T>* block = new RenderBlock<T>();
+			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawPoints;	//TODO : move to constructor
 			block->renderState = renderState;
 			block->state = renderState.activeShader->state;
@@ -281,7 +284,7 @@ namespace blib
 
 		void setTextureSubImage(blib::Texture* texture, int x, int y, int width, int height, char* data)
 		{
-			RenderSetSubTexture* command = new RenderSetSubTexture();
+			RenderSetSubTexture* command = allocators[activeLayer].get<RenderSetSubTexture>(); //new RenderSetSubTexture();
 			command->command = Render::SetSubTexture;
 			command->texture = texture;
 			command->x = x;

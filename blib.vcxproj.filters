@@ -477,6 +477,12 @@
     <ClInclude Include="blib\platform\win32\Registry.h">
       <Filter>platform\win32</Filter>
     </ClInclude>
+    <ClInclude Include="blib\util\Allocator.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\ListAllocator.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
