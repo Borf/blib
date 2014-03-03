@@ -11,10 +11,10 @@ namespace blib
 	{
 	public:
 		class State
-		{
+		{	//TODO: these strings take too much time to copy
 		public:
 			std::map<std::string,	float>		floatValues;
-			std::map<std::string,	int>			intValues;
+			std::map<std::string,	int>		intValues;
 			std::map<std::string,	glm::vec2>	vec2Values;
 			std::map<std::string,	glm::vec3>	vec3Values;
 			std::map<std::string,	glm::vec4>	vec4Values;
@@ -28,6 +28,17 @@ namespace blib
 			inline void setValue(std::string name,			const glm::vec4 &value)	{	vec4Values.insert(std::pair<std::string, const glm::vec4>(name, value));	};
 			inline void setValue(std::string name,			const glm::mat3 &value)	{	mat3Values.insert(std::pair<std::string, const glm::mat3>(name, value));	};
 			inline void setValue(std::string name,			const glm::mat4 &value)	{	mat4Values[name] = value;	};
+
+			inline void clear()
+			{
+				floatValues.clear();
+				intValues.clear();
+				vec2Values.clear();
+				vec3Values.clear();
+				vec4Values.clear();
+				mat3Values.clear();
+				mat4Values.clear();
+			}
 		}	state;
 
 

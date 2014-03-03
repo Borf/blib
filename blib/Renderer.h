@@ -25,6 +25,7 @@ namespace blib
 				DrawTriangles,
 				DrawLines,
 				DrawPoints,
+				SetShaderState,
 				SetSubTexture,
 			} command;
 			virtual ~Render() {};
@@ -116,6 +117,21 @@ namespace blib
 				return 0;
 			}
 		};
+		class SetShaderState : public Render
+		{
+		public:
+			Shader::State state;
+			Shader* shader;
+
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
+			{
+			}
+
+			virtual int vertexCount()
+			{
+				return 0;
+			}
+		};
 
 
 
@@ -182,7 +198,7 @@ namespace blib
 			block->vertexStart = 0;
 			block->count = count;
 			block->renderState = renderState;
-			block->state = renderState.activeShader->state;
+			block->state = renderState.activeShader->state; // bottleneck
 			toRender[activeLayer].push_back(block);
 		}
 
@@ -194,7 +210,7 @@ namespace blib
 			block->vertexStart = first;// * (T::size() / sizeof(float));
 			block->count = count;
 			block->renderState = renderState;
-			block->state = renderState.activeShader->state;
+			block->state = renderState.activeShader->state; // bottleneck
 			toRender[activeLayer].push_back(block);
 		}
 
@@ -293,6 +309,15 @@ namespace blib
 			command->height = height;
 			command->data = new char[width*height*4];
 			memcpy(command->data, data, width*height*4);
+			toRender[activeLayer].push_back(command);
+		}
+
+		void setShaderState(Shader* shader)
+		{
+			SetShaderState* command = allocators[activeLayer].get<SetShaderState>(); //new RenderSetSubTexture();
+			command->command = Render::SetShaderState;
+			command->shader = shader;
+			command->state = shader->state;
 			toRender[activeLayer].push_back(command);
 		}
 
