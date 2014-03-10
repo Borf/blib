@@ -40,6 +40,8 @@ namespace blib
 		{
 			int totalVerts = 0;
 
+			RenderState* lastRenderState = NULL;
+
 			for(size_t i = 0; i < toRender[1-activeLayer].size(); i++)
 			{
 				Render* r = toRender[1-activeLayer][i];
@@ -79,10 +81,16 @@ namespace blib
 					rst->texture->setSubImage(rst->x, rst->y, rst->width, rst->height, rst->data);
 					delete[] rst->data;
 				}
+				else if (r->command == Render::SetShaderState)
+				{
+//					RenderSetShaderState* rsss = (RenderSetShaderState*)r;
+//					rsss->shader->use();
+//					rsss->shader->setState(rsss->state);
+				}
 				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints)
 				{
 					r->renderState.activeShader->use();
-					r->renderState.activeShader->setState(r->state);
+					r->renderState.activeShader->setState(r->shaderState);
 
 
 					if(r->renderState.depthTest)
@@ -173,6 +181,8 @@ namespace blib
 						glDrawArrays(GL_POINTS, start, r->vertexCount());
 					}
 				}
+
+				lastRenderState = &r->renderState;
 
 			}
 		//	Log::out<<toRender[1-activeLayer].size()<< " render commands, "<<totalVerts<<" vertices"<<Log::newline;

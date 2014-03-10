@@ -30,7 +30,7 @@ namespace blib
 			} command;
 			virtual ~Render() {};
 			RenderState renderState;
-			Shader::State state;
+			char shaderState[1024];
 
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex) = 0;
 			virtual int vertexCount() = 0;
@@ -117,10 +117,9 @@ namespace blib
 				return 0;
 			}
 		};
-		class SetShaderState : public Render
+		class RenderSetShaderState : public Render
 		{
 		public:
-			Shader::State state;
 			Shader* shader;
 
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
@@ -176,7 +175,7 @@ namespace blib
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->renderState = renderState;
-			block->state = renderState.activeShader->state;
+			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
 			block->vertexStart = vertexIndex[activeLayer];
 			block->count = vertices.size();
 			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
@@ -198,7 +197,7 @@ namespace blib
 			block->vertexStart = 0;
 			block->count = count;
 			block->renderState = renderState;
-			block->state = renderState.activeShader->state; // bottleneck
+			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
 			toRender[activeLayer].push_back(block);
 		}
 
@@ -210,7 +209,7 @@ namespace blib
 			block->vertexStart = first;// * (T::size() / sizeof(float));
 			block->count = count;
 			block->renderState = renderState;
-			block->state = renderState.activeShader->state; // bottleneck
+			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
 			toRender[activeLayer].push_back(block);
 		}
 
@@ -227,7 +226,7 @@ namespace blib
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->renderState = renderState;
-			block->state = renderState.activeShader->state;
+			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
 			block->vertexStart = vertexIndex[activeLayer];
 			block->count = count;
 			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], first, sizeof(T) * count);
@@ -276,7 +275,7 @@ namespace blib
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawLines;	//TODO : move to constructor
 			block->renderState = renderState;
-			block->state = renderState.activeShader->state;
+			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
 			block->vertexStart = vertexIndex[activeLayer];
 			block->count = count;
 			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], first, sizeof(T) * count);
@@ -290,7 +289,7 @@ namespace blib
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawPoints;	//TODO : move to constructor
 			block->renderState = renderState;
-			block->state = renderState.activeShader->state;
+			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
 			block->vertexStart = vertexIndex[activeLayer];
 			block->count = vertices.size();
 			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
@@ -314,10 +313,10 @@ namespace blib
 
 		void setShaderState(Shader* shader)
 		{
-			SetShaderState* command = allocators[activeLayer].get<SetShaderState>(); //new RenderSetSubTexture();
+			RenderSetShaderState* command = allocators[activeLayer].get<RenderSetShaderState>(); //new RenderSetSubTexture();
 			command->command = Render::SetShaderState;
 			command->shader = shader;
-			command->state = shader->state;
+		//	command->shaderState = shader->state;
 			toRender[activeLayer].push_back(command);
 		}
 

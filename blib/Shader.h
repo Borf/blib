@@ -10,60 +10,95 @@ namespace blib
 	class Shader
 	{
 	public:
-		class State
-		{	//TODO: these strings take too much time to copy
-		public:
-			std::map<std::string,	float>		floatValues;
-			std::map<std::string,	int>		intValues;
-			std::map<std::string,	glm::vec2>	vec2Values;
-			std::map<std::string,	glm::vec3>	vec3Values;
-			std::map<std::string,	glm::vec4>	vec4Values;
-			std::map<std::string,	glm::mat3>	mat3Values;
-			std::map<std::string,	glm::mat4>	mat4Values;
-
-			inline void setValue(std::string name,			const float &value)		{	floatValues[name] = value;	};
-			inline void setValue(std::string name,			const int &value)		{	intValues.insert(std::pair<std::string, const int>(name, value));	};
-			inline void setValue(std::string name,			const glm::vec2 &value)	{	vec2Values.insert(std::pair<std::string, const glm::vec2>(name, value));	};
-			inline void setValue(std::string name,			const glm::vec3 &value)	{	vec3Values.insert(std::pair<std::string, const glm::vec3>(name, value));	};
-			inline void setValue(std::string name,			const glm::vec4 &value)	{	vec4Values.insert(std::pair<std::string, const glm::vec4>(name, value));	};
-			inline void setValue(std::string name,			const glm::mat3 &value)	{	mat3Values.insert(std::pair<std::string, const glm::mat3>(name, value));	};
-			inline void setValue(std::string name,			const glm::mat4 &value)	{	mat4Values[name] = value;	};
-
-			inline void clear()
-			{
-				floatValues.clear();
-				intValues.clear();
-				vec2Values.clear();
-				vec3Values.clear();
-				vec4Values.clear();
-				mat3Values.clear();
-				mat4Values.clear();
-			}
-		}	state;
-
-
 		std::map<std::string, int> attributes;
 		std::string vertexShader;
 		std::string fragmentShader;
-
-		template <class T>
-		inline void setUniform(std::string name,			const T& value)
+		enum UniformType
 		{
-			state.setValue(name, value);
-		//	doUniform(name, value);
+			Float,
+			Int,
+			Vec2,
+			Vec3,
+			Vec4,
+			Mat3,
+			Mat4,
+		};
+
+		class Uniform
+		{
+		public:
+			std::string name;
+			int index;
+			int size;
+			UniformType type;
+
+			Uniform(const std::string &name, int size, UniformType type)
+			{
+				this->name = name;
+				this->size = size;
+				this->type = type;
+				index = 0;
+			}
+
+			template<class T>
+			void set(char* data, const T& value)
+			{
+				(T&)(data[index]) = value;
+			}
+
+		};
+
+		char* uniformData;
+		int uniformCount;
+		int uniformSize;
+		Uniform* uniforms[16];
+		Shader();
+
+
+		template<class T>
+		void setUniformName(T value, const std::string& name, UniformType type)
+		{
+			Uniform* uniform = NULL;
+			switch (type)
+			{
+			case Float:				uniform = new Uniform(name,	sizeof(float), type);	break;
+			case Int:				uniform = new Uniform(name, sizeof(int), type);	break;
+			case Vec2:				uniform = new Uniform(name, sizeof(float)* 2, type);	break;
+			case Vec3:				uniform = new Uniform(name, sizeof(float)* 3, type);	break;
+			case Vec4:				uniform = new Uniform(name, sizeof(float)* 4, type);	break;
+			case Mat3:				uniform = new Uniform(name, sizeof(float)* 3 * 3, type);	break;
+			case Mat4:				uniform = new Uniform(name, sizeof(float)* 4 * 4, type);	break;
+			}
+			assert(uniform);
+
+			uniforms[(int)value] = uniform;
+			uniformCount = glm::max(uniformCount, (int)value+1);
+
+			uniform->index = uniformSize;
+			uniformSize += uniform->size;
+		}
+
+
+		template <class T, class Enum>
+		inline void setUniform(Enum name,			const T& value)
+		{
+			assert(uniformData);
+			uniforms[(int)name]->set(uniformData, value);
+
 		}
 		virtual void use() = 0;
 		virtual void initFromData(std::string vertexShader, std::string fragmentShader);
 		virtual void bindAttributeLocation(std::string name, int index);
+		void finishUniformSetup();
 
 
-		virtual void setState(State& state);
+		virtual void setState(char* state);
 	protected:
 		virtual void doUniform(const std::string &name,			const glm::mat4& value) = 0;
 		virtual void doUniform(const std::string &name,			const glm::mat3& value) = 0;
 		virtual void doUniform(const std::string &name,			const float& value) = 0;
-		virtual void doUniform(const std::string &name,			const int& value) = 0;
 		virtual void doUniform(const std::string &name,			const glm::vec4& value) = 0;
+		virtual void doUniform(const std::string &name,			const int& value) = 0;
 		virtual void doUniform(const std::string &name,			const glm::vec3& value) = 0;
 		virtual void doUniform(const std::string &name,			const glm::vec2& value) = 0;
 	};

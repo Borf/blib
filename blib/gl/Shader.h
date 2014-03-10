@@ -37,7 +37,7 @@ namespace blib
 				~SubShader();
 				void attach(GLuint programId);
 			};
-
+		public:
 			std::map<std::string, GLuint> uniformLocations;
 			std::list<SubShader*> shaders;
 			GLuint programId;
@@ -48,39 +48,21 @@ namespace blib
 			Shader();
 			Shader(std::string vertex, std::string fragment);
 			
-/*			template<class T>
-			static T* fromFile(std::string vertex, std::string fragment)
-			{
-				T* shader = new T();
-				shader->id = std::string(vertex) + "\n" + fragment;
-				shader->shaders.push_back(SubShader::fromFile(vertex, SubShader::Vertex));
-				shader->shaders.push_back(SubShader::fromFile(fragment, SubShader::Fragment));
-				for(std::list<SubShader*>::iterator it = shader->shaders.begin(); it != shader->shaders.end(); it++)
-					(*it)->attach(shader->programId);
-				shader->init();
-				return shader;
-			}
-			template<class T>
-			static T* fromData(const char* vertex, const char* fragment)
-			{
-				T* shader = new T();
-				shader->id = std::string(vertex) + "\n" + fragment;
-				shader->shaders.push_back(SubShader::fromData(vertex, SubShader::Vertex));
-				shader->shaders.push_back(SubShader::fromData(fragment, SubShader::Fragment));
-				for(std::list<SubShader*>::iterator it = shader->shaders.begin(); it != shader->shaders.end(); it++)
-					(*it)->attach(shader->programId);
-				shader->init();
-				return shader;
-			}*/
 			virtual ~Shader();
 			virtual void init(){};
 			void use();
 			void link();
 
-			//void bindAttributeLocation(std::string name, int position);
-			//void bindFragLocation( std::string name, int position );
-		
-		
+
+			char** uniformNames;
+
+			enum Uniforms
+			{
+				modelmatrix,
+				cameraMatrix,
+				matrix,
+			};
+
 		protected:
 			void doUniform(const std::string &name,			const glm::mat4& value);
 			void doUniform(const std::string &name,			const glm::mat3& value);

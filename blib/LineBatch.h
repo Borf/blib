@@ -31,6 +31,15 @@ namespace blib
 		LineBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState = RenderState());
 
 		RenderState renderState;
+		class Uniforms
+		{
+		public:
+			enum
+			{
+				projectionMatrix,
+				matrix,
+			};
+		};
 		blib::Shader* shader;
 		glm::mat4 matrix;			//TODO: make private
 

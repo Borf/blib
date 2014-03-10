@@ -60,7 +60,6 @@ namespace blib
 					glBindAttribLocation(programId, it->second, it->first.c_str());
 				link();
 				glUseProgram(programId);
-				setState(state);
 			}
 			glUseProgram(programId);
 		}

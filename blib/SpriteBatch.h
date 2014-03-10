@@ -59,6 +59,12 @@ namespace blib
 	public:
 		RenderState renderState;
 		blib::Shader* shader;
+		enum ShaderAttributes
+		{
+			ProjectionMatrix,
+			Matrix,
+			s_texture,
+		};
 
 		SpriteBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState = RenderState());
 

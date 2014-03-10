@@ -38,6 +38,10 @@ void main()\
 		shader->bindAttributeLocation("a_position", 0);
 		shader->bindAttributeLocation("a_color", 1);
 
+		shader->setUniformName(Uniforms::matrix, "matrix", Shader::Mat4);
+		shader->setUniformName(Uniforms::projectionMatrix, "projectionmatrix", Shader::Mat4);
+		shader->finishUniformSetup();
+
 		renderState.activeShader = shader;
 	}
 
@@ -57,7 +61,7 @@ void main()\
 		if(lineCount == 0)
 			return;
 
-		renderState.activeShader->setUniform("matrix", matrix);
+		renderState.activeShader->setUniform(Uniforms::matrix, matrix);
 		renderer->drawLines<vertexDef>(verts, lineCount, renderState);
 	}
 
@@ -112,6 +116,6 @@ void main()\
 
 	void LineBatch::resizeGl( int width, int height )
 	{
-		renderState.activeShader->setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
+		renderState.activeShader->setUniform(Uniforms::projectionMatrix, glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
 }

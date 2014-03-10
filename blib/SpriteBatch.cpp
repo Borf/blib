@@ -53,7 +53,12 @@ void main()\
 		shader->bindAttributeLocation("a_position", 0);
 		shader->bindAttributeLocation("a_texture", 1);
 		shader->bindAttributeLocation("a_color", 2);
-		shader->setUniform("s_texture", 0);
+		shader->setUniformName(ProjectionMatrix, "projectionmatrix", Shader::Mat4);
+		shader->setUniformName(Matrix, "matrix", Shader::Mat4);
+		shader->setUniformName(s_texture, "s_texture", Shader::Int);
+		shader->finishUniformSetup();
+
+		shader->setUniform(s_texture, 0);
 		renderState.activeShader = shader;
 
 		vertices.reserve(MAX_SPRITES);
@@ -83,7 +88,7 @@ void main()\
 			renderState.activeFbo.push(fbo);
 
 		materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
-		renderState.activeShader->setUniform("matrix", matrix);
+		renderState.activeShader->setUniform(Matrix, matrix);
 		int lastIndex = 0;
 		for(size_t i = 0; i < materialIndices.size(); i++)
 		{
@@ -271,7 +276,7 @@ void main()\
 
 	void SpriteBatch::resizeGl( int width, int height )
 	{
-		renderState.activeShader->setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
+		renderState.activeShader->setUniform(ProjectionMatrix, glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
 
 	SpriteBatch::Cache::~Cache()
