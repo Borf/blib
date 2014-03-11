@@ -104,12 +104,12 @@ namespace blib
 #ifdef __GLEW_H__
 #ifdef GL_DEBUG_OUTPUT
 #ifdef _DEBUG
-			if(GLEW_ARB_debug_output)
+		/*	if(GLEW_ARB_debug_output)
 			{
 				glDebugMessageCallback(&onDebug, NULL);
 				glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB);
 				glEnable(GL_DEBUG_OUTPUT);
-			}
+			}*/
 #endif
 #endif
 #endif

@@ -17,16 +17,19 @@ namespace blib
 			T* get()
 			{
 				static int size = typeid(T).hash_code();
-				static bool added = false;
-
-				std::map<int, std::pair<size_t, std::vector<void*> > >::iterator it = objects.find(size);
-
-				if (it == objects.end())
+				static bool loaded = false;
+				static std::map<int, std::pair<size_t, std::vector<void*> > >::iterator it;
+				if (!loaded)
 				{
-					objects[size] = std::pair<size_t, std::vector<void*> >(0, std::vector<void*>());
 					it = objects.find(size);
+					if (it == objects.end())
+					{
+						objects[size] = std::pair<size_t, std::vector<void*> >(0, std::vector<void*>());
+						it = objects.find(size);
+					}
+					loaded = true;
 				}
-				std::pair < size_t, std::vector<void*> > &cache = it->second;
+				static std::pair < size_t, std::vector<void*> > &cache = it->second;
 				if (cache.first < cache.second.size())
 					return (T*)cache.second[cache.first++];
 
