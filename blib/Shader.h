@@ -31,9 +31,11 @@ namespace blib
 			int index;
 			int size;
 			UniformType type;
+			int id;
 
 			Uniform(const std::string &name, int size, UniformType type)
 			{
+				id = -1;
 				this->name = name;
 				this->size = size;
 				this->type = type;

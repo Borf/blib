@@ -29,7 +29,7 @@ namespace blib
 		{
 			if (uniforms[i])
 			{
-				int location = glGetUniformLocation(((blib::gl::Shader*)this)->programId, uniforms[i]->name.c_str());
+				int location = uniforms[i]->id;
 				switch (uniforms[i]->type)
 				{
 				case Float:
