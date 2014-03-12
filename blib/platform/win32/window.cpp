@@ -160,41 +160,49 @@ namespace blib
 					break;
 				case WM_LBUTTONDOWN:
 					mouseButtons |= MouseListener::Left;
-					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						(*it)->onMouseDown(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Left, clickCount);
+					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+						if ((*it)->onMouseDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Left, clickCount))
+							break;
 					break;
 				case WM_LBUTTONUP:
 					mouseButtons &= ~MouseListener::Left;
-					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						(*it)->onMouseUp(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Left, clickCount);
+					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+						if ((*it)->onMouseUp(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Left, clickCount))
+							break;
 					break;
 				case WM_RBUTTONDOWN:
 					mouseButtons |= MouseListener::Right;
-					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						(*it)->onMouseDown(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Right, clickCount);
+					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+						if ((*it)->onMouseDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Right, clickCount))
+							break;
 					break;
 				case WM_RBUTTONUP:
 					mouseButtons &= ~MouseListener::Right;
-					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						(*it)->onMouseUp(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Right, clickCount);
+					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+						if ((*it)->onMouseUp(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Right, clickCount))
+							break;
 					break;
 				case WM_MBUTTONDOWN:
 					mouseButtons |= MouseListener::Middle;
-					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						(*it)->onMouseDown(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Middle, clickCount);
+					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+						if ((*it)->onMouseDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Middle, clickCount))
+							break;
 					break;
 				case WM_MBUTTONUP:
 					mouseButtons &= ~MouseListener::Middle;
-					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						(*it)->onMouseUp(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),MouseListener::Middle, clickCount);
+					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+						if ((*it)->onMouseUp(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Middle, clickCount))
+							break;
 					break;
 				case WM_MOUSEMOVE:
-					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						(*it)->onMouseMove(GET_X_LPARAM(lParam),GET_Y_LPARAM(lParam),(MouseListener::Buttons)mouseButtons);
+					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+						if ((*it)->onMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (MouseListener::Buttons)mouseButtons))
+							break;
 					break;
 				case WM_MOUSEWHEEL:
-					for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						(*it)->onScroll(GET_WHEEL_DELTA_WPARAM(wParam));
+					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+						if ((*it)->onScroll(GET_WHEEL_DELTA_WPARAM(wParam)))
+							break;
 				}
 
 				return DefWindowProc(hWnd, message, wParam, lParam);

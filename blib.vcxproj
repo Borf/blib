@@ -226,6 +226,7 @@
     <ClCompile Include="blib\Window.cpp" />
     <ClCompile Include="blib\wm\Menu.cpp" />
     <ClCompile Include="blib\wm\MenuItem.cpp" />
+    <ClCompile Include="blib\wm\SubMenuMenuItem.cpp" />
     <ClCompile Include="blib\wm\widgets\button.cpp" />
     <ClCompile Include="blib\wm\widgets\ContainerWidget.cpp" />
     <ClCompile Include="blib\wm\widgets\Image.cpp" />

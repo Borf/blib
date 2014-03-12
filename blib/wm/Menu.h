@@ -2,6 +2,8 @@
 
 #include <vector>
 
+namespace Json { class Value; }
+
 namespace blib
 {
 	namespace wm
@@ -11,8 +13,7 @@ namespace blib
 		class Menu
 		{
 		public:
-			std::string name;
-			std::string description;
+			Menu(const Json::Value &data);
 
 			std::vector<MenuItem*> menuItems;
 		};

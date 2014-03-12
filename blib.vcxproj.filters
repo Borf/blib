@@ -789,6 +789,9 @@
     <ClCompile Include="blib\platform\win32\Registry.cpp">
       <Filter>platform\win32</Filter>
     </ClCompile>
+    <ClCompile Include="blib\wm\SubMenuMenuItem.cpp">
+      <Filter>wm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">
