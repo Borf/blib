@@ -139,6 +139,7 @@ namespace blib
 				case WM_SIZE: // If our window is resizing
 					width = LOWORD(lParam);
 					height = HIWORD(lParam);
+					onResize(width, height);
 					break;
 				case WM_DESTROY:
 					PostQuitMessage(0);

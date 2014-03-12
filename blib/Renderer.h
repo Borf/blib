@@ -27,6 +27,7 @@ namespace blib
 				DrawPoints,
 				SetShaderState,
 				SetSubTexture,
+				SetViewPort,
 			} command;
 			virtual ~Render() {};
 			RenderState renderState;
@@ -122,14 +123,17 @@ namespace blib
 		public:
 			Shader* shader;
 
-			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
-			{
-			}
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)			{			}
+			virtual int vertexCount()			{ return 0; }
+		};
 
-			virtual int vertexCount()
-			{
-				return 0;
-			}
+		class RenderSetViewPort : public Render
+		{
+		public:
+			int width;
+			int height;
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)			{			}
+			virtual int vertexCount()			{				return 0;			}
 		};
 
 
@@ -319,7 +323,15 @@ namespace blib
 		//	command->shaderState = shader->state;
 			toRender[activeLayer].push_back(command);
 		}
-
+		
+		void setViewPort(int width, int height)
+		{
+			RenderSetViewPort* command = allocators[activeLayer].get<RenderSetViewPort>();
+			command->command = Render::SetViewPort;
+			command->width = width;
+			command->height = height;
+			toRender[activeLayer].push_back(command);
+		}
 
 
 		virtual void flush() = 0;

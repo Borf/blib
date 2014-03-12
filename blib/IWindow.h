@@ -45,6 +45,7 @@ namespace blib
 		virtual void tick() = 0;
 		virtual void makeCurrent() = 0;
 		virtual void unmakeCurrent() = 0;
+		virtual void onResize(int width, int height) {};
 		void addListener(KeyListener* keyListener);
 		void addListener(MouseListener* keyListener);
 	};

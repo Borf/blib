@@ -71,6 +71,10 @@ namespace blib
 					glClear(bits);
 					continue;
 				}
+				else if (r->command == Render::SetViewPort)
+				{
+					glViewport(0,0,((RenderSetViewPort*)r)->width, ((RenderSetViewPort*)r)->height);
+				}
 				else if(r->command == Render::SetVbo)
 				{
 					r->perform(vertices[1-activeLayer]);

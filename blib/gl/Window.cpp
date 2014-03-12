@@ -139,5 +139,9 @@ namespace blib
 #endif
 		}
 
+		void Window::onResize(int width, int height)
+		{			
+		}
+
 	}
 }
