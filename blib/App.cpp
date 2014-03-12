@@ -439,7 +439,7 @@ namespace blib
 
 	void App::runRunners()
 	{
-		if(appSetup.threaded)
+		if (appSetup.threaded || appSetup.backgroundTasks)
 			runnerMutex->lock();
 
 		for(std::list<RunnerContainer*>::iterator it = runners.begin(); it != runners.end(); it++)
@@ -449,7 +449,7 @@ namespace blib
 		}		
 		runners.clear();
 
-		if(appSetup.threaded)
+		if (appSetup.threaded || appSetup.backgroundTasks)
 			runnerMutex->unLock();
 	}
 }

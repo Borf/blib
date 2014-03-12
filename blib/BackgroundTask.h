@@ -18,7 +18,7 @@ namespace blib
 	public:
 		BackgroundTask(App* app, std::function<T()> toRun, std::function<void(T)> whenDone = [](T param){}) : blib::util::Thread("BackgroundWorker")
 		{
-			if(!app || app->appSetup.threaded)
+			if (!app || app->appSetup.threaded || app->appSetup.backgroundTasks)
 			{
 				this->app = app;
 				this->toRun = toRun;

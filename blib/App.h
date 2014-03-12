@@ -64,6 +64,7 @@ namespace blib
 		int icon;
 		std::string title;
 		bool threaded;
+		bool backgroundTasks;
 		enum RendererPreference
 		{
 			NullRenderer,
@@ -91,6 +92,7 @@ namespace blib
 			joystickDriver = NullJoystick;
 			title = "Blib App";
 			threaded = true;
+			backgroundTasks = false;
 		}
 	};
 
