@@ -288,21 +288,6 @@ namespace blib
 			return false;
 		}
 
-		bool WM::mousewheel( int direction, int x, int y )
-		{
-			for(std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
-			{
-				Window* w = (*it);
-				if(w->inWindow(x, y) && w->visible)
-				{
-					w->mousewheel(direction, x, y);
-					return true;
-				}
-				if(it == windows.begin() && w->modal)
-					return true;
-			}
-			return false;
-		}
 
 
 		bool WM::keyboard(char key)
@@ -345,6 +330,52 @@ namespace blib
 
 		void WM::setRadialMenu( blib::wm::Menu* param1 )
 		{
+		}
+
+		void WM::onMouseDown(int x, int y, Button button, int clickCount)
+		{
+			throw std::exception("The method or operation is not implemented.");
+		}
+
+		void WM::onMouseUp(int x, int y, Button button, int clickCount)
+		{
+			throw std::exception("The method or operation is not implemented.");
+		}
+
+		void WM::onMouseMove(int x, int y, Buttons button)
+		{
+			throw std::exception("The method or operation is not implemented.");
+		}
+
+		void WM::onScroll(int delta)
+		{
+			for (std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
+			{
+				Window* w = (*it);
+				if (w->inWindow(x, y) && w->visible)
+				{
+					w->mousewheel(delta, x, y);
+					return true;
+				}
+				if (it == windows.begin() && w->modal)
+					return true;
+			}
+			return false;
+		}
+
+		void WM::onKeyDown(Key key)
+		{
+			throw std::exception("The method or operation is not implemented.");
+		}
+
+		void WM::onKeyUp(Key key)
+		{
+			throw std::exception("The method or operation is not implemented.");
+		}
+
+		void WM::onChar(char character)
+		{
+			throw std::exception("The method or operation is not implemented.");
 		}
 
 

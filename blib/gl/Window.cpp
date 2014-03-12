@@ -10,6 +10,7 @@
 	#endif
 #endif
 
+#include <blib/gl/GlResizeRegister.h>
 #include <blib/util/Log.h>
 using blib::util::Log;
 
@@ -141,6 +142,7 @@ namespace blib
 
 		void Window::onResize(int width, int height)
 		{			
+			blib::gl::GlResizeRegister::ResizeRegisteredObjects(width, height);
 		}
 
 	}

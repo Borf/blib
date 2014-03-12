@@ -3,6 +3,8 @@
 #include <list>
 
 #include <blib/util/Singleton.h>
+#include <blib/KeyListener.h>
+#include <blib/MouseListener.h>
 #include <json/value.h>
 #include <glm/glm.hpp>
 #include <blib/util/FastDelegate.h>
@@ -21,7 +23,7 @@ namespace blib
 		class Menu;
 
 
-		class WM : public util::Singleton<WM>
+		class WM : public util::Singleton<WM>, public MouseListener, public KeyListener
 		{
 			std::list<Window*> windows;
 
@@ -52,6 +54,15 @@ namespace blib
 			glm::vec4 convertHexColor4( std::string hexColor );
 			blib::wm::Menu* loadMenu( std::string filename );
 			void setRadialMenu( blib::wm::Menu* param1 );
+
+			virtual void onMouseDown(int x, int y, Button button, int clickCount);
+			virtual void onMouseUp(int x, int y, Button button, int clickCount);
+			virtual void onMouseMove(int x, int y, Buttons button);
+			virtual void onScroll(int delta);
+			virtual void onKeyDown(Key key);
+			virtual void onKeyUp(Key key);
+			virtual void onChar(char character);
+
 			Json::Value skin;
 			Texture* skinTexture;
 			Font* font;
