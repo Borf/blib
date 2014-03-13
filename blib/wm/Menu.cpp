@@ -34,3 +34,27 @@ blib::wm::Menu::Menu(const Json::Value &data)
 	}
 }
 
+void blib::wm::Menu::setAction(std::string path, std::function<void() > callback)
+{
+	std::string firstPart = path;
+	if (firstPart.find("/") != std::string::npos)
+	{
+		firstPart = firstPart.substr(0, firstPart.find("/"));
+	}
+
+	for (size_t i = 0; i < menuItems.size(); i++)
+	{
+		if (menuItems[i]->name == firstPart)
+		{
+			SubMenuMenuItem* subMenu = dynamic_cast<SubMenuMenuItem*>(menuItems[i]);
+			if (subMenu)
+				subMenu->menu->setAction(path.substr(firstPart.size() + 1), callback);
+			
+			ActionMenuItem* item = dynamic_cast<ActionMenuItem*>(menuItems[i]);
+			if (item)
+				item->callback = callback;
+		}
+	}
+	
+}
+

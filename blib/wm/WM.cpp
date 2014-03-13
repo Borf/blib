@@ -187,14 +187,14 @@ namespace blib
 				int id = (int)round(((angle + 2 * M_PI) / (2 * M_PI)) * 8) % 8;
 				if (id < (int)radialMenu->menuItems.size())
 				{
-					SubMenuMenuItem* submenuitem = static_cast<SubMenuMenuItem*>(radialMenu->menuItems[id]);
+					SubMenuMenuItem* submenuitem = dynamic_cast<SubMenuMenuItem*>(radialMenu->menuItems[id]);
 					if (submenuitem)
 					{
 						radialMenu = submenuitem->menu;
 						return true;
 					}
 
-					ActionMenuItem* item = static_cast<ActionMenuItem*>(radialMenu->menuItems[id]);
+					ActionMenuItem* item = dynamic_cast<ActionMenuItem*>(radialMenu->menuItems[id]);
 					if (item)
 					{
 						radialMenu = NULL;

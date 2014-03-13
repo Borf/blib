@@ -13,6 +13,7 @@ namespace blib
 			std::string description;
 
 			MenuItem(std::string name);
+			virtual ~MenuItem() {}
 		};
 	}
 }
