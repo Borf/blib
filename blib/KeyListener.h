@@ -40,8 +40,8 @@ namespace blib
 	class KeyListener
 	{
 	public:
-		virtual void onKeyDown(Key key) {};
-		virtual void onKeyUp(Key key) {};
-		virtual void onChar(char character) {};
+		virtual bool onKeyDown(Key key) { return false;  };
+		virtual bool onKeyUp(Key key) { return false; };
+		virtual bool onChar(char character) { return false; };
 	};
 }

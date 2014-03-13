@@ -8,7 +8,16 @@
 #include <blib/util/FileSystem.h>
 #include <blib/util/Log.h>
 #include <blib/wm/Menu.h>
+#include <blib/Math.h>
+#include <blib/wm/MenuItem.h>
+#include <blib/wm/ActionMenuItem.h>
+#include <blib/wm/SubMenuMenuItem.h>
 using blib::util::Log;
+
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <cctype>
 #include <algorithm>
@@ -76,28 +85,46 @@ namespace blib
 				}
 			}
 
-			if(windows.empty())
-				return;
-
-//			spriteBatch.begin();
-			if(hasModalWindow())
+			if (!windows.empty())
 			{
-				spriteBatch.drawStretchyRect(skinTexture, glm::mat4(), WM::getInstance()->skin["button"], screenSize, glm::vec4(0.1f, 0.1f, 0.1f, 0.5f));
+				if (hasModalWindow())
+					spriteBatch.drawStretchyRect(skinTexture, glm::mat4(), WM::getInstance()->skin["button"], glm::vec2(screenSize), glm::vec4(0.1f, 0.1f, 0.1f, 0.5f));
+
+				for (std::list<Window*>::reverse_iterator it = windows.rbegin(); it != windows.rend(); it++)
+				{
+					if ((*it)->visible)
+						(*it)->draw(spriteBatch);
+				}
 			}
 
-//			shader->setColor(glm::vec4(1,1,1,1));
-			for(std::list<Window*>::reverse_iterator it = windows.rbegin(); it != windows.rend(); it++)
+			if (radialMenu)
 			{
-				if((*it)->visible)
-					(*it)->draw(spriteBatch);
-			}
 
+				glm::vec2 diff = radialMenuPosition - glm::vec2(mouseState.x, mouseState.y);
+				float angle = atan2(diff.y, diff.x);
+				int id = (int)round(((angle+2*M_PI) / (2 * M_PI)) * 8+7) % 8;
+
+
+				for (int i = 0; i < 8; i++)
+					spriteBatch.draw(skinTexture, blib::math::easyMatrix(radialMenuPosition, 22.5f + i * 45), glm::vec2(126, 90), blib::math::Rectangle(glm::vec2(89.0f / skinTexture->originalWidth, 0), 126.0f / skinTexture->originalWidth, 90.0f / skinTexture->originalHeight), i == id ? glm::vec4(0.9f, 0.5f, 0.5f, 1.0f): (i % 2 == 0 ? glm::vec4(0.9f, 0.9f, 0.9f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+
+				for (size_t i = 0; i < 8; i++)
+				{
+					
+					if (i < radialMenu->menuItems.size())
+					{
+						glm::mat4 matrix;
+						matrix = glm::translate(matrix, glm::vec3(radialMenuPosition, 0));
+						matrix = glm::rotate(matrix, 22.5f + i * 45, glm::vec3(0, 0, 1));
+						matrix = glm::translate(matrix, glm::vec3(-100, 0, 0));
+						spriteBatch.draw(font, radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
+					}
+				}
+			}
 
 
 
 			prevMouseState = mouseState; // TODO: move this to an update method?
-
-	//		spriteBatch.end();
 		}
 
 		void WM::setSkin( std::string skinFile, ResourceManager* resourceManager )
@@ -115,24 +142,6 @@ namespace blib
 
 		#define DRAGRANGE 10
 
-
-
-		bool WM::keyboard(char key)
-		{
-			if(windows.empty())
-				return false;
-			windows.front()->keyboard(key);
-			return true;
-		}
-
-
-		bool WM::keyboardSpecial(int key)
-		{
-			if(windows.empty())
-				return false;
-			windows.front()->keyboardSpecial(key);
-			return true;
-		}
 
 
 		glm::vec4 WM::convertHexColor4( std::string hexColor )
@@ -170,6 +179,32 @@ namespace blib
 			mouseState.y = y; 
 			mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = true; 
 
+
+			if (radialMenu)
+			{
+				glm::vec2 diff = radialMenuPosition - glm::vec2(mouseState.x, mouseState.y);
+				float angle = atan2(diff.y, diff.x);
+				int id = (int)round(((angle + 2 * M_PI) / (2 * M_PI)) * 8) % 8;
+				if (id < (int)radialMenu->menuItems.size())
+				{
+					SubMenuMenuItem* submenuitem = static_cast<SubMenuMenuItem*>(radialMenu->menuItems[id]);
+					if (submenuitem)
+					{
+						radialMenu = submenuitem->menu;
+						return true;
+					}
+
+					ActionMenuItem* item = static_cast<ActionMenuItem*>(radialMenu->menuItems[id]);
+					if (item)
+					{
+						radialMenu = NULL;
+						if (item->callback)
+							item->callback();
+						return true;
+					}
+				}
+				return true;
+			}
 			for (std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
 			{
 				Window* w = (*it);
@@ -364,16 +399,35 @@ namespace blib
 			return false;
 		}
 
-		void WM::onKeyDown(Key key)
+		bool WM::onKeyDown(Key key)
 		{
+			if (key == KEY_SPACE)
+			{
+				radialMenu = radialMenu ? NULL : radialMenuRoot;
+				radialMenuPosition.x = (float)mouseState.x;
+				radialMenuPosition.y = (float)mouseState.y;
+			}
+			/*if (windows.empty())
+				return false;
+			windows.front()->keyboard(key);*/
+			return false;
 		}
 
-		void WM::onKeyUp(Key key)
+		bool WM::onKeyUp(Key key)
 		{
+		/*	if (windows.empty())
+				return false;
+			windows.front()->keyboard(key);
+			return true;*/
+			return false;
 		}
 
-		void WM::onChar(char character)
+		bool WM::onChar(char character)
 		{
+			if (windows.empty())
+				return false;
+			windows.front()->keyboard(character);
+			return true;
 		}
 
 		void WM::resizeGl(int width, int height)

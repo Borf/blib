@@ -6,6 +6,11 @@
 #include <blib/Texture.h>
 #include <blib/Shader.h>
 #include <blib/Font.h>
+#include <blib/SpriteBatch.h>
+#include <blib/util/Profiler.h>
+
+#include <glm/gtc/matrix_transform.hpp>
+
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -32,7 +37,27 @@ namespace blib
 
 
 			void Textbox::draw( SpriteBatch& spriteBatch, glm::mat4 matrix)
-			{/*
+			{
+				Json::Value skin = WM::getInstance()->skin["input"];
+
+				spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x, y, 0)), skin, glm::vec2(width, height), glm::vec4(selected ? 1 : 0.9f, selected ? 1 : 0.9f, selected ? 1 : 0.9f, 1));
+
+
+				Font* font = WM::getInstance()->font;
+
+				if (text != "" || selected)
+				{
+					spriteBatch.draw(font, text, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()));
+					if ((int)(blib::util::Profiler::getAppTime()*2) % 2 == 0)
+						spriteBatch.draw(font, "|",  glm::translate(matrix, glm::vec3(x - 1.0f + font->textlen(text.substr(0, cursor)), y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()));
+
+				}
+				else
+					spriteBatch.draw(font, emptyText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), glm::vec4(0.6f, 0.6f, 0.6f, 1));
+
+
+				
+				/*
 				glBindTexture(GL_TEXTURE_2D, WM::getInstance()->skinTexture->texid);
 				shader->setColor(glm::vec4(selected ? 1 : 0.9f,selected ? 1 : 0.9f,selected ? 1 : 0.9f,1));
 				GlHelper::drawStretchyRect(x, y, width, height, WM::getInstance()->skin["input"]);

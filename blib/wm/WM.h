@@ -27,7 +27,7 @@ namespace blib
 
 		class WM : public util::Singleton<WM>, public MouseListener, public KeyListener, blib::gl::GlResizeRegister
 		{
-			glm::vec2 screenSize;
+			glm::ivec2 screenSize;
 			MouseState mouseState;
 			MouseState prevMouseState;
 			std::list<Window*> windows;
@@ -40,6 +40,7 @@ namespace blib
 
 			blib::wm::Menu* radialMenuRoot;
 			blib::wm::Menu* radialMenu;
+			glm::vec2		radialMenuPosition;
 			blib::wm::Menu* pulldownMenu;
 			blib::wm::Menu* popupMenu;
 
@@ -67,9 +68,9 @@ namespace blib
 			virtual bool onMouseUp(int x, int y, Button button, int clickCount);
 			virtual bool onMouseMove(int x, int y, Buttons button);
 			virtual bool onScroll(int delta);
-			virtual void onKeyDown(Key key);
-			virtual void onKeyUp(Key key);
-			virtual void onChar(char character);
+			virtual bool onKeyDown(Key key);
+			virtual bool onKeyUp(Key key);
+			virtual bool onChar(char character);
 
 			virtual void resizeGl(int width, int height);
 

@@ -5,6 +5,7 @@
 #include <blib/SpriteBatch.h>
 #include <blib/math/Rectangle.h>
 #include <blib/KeyListener.h>
+#include <blib/Math.h>
 
 //#include <gl/glew.h>
 #include <glm/glm.hpp>
@@ -34,15 +35,34 @@ namespace blib
 
 			void List::draw( SpriteBatch &spriteBatch, glm::mat4 matrix)
 			{
+				Json::Value skin = WM::getInstance()->skin["list"];
+				Texture* texture = WM::getInstance()->skinTexture;
 
-				spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["list"], glm::vec2(width, height));
+
+				spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x,y,0)), skin, glm::vec2(width - skin["scroll"]["width"].asInt(), height));
 				
-				
-				
+				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y, 0)),
+					glm::vec2(0, 0),
+					blib::math::Rectangle(
+					glm::vec2(skin["scroll"]["buttonup"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["top"].asInt() / (float)texture->originalWidth),
+					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["height"].asInt() / (float)texture->originalWidth));
+
+				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + height - skin["scroll"]["buttondown"]["height"].asInt(), 0)),
+					glm::vec2(0, 0),
+					blib::math::Rectangle(
+					glm::vec2(skin["scroll"]["buttondown"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["top"].asInt() / (float)texture->originalWidth),
+					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["height"].asInt() / (float)texture->originalWidth));
+
+				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt(), 0)), glm::vec3(1,(height-skin["scroll"]["buttonup"]["height"].asInt() - skin["scroll"]["buttondown"]["height"].asInt()) / (float)skin["scroll"]["background"]["height"].asInt(),1)),
+					glm::vec2(0, 0),
+					blib::math::Rectangle(
+					glm::vec2(skin["scroll"]["background"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["top"].asInt() / (float)texture->originalWidth),
+					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["height"].asInt() / (float)texture->originalWidth));
+
+
 				/*
 				glBindTexture(GL_TEXTURE_2D, WM::getInstance()->skinTexture->texid);
 	
-				Json::Value skin = WM::getInstance()->skin["list"];
 
 
 				GlHelper::drawStretchyRect(x, y, width - skin["scroll"]["width"].asInt(), height, skin);
@@ -97,27 +117,21 @@ namespace blib
 				glScissor((int)shader->matrix[3][0],shader->height-(int)shader->matrix[3][1]-height,width,height);
 				glEnable(GL_SCISSOR_TEST);
 
-				if(selectedItem != -1)
-				{
-					shader->setColor(WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
-					GlHelper::drawStretchyRect(x+2, y + 4 + 12*selectedItem-scrollPosition, width - 4 - skin["scroll"]["width"].asInt(), 12, skin);
-					shader->setColor(glm::vec4(1,1,1,1));
-				}
+*/
+				if (selectedItem >= 0 && selectedItem < items.size())
+					spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2, y + 4 + 12 * selectedItem - scrollPosition, 0)), skin, glm::vec2(width - 4 - skin["scroll"]["width"].asInt(), 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
 
-				for(int i = scrollPosition/12; i < glm::min((int)items.size(), scrollPosition/12+(int)ceil(height/12.0)); i++)
+				for (int i = scrollPosition / 12; i < glm::min((int)items.size(), scrollPosition / 12 + (int)ceil(height / 12.0)); i++)
 				{
-					if(i == selectedItem)
-						shader->setColor(WM::getInstance()->convertHexColor4(skin["selectfontcolor"].asString()));
-					WM::getInstance()->font->Render(items[i].c_str(), -1, FTPoint(x+2,y-14 - 12*i+scrollPosition ));
-					if(i == selectedItem)
-						shader->setColor(glm::vec4(1,1,1,1));
+					spriteBatch.draw(WM::getInstance()->font, items[i], 
+						blib::math::easyMatrix(glm::vec2(x + 2, y + 12 * i - scrollPosition), matrix), 
+						WM::getInstance()->convertHexColor4(i == selectedItem ? skin["selectfontcolor"].asString() : skin["fontcolor"].asString()));
 				}
-				glDisable(GL_SCISSOR_TEST);*/
 			}
 
 			void List::mousewheel( int direction, int x, int y )
 			{
-				scrollPosition -= direction*10;
+				scrollPosition -= direction / abs(direction)*height/2;
 				if(scrollPosition < 0)
 					scrollPosition = 0;
 				if(scrollPosition > 12*(int)items.size()-12)

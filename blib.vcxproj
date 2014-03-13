@@ -91,6 +91,7 @@
     <ClInclude Include="blib\VBO.h" />
     <ClInclude Include="blib\VIO.h" />
     <ClInclude Include="blib\Window.h" />
+    <ClInclude Include="blib\wm\ActionMenuItem.h" />
     <ClInclude Include="blib\wm\Menu.h" />
     <ClInclude Include="blib\wm\MenuItem.h" />
     <ClInclude Include="blib\wm\SubMenuMenuItem.h" />

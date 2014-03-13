@@ -483,6 +483,9 @@
     <ClInclude Include="blib\util\ListAllocator.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="blib\wm\ActionMenuItem.h">
+      <Filter>wm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
