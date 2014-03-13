@@ -92,8 +92,10 @@ namespace blib
 			delete semaphore;
 			delete renderThread;
 			delete updateThread;
-			delete runnerMutex;
 		}
+		if (appSetup.threaded || appSetup.backgroundTasks)
+			delete runnerMutex;
+
 	}
 
 
@@ -123,9 +125,11 @@ namespace blib
 			return;
 		}
 
-		if(appSetup.threaded)
-		{
+		if (appSetup.threaded || appSetup.backgroundTasks)
 			runnerMutex = new util::Mutex();
+
+		if (appSetup.threaded)
+		{
 			semaphore = new util::Semaphore(0,2);
 			updateThread = new UpdateThread(this);	//will create the window in the right thread
 			updateThread->start();
