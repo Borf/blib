@@ -29,7 +29,8 @@ namespace blib
 			{
 				if(showBorder)
 					spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["box"], glm::vec2(width, height));
-				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x+2,y+2,0)));
+				if (texture)
+					spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x+2,y+2,0)));
 			}
 
 
