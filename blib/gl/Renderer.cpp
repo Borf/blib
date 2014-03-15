@@ -141,7 +141,10 @@ namespace blib
 
 					if(r->renderState.activeTexture[0])
 					{
-						r->renderState.activeTexture[0]->use();
+						if (!lastRenderState)
+							r->renderState.activeShader->use();
+						if (lastRenderState->activeTexture[0] != r->renderState.activeTexture[0])
+							r->renderState.activeTexture[0]->use();
 					}
 					if(r->renderState.activeTexture[1])
 					{
