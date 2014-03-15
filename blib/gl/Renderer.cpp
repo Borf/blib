@@ -93,7 +93,11 @@ namespace blib
 				}
 				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints)
 				{
-					r->renderState.activeShader->use();
+					if (!lastRenderState)
+						r->renderState.activeShader->use();
+					if (lastRenderState->activeShader != r->renderState.activeShader)
+						r->renderState.activeShader->use();
+
 					r->renderState.activeShader->setState(r->shaderState);
 
 

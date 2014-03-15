@@ -44,13 +44,15 @@ namespace blib
 
 			template<class T>
 			void set(char* data, const T& value)
-			{
+			{ // quite magical that this works :D
+				data[index - 1]++;
 				(T&)(data[index]) = value;
 			}
 
 		};
 
 		char* uniformData;
+		char* activeUniformData;
 		int uniformCount;
 		int uniformSize;
 		Uniform* uniforms[16];
@@ -76,8 +78,8 @@ namespace blib
 			uniforms[(int)value] = uniform;
 			uniformCount = glm::max(uniformCount, (int)value+1);
 
-			uniform->index = uniformSize;
-			uniformSize += uniform->size;
+			uniform->index = uniformSize+1;
+			uniformSize += uniform->size+1;
 		}
 
 

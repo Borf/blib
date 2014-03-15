@@ -39,7 +39,11 @@ namespace blib
 					glUniform1i(location, (int&)state[uniforms[i]->index]);
 					break;
 				case Mat4:
-					glUniformMatrix4fv(location, 1, 0, &((float&)state[uniforms[i]->index]));
+					if (activeUniformData[uniforms[i]->index-1] != state[uniforms[i]->index-1])
+					{
+						glUniformMatrix4fv(location, 1, 0, &((float&)state[uniforms[i]->index]));
+						activeUniformData[uniforms[i]->index - 1] = state[uniforms[i]->index - 1];
+					}
 					break;
 				default:
 					Log::out << "Error in uniform type" << Log::newline;
@@ -66,6 +70,7 @@ namespace blib
 		uniformCount = 0;
 		uniformSize = 0;
 		uniformData = NULL;
+		activeUniformData = NULL;
 		for (int i = 0; i < 16; i++)
 			uniforms[i] = NULL;
 	}
@@ -73,6 +78,8 @@ namespace blib
 	void Shader::finishUniformSetup()
 	{
 		uniformData = new char[uniformSize];
+		activeUniformData = new char[uniformSize];
+		memset(activeUniformData, 0, uniformSize);
 	}
 
 
