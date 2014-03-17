@@ -54,7 +54,7 @@ namespace blib
 						r->renderState.activeFbo.top()->bind();
 					}
 
-					glDisable(GL_STENCIL_TEST);
+					glDisable(GL_SCISSOR_TEST);
 
 					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
