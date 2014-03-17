@@ -76,7 +76,11 @@ void main()\
 		shader->bindAttributeLocation("a_tex1", 2);
 		shader->bindAttributeLocation("a_tex2", 3);
 		shader->bindAttributeLocation("a_size", 4);
-		shader->setUniform("s_texture", 0);
+
+		shader->setUniformName(ShaderUniforms::s_texture, "s_texture", Shader::Int);
+		shader->setUniformName(ShaderUniforms::projectionmatrix, "projectionmatrix", Shader::Mat4);
+		shader->finishUniformSetup();
+		shader->setUniform(ShaderUniforms::s_texture, 0);
 		renderState.activeShader = shader;
 		renderState.activeTexture[0] = textureMap;
 		nParticles = 0;
@@ -319,7 +323,7 @@ void main()\
 	}
 	void ParticleSystem::resizeGl( int width, int height )
 	{
-		renderState.activeShader->setUniform("projectionmatrix", glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
+		renderState.activeShader->setUniform(ShaderUniforms::projectionmatrix, glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
 
 }

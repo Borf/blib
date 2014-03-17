@@ -125,6 +125,16 @@ namespace blib
 		Renderer* renderer;
 		SpriteBatch* spriteBatch;
 		Shader* shader;
+		class ShaderUniforms
+		{
+		public:
+			enum 
+			{
+				s_texture,
+				projectionmatrix,
+			};
+		};
+
 		RenderState renderState;
 		std::list<Emitter*> emitters;
 		TextureMap* textureMap;
