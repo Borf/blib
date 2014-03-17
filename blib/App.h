@@ -54,6 +54,15 @@ namespace blib
 		};
 		int x;
 		int y;
+
+		MouseState()
+		{
+			leftButton = false;
+			middleButton = false;
+			rightButton = false;
+			x = -1;
+			y = -1;
+		}
 	};
 
 	struct AppSetup

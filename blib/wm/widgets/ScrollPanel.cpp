@@ -18,6 +18,7 @@ namespace blib
 				internalWidth = 1000;
 				scrollX = 0;
 				scrollY = 0;
+				checkVisibility = false;
 			}
 
 
@@ -25,74 +26,27 @@ namespace blib
 			{
 
 				Json::Value skin = WM::getInstance()->skin["list"];
+				blib::Texture* texture = WM::getInstance()->skinTexture;
 
-				spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), skin, glm::vec2(width - skin["scroll"]["width"].asInt(), height));
+				spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x,y,0)), skin, glm::vec2(width - skin["scroll"]["width"].asInt(), height));
 				
-				
-				/*
-				glBindTexture(GL_TEXTURE_2D, WM::getInstance()->skinTexture->texid);
+				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y, 0)),
+					glm::vec2(0, 0),
+					blib::math::Rectangle(
+					glm::vec2(skin["scroll"]["buttonup"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["top"].asInt() / (float)texture->originalHeight),
+					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["height"].asInt() / (float)texture->originalHeight));
 
+				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + height - skin["scroll"]["buttondown"]["height"].asInt(), 0)),
+					glm::vec2(0, 0),
+					blib::math::Rectangle(
+					glm::vec2(skin["scroll"]["buttondown"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["top"].asInt() / (float)texture->originalHeight),
+					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["height"].asInt() / (float)texture->originalHeight));
 
-
-				GlHelper::drawStretchyRect(x, y, width - skin["scroll"]["width"].asInt(), height, skin);
-
-				int textureWidth = WM::getInstance()->skinTexture->width;
-				int textureHeight = WM::getInstance()->skinTexture->width;
-
-				float tx = 1.0f/textureWidth;
-				float ty = 1.0f/textureHeight;
-
-				glBegin(GL_QUADS);
-				glVertexAttrib3f(1, 1, 1, 1);	
-
-
-				//button top
-				GlHelper::drawRect(
-					(skin["scroll"]["buttonup"]["left"].asInt()) * tx,
-					(skin["scroll"]["buttonup"]["top"].asInt()) * ty,
-					x+width-skin["scroll"]["width"].asInt(),
-					y,
-					(skin["scroll"]["buttonup"]["left"].asInt() + skin["scroll"]["width"].asInt()) * tx,
-					(skin["scroll"]["buttonup"]["top"].asInt() + skin["scroll"]["buttonup"]["height"].asInt()) * ty,
-					x + width,
-					y + skin["scroll"]["buttonup"]["height"].asInt()
-					);
-
-				//background
-				GlHelper::drawRect(
-					(skin["scroll"]["background"]["left"].asInt()) * tx,
-					(skin["scroll"]["background"]["top"].asInt()) * ty,
-					x+width-skin["scroll"]["width"].asInt(),
-					y + skin["scroll"]["buttonup"]["height"].asInt(),
-					(skin["scroll"]["background"]["left"].asInt() + skin["scroll"]["width"].asInt()) * tx,
-					(skin["scroll"]["background"]["top"].asInt() + skin["scroll"]["background"]["height"].asInt()) * ty,
-					x + width,
-					y + height - skin["scroll"]["buttondown"]["height"].asInt()
-					);
-				//button bottom
-				GlHelper::drawRect(
-					(skin["scroll"]["buttondown"]["left"].asInt()) * tx,
-					(skin["scroll"]["buttondown"]["top"].asInt()) * ty,
-					x+width-skin["scroll"]["width"].asInt(),
-					y + height - skin["scroll"]["buttondown"]["height"].asInt(),
-					(skin["scroll"]["buttondown"]["left"].asInt() + skin["scroll"]["width"].asInt()) * tx,
-					(skin["scroll"]["buttondown"]["top"].asInt() + skin["scroll"]["buttondown"]["height"].asInt()) * ty,
-					x + width,
-					y + height
-					);
-				glEnd();
-
-
-				glScissor((int)shader->matrix[3][0]+x+2,
-							shader->height-(int)shader->matrix[3][1]-height+2,
-							width-skin["scroll"]["width"].asInt()-4,
-							height-4);
-				glEnable(GL_SCISSOR_TEST);
-				glm::mat4 matrix = shader->matrix;
-				shader->setMatrix(glm::translate(shader->matrix, glm::vec3(x+2,y+2-scrollY,0)));
-				shader->setMatrix(matrix);
-				glDisable(GL_SCISSOR_TEST);
-				*/
+				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt(), 0)), glm::vec3(1, (height - skin["scroll"]["buttonup"]["height"].asInt() - skin["scroll"]["buttondown"]["height"].asInt()) / (float)skin["scroll"]["background"]["height"].asInt(), 1)),
+					glm::vec2(0, 0),
+					blib::math::Rectangle(
+					glm::vec2(skin["scroll"]["background"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["top"].asInt() / (float)texture->originalHeight),
+					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["height"].asInt() / (float)texture->originalHeight));
 
 
 				spriteBatch.end();

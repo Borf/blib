@@ -27,7 +27,6 @@ namespace blib
 
 		class WM : public util::Singleton<WM>, public MouseListener, public KeyListener, blib::gl::GlResizeRegister
 		{
-			glm::ivec2 screenSize;
 			MouseState mouseState;
 			MouseState prevMouseState;
 			std::list<Window*> windows;
@@ -80,6 +79,8 @@ namespace blib
 
 			Window* draggingWindow;
 			int		dragMode;
+
+			glm::ivec2 screenSize;
 
 			enum Cursor
 			{

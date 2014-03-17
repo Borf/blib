@@ -7,6 +7,12 @@ namespace blib
 	{
 		namespace widgets
 		{
+			ContainerWidget::ContainerWidget()
+			{
+				checkVisibility = true;
+			}
+
+
 			void ContainerWidget::add( Widget* toAdd )
 			{
 				children.push_back(toAdd);
@@ -64,7 +70,7 @@ namespace blib
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+					if(!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0))
 						if((*it)->inComponent(x-this->x, y - this->y))
 						{
 							(*it)->mousewheel(direction, x-this->x, y-this->y);
@@ -77,7 +83,7 @@ namespace blib
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+					if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
 						if((*it)->inComponent(x-this->x, y - this->y))
 						{
 							(*it)->mousedown(x-this->x, y-this->y);
@@ -89,7 +95,7 @@ namespace blib
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+					if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
 						if((*it)->inComponent(x-this->x, y - this->y))
 						{
 							(*it)->mouseup(x-this->x, y-this->y);
@@ -101,7 +107,7 @@ namespace blib
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+					if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
 						if((*it)->inComponent(x-this->x, y - this->y))
 						{
 							(*it)->mousedrag(x-this->x, y-this->y);
@@ -114,7 +120,7 @@ namespace blib
 			{
 				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
 				{
-					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
+					if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
 						if((*it)->inComponent(x-this->x, y - this->y))
 						{
 							(*it)->mouseclick(x-this->x, y-this->y, clickcount);
