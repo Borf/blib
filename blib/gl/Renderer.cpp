@@ -54,6 +54,8 @@ namespace blib
 						r->renderState.activeFbo.top()->bind();
 					}
 
+					glDisable(GL_STENCIL_TEST);
+
 					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
 					glClearColor(	((blib::Renderer::RenderClear*)r)->color.x, 
@@ -74,6 +76,7 @@ namespace blib
 				else if (r->command == Render::SetViewPort)
 				{
 					glViewport(0,0,((RenderSetViewPort*)r)->width, ((RenderSetViewPort*)r)->height);
+					height = ((RenderSetViewPort*)r)->height;
 				}
 				else if(r->command == Render::SetVbo)
 				{
@@ -166,6 +169,14 @@ namespace blib
 					}
 					else
 						glDisable(GL_BLEND);
+
+					if (r->renderState.scissor)
+					{
+						glEnable(GL_SCISSOR_TEST);
+						glScissor(r->renderState.scissorArea[0], height - r->renderState.scissorArea[1] - r->renderState.scissorArea[3], r->renderState.scissorArea[2], r->renderState.scissorArea[3]);
+					}
+					else
+						glDisable(GL_SCISSOR_TEST);
 
 					if(r->renderState.activeVbo)
 						r->renderState.activeVbo->bind();

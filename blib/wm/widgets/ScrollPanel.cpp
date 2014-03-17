@@ -94,7 +94,22 @@ namespace blib
 				glDisable(GL_SCISSOR_TEST);
 				*/
 
-				ContainerWidget::draw(spriteBatch, glm::translate(matrix, glm::vec3(x+2,y+2-scrollY,0)));
+
+				spriteBatch.end();
+				spriteBatch.renderState.scissor = true;
+				spriteBatch.renderState.scissorArea[0] = (int)matrix[3][0]+x+2;
+				spriteBatch.renderState.scissorArea[1] = (int)matrix[3][1] + y + 2;
+				spriteBatch.renderState.scissorArea[2] = width-4;
+				spriteBatch.renderState.scissorArea[3] = height-4;
+				spriteBatch.begin();
+
+				matrix = glm::translate(matrix, glm::vec3(x+2,y+2-scrollY,0));
+				for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+					(*it)->draw(spriteBatch, matrix);
+
+				spriteBatch.end();
+				spriteBatch.renderState.scissor = false;
+				spriteBatch.begin();
 
 			}
 
@@ -106,7 +121,7 @@ namespace blib
 
 			void ScrollPanel::mousewheel( int direction, int x, int y )
 			{
-				scrollY -= 16 * direction;
+				scrollY -= 16 * (direction / abs(direction));
 				if(scrollY > internalHeight-height)
 					scrollY = internalHeight-height;
 				if(scrollY < 0)

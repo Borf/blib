@@ -44,20 +44,20 @@ namespace blib
 				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y, 0)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["buttonup"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["top"].asInt() / (float)texture->originalWidth),
-					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["height"].asInt() / (float)texture->originalWidth));
+					glm::vec2(skin["scroll"]["buttonup"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["top"].asInt() / (float)texture->originalHeight),
+					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["height"].asInt() / (float)texture->originalHeight));
 
 				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + height - skin["scroll"]["buttondown"]["height"].asInt(), 0)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["buttondown"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["top"].asInt() / (float)texture->originalWidth),
-					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["height"].asInt() / (float)texture->originalWidth));
+					glm::vec2(skin["scroll"]["buttondown"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["top"].asInt() / (float)texture->originalHeight),
+					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["height"].asInt() / (float)texture->originalHeight));
 
 				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt(), 0)), glm::vec3(1,(height-skin["scroll"]["buttonup"]["height"].asInt() - skin["scroll"]["buttondown"]["height"].asInt()) / (float)skin["scroll"]["background"]["height"].asInt(),1)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["background"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["top"].asInt() / (float)texture->originalWidth),
-					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["height"].asInt() / (float)texture->originalWidth));
+					glm::vec2(skin["scroll"]["background"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["top"].asInt() / (float)texture->originalHeight),
+					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["height"].asInt() / (float)texture->originalHeight));
 
 
 				/*
@@ -118,7 +118,17 @@ namespace blib
 				glEnable(GL_SCISSOR_TEST);
 
 */
-				if (selectedItem >= 0 && selectedItem < items.size())
+
+
+				spriteBatch.end();
+				spriteBatch.renderState.scissor = true;
+				spriteBatch.renderState.scissorArea[0] = (int)matrix[3][0] + x + 2;
+				spriteBatch.renderState.scissorArea[1] = (int)matrix[3][1] + y + 2;
+				spriteBatch.renderState.scissorArea[2] = width - 4;
+				spriteBatch.renderState.scissorArea[3] = height - 4;
+				spriteBatch.begin();
+
+				if (selectedItem >= 0 && selectedItem < (int)items.size())
 					spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2, y + 4 + 12 * selectedItem - scrollPosition, 0)), skin, glm::vec2(width - 4 - skin["scroll"]["width"].asInt(), 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
 
 				for (int i = scrollPosition / 12; i < glm::min((int)items.size(), scrollPosition / 12 + (int)ceil(height / 12.0)); i++)
@@ -127,6 +137,12 @@ namespace blib
 						blib::math::easyMatrix(glm::vec2(x + 2, y + 12 * i - scrollPosition), matrix), 
 						WM::getInstance()->convertHexColor4(i == selectedItem ? skin["selectfontcolor"].asString() : skin["fontcolor"].asString()));
 				}
+
+				spriteBatch.end();
+				spriteBatch.renderState.scissor = false;
+				spriteBatch.begin();
+
+
 			}
 
 			void List::mousewheel( int direction, int x, int y )

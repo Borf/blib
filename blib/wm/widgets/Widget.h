@@ -2,8 +2,9 @@
 
 #include <string>
 #include <list>
-#include <blib/util/FastDelegate.h>
 #include <glm/glm.hpp>
+
+#include <functional>
 
 namespace blib
 {
@@ -12,24 +13,16 @@ namespace blib
 
 	namespace wm
 	{
-		using namespace fastdelegate;
-
-
-		class MouseHandler
-		{
-		};
-
-
 		class Widget
 		{
 		public:
-			typedef FastDelegate4<Widget*, int, int, int> mouseHandler;
-			typedef FastDelegate1<char> keyHandler;
-			typedef FastDelegate1<int> keySpecialHandler;
+			typedef std::function<void(Widget* widget, int x, int y, int clickCount)> mouseHandler;
+			typedef std::function<void(char key)> keyHandler;
+			typedef std::function<void(char key)> keySpecialHandler;
 
-			std::list<mouseHandler>			clickHandlers;
-			std::list<keyHandler>			keyHandlers;
-			std::list<keySpecialHandler>	keySpecialHandlers;
+			std::list<mouseHandler>		clickHandlers;
+			std::list<keyHandler>					keyHandlers;
+			std::list<keySpecialHandler>			keySpecialHandlers;
 		public:
 
 

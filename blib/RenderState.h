@@ -45,6 +45,10 @@ namespace blib
 		bool stencilTestEnabled;
 		bool stencilWrite;
 
+		bool scissor;
+		int scissorArea[4];
+
+
 		bool depthTest;
 
 		RenderState()
@@ -65,6 +69,7 @@ namespace blib
 
 			renderStyle = FILLED;
 			depthTest = false;
+			scissor = false;
 		}
 	};
 

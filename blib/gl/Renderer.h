@@ -10,6 +10,7 @@ namespace blib
 	{
 		class Renderer : public blib::Renderer
 		{
+			int height;
 		public:
 			void flush();
 		};

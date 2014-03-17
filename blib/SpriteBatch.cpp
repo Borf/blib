@@ -18,6 +18,7 @@ namespace blib
 		this->renderer = renderer;
 
 		renderState = baseRenderState;
+		renderState.depthTest = false;
 		renderState.blendEnabled = true;
 		renderState.srcBlendColor = blib::RenderState::SRC_ALPHA;
 		renderState.srcBlendAlpha = blib::RenderState::SRC_ALPHA;
@@ -177,7 +178,7 @@ void main()\
 	void SpriteBatch::drawStretchyRect( Texture* sprite, const glm::mat4 &transform, const blib::math::Rectangle &src, const blib::math::Rectangle &innerSrc, const glm::vec2 &size, const glm::vec4 &color )
 	{
 
-		glm::vec2 factor(1.0f / sprite->width, 1.0f / sprite->height);
+		glm::vec2 factor(1.0f / sprite->originalWidth, 1.0f / sprite->originalHeight);
 
 		glm::vec2 marginBottomRight(src.bottomright - innerSrc.bottomright);
 		glm::vec2 marginTopLeft(innerSrc.topleft - src.topleft);

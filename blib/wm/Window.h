@@ -37,6 +37,11 @@ namespace blib
 		Window(std::string title, std::string skinFile, ResourceManager* resourceManager);
 
 		void setSize(int width, int height);
+		inline int getWidth() const { return width; }
+		inline int getHeight() const { return height; }
+
+		void setPosition(int x, int y);
+
 		void center();
 		void close();
 

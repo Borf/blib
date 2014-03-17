@@ -71,6 +71,8 @@ namespace blib
 	{
 		if(appSetup.threaded)
 		{
+			renderThread->semaphore->signal();
+			updateThread->semaphore->signal();
 			updateThread->waitForTermination();
 			renderThread->waitForTermination();
 		}

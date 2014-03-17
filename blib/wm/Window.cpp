@@ -264,5 +264,12 @@ namespace blib
 		{
 			return rootPanel->getComponent(name);
 		}
+
+		void Window::setPosition(int x, int y)
+		{
+			this->x = x;
+			this->y = y;
+		}
+
 	}
 }

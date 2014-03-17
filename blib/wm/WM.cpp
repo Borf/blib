@@ -12,6 +12,7 @@
 #include <blib/wm/MenuItem.h>
 #include <blib/wm/ActionMenuItem.h>
 #include <blib/wm/SubMenuMenuItem.h>
+#include <blib/wm/ToggleMenuItem.h>
 using blib::util::Log;
 
 #define _USE_MATH_DEFINES
@@ -115,9 +116,21 @@ namespace blib
 					{
 						glm::mat4 matrix;
 						matrix = glm::translate(matrix, glm::vec3(radialMenuPosition, 0));
-						matrix = glm::rotate(matrix, 22.5f + i * 45, glm::vec3(0, 0, 1));
-						matrix = glm::translate(matrix, glm::vec3(-100, 0, 0));
-						spriteBatch.draw(font, radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
+						matrix = glm::rotate(matrix, i * 45.0f, glm::vec3(0, 0, 1));
+						matrix = glm::translate(matrix, glm::vec3(-120, 0, 0));
+						matrix = glm::scale(matrix, glm::vec3(1.5f, 1.5f, 1.0f));
+						matrix = glm::translate(matrix, glm::vec3(0, -6, 0));
+
+
+						ToggleMenuItem* toggle = dynamic_cast<ToggleMenuItem*>(radialMenu->menuItems[i]);
+						if (toggle)
+						{
+							spriteBatch.draw(font, (toggle->getValue() ? "[x]  " : "[  ]  ") + radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
+						}
+						else
+							spriteBatch.draw(font, radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
+
+
 					}
 				}
 			}
@@ -191,16 +204,28 @@ namespace blib
 					if (submenuitem)
 					{
 						radialMenu = submenuitem->menu;
+						radialMenuPosition = glm::vec2(mouseState.x, mouseState.y);
 						return true;
 					}
 
-					ActionMenuItem* item = dynamic_cast<ActionMenuItem*>(radialMenu->menuItems[id]);
-					if (item)
 					{
-						radialMenu = NULL;
-						if (item->callback)
-							item->callback();
-						return true;
+						ActionMenuItem* item = dynamic_cast<ActionMenuItem*>(radialMenu->menuItems[id]);
+						if (item)
+						{
+							radialMenu = NULL;
+							if (item->callback)
+								item->callback();
+							return true;
+						}
+					}
+					{
+						ToggleMenuItem* item = dynamic_cast<ToggleMenuItem*>(radialMenu->menuItems[id]);
+						if (item)
+						{
+							radialMenu = NULL;
+							item->toggle();
+							return true;
+						}
 					}
 				}
 				return true;
