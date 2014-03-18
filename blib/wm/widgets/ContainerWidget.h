@@ -14,9 +14,10 @@ namespace blib
 			class ContainerWidget : public Widget
 			{
 			protected:
-				std::list<Widget*> children;
 				bool checkVisibility;
 			public:
+				std::list<Widget*> children;
+
 				ContainerWidget();
 
 				void add(Widget* toAdd);

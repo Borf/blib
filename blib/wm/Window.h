@@ -51,7 +51,7 @@ namespace blib
 		virtual void draw(SpriteBatch &spriteBatch);
 		Widget::PositionHelp toPositionHelp( std::string text );
 		bool inWindow( int x, int y );
-		void arrangeComponents( int oldWidth, int oldHeight );
+		virtual void arrangeComponents( int oldWidth, int oldHeight );
 
 
 		void mousewheel(int direction, int x, int y);
