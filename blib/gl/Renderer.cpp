@@ -103,13 +103,12 @@ namespace blib
 					int Viewport[4];
 					glGetIntegerv(GL_VIEWPORT, Viewport);
 
-					float winZ;
-					glReadPixels((int)ru->mousePosition.x, Viewport[3] - (int)ru->mousePosition.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ); //TODO: maybe need to do windowheight-mouse3d.y
-					printf("%f\n", winZ);
-					glm::vec3 ret = glm::unProject(glm::vec3(glm::vec2(0, Viewport[3]) - ru->mousePosition, winZ), ru->modelMatrix, ru->projectionMatrix, glm::vec4(Viewport[0], Viewport[1], Viewport[2], Viewport[3]));
 
-//					if (winZ > 0.99999)
-//						ret = glm::vec3(0, 0, 0);
+					ru->mousePosition.y = Viewport[3] - ru->mousePosition.y;
+
+					float winZ;
+					glReadPixels((int)ru->mousePosition.x, (int)ru->mousePosition.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ); //TODO: maybe need to do windowheight-mouse3d.y
+					glm::vec4 ret = glm::vec4(glm::unProject(glm::vec3(ru->mousePosition, winZ), ru->modelMatrix, ru->projectionMatrix, glm::vec4(Viewport[0], Viewport[1], Viewport[2], Viewport[3])),winZ);
 
 
 					app->runLater<int>([ret, ru](int) {*ru->target = ret; }, 0);

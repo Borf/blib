@@ -141,7 +141,7 @@ namespace blib
 		{
 		public:
 			glm::vec2 mousePosition;
-			glm::vec3* target;
+			glm::vec4* target;
 			glm::mat4 modelMatrix;
 			glm::mat4 projectionMatrix;
 
@@ -348,7 +348,7 @@ namespace blib
 			toRender[activeLayer].push_back(command);
 		}
 
-		void unproject(glm::vec2 mousePosition, glm::vec3* target, const glm::mat4 &modelMatrix, const glm::mat4 &projectionMatrix)
+		void unproject(glm::vec2 mousePosition, glm::vec4* target, const glm::mat4 &modelMatrix, const glm::mat4 &projectionMatrix)
 		{
 			RenderUnproject* command = allocators[activeLayer].get<RenderUnproject>();
 			command->command = Render::Unproject;
