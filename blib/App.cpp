@@ -243,6 +243,7 @@ namespace blib
 
 
 		renderer = resourceManager->getResource<Renderer>();
+		renderer->app = this;
 		//renderState = renderer->renderState;
 		spriteBatch = new SpriteBatch(renderer, resourceManager);
 		lineBatch = new LineBatch(renderer, resourceManager);

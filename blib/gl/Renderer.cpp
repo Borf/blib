@@ -7,6 +7,8 @@
 #include <GL/glew.h>
 #endif
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <blib/gl/Shader.h>
 #include <blib/RenderState.h>
 #include <blib/Texture.h>
@@ -14,6 +16,7 @@
 #include <blib/gl/VBO.h>
 #include <blib/util/Log.h>
 #include <blib/gl/Vertex.h>
+#include <blib/App.h>
 
 using blib::util::Log;
 
@@ -93,6 +96,24 @@ namespace blib
 //					RenderSetShaderState* rsss = (RenderSetShaderState*)r;
 //					rsss->shader->use();
 //					rsss->shader->setState(rsss->state);
+				}
+				else if (r->command == Render::Unproject)
+				{
+					RenderUnproject* ru = (RenderUnproject*)r;
+					int Viewport[4];
+					glGetIntegerv(GL_VIEWPORT, Viewport);
+
+					float winZ;
+					glReadPixels((int)ru->mousePosition.x, Viewport[3] - (int)ru->mousePosition.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ); //TODO: maybe need to do windowheight-mouse3d.y
+					printf("%f\n", winZ);
+					glm::vec3 ret = glm::unProject(glm::vec3(glm::vec2(0, Viewport[3]) - ru->mousePosition, winZ), ru->modelMatrix, ru->projectionMatrix, glm::vec4(Viewport[0], Viewport[1], Viewport[2], Viewport[3]));
+
+//					if (winZ > 0.99999)
+//						ret = glm::vec3(0, 0, 0);
+
+
+					app->runLater<int>([ret, ru](int) {*ru->target = ret; }, 0);
+
 				}
 				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints)
 				{

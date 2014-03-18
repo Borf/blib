@@ -9,7 +9,7 @@
 
 namespace blib
 {
-
+	class App;
 
 	class Renderer
 	{
@@ -28,6 +28,7 @@ namespace blib
 				SetShaderState,
 				SetSubTexture,
 				SetViewPort,
+				Unproject,
 			} command;
 			virtual ~Render() {};
 			RenderState renderState;
@@ -134,6 +135,20 @@ namespace blib
 			int height;
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)			{			}
 			virtual int vertexCount()			{				return 0;			}
+		};
+
+		class RenderUnproject : public Render
+		{
+		public:
+			glm::vec2 mousePosition;
+			glm::vec3* target;
+			glm::mat4 modelMatrix;
+			glm::mat4 projectionMatrix;
+
+
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)			{			}
+			virtual int vertexCount()			{ return 0; }
+
 		};
 
 
@@ -333,8 +348,22 @@ namespace blib
 			toRender[activeLayer].push_back(command);
 		}
 
+		void unproject(glm::vec2 mousePosition, glm::vec3* target, const glm::mat4 &modelMatrix, const glm::mat4 &projectionMatrix)
+		{
+			RenderUnproject* command = allocators[activeLayer].get<RenderUnproject>();
+			command->command = Render::Unproject;
+			command->mousePosition = mousePosition;
+			command->target = target;
+			command->modelMatrix = modelMatrix;
+			command->projectionMatrix = projectionMatrix;
+
+			toRender[activeLayer].push_back(command);
+		}
+
+
 
 		virtual void flush() = 0;
+		App* app;
 		void swap()
 		{
 			activeLayer = 1 - activeLayer;

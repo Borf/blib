@@ -162,28 +162,30 @@ namespace blib
 
 		Window* window;
 
-	protected:
-		void addKeyListener(KeyListener* keyListener);
-		void addMouseListener(MouseListener* mouseListener);
-		
+
 		template <class T>
-		void runBackground( std::function<T()> backgroundTask, std::function<void(T)> whenDone)
+		void runBackground(std::function<T()> backgroundTask, std::function<void(T)> whenDone)
 		{
-			if(appSetup.threaded)
+			if (appSetup.threaded)
 				new BackgroundTask<T>(this, backgroundTask, whenDone);
 			else
 				runLater(whenDone, backgroundTask());
 		}
-		
+
 		template<class T>
-		void runLater( std::function<void(T)> toRun, T param)
+		void runLater(std::function<void(T)> toRun, T param)
 		{
-			if(appSetup.threaded)
+			if (appSetup.threaded)
 				runnerMutex->lock();
 			runners.push_back(new RunnerContainerImpl<T>(toRun, param));
-			if(appSetup.threaded)
+			if (appSetup.threaded)
 				runnerMutex->unLock();
 		}
+
+	protected:
+		void addKeyListener(KeyListener* keyListener);
+		void addMouseListener(MouseListener* mouseListener);
+		
 
 
 		template<class T>
