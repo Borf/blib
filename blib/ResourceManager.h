@@ -31,6 +31,12 @@ namespace blib
 			return NULL;
 		}
 		template<class T>
+		inline T* getResource(int options, const std::string &name)
+		{
+			throw "Invalid resource";
+			return NULL;
+		}
+		template<class T>
 		inline T* getResource(int width, int height)
 		{
 			throw "Invalid resource";
@@ -47,7 +53,7 @@ namespace blib
 
 
 		fastdelegate::FastDelegate0<Renderer*>							renderer;
-		fastdelegate::FastDelegate1<const std::string &, Texture*>		texture;
+		fastdelegate::FastDelegate2<const std::string &, int, Texture*>		texture;
 		fastdelegate::FastDelegate2<int, int, Texture*>					emptyTexture;
 		fastdelegate::FastDelegate1<const std::string &, SpriteSheet*>	spritesheet;
 		fastdelegate::FastDelegate1<const std::string &, Shader*>		shader;
@@ -64,9 +70,14 @@ namespace blib
 		return renderer();
 	}
 	template<>
+	inline Texture* ResourceManager::getResource<Texture>(int loadOptions, const std::string &name)
+	{
+		return texture(name, loadOptions);
+	}
+	template<>
 	inline Texture* ResourceManager::getResource<Texture>(const std::string &name)
 	{
-		return texture(name);
+		return texture(name, 0);
 	}
 	template<>
 	inline Texture* ResourceManager::getResource<Texture>(int width, int height)

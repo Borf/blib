@@ -9,7 +9,15 @@ namespace blib
 	class Texture
 	{
 	public:
-		virtual ~Texture() { }
+		enum LoadOptions
+		{
+			NoResize = 1,
+			KeepData = 2,
+			LoadLater = 4,
+			TextureWrap = 8,
+		};
+
+
 		virtual void use() = 0;
 		virtual void setSubImage(int x, int y, int width, int height, char* data)  {};
 		bool loaded;
@@ -17,9 +25,11 @@ namespace blib
 		int height;
 		int originalWidth;
 		int originalHeight;
+		std::string fileName;
 
 		glm::vec2 center;
 
+		static std::map<blib::Texture*, int> textureUseCount;
 		static std::map<std::string, blib::Texture*> textureCache;
 		
 		template<class T>
@@ -27,9 +37,15 @@ namespace blib
 		{
 			if(textureCache.find(fileName) == textureCache.end())
 				textureCache[fileName] = new T(fileName, loadOptions);
+			textureUseCount[textureCache[fileName]]++;
 			return (T*)textureCache[fileName];
 		}
+		virtual void unload();
 		static void clearCache();
+
+
+	protected:
+		virtual ~Texture() {};
 
 
 	};

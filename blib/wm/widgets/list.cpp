@@ -124,7 +124,7 @@ namespace blib
 				spriteBatch.renderState.scissor = true;
 				spriteBatch.renderState.scissorArea[0] = (int)matrix[3][0] + x + 2;
 				spriteBatch.renderState.scissorArea[1] = (int)matrix[3][1] + y + 2;
-				spriteBatch.renderState.scissorArea[2] = width - 4;
+				spriteBatch.renderState.scissorArea[2] = width - 4 - skin["scroll"]["width"].asInt();
 				spriteBatch.renderState.scissorArea[3] = height - 4;
 				spriteBatch.begin();
 
@@ -157,12 +157,12 @@ namespace blib
 
 			void List::mouseclick(int x, int y, int clickcount)
 			{
-				Widget::mouseclick(x, y, clickcount);
 				Json::Value skin = WM::getInstance()->skin["list"];
 				if(x-this->x < width - skin["scroll"]["width"].asInt())
 				{
 					selectedItem = ((y-this->y+scrollPosition)/12);
 				}
+				Widget::mouseclick(x, y, clickcount);
 			}
 
 			void List::keyboardSpecial( int key )

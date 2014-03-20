@@ -40,9 +40,9 @@ namespace blib
 			return new blib::gl::Renderer();
 		}
 
-		blib::Texture* ResourceManager::getTexture( const std::string &name )
+		blib::Texture* ResourceManager::getTexture( const std::string &name, int loadOptions )
 		{
-			return Texture<blib::Texture>::loadCached<Texture<blib::Texture> >(name);
+			return Texture<blib::Texture>::loadCached<Texture<blib::Texture> >(name, loadOptions);
 		}
 		
 		blib::Texture* ResourceManager::getEmptyTexture( int width, int height )

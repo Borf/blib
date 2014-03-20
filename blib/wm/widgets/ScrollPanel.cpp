@@ -53,13 +53,22 @@ namespace blib
 				spriteBatch.renderState.scissor = true;
 				spriteBatch.renderState.scissorArea[0] = (int)matrix[3][0]+x+2;
 				spriteBatch.renderState.scissorArea[1] = (int)matrix[3][1] + y + 2;
-				spriteBatch.renderState.scissorArea[2] = width-4;
+				spriteBatch.renderState.scissorArea[2] = width - 4 - skin["scroll"]["width"].asInt();
 				spriteBatch.renderState.scissorArea[3] = height-4;
 				spriteBatch.begin();
 
 				matrix = glm::translate(matrix, glm::vec3(x+2,y+2-scrollY,0));
 				for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
-					(*it)->draw(spriteBatch, matrix);
+				{
+					Widget* w = *it;
+					if (w->x + w->width < scrollX || w->y + w->height < scrollY)
+						continue;
+					if (w->x > scrollX + width || w->y > scrollY + height)
+						continue;
+
+					w->draw(spriteBatch, matrix);
+				}
+
 
 				spriteBatch.end();
 				spriteBatch.renderState.scissor = false;
@@ -75,7 +84,7 @@ namespace blib
 
 			void ScrollPanel::mousewheel( int direction, int x, int y )
 			{
-				scrollY -= 16 * (direction / abs(direction));
+				scrollY -= 16 * direction / 120;
 				if(scrollY > internalHeight-height)
 					scrollY = internalHeight-height;
 				if(scrollY < 0)

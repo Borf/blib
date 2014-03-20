@@ -12,6 +12,7 @@ using blib::util::Log;
 namespace blib
 {
 	std::map<std::string, blib::Texture*> Texture::textureCache;
+	std::map<blib::Texture*, int> Texture::textureUseCount;
 
 
 
@@ -22,6 +23,12 @@ namespace blib
 			delete it->second;
 		}
 		textureCache.clear();
+	}
+
+	void Texture::unload()
+	{
+		textureUseCount[this]--;
+		
 	}
 
 
@@ -40,7 +47,9 @@ namespace blib
 		{
 			this->texid = 0;
 			this->data = NULL;
-			fromFile(fileName, loadOptions);
+			this->fileName = fileName;
+			if ((loadOptions & LoadLater) == 0)
+				fromFile(fileName, loadOptions);
 		}
 
 
@@ -209,6 +218,9 @@ namespace blib
 		{
 			if(texid == 0)
 			{
+				if (data == NULL && fileName != "")
+					fromFile(fileName, 0);
+
 				glGenTextures(1, &texid);
 				glBindTexture(GL_TEXTURE_2D, texid);		
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, T::width, T::height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);

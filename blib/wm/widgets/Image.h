@@ -23,6 +23,7 @@ namespace blib
 				Texture* getTexture();
 
 				bool showBorder;
+				bool scaleAspect;
 			};
 		}
 	}

@@ -27,18 +27,7 @@ namespace blib
 			void fromFile(std::string fileName, int loadOptions);
 
 			Texture(std::string fileName, int loadOptions = 0);
-			virtual ~Texture(void);
 		public:
-			enum LoadOptions
-			{
-				NoResize = 1,
-				KeepData = 2,
-				LoadLater = 4,
-				TextureWrap = 8,
-			};
-
-
-
 
 			unsigned char* data;
 
@@ -48,6 +37,8 @@ namespace blib
 			virtual void use();
 			virtual void setSubImage(int x, int y, int width, int height, char* data);
 
+		protected:
+			virtual ~Texture(void);
 		};
 		
 #ifndef ANDROID
