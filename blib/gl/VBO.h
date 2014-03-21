@@ -42,6 +42,7 @@ namespace blib
 
 			void setData(int length, void* data)
 			{
+				assert(elementSize);
 				this->length = length;
 				bind();
 				int size = elementSize() * length;

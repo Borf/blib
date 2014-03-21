@@ -58,7 +58,7 @@ namespace blib
 					}
 
 					glDisable(GL_SCISSOR_TEST);
-
+					glClearStencil(0);
 					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 
 					glClearColor(	((blib::Renderer::RenderClear*)r)->color.x, 
