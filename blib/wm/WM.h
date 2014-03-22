@@ -73,6 +73,8 @@ namespace blib
 
 			virtual void resizeGl(int width, int height);
 
+
+			bool inWindow(int x, int y);
 			Json::Value skin;
 			Texture* skinTexture;
 			Font* font;

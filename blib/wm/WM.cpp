@@ -467,6 +467,16 @@ namespace blib
 			window->y = (screenSize.y - window->height) / 2;
 		}
 
+		bool WM::inWindow(int x, int y)
+		{
+			for (std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
+			{
+				if ((*it)->inWindow(x, y) && (*it)->visible)
+					return true;
+			}
+			return false;
+		}
+
 
 	}
 }
