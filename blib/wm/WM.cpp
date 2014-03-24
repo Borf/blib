@@ -52,6 +52,7 @@ namespace blib
 		void WM::addWindow( Window* window )
 		{
 			windows.push_front(window);
+			Log::out << "Added new window '"<<window->title<<"', windowcount = " << windows.size() << Log::newline;
 		}
 
 
