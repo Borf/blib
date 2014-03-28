@@ -118,7 +118,7 @@ namespace blib
 				{
 					if (!lastRenderState)
 						r->renderState.activeShader->use();
-					if (lastRenderState->activeShader != r->renderState.activeShader)
+					else if (lastRenderState->activeShader != r->renderState.activeShader)
 						r->renderState.activeShader->use();
 
 					r->renderState.activeShader->setState(r->shaderState);
@@ -166,7 +166,7 @@ namespace blib
 					{
 						if (!lastRenderState)
 							r->renderState.activeShader->use();
-						if (lastRenderState->activeTexture[0] != r->renderState.activeTexture[0])
+						else if (lastRenderState->activeTexture[0] != r->renderState.activeTexture[0])
 							r->renderState.activeTexture[0]->use();
 					}
 					if(r->renderState.activeTexture[1])
