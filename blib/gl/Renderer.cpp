@@ -116,9 +116,7 @@ namespace blib
 				}
 				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints)
 				{
-					if (!lastRenderState)
-						r->renderState.activeShader->use();
-					else if (lastRenderState->activeShader != r->renderState.activeShader)
+					if (!lastRenderState || lastRenderState->activeShader != r->renderState.activeShader)
 						r->renderState.activeShader->use();
 
 					r->renderState.activeShader->setState(r->shaderState);
@@ -129,52 +127,49 @@ namespace blib
 					else
 						glDisable(GL_DEPTH_TEST);
 
-					if(r->renderState.activeFbo.empty())
-						glBindFramebuffer(GL_FRAMEBUFFER, 0);
-					else
-						r->renderState.activeFbo.top()->bind();
+					if (!lastRenderState || lastRenderState->activeFbo != r->renderState.activeFbo)
+						if(r->renderState.activeFbo.empty())
+							glBindFramebuffer(GL_FRAMEBUFFER, 0);
+						else
+							r->renderState.activeFbo.top()->bind();
 
-					if(r->renderState.stencilTestEnabled)
-					{
-						glEnable(GL_STENCIL_TEST);
-						glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
-						glStencilMask(0xFF);
-
-						if(r->renderState.stencilWrite)
+					if (!lastRenderState || lastRenderState->stencilTestEnabled != r->renderState.stencilTestEnabled || lastRenderState->stencilWrite != r->renderState.stencilWrite)
+						if(r->renderState.stencilTestEnabled)
 						{
-							glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
-							glStencilFunc(GL_NEVER, 1, 0xFF);
+							glEnable(GL_STENCIL_TEST);
+							glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
+							glStencilMask(0xFF);
+
+							if(r->renderState.stencilWrite)
+							{
+								glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+								glStencilFunc(GL_NEVER, 1, 0xFF);
+							}
+							else
+							{
+								glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+								glStencilFunc(GL_EQUAL, 0, 0xFF);
+							}
 						}
 						else
 						{
+							glDisable(GL_STENCIL_TEST);
 							glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-							glStencilFunc(GL_EQUAL, 0, 0xFF);
 						}
-					}
-					else
-					{
-						glDisable(GL_STENCIL_TEST);
-						glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-					}
 
-					if(r->renderState.renderStyle == RenderState::WIREFRAME)
-						glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
-					else
-						glPolygonMode( GL_FRONT_AND_BACK, GL_FILL);
+					if (!lastRenderState || r->renderState.renderStyle != lastRenderState->renderStyle)
+						glPolygonMode(GL_FRONT_AND_BACK, r->renderState.renderStyle == RenderState::WIREFRAME ? GL_LINE : GL_FILL);
 
-					if(r->renderState.activeTexture[0])
-					{
-						if (!lastRenderState)
-							r->renderState.activeShader->use();
-						else if (lastRenderState->activeTexture[0] != r->renderState.activeTexture[0])
+					if (!lastRenderState || lastRenderState->activeTexture[0] != r->renderState.activeTexture[0])
+						if (r->renderState.activeTexture[0])
 							r->renderState.activeTexture[0]->use();
-					}
-					if(r->renderState.activeTexture[1])
-					{
-						glActiveTexture(GL_TEXTURE1);
-						r->renderState.activeTexture[1]->use();
-						glActiveTexture(GL_TEXTURE0);
-					}
+					if (!lastRenderState || lastRenderState->activeTexture[1] != r->renderState.activeTexture[1])
+						if (r->renderState.activeTexture[1])
+						{
+							glActiveTexture(GL_TEXTURE1);
+							r->renderState.activeTexture[1]->use();
+							glActiveTexture(GL_TEXTURE0);
+						}
 
 					if(r->renderState.blendEnabled)
 					{
@@ -198,12 +193,14 @@ namespace blib
 					else
 						glDisable(GL_SCISSOR_TEST);
 
-					if(r->renderState.activeVbo)
-						r->renderState.activeVbo->bind();
-					else
-						glBindBuffer(GL_ARRAY_BUFFER, 0);
-					r->setVertexAttributes(enabledVertexAttributes, vertices[1-activeLayer]);
+					if (!lastRenderState || lastRenderState->activeVbo != r->renderState.activeVbo)
+						if(r->renderState.activeVbo)
+							r->renderState.activeVbo->bind();
+						else
+							glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+
+					r->setVertexAttributes(enabledVertexAttributes, vertices[1-activeLayer]);
 					totalVerts += r->vertexCount();
 
 					int start = 0;
