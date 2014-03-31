@@ -171,27 +171,37 @@ namespace blib
 							glActiveTexture(GL_TEXTURE0);
 						}
 
-					if(r->renderState.blendEnabled)
-					{
-						glEnable(GL_BLEND);
 
-						int srcBlendColor = toGlEnum(r->renderState.srcBlendColor);
-						int srcBlendAlpha = toGlEnum(r->renderState.srcBlendAlpha);
-						int dstBlendColor = toGlEnum(r->renderState.dstBlendColor);
-						int dstBlendAlpha = toGlEnum(r->renderState.dstBlendAlpha);
-						glBlendFuncSeparate(srcBlendColor, dstBlendColor, srcBlendAlpha, dstBlendAlpha);
-						//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
-					}
-					else
-						glDisable(GL_BLEND);
+					if (!lastRenderState || 
+						r->renderState.blendEnabled != lastRenderState->blendEnabled ||
+						r->renderState.srcBlendColor != lastRenderState->srcBlendColor ||
+						r->renderState.srcBlendAlpha != lastRenderState->srcBlendAlpha ||
+						r->renderState.dstBlendColor != lastRenderState->dstBlendColor ||
+						r->renderState.dstBlendAlpha != lastRenderState->dstBlendAlpha)
+						if(r->renderState.blendEnabled)
+						{
+							glEnable(GL_BLEND);
 
-					if (r->renderState.scissor)
-					{
-						glEnable(GL_SCISSOR_TEST);
-						glScissor(r->renderState.scissorArea[0], height - r->renderState.scissorArea[1] - r->renderState.scissorArea[3], r->renderState.scissorArea[2], r->renderState.scissorArea[3]);
-					}
-					else
-						glDisable(GL_SCISSOR_TEST);
+							int srcBlendColor = toGlEnum(r->renderState.srcBlendColor);
+							int srcBlendAlpha = toGlEnum(r->renderState.srcBlendAlpha);
+							int dstBlendColor = toGlEnum(r->renderState.dstBlendColor);
+							int dstBlendAlpha = toGlEnum(r->renderState.dstBlendAlpha);
+							glBlendFuncSeparate(srcBlendColor, dstBlendColor, srcBlendAlpha, dstBlendAlpha);
+							//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+						}
+						else
+							glDisable(GL_BLEND);
+
+					if (!lastRenderState ||
+						r->renderState.scissor != lastRenderState->scissor ||
+						memcmp(r->renderState.scissorArea, lastRenderState->scissorArea, sizeof(int)*4) != 0)
+						if (r->renderState.scissor)
+						{
+							glEnable(GL_SCISSOR_TEST);
+							glScissor(r->renderState.scissorArea[0], height - r->renderState.scissorArea[1] - r->renderState.scissorArea[3], r->renderState.scissorArea[2], r->renderState.scissorArea[3]);
+						}
+						else
+							glDisable(GL_SCISSOR_TEST);
 
 					if (!lastRenderState || lastRenderState->activeVbo != r->renderState.activeVbo)
 						if(r->renderState.activeVbo)
