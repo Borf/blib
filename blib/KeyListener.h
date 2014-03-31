@@ -21,6 +21,8 @@ namespace blib
 		KEY_SHIFT = VK_SHIFT,
 		KEY_CONTROL = VK_CONTROL,
 		KEY_ALT,
+		KEY_PLUS = VK_ADD,
+		KEY_MINUS = VK_SUBTRACT,
 #else
 		KEY_ESC,
 		KEY_LEFT,
@@ -34,6 +36,8 @@ namespace blib
 		KEY_SHIFT,
 		KEY_CONTROL,
 		KEY_ALT,
+		KEY_PLUS,
+		KEY_MINUS,
 #endif
 	};
 

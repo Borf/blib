@@ -119,17 +119,17 @@ namespace blib
 						matrix = glm::translate(matrix, glm::vec3(radialMenuPosition, 0));
 						matrix = glm::rotate(matrix, i * 45.0f, glm::vec3(0, 0, 1));
 						matrix = glm::translate(matrix, glm::vec3(-120, 0, 0));
-						matrix = glm::scale(matrix, glm::vec3(1.5f, 1.5f, 1.0f));
-						matrix = glm::translate(matrix, glm::vec3(0, -6, 0));
+					//	matrix = glm::scale(matrix, glm::vec3(1.5f, 1.5f, 1.0f));
+						matrix = glm::translate(matrix, glm::vec3(0, -16, 0));
 
 
 						ToggleMenuItem* toggle = dynamic_cast<ToggleMenuItem*>(radialMenu->menuItems[i]);
 						if (toggle)
 						{
-							spriteBatch.draw(font, (toggle->getValue() ? "[x]  " : "[  ]  ") + radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
+							spriteBatch.draw(radialmenufont, (toggle->getValue() ? "[x]  " : "[  ]  ") + radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
 						}
 						else
-							spriteBatch.draw(font, radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
+							spriteBatch.draw(radialmenufont, radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
 
 
 					}
@@ -146,6 +146,7 @@ namespace blib
 			skin = util::FileSystem::getJson(skinFile);
 			skinTexture = resourceManager->getResource<Texture>(skin["texture"].asString());
 			font = resourceManager->getResource<Font>("tahoma");
+			radialmenufont = resourceManager->getResource<Font>(skin["radialfont"].asString());
 		}
 
 		void WM::setFont( Font* font )

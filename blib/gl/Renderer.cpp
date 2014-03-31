@@ -127,7 +127,9 @@ namespace blib
 					else
 						glDisable(GL_DEPTH_TEST);
 
-					if (!lastRenderState || lastRenderState->activeFbo != r->renderState.activeFbo)
+					if (!lastRenderState || /*can't really compare the 2 stacks for some reason*/
+						lastRenderState->activeFbo.size() != r->renderState.activeFbo.size() || 
+						(!lastRenderState->activeFbo.empty() && !r->renderState.activeFbo.empty() && lastRenderState->activeFbo.top() != r->renderState.activeFbo.top()))
 						if(r->renderState.activeFbo.empty())
 							glBindFramebuffer(GL_FRAMEBUFFER, 0);
 						else

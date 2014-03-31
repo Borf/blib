@@ -78,6 +78,7 @@ namespace blib
 			Json::Value skin;
 			Texture* skinTexture;
 			Font* font;
+			Font* radialmenufont;
 
 			Window* draggingWindow;
 			int		dragMode;
