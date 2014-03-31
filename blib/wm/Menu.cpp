@@ -84,3 +84,29 @@ void blib::wm::Menu::linkToggle(std::string path, bool* linkBool)
 	}
 }
 
+void blib::wm::Menu::setEnabled(std::string path, bool value)
+{
+	std::string firstPart = path;
+	if (firstPart.find("/") != std::string::npos)
+	{
+		firstPart = firstPart.substr(0, firstPart.find("/"));
+	}
+
+	for (size_t i = 0; i < menuItems.size(); i++)
+	{
+		if (menuItems[i]->name == firstPart)
+		{
+			SubMenuMenuItem* subMenu = dynamic_cast<SubMenuMenuItem*>(menuItems[i]);
+			if (subMenu)
+				subMenu->menu->setEnabled(path.substr(firstPart.size() + 1), value);
+
+			ToggleMenuItem* item = dynamic_cast<ToggleMenuItem*>(menuItems[i]);
+			if (item)
+			{
+				if (item->getValue() != value)
+					item->toggle();
+			}
+		}
+	}
+}
+

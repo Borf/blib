@@ -1,17 +1,17 @@
 #pragma once
 
-#include "MenuItem.h"
+#include "ActionMenuItem.h"
 
 namespace blib
 {
 	namespace wm
 	{
-		class ToggleMenuItem : public MenuItem
+		class ToggleMenuItem : public ActionMenuItem
 		{
 			bool value;
 			bool* attachedValue;
 		public:
-			ToggleMenuItem(std::string name, bool initialValue) : MenuItem(name)
+			ToggleMenuItem(std::string name, bool initialValue) : ActionMenuItem(name)
 			{
 				value = initialValue;
 				attachedValue = NULL;
