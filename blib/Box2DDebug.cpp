@@ -80,7 +80,7 @@ namespace blib
 			lineBatch->draw(c + util::fromAngle(i)*radius, c + util::fromAngle(i+inc)*radius, glm::vec4(color.r, color.g, color.b, 1));
 		}
 		renderer->renderState.activeShader = lineBatch->shader;
-		lineBatch->shader->setUniform("matrix", lineBatch->matrix);
+		lineBatch->shader->setUniform(LineBatch::Uniforms::matrix, lineBatch->matrix);
 		renderer->drawTriangles(verts);
 	}
 

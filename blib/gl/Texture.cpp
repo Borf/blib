@@ -48,7 +48,7 @@ namespace blib
 			this->texid = 0;
 			this->data = NULL;
 			this->fileName = fileName;
-			if ((loadOptions & LoadLater) == 0)
+			if ((loadOptions & T::LoadLater) == 0)
 				fromFile(fileName, loadOptions);
 		}
 
@@ -218,8 +218,8 @@ namespace blib
 		{
 			if(texid == 0)
 			{
-				if (data == NULL && fileName != "")
-					fromFile(fileName, 0);
+				if (data == NULL && T::fileName != "")
+					fromFile(T::fileName, 0);
 
 				glGenTextures(1, &texid);
 				glBindTexture(GL_TEXTURE_2D, texid);		

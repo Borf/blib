@@ -13,7 +13,7 @@ namespace blib
 	{
 		namespace linux
 		{
-			Window::Window()
+			Window::Window(App* app)
 			{
 			}
 			Window::~Window()
@@ -89,6 +89,11 @@ namespace blib
 					exit(0);
 				}
 
+			}
+			
+			void Window::swapBuffers()
+			{
+			
 			}
 		}
 	}

@@ -2,6 +2,8 @@
 
 #include <map>
 #include <vector>
+#include <typeinfo>
+
 
 namespace blib
 {

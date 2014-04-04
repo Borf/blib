@@ -117,11 +117,11 @@ namespace blib
 			//logString("%s", "\n");
 			//endline = true;
 
+#ifdef WIN32
 			SYSTEMTIME beg;
 			GetLocalTime(&beg);
 			buffer = format( "[%02d:%02d:%02d:%03d]\t", beg.wHour, beg.wMinute, beg.wSecond, beg.wMilliseconds) + buffer;
 
-#ifdef WIN32
 			buffer = format("[%20s]",blib::util::Thread::getCurrentThreadName().c_str()) + buffer;
 #endif
 

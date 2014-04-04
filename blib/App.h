@@ -164,23 +164,23 @@ namespace blib
 
 
 		template <class T>
-		void runBackground(std::function<T()> backgroundTask, std::function<void(T)> whenDone)
+		void runBackground(std::function<T()> backgroundTask, std::function<void(T)> whenDone);/*
 		{
 			if (appSetup.threaded)
 				new BackgroundTask<T>(this, backgroundTask, whenDone);
 			else
 				runLater(whenDone, backgroundTask());
-		}
+		}*/
 
 		template<class T>
-		void runLater(std::function<void(T)> toRun, T param)
-		{
+		void runLater(std::function<void(T)> toRun, T param);
+/*		{
 			if (appSetup.threaded)
 				runnerMutex->lock();
 			runners.push_back(new RunnerContainerImpl<T>(toRun, param));
 			if (appSetup.threaded)
 				runnerMutex->unLock();
-		}
+		}*/
 
 	protected:
 		void addKeyListener(KeyListener* keyListener);
@@ -197,6 +197,7 @@ namespace blib
 		{
 		public:
 			virtual void run() = 0;
+			virtual ~RunnerContainer() {};
 		};
 		template<class T>
 		class RunnerContainerImpl : public RunnerContainer

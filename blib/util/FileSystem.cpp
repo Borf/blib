@@ -4,10 +4,10 @@
 #include <fstream>
 #include <iostream>
 
-#include <direct.h>
 
 #ifdef WIN32
 #include <Windows.h>
+#include <direct.h>
 #else
 #include <dirent.h>
 #include <string.h>

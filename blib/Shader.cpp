@@ -3,8 +3,8 @@
 #include <blib/gl/Shader.h>
 using blib::util::Log;
 
-#include <gl/glew.h>
-
+#include <GL/glew.h>
+#include <string.h>
 
 namespace blib
 {

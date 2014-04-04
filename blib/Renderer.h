@@ -13,6 +13,8 @@ namespace blib
 
 	class Renderer
 	{
+	public:
+		virtual ~Renderer(){};
 	protected:
 		bool enabledVertexAttributes[10];
 

@@ -39,10 +39,10 @@ namespace blib
 			virtual int run() = 0;
 
 			std::string name;
-#ifdef WIN32
-			unsigned long threadId;
 			static std::string getCurrentThreadName();
 			static void setMainThread();
+#ifdef WIN32
+			unsigned long threadId;
 #endif
 		};
 

@@ -18,6 +18,8 @@
 
 namespace blib
 {
+	class App;
+	
 	namespace platform
 	{
 		namespace linux
@@ -43,12 +45,13 @@ namespace blib
 			protected:
 
 			public:
-				Window();
+				Window(App* app);
 				virtual ~Window();
 				virtual void create(int icon, std::string title);
 				virtual void tick();
 				virtual void makeCurrent();
 				virtual void unmakeCurrent();
+				virtual void swapBuffers();
 			};
 		}
 	}
