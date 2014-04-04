@@ -1,6 +1,6 @@
-#include "Button.h"
+#include "button.h"
 
-#include <blib/wm/wm.h>
+#include <blib/wm/WM.h>
 #include <blib/SpriteBatch.h>
 #include <glm/gtc/matrix_transform.hpp>
 

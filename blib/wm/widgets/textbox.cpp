@@ -1,8 +1,8 @@
-#include "Textbox.h"
+#include "textbox.h"
 
 //#include <gl/glew.h>
 
-#include <blib/wm/wm.h>
+#include <blib/wm/WM.h>
 #include <blib/Texture.h>
 #include <blib/Shader.h>
 #include <blib/Font.h>

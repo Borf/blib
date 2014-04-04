@@ -3,7 +3,7 @@
 //#include <gl/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <blib/wm/wm.h>
+#include <blib/wm/WM.h>
 #include <blib/SpriteBatch.h>
 
 

@@ -2,7 +2,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <blib/wm/WM.h>
-#include <blib/texture.h>
+#include <blib/Texture.h>
 #include <blib/SpriteBatch.h>
 
 

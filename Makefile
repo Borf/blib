@@ -13,6 +13,8 @@ SOURCE_DIRS= blib \
 blib/util \
 blib/math \
 blib/gl \
+blib/wm \
+blib/wm/widgets \
 blib/platform/linux \
 externals/json \
 externals/box2d/Box2D/Collision \

@@ -4,7 +4,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <blib/wm/wm.h>
+#include <blib/wm/WM.h>
 #include <blib/Texture.h>
 #include <blib/SpriteBatch.h>
 #include <blib/Math.h>

@@ -161,7 +161,7 @@ namespace blib
 
 		glm::vec4 WM::convertHexColor4( std::string hexColor )
 		{
-			std::transform(hexColor.begin(), hexColor.end(), hexColor.begin(), std::tolower);
+			std::transform(hexColor.begin(), hexColor.end(), hexColor.begin(), ::tolower);
 			static std::string digits = "0123456789abcdef";
 			float r = (digits.find(hexColor[0])<<4 | digits.find(hexColor[1])) / 255.0f;
 			float g = (digits.find(hexColor[2])<<4 | digits.find(hexColor[3])) / 255.0f;

@@ -9,7 +9,7 @@
 	#include <GLES2/gl2.h>
 	#include <GLES2/gl2ext.h>
 #else
-	#include <gl/glew.h>
+	#include <GL/glew.h>
 #endif
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -181,7 +181,7 @@ namespace blib
 
 		Widget::PositionHelp Window::toPositionHelp( std::string text )
 		{
-			std::transform(text.begin(), text.end(), text.begin(), std::tolower);
+			std::transform(text.begin(), text.end(), text.begin(), ::tolower);
 			if(text == "left")
 				return Widget::LEFT;
 			else if(text == "right")
