@@ -443,26 +443,6 @@ namespace blib
 
 
 
-
-	template <class T>
-	void App::runBackground(std::function<T()> backgroundTask, std::function<void(T)> whenDone)
-	{
-		if (appSetup.threaded)
-			new BackgroundTask<T>(this, backgroundTask, whenDone);
-		else
-			runLater(whenDone, backgroundTask());
-	}
-
-	template<class T>
-	void App::runLater(std::function<void(T)> toRun, T param)
-	{
-		if (appSetup.threaded)
-			runnerMutex->lock();
-		runners.push_back(new RunnerContainerImpl<T>(toRun, param));
-		if (appSetup.threaded)
-			runnerMutex->unLock();
-	}
-
 	void App::runRunners()
 	{
 		if (appSetup.threaded || appSetup.backgroundTasks)
@@ -478,4 +458,7 @@ namespace blib
 		if (appSetup.threaded || appSetup.backgroundTasks)
 			runnerMutex->unLock();
 	}
+
+	template void App::runLater<int>(std::function<void(int)> toRun, int param);
+
 }
