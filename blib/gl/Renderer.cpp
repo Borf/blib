@@ -74,6 +74,8 @@ namespace blib
 						bits |= GL_STENCIL_BUFFER_BIT;
 
 					glClear(bits);
+
+					lastRenderState = &r->renderState; // TODO: apply all settings of this renderstate
 					continue;
 				}
 				else if (r->command == Render::SetViewPort)

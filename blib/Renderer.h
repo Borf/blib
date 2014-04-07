@@ -299,10 +299,24 @@ namespace blib
 			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
 			block->vertexStart = vertexIndex[activeLayer];
 			block->count = count;
-			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], first, sizeof(T) * count);
+			memcpy(this->vertices[activeLayer] + vertexIndex[activeLayer], first, sizeof(T)* count);
 			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * count;
 			toRender[activeLayer].push_back(block);
 		}
+
+		template<class T>
+		void drawLines(int count, const RenderState& renderState)
+		{
+			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+			block->command = Render::DrawLines;	//TODO : move to constructor
+			block->vertexStart = 0;
+			block->count = count;
+			block->renderState = renderState;
+			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
+			toRender[activeLayer].push_back(block);
+		}
+
+
 
 		template<class T>
 		void drawPoints(const std::vector<T> &vertices, const RenderState& renderState)
