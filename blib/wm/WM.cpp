@@ -211,21 +211,18 @@ namespace blib
 					}
 
 					{
+						ToggleMenuItem* item = dynamic_cast<ToggleMenuItem*>(radialMenu->menuItems[id]);
+						if (item)
+							item->toggle();
+					}
+
+					{
 						ActionMenuItem* item = dynamic_cast<ActionMenuItem*>(radialMenu->menuItems[id]);
 						if (item)
 						{
 							radialMenu = NULL;
 							if (item->callback)
 								item->callback();
-							return true;
-						}
-					}
-					{
-						ToggleMenuItem* item = dynamic_cast<ToggleMenuItem*>(radialMenu->menuItems[id]);
-						if (item)
-						{
-							radialMenu = NULL;
-							item->toggle();
 							return true;
 						}
 					}

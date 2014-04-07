@@ -231,9 +231,9 @@ namespace blib
 #endif
 						glDrawArrays(GL_POINTS, start, r->vertexCount());
 					}
+					lastRenderState = &r->renderState;
 				}
 
-				lastRenderState = &r->renderState;
 
 			}
 		//	Log::out<<toRender[1-activeLayer].size()<< " render commands, "<<totalVerts<<" vertices"<<Log::newline;
