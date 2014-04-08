@@ -97,11 +97,11 @@ namespace blib
 
 		void Window::show()
 		{
-			visible = true;
+			setVisible(true);
 		}
 		void Window::hide()
 		{
-			visible = false;
+			setVisible(false);
 		}
 
 		void Window::draw( SpriteBatch &spriteBatch )
@@ -269,6 +269,11 @@ namespace blib
 		{
 			this->x = x;
 			this->y = y;
+		}
+
+		void Window::setVisible(bool visible)
+		{
+			this->visible = visible;
 		}
 
 	}

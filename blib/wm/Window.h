@@ -47,6 +47,7 @@ namespace blib
 
 		void show();
 		void hide();
+		void setVisible(bool visible);
 
 		virtual void draw(SpriteBatch &spriteBatch);
 		Widget::PositionHelp toPositionHelp( std::string text );

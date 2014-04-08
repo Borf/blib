@@ -119,7 +119,7 @@ namespace blib
 						matrix = glm::translate(matrix, glm::vec3(radialMenuPosition, 0));
 						matrix = glm::rotate(matrix, i * 45.0f, glm::vec3(0, 0, 1));
 						matrix = glm::translate(matrix, glm::vec3(-120, 0, 0));
-					//	matrix = glm::scale(matrix, glm::vec3(1.5f, 1.5f, 1.0f));
+						matrix = glm::scale(matrix, glm::vec3(0.75f, 0.75f, 1.0f));
 						matrix = glm::translate(matrix, glm::vec3(0, -16, 0));
 
 
