@@ -197,6 +197,7 @@
     <ClCompile Include="blib\gl\Vertex.cpp" />
     <ClCompile Include="blib\gl\Window.cpp" />
     <ClCompile Include="blib\IWindow.cpp" />
+    <ClCompile Include="blib\KeyListener.cpp" />
     <ClCompile Include="blib\LineBatch.cpp" />
     <ClCompile Include="blib\linq.cpp" />
     <ClCompile Include="blib\Math.cpp" />

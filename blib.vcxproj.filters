@@ -795,6 +795,7 @@
     <ClCompile Include="blib\wm\SubMenuMenuItem.cpp">
       <Filter>wm</Filter>
     </ClCompile>
+    <ClCompile Include="blib\KeyListener.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

@@ -180,6 +180,13 @@ namespace blib
 
 			Menu* root = new Menu(menuData);
 
+			root->foreach([this](MenuItem* item) {
+				if (item->key != KEY_NONE)
+				{
+					menuKeys[item->key] = item;
+				}
+			});
+
 			return root;
 		}
 
@@ -431,6 +438,25 @@ namespace blib
 				radialMenuPosition.x = (float)mouseState.x;
 				radialMenuPosition.y = (float)mouseState.y;
 			}
+
+			if (menuKeys.find(key) != menuKeys.end())
+			{
+				{
+					ToggleMenuItem* item = dynamic_cast<ToggleMenuItem*>(menuKeys[key]);
+					if (item)
+						item->toggle();
+				}
+
+				{
+					ActionMenuItem* item = dynamic_cast<ActionMenuItem*>(menuKeys[key]);
+					if (item)
+					{
+						if (item->callback)
+							item->callback();
+					}
+				}
+			}
+
 			/*if (windows.empty())
 				return false;
 			windows.front()->keyboard(key);*/

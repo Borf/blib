@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <map>
 
 #include <blib/util/Singleton.h>
 #include <blib/KeyListener.h>
@@ -17,12 +18,14 @@ namespace blib
 	class Texture; 
 	class SpriteBatch;
 	class ResourceManager;
+	enum Key;
 
 	namespace wm
 	{
 		class Window;
 		class Widget;
 		class Menu;
+		class MenuItem;
 
 
 		class WM : public util::Singleton<WM>, public MouseListener, public KeyListener, blib::gl::GlResizeRegister
@@ -42,6 +45,8 @@ namespace blib
 			glm::vec2		radialMenuPosition;
 			blib::wm::Menu* pulldownMenu;
 			blib::wm::Menu* popupMenu;
+
+			std::map<Key, MenuItem*> menuKeys;
 
 		public:
 			WM();

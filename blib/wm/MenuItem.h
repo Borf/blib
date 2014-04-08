@@ -4,6 +4,8 @@
 
 namespace blib
 {
+	enum Key;
+
 	namespace wm
 	{
 		class MenuItem
@@ -11,6 +13,7 @@ namespace blib
 		public:
 			std::string name;
 			std::string description;
+			Key key;
 
 			MenuItem(std::string name);
 			virtual ~MenuItem() {}

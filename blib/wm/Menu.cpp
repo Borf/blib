@@ -6,6 +6,7 @@
 #include "ActionMenuItem.h"
 
 
+#include <blib/KeyListener.h>
 #include <blib/util/Log.h>
 using blib::util::Log;
 
@@ -34,7 +35,11 @@ blib::wm::Menu::Menu(const Json::Value &data)
 			Log::err << "Unknown menu type: " << data[i]["type"].asString() << Log::newline;
 
 		if (subItem)
+		{
+			if (data[i].isMember("key"))
+				subItem->key = KeyListener::fromString(data[i]["key"].asString());
 			menuItems.push_back(subItem);
+		}
 	}
 }
 
@@ -53,12 +58,12 @@ void blib::wm::Menu::setAction(std::string path, std::function<void() > callback
 			SubMenuMenuItem* subMenu = dynamic_cast<SubMenuMenuItem*>(menuItems[i]);
 			if (subMenu)
 				subMenu->menu->setAction(path.substr(firstPart.size() + 1), callback);
-			
+
 			ActionMenuItem* item = dynamic_cast<ActionMenuItem*>(menuItems[i]);
 			if (item)
 				item->callback = callback;
 		}
-	}	
+	}
 }
 
 void blib::wm::Menu::linkToggle(std::string path, bool* linkBool)
@@ -128,6 +133,18 @@ blib::wm::MenuItem* blib::wm::Menu::getItem(std::string path)
 
 			return menuItems[i];
 		}
+	}
+}
+
+void blib::wm::Menu::foreach(std::function<void(MenuItem*)> callback)
+{
+	for (size_t i = 0; i < menuItems.size(); i++)
+	{
+		SubMenuMenuItem* subMenu = dynamic_cast<SubMenuMenuItem*>(menuItems[i]);
+		if (subMenu)
+			subMenu->menu->foreach(callback);
+		else
+			callback(menuItems[i]);
 	}
 }
 
