@@ -18,6 +18,7 @@ namespace blib
 			void setAction(std::string path, std::function<void() > callback);
 			void linkToggle(std::string path, bool* linkBool);
 			void setEnabled(std::string path, bool value);
+			MenuItem* getItem(std::string path);
 			std::vector<MenuItem*> menuItems;
 		};
 	}

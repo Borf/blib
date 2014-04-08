@@ -110,3 +110,24 @@ void blib::wm::Menu::setEnabled(std::string path, bool value)
 	}
 }
 
+blib::wm::MenuItem* blib::wm::Menu::getItem(std::string path)
+{
+	std::string firstPart = path;
+	if (firstPart.find("/") != std::string::npos)
+	{
+		firstPart = firstPart.substr(0, firstPart.find("/"));
+	}
+
+	for (size_t i = 0; i < menuItems.size(); i++)
+	{
+		if (menuItems[i]->name == firstPart)
+		{
+			SubMenuMenuItem* subMenu = dynamic_cast<SubMenuMenuItem*>(menuItems[i]);
+			if (subMenu)
+				return subMenu->menu->getItem(path.substr(firstPart.size() + 1));
+
+			return menuItems[i];
+		}
+	}
+}
+
