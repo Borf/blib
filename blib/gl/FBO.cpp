@@ -112,6 +112,12 @@ namespace blib
 			if(texids[0] == 0)
 				init();
 			glBindTexture(GL_TEXTURE_2D, texids[0]);
+			if (textureCount > 1)
+			{
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, texids[1]);
+				glActiveTexture(GL_TEXTURE0);
+			}
 		}
 	}
 }

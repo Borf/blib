@@ -124,6 +124,9 @@ namespace blib
 					r->renderState.activeShader->setState(r->shaderState);
 
 
+					GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+					glDrawBuffers(2, buffers);
+
 					if(r->renderState.depthTest)
 						glEnable(GL_DEPTH_TEST);
 					else
