@@ -2,8 +2,6 @@
 
 #include <stdlib.h>
 
-#include <stack>
-
 namespace blib
 {
 	class Shader;
@@ -17,7 +15,7 @@ namespace blib
 	public:
 		Shader* activeShader;
 		Texture* activeTexture[10];
-		std::stack<FBO*> activeFbo;
+		FBO* activeFbo;
 		VBO* activeVbo;
 		VIO* activeVio;
 
@@ -58,6 +56,7 @@ namespace blib
 				activeTexture[i] = NULL;
 			activeVbo = NULL;
 			activeVio = NULL;
+			activeFbo = NULL;
 
 			blendEnabled = false;
 			srcBlendColor = SRC_ALPHA;

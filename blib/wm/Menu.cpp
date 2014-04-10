@@ -134,6 +134,7 @@ blib::wm::MenuItem* blib::wm::Menu::getItem(std::string path)
 			return menuItems[i];
 		}
 	}
+	return NULL;
 }
 
 void blib::wm::Menu::foreach(std::function<void(MenuItem*)> callback)

@@ -50,11 +50,11 @@ namespace blib
 				Render* r = toRender[1-activeLayer][i];
 				if(r->command == Render::Clear)
 				{
-					if(r->renderState.activeFbo.empty())
+					if(r->renderState.activeFbo == NULL)
 						glBindFramebuffer(GL_FRAMEBUFFER, 0);
 					else
 					{
-						r->renderState.activeFbo.top()->bind();
+						r->renderState.activeFbo->bind();
 					}
 
 					glDisable(GL_SCISSOR_TEST);
@@ -75,7 +75,7 @@ namespace blib
 
 					glClear(bits);
 
-					lastRenderState = &r->renderState; // TODO: apply all settings of this renderstate
+					lastRenderState = NULL;// &r->renderState; // TODO: apply all settings of this renderstate
 					continue;
 				}
 				else if (r->command == Render::SetViewPort)
@@ -128,14 +128,11 @@ namespace blib
 						glEnable(GL_DEPTH_TEST);
 					else
 						glDisable(GL_DEPTH_TEST);
-
-					if (!lastRenderState || /*can't really compare the 2 stacks for some reason*/
-						lastRenderState->activeFbo.size() != r->renderState.activeFbo.size() || 
-						(!lastRenderState->activeFbo.empty() && !r->renderState.activeFbo.empty() && lastRenderState->activeFbo.top() != r->renderState.activeFbo.top()))
-						if(r->renderState.activeFbo.empty())
+					if (!lastRenderState || lastRenderState->activeFbo != r->renderState.activeFbo)
+						if(r->renderState.activeFbo == NULL)
 							glBindFramebuffer(GL_FRAMEBUFFER, 0);
 						else
-							r->renderState.activeFbo.top()->bind();
+							r->renderState.activeFbo->bind();
 
 					if (!lastRenderState || lastRenderState->stencilTestEnabled != r->renderState.stencilTestEnabled || lastRenderState->stencilWrite != r->renderState.stencilWrite)
 						if(r->renderState.stencilTestEnabled)

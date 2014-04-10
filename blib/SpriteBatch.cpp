@@ -84,9 +84,9 @@ void main()\
 
 		if(vertices.size() == 0)
 			return;
-
-		if(fbo)
-			renderState.activeFbo.push(fbo);
+		blib::FBO* oldFbo = renderState.activeFbo;
+		if (fbo)
+			renderState.activeFbo = fbo;
 
 		materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
 		renderState.activeShader->setUniform(Matrix, matrix);
@@ -97,8 +97,7 @@ void main()\
 			renderer->drawTriangles<vertexDef>(&vertices[lastIndex], materialIndices[i].second - lastIndex, renderState);
 			lastIndex = materialIndices[i].second;
 		}
-		if(fbo)
-			renderState.activeFbo.pop();
+		renderState.activeFbo = oldFbo;
 		active = false;
 	}
 
