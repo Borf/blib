@@ -16,13 +16,11 @@ namespace blib
 		class FBO : public blib::FBO
 		{
 
-			GLuint texid;
+			GLuint texids[3];
 			GLuint fbo;
 			GLuint depthBuffer;
 			GLuint stencilBuffer;
 		public:
-			bool depth;
-			bool stencil;
 
 
 			FBO();

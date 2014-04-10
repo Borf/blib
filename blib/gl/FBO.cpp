@@ -12,7 +12,10 @@ namespace blib
 		{
 			depthBuffer = 0;
 			stencilBuffer = 0;
-			texid = 0;
+			textureCount = 1;
+			texids[0] = 0;
+			texids[1] = 0;
+			texids[2] = 0;
 			fbo = 0;
 			this->width = 0;
 			this->height = 0;
@@ -37,19 +40,21 @@ namespace blib
 
 		void FBO::init()
 		{
-			glGenTextures(1, &texid);
-			glBindTexture(GL_TEXTURE_2D, texid);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-			//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-			//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-
-
 			glGenFramebuffers(1, &fbo);
 			glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+			//http://gamedev.stackexchange.com/questions/59194/multiple-render-targets-multiple-fragment-shaders
+			for (int i = 0; i < textureCount; i++)
+			{
+				glGenTextures(1, &texids[i]);
+				glBindTexture(GL_TEXTURE_2D, texids[i]);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+				//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texid, 0);
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, texids[i], 0);
+			}
 
 			if(depth || stencil)
 			{
@@ -104,9 +109,9 @@ namespace blib
 
 		void FBO::use()
 		{
-			if(texid == 0)
+			if(texids[0] == 0)
 				init();
-			glBindTexture(GL_TEXTURE_2D, texid);
+			glBindTexture(GL_TEXTURE_2D, texids[0]);
 		}
 	}
 }
