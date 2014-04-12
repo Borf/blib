@@ -486,6 +486,7 @@
     <ClInclude Include="blib\wm\ActionMenuItem.h">
       <Filter>wm</Filter>
     </ClInclude>
+    <ClInclude Include="blib\Shapes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -796,6 +797,7 @@
       <Filter>wm</Filter>
     </ClCompile>
     <ClCompile Include="blib\KeyListener.cpp" />
+    <ClCompile Include="blib\Shapes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

@@ -65,10 +65,17 @@ namespace blib
 			dstBlendAlpha = ONE_MINUS_SRC_ALPHA;
 
 			stencilTestEnabled = false;
+			stencilWrite = false;
 
 			renderStyle = FILLED;
 			depthTest = false;
 			scissor = false;
+
+			scissorArea[0] = 0;
+			scissorArea[1] = 0;
+			scissorArea[2] = 0;
+			scissorArea[3] = 0;
+
 		}
 	};
 

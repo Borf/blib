@@ -61,6 +61,7 @@
     <ClInclude Include="blib\RenderState.h" />
     <ClInclude Include="blib\ResourceManager.h" />
     <ClInclude Include="blib\Shader.h" />
+    <ClInclude Include="blib\Shapes.h" />
     <ClInclude Include="blib\SpriteBatch.h" />
     <ClInclude Include="blib\SpriteSheet.h" />
     <ClInclude Include="blib\Texture.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="blib\Renderer.cpp" />
     <ClCompile Include="blib\RenderState.cpp" />
     <ClCompile Include="blib\Shader.cpp" />
+    <ClCompile Include="blib\Shapes.cpp" />
     <ClCompile Include="blib\SpriteBatch.cpp" />
     <ClCompile Include="blib\SpriteSheet.cpp" />
     <ClCompile Include="blib\Util.cpp" />
