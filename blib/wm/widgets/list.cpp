@@ -28,7 +28,7 @@ namespace blib
 				this->width = 100;
 				this->height = 25;
 				scrollPosition = 0;
-				selectedItem = -1;
+				multiselect = false;
 			}
 
 
@@ -128,14 +128,14 @@ namespace blib
 				spriteBatch.renderState.scissorArea[3] = height - 4;
 				spriteBatch.begin();
 
-				if (selectedItem >= 0 && selectedItem < (int)items.size())
-					spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2, y + 4 + 12 * selectedItem - scrollPosition, 0)), skin, glm::vec2(width - 4 - skin["scroll"]["width"].asInt(), 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
+				if (!multiselect && selectedItem() >= 0 && selectedItem() < (int)items.size())
+					spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2, y + 4 + 12 * selectedItem() - scrollPosition, 0)), skin, glm::vec2(width - 4 - skin["scroll"]["width"].asInt(), 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
 
 				for (int i = scrollPosition / 12; i < glm::min((int)items.size(), scrollPosition / 12 + (int)ceil(height / 12.0)); i++)
 				{
 					spriteBatch.draw(WM::getInstance()->font, items[i], 
 						blib::math::easyMatrix(glm::vec2(x + 2, y + 12 * i - scrollPosition), matrix), 
-						WM::getInstance()->convertHexColor4(i == selectedItem ? skin["selectfontcolor"].asString() : skin["fontcolor"].asString()));
+						WM::getInstance()->convertHexColor4(i == selectedItem() ? skin["selectfontcolor"].asString() : skin["fontcolor"].asString()));
 				}
 
 				spriteBatch.end();
@@ -160,7 +160,7 @@ namespace blib
 				Json::Value skin = WM::getInstance()->skin["list"];
 				if(x-this->x < width - skin["scroll"]["width"].asInt())
 				{
-					selectedItem = ((y-this->y+scrollPosition)/12);
+//					selectedItem = ((y-this->y+scrollPosition)/12);
 				}
 				Widget::mouseclick(x, y, clickcount);
 			}
@@ -168,11 +168,22 @@ namespace blib
 			void List::keyboardSpecial( int key )
 			{
 				Widget::keyboardSpecial(key);
-				if(key == blib::KEY_DOWN)
+/*				if(key == blib::KEY_DOWN)
 					selectedItem = glm::min((int)items.size()-1, selectedItem+1);
 				if(key == blib::KEY_UP)
-					selectedItem = glm::max(0, selectedItem-1);
+					selectedItem = glm::max(0, selectedItem-1);*/
 
+			}
+
+
+			int List::selectedItem()
+			{
+				return -1;
+			}
+
+			bool List::selectedItem(int item)
+			{
+				return false;
 			}
 
 		}

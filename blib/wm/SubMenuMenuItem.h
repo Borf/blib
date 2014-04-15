@@ -14,6 +14,8 @@ namespace blib
 		public:
 			Menu* menu;
 			SubMenuMenuItem(std::string name, Menu* menu);
+
+			bool opened;
 		};
 
 	}

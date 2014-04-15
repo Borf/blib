@@ -13,12 +13,15 @@ namespace blib
 		{
 			class List : public Widget
 			{
+				std::vector<int> selectedItems;
 			public:
 				List();
+				bool multiselect;
 
 
 				int scrollPosition;
-				int selectedItem;
+				int selectedItem();
+				bool selectedItem(int item);
 				std::vector<std::string> items;
 
 

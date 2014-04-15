@@ -43,8 +43,11 @@ namespace blib
 			blib::wm::Menu* radialMenuRoot;
 			blib::wm::Menu* radialMenu;
 			glm::vec2		radialMenuPosition;
-			blib::wm::Menu* pulldownMenu;
-			blib::wm::Menu* popupMenu;
+
+			blib::wm::Menu* menuBar;
+			bool menuBarOpen;
+
+			std::vector<std::pair<glm::vec2, blib::wm::Menu*> > popupMenus;
 
 			std::map<Key, MenuItem*> menuKeys;
 
@@ -67,6 +70,7 @@ namespace blib
 			glm::vec4 convertHexColor4( std::string hexColor );
 			blib::wm::Menu* loadMenu( std::string filename );
 			void setRadialMenu( blib::wm::Menu* param1 );
+			void setMenuBar(blib::wm::Menu* menu);
 
 			virtual bool onMouseDown(int x, int y, Button button, int clickCount);
 			virtual bool onMouseUp(int x, int y, Button button, int clickCount);
