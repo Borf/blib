@@ -80,6 +80,7 @@ namespace blib
 		}
 
 #ifdef WIN32
+		RECT screenRect;
 		static int posX = -1;
 		static int posY = -1;
 		BOOL CALLBACK enumProc(HMONITOR monitor, HDC hdc, LPRECT rect, LPARAM param)
@@ -87,10 +88,21 @@ namespace blib
 			MONITORINFO monitorInfo;
 			monitorInfo.cbSize = sizeof(MONITORINFO);
 			GetMonitorInfo(monitor, &monitorInfo);
-			if((monitorInfo.dwFlags & MONITORINFOF_PRIMARY) == 0)
+			if ((monitorInfo.dwFlags & MONITORINFOF_PRIMARY) == 0)
 			{
 				posX = rect->left;
 				posY = rect->top;
+			}
+			return TRUE;
+		}
+		BOOL CALLBACK enumProc2(HMONITOR monitor, HDC hdc, LPRECT rect, LPARAM param)
+		{
+			MONITORINFO monitorInfo;
+			monitorInfo.cbSize = sizeof(MONITORINFO);
+			GetMonitorInfo(monitor, &monitorInfo);
+			if ((monitorInfo.dwFlags & MONITORINFOF_PRIMARY) != 0)
+			{
+				screenRect = *rect;
 			}
 			return TRUE;
 		}
@@ -109,9 +121,20 @@ namespace blib
 			return(hwndFound);
 		}
 
+
+
 #endif
 
+		glm::ivec2 getResolution()
+		{
+#ifdef WIN32
+			EnumDisplayMonitors(NULL, NULL, enumProc2, NULL);
 
+			return glm::ivec2(screenRect.right - screenRect.left, screenRect.bottom - screenRect.top);
+#else
+			return glm::ivec2(1920, 1080);
+#endif
+		}
 		void fixConsole()
 		{
 #ifdef WIN32
@@ -130,6 +153,79 @@ namespace blib
 			SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, szPath);
 			return std::string(szPath);
 #endif
+		}
+
+		glm::vec3 hsv2rgb(glm::vec3 hsv)
+		{
+			double      hh, p, q, t, ff;
+			long        i;
+
+			if (hsv.y <= 0.0) {       // < is bogus, just shuts up warnings
+				return glm::vec3(hsv.z, hsv.z, hsv.z);
+			}
+			hh = hsv.x;
+			while (hh >= 360.0) hh = 0.0;
+			hh /= 60.0;
+			i = (long)hh;
+			ff = hh - i;
+			p = hsv.z * (1.0 - hsv.y);
+			q = hsv.z * (1.0 - (hsv.y * ff));
+			t = hsv.z * (1.0 - (hsv.y * (1.0 - ff)));
+
+			switch (i) {
+			case 0:
+				return glm::vec3(hsv.z, t, p);
+			case 1:
+				return glm::vec3(q, hsv.z, p);
+			case 2:
+				return glm::vec3(p, hsv.z, t);
+			case 3:
+				return glm::vec3(p, q, hsv.z);
+			case 4:
+				return glm::vec3(t, p, hsv.z);
+			case 5:
+			default:
+				return glm::vec3(hsv.z, p, q);
+			}
+		}
+
+
+		glm::vec3 rgb2hsv(glm::vec3 rgb)
+		{
+			glm::vec3         out;
+			double      min, max, delta;
+
+			min = rgb.r < rgb.g ? rgb.r : rgb.g;
+			min = min  < rgb.b ? min : rgb.b;
+
+			max = rgb.r > rgb.g ? rgb.r : rgb.g;
+			max = max  > rgb.b ? max : rgb.b;
+
+			out.z = max;                                // v
+			delta = max - min;
+			if (max > 0.0) {
+				out.s = (delta / max);                  // s
+			}
+			else {
+				// r = g = b = 0                        // s = 0, v is undefined
+				out.y = 0.0;
+				out.x = NAN;                            // its now undefined
+				return out;
+			}
+			if (rgb.r >= max)                           // > is bogus, just keeps compilor happy
+				out.x = (rgb.g - rgb.b) / delta;        // between yellow & magenta
+			else
+				if (rgb.g >= max)
+					out.x = 2.0 + (rgb.b - rgb.r) / delta;  // between cyan & yellow
+				else
+					out.x = 4.0 + (rgb.r - rgb.g) / delta;  // between magenta & cyan
+
+			out.x *= 60.0;                              // degrees
+
+			if (out.x < 0.0)
+				out.x += 360.0;
+
+			return out;
 		}
 
 	}

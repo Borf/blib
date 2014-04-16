@@ -44,6 +44,7 @@ namespace blib
 #define HASH(s)    ((uint32_t)(H256(s,0,0)^(H256(s,0,0)>>16)))
 
 		void fixConsole();
+		glm::ivec2 getResolution();
 		template <typename T>
 		class make_vector {
 		public:
@@ -58,6 +59,10 @@ namespace blib
 		private:
 			std::vector<T> data_;
 		};
+
+
+		glm::vec3 hsv2rgb(glm::vec3 hsv);
+		glm::vec3 rgb2hsv(glm::vec3 rgb);
 
 	}
 }
