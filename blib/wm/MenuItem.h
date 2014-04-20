@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <blib/KeyListener.h>
 
 namespace blib
 {
