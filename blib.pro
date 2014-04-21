@@ -6,12 +6,15 @@ CONFIG += object_parallel_to_source
 CONFIG += c++11
 CONFIG -= app_bundle
 CONFIG -= qt
+CONFIG -= warn_on
+
 
 INCLUDEPATH += blib
 INCLUDEPATH += externals
 INCLUDEPATH += externals/box2d
 
-QMAKE_EXT_CPP += .c
+#QMAKE_EXT_CPP += .c
+QMAKE_CXXFLAGS += -Wall -Wno-unused-variable
 
 SOURCES += \
     blib/Animation.cpp \

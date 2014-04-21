@@ -49,9 +49,9 @@ namespace blib
 				swa.colormap = cmap;
 				swa.event_mask = ExposureMask | KeyPressMask;
 				
-				win = XCreateWindow(dpy, root, 0, 0, 600, 600, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
+				win = XCreateWindow(dpy, root, 0, 0, width, height, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
 				XMapWindow(dpy, win);
-				XStoreName(dpy, win, "BlaaaA");
+				XStoreName(dpy, win, title.c_str());
 	
 	
 	
@@ -70,30 +70,31 @@ namespace blib
 			
 			void Window::unmakeCurrent()
 			{
+				glXMakeCurrent(dpy, 0, 0);
 
 			}
 			
 			void Window::tick()
 			{
 				Log::out<<"WindowTick!"<<Log::newline;
-				XNextEvent(dpy, &xev);
+				while(XPending(dpy) > 0)
+				{
+					XNextEvent(dpy, &xev);
 		
-				if(xev.type == Expose)
-				{
-					glClearColor(1,0,0,1);
-					glClear(GL_COLOR_BUFFER_BIT);
-					glXSwapBuffers(dpy, win);
-				}
-				if(xev.type == KeyPress)
-				{
-					exit(0);
-				}
+					if(xev.type == Expose)
+					{
 
+					}
+					if(xev.type == KeyPress)
+					{
+						exit(0);
+					}
+				}
 			}
 			
 			void Window::swapBuffers()
 			{
-			
+				glXSwapBuffers(dpy, win);
 			}
 		}
 	}

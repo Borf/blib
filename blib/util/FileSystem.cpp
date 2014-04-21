@@ -228,7 +228,10 @@ namespace blib
 		{
 			std::string data = getData(fileName);
 			if(data == "")
+			{
+				Log::out<<"Could not open file "<<fileName<<Log::newline;
 				return Json::nullValue;
+			}
 			Json::Value ret;
 			Json::Reader reader;
 			if(!reader.parse(data, ret))

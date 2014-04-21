@@ -28,6 +28,8 @@ namespace blib
 
 			virtual bool eof()
 			{
+				if(!baseStream)
+					return true;
 				return baseStream->eof();
 			}
 

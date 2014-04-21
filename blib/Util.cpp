@@ -153,6 +153,7 @@ namespace blib
 			SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, szPath);
 			return std::string(szPath);
 #endif
+return "~/";
 		}
 
 		glm::vec3 hsv2rgb(glm::vec3 hsv)
