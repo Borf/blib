@@ -45,6 +45,9 @@ namespace blib
 						activeUniformData[uniforms[i]->index - 1] = state[uniforms[i]->index - 1];
 					}
 					break;
+				case Vec2:
+					glUniform2f(location, (float&)state[uniforms[i]->index], (float&)state[uniforms[i]->index + 4]);
+					break;
 				case Vec4:
 					glUniform4f(location, (float&)state[uniforms[i]->index], (float&)state[uniforms[i]->index + 4], (float&)state[uniforms[i]->index + 8], (float&)state[uniforms[i]->index+12]);
 					break;

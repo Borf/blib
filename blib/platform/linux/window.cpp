@@ -60,7 +60,14 @@ namespace blib
 				
 				
 				glewInit();
-				
+
+				int glVersion[2] = {-1, -1}; // Set some default values for the version
+				glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]); // Get back the OpenGL MAJOR version we are using
+				glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]); // Get back the OpenGL MAJOR version we are using
+
+				Log::out<<"Using OpenGL " << (const char*)glGetString(GL_VERSION) << Log::newline;
+				Log::out<<"Using OpenGL " << glVersion[0] << "." << glVersion[1] << Log::newline; // Output which version of OpenGL we are using
+
 			}
 			
 			void Window::makeCurrent()
@@ -76,7 +83,7 @@ namespace blib
 			
 			void Window::tick()
 			{
-				Log::out<<"WindowTick!"<<Log::newline;
+//				Log::out<<"WindowTick!"<<Log::newline;
 				while(XPending(dpy) > 0)
 				{
 					XNextEvent(dpy, &xev);
