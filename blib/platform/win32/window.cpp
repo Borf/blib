@@ -203,6 +203,8 @@ namespace blib
 					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 						if ((*it)->onScroll(GET_WHEEL_DELTA_WPARAM(wParam)))
 							break;
+					return true;
+					break;
 				}
 
 				return DefWindowProc(hWnd, message, wParam, lParam);

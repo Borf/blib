@@ -49,6 +49,16 @@ namespace blib
 			keyMapping["f11"] = KEY_F11;
 			keyMapping["f12"] = KEY_F12;
 
+			keyMapping["1"] = (Key)'1';
+			keyMapping["2"] = (Key)'2';
+			keyMapping["3"] = (Key)'3';
+			keyMapping["4"] = (Key)'4';
+			keyMapping["5"] = (Key)'5';
+			keyMapping["6"] = (Key)'6';
+			keyMapping["7"] = (Key)'7';
+			keyMapping["8"] = (Key)'8';
+			keyMapping["9"] = (Key)'9';
+			keyMapping["0"] = (Key)'0';
 		}
 
 		std::transform(name.begin(), name.end(), name.begin(), ::tolower);

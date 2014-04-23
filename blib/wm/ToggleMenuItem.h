@@ -17,7 +17,7 @@ namespace blib
 				attachedValue = NULL;
 			}
 
-			bool getValue()
+			virtual bool getValue()
 			{
 				if (attachedValue)
 					return *attachedValue;
@@ -25,7 +25,7 @@ namespace blib
 					return value;
 			}
 
-			void toggle()
+			virtual void toggle()
 			{
 				if (attachedValue)
 					*attachedValue = !*attachedValue;
@@ -33,7 +33,7 @@ namespace blib
 					value = !value;
 			}
 
-			void linkToggle(bool* linkBool)
+			virtual void linkToggle(bool* linkBool)
 			{
 				attachedValue = linkBool;
 			}

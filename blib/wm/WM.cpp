@@ -317,6 +317,7 @@ namespace blib
 						popupMenus.clear();
 						if (actionMenu->callback)
 							actionMenu->callback();
+						return true;
 					}
 
 				}
@@ -349,8 +350,23 @@ namespace blib
 			mouseState.y = y; 
 			mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = false; 
 
+
 			if (draggingWindow != NULL)
 				draggingWindow = NULL;
+
+
+			if (menuBar && y < 16) //ignore clicks on menubar
+					return true;
+
+			for (size_t i = 0; i < popupMenus.size(); i++)
+			{
+				std::pair<glm::vec2, Menu*>& item = popupMenus[i];
+
+				if (x > item.first.x && x < item.first.x + 200 &&
+					y > item.first.y && y < item.first.y + 16 * item.second->menuItems.size())
+					return true;
+			}
+
 
 			for (std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
 			{
@@ -604,6 +620,20 @@ namespace blib
 
 		bool WM::inWindow(int x, int y)
 		{
+			if (radialMenu)
+				return true;
+			if (menuBar && y < 16)
+				return true;
+			for (size_t i = 0; i < popupMenus.size(); i++)
+			{
+				std::pair<glm::vec2, Menu*>& item = popupMenus[i];
+
+				if (x > item.first.x && x < item.first.x + 200 &&
+					y > item.first.y && y < item.first.y + 16 * item.second->menuItems.size())
+					return true;
+			}
+
+
 			for (std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
 			{
 				if ((*it)->inWindow(x, y) && (*it)->visible)
