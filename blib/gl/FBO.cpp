@@ -35,6 +35,8 @@ namespace blib
 			this->height = height;
 			this->originalWidth = width;
 			this->originalHeight = height;
+			fbo = 0;
+			//TODO: DELETE FBO!
 		}
 
 
@@ -88,6 +90,11 @@ namespace blib
 			glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 			if(depthBuffer > 0)
 				glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
+
+			GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+			glDrawBuffers(2, buffers);
+
+
 		}
 
 		void FBO::unbind() //todo: pop the FBOs

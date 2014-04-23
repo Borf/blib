@@ -87,12 +87,10 @@ namespace blib
 
 			if(linq::contains(threadNames, [name] (std::pair<int, std::string> p) { return p.second == name; }))
 			{
+				static std::map<std::string, int> nameIndices;
+				nameIndices[name]++;
 				char newName[100];
-				int i = 0;
-				do 
-				{
-					sprintf(newName, "%s%03i", name.c_str(), ++i);
-				} while (linq::contains(threadNames, [&newName] (std::pair<int, std::string> p) { return p.second == newName; }));
+				sprintf(newName, "%s%03i", name.c_str(), ++nameIndices[name]);
 				name = newName;
 			}
 			threadNames[threadId] = name;

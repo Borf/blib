@@ -4,6 +4,7 @@
 #include <blib/RenderState.h>
 #include <blib/VBO.h>
 #include <blib/util/ListAllocator.h>
+#include <blib/util/Thread.h>
 #include <vector>
 
 
@@ -156,9 +157,9 @@ namespace blib
 
 
 		int activeLayer;
+		int vertexIndex[2];
 		std::vector<Render*> toRender[2];
 		float* vertices[2];
-		int vertexIndex[2];
 		blib::util::ListAllocator allocators[2];
 
 	public:
@@ -175,8 +176,8 @@ namespace blib
 		Renderer()
 		{
 			activeLayer = 0;
-			vertices[0] = new float[1024*1024*10]; // 10M floats
-			vertices[1] = new float[1024*1024*10]; // 10M floats
+			vertices[0] = new float[1024*1024*50]; // 50M floats
+			vertices[1] = new float[1024*1024*50]; // 50M floats
 			vertexIndex[0] = 0;
 			vertexIndex[1] = 0;
 			for(int i = 0; i < 10; i++)
@@ -193,6 +194,7 @@ namespace blib
 		template<class T>
 		void drawTriangles(const std::vector<T> &vertices, const RenderState& renderState)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->renderState = renderState;
@@ -213,6 +215,7 @@ namespace blib
 		template<class T>
 		void drawTriangles(int count, const RenderState& renderState)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->vertexStart = 0;
@@ -225,6 +228,7 @@ namespace blib
 		template<class T>
 		void drawTriangles(int first, int count, const RenderState& renderState)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->vertexStart = first;// * (T::size() / sizeof(float));
@@ -244,6 +248,7 @@ namespace blib
 		template<class T>
 		void drawTriangles(T* first, int count, const RenderState& renderState)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->renderState = renderState;
@@ -260,6 +265,7 @@ namespace blib
 		}
 		void clear(const glm::vec4 &color, int bits, const RenderState& renderState)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderClear* block = allocators[activeLayer].get<RenderClear>(); //new RenderClear();
 			block->command = Render::Clear;
 			block->color = color;
@@ -273,6 +279,7 @@ namespace blib
 		template<class T>
 		void setVbo(VBO* vbo, const std::vector<T> &vertices)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderSetVbo<T>* block = allocators[activeLayer].get<RenderSetVbo<T>>(); //new RenderSetVbo<T>();
 			block->command = Render::SetVbo;	//TODO : move to constructor
 			block->vertexStart = vertexIndex[activeLayer];
@@ -293,6 +300,7 @@ namespace blib
 		template<class T>
 		void drawLines(T* first, int count, const RenderState& renderState)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawLines;	//TODO : move to constructor
 			block->renderState = renderState;
@@ -307,6 +315,7 @@ namespace blib
 		template<class T>
 		void drawLines(int count, const RenderState& renderState)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawLines;	//TODO : move to constructor
 			block->vertexStart = 0;
@@ -321,6 +330,7 @@ namespace blib
 		template<class T>
 		void drawPoints(const std::vector<T> &vertices, const RenderState& renderState)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawPoints;	//TODO : move to constructor
 			block->renderState = renderState;
@@ -334,6 +344,7 @@ namespace blib
 
 		void setTextureSubImage(blib::Texture* texture, int x, int y, int width, int height, char* data)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderSetSubTexture* command = allocators[activeLayer].get<RenderSetSubTexture>(); //new RenderSetSubTexture();
 			command->command = Render::SetSubTexture;
 			command->texture = texture;
@@ -346,17 +357,18 @@ namespace blib
 			toRender[activeLayer].push_back(command);
 		}
 
-		void setShaderState(Shader* shader)
+/*		void setShaderState(Shader* shader)
 		{
 			RenderSetShaderState* command = allocators[activeLayer].get<RenderSetShaderState>(); //new RenderSetSubTexture();
 			command->command = Render::SetShaderState;
 			command->shader = shader;
 		//	command->shaderState = shader->state;
 			toRender[activeLayer].push_back(command);
-		}
+		}*/
 		
 		void setViewPort(int width, int height)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderSetViewPort* command = allocators[activeLayer].get<RenderSetViewPort>();
 			command->command = Render::SetViewPort;
 			command->width = width;
@@ -366,6 +378,7 @@ namespace blib
 
 		void unproject(glm::vec2 mousePosition, glm::vec4* target, const glm::mat4 &modelMatrix, const glm::mat4 &projectionMatrix)
 		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderUnproject* command = allocators[activeLayer].get<RenderUnproject>();
 			command->command = Render::Unproject;
 			command->mousePosition = mousePosition;
@@ -384,6 +397,7 @@ namespace blib
 		{
 			activeLayer = 1 - activeLayer;
 			vertexIndex[activeLayer] = 0;
+//			memset(vertices[activeLayer], 0, 1024 * 1024 * 50 * sizeof(float));
 		}
 
 

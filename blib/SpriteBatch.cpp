@@ -5,9 +5,14 @@
 #include <blib/Texture.h>
 #include <blib/ResourceManager.h>
 #include <blib/gl/Vertex.h>
+#include <blib/util/Log.h>
+#include <blib/util/Thread.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <json/json.h>
+
+using blib::util::Log;
+
 
 namespace blib
 {
@@ -65,6 +70,7 @@ void main()\n\
 
 	void SpriteBatch::begin(const glm::mat4 &matrix, FBO* fbo)
 	{
+		assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 		assert(!active);
 		active = true;
 		currentTexture = NULL;
@@ -77,6 +83,7 @@ void main()\n\
 
 	void SpriteBatch::end()
 	{
+		assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 		assert(active);
 		active = false;
 
@@ -103,6 +110,7 @@ void main()\n\
 	//TODO: make overload without src rectangle, so it doesn't have to clean it up
 	void SpriteBatch::draw( const Texture* texture, const glm::mat4 &transform, const glm::vec2 &center, const blib::math::Rectangle &src, const glm::vec4 &color)
 	{
+//		assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 		assert(active);
 
 		float fw = (float)src.width();
@@ -133,6 +141,7 @@ void main()\n\
 
 	void SpriteBatch::draw( const TextureMap::TexInfo* texture, const glm::mat4 &transform, const glm::vec2 &center, const glm::vec4 &color)
 	{
+		//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 		assert(active);
 
 		float fw = (float)1;

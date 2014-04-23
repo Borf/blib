@@ -42,7 +42,6 @@ namespace blib
 		void Renderer::flush()
 		{
 			int totalVerts = 0;
-
 			RenderState* lastRenderState = NULL;
 
 			for(size_t i = 0; i < toRender[1-activeLayer].size(); i++)
@@ -124,13 +123,12 @@ namespace blib
 					r->renderState.activeShader->setState(r->shaderState);
 
 
-					GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-					glDrawBuffers(2, buffers);
+					if (!lastRenderState || lastRenderState->depthTest != r->renderState.depthTest)
+						if(r->renderState.depthTest)
+							glEnable(GL_DEPTH_TEST);
+						else
+							glDisable(GL_DEPTH_TEST);
 
-					if(r->renderState.depthTest)
-						glEnable(GL_DEPTH_TEST);
-					else
-						glDisable(GL_DEPTH_TEST);
 					if (!lastRenderState || lastRenderState->activeFbo != r->renderState.activeFbo)
 						if(r->renderState.activeFbo == NULL)
 							glBindFramebuffer(GL_FRAMEBUFFER, 0);

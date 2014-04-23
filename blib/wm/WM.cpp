@@ -177,8 +177,6 @@ namespace blib
 
 			}
 
-
-
 			prevMouseState = mouseState; // TODO: move this to an update method?
 		}
 

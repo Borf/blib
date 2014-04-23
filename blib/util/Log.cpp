@@ -47,21 +47,23 @@ namespace blib
 //TODO: make a buffer per threadId
 		void Log::logString(const char* fmt, ...)
 		{
-			char text[10240];
+			char text[1024];
 			va_list ap;
 			if (fmt == NULL)
 				return;
 
 		#ifdef WIN32
 			va_start(ap,fmt);
-			vsprintf_s(text,10240,fmt,ap);
+			vsprintf_s(text,1024,fmt,ap);
 			va_end(ap);
 		#else
 			va_start(ap,fmt);
 			vsprintf(text,fmt,ap);
 			va_end(ap);
 		#endif
+			logMutex->lock();
 			buffer += text;
+			logMutex->unLock();
 		//	std::cout<<text;
 		}
 
@@ -118,6 +120,7 @@ namespace blib
 			//endline = true;
 
 #ifdef WIN32
+			logMutex->lock();
 			SYSTEMTIME beg;
 			GetLocalTime(&beg);
 			buffer = format( "[%02d:%02d:%02d:%03d]\t", beg.wHour, beg.wMinute, beg.wSecond, beg.wMilliseconds) + buffer;
@@ -127,16 +130,20 @@ namespace blib
 
 
 		#ifdef WIN32
-			OutputDebugStringA(buffer.c_str());
-			OutputDebugStringA("\r\n");
+	//		OutputDebugStringA(buffer.c_str());
+	//		OutputDebugStringA("\r\n");
 		#endif
 
 		#ifdef ANDROID
 			LOGI("%s", buffer.c_str());
 		#else
+
 			printf("%s\r\n", buffer.c_str());
 		#endif
 			buffer = "";
+#ifdef WIN32
+			logMutex->unLock();
+#endif
 			return *this;
 		}
 
