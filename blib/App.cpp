@@ -221,8 +221,8 @@ namespace blib
 				App* app;
 			public:
 				AppMouseListener(App* app)										{	this->app = app;								}
-				bool onMouseDown(int x, int y, Button button, int clickCount)	{ app->mouseState.x = x; app->mouseState.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = true; return false; };
-				bool onMouseUp(int x, int y, Button button, int clickCount)		{ app->mouseState.x = x; app->mouseState.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = false; return false; };
+				bool onMouseDown(int x, int y, Button button, int clickCount)	{ app->mouseState.clickcount = clickCount; app->mouseState.x = x; app->mouseState.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = true; return false; };
+				bool onMouseUp(int x, int y, Button button, int clickCount)		{ app->mouseState.clickcount = clickCount; app->mouseState.x = x; app->mouseState.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = false; return false; };
 				bool onMouseMove(int x, int y, Buttons button)					{ app->mouseState.x = x; app->mouseState.y = y; return false; };
 			};
 			addMouseListener(new AppMouseListener(this));

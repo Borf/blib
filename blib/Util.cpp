@@ -47,7 +47,22 @@ namespace blib
 		std::string toString( float number )
 		{
 			char buf[32];
-			sprintf(buf, "%f", number);
+			sprintf(buf, "%g", number);
+			
+/*			bool period = -1;
+			int lastDigit = strlen(buf);
+			for (int i = strlen(buf) - 1; i >= 0 && period == -1; i--)
+			{
+				if (!period && buf[i] == '0')
+					lastDigit = i;
+				else if (buf[i] == '.')
+					period = i;
+			}
+			if (period != -1)
+			{
+				buf[lastDigit] = 0;
+			}
+			*/
 			return buf;
 		}
 		std::vector<std::string> split( std::string value, std::string seperator )

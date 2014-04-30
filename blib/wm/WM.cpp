@@ -565,6 +565,10 @@ namespace blib
 				radialMenuPosition.y = (float)mouseState.y;
 			}
 
+
+			if (!windows.empty() && windows.front()->selectedWidget)
+				return true;
+
 			if (menuKeys.find(key) != menuKeys.end())
 			{
 				{

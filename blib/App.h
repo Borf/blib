@@ -54,6 +54,7 @@ namespace blib
 		};
 		int x;
 		int y;
+		int clickcount;
 
 		MouseState()
 		{
@@ -62,6 +63,7 @@ namespace blib
 			rightButton = false;
 			x = -1;
 			y = -1;
+			clickcount = 0;
 		}
 	};
 

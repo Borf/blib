@@ -48,7 +48,7 @@ namespace blib
 				if (text != "" || selected)
 				{
 					spriteBatch.draw(font, text, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()));
-					if ((int)(blib::util::Profiler::getAppTime()*2) % 2 == 0)
+					if ((int)(blib::util::Profiler::getAppTime()*2) % 2 == 0 && selected)
 						spriteBatch.draw(font, "|",  glm::translate(matrix, glm::vec3(x - 1.0f + font->textlen(text.substr(0, cursor)), y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()));
 
 				}
