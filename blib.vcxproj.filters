@@ -490,6 +490,18 @@
     <ClInclude Include="blib\wm\GroupMenuItem.h">
       <Filter>wm</Filter>
     </ClInclude>
+    <ClInclude Include="blib\math\HermiteCurve.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\math\ArcPath.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\math\BiArc.h">
+      <Filter>math</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\math\Triangle.h">
+      <Filter>math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -801,6 +813,18 @@
     </ClCompile>
     <ClCompile Include="blib\KeyListener.cpp" />
     <ClCompile Include="blib\Shapes.cpp" />
+    <ClCompile Include="blib\math\HermiteCurve.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\ArcPath.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\BiArc.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\Triangle.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

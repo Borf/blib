@@ -80,8 +80,8 @@ void main()\n\
 	void LineBatch::draw(const blib::IDrawableLine& drawable, glm::vec4 color, bool showNormal, glm::mat4 transform)
 	{
 		assert(active);
-		std::list<blib::IDrawableLine::LinePart>& lines = ((blib::IDrawableLine&)drawable).getLines(); //ewww
-		for(std::list<blib::IDrawableLine::LinePart>::iterator it = lines.begin(); it != lines.end(); it++)
+		const std::list<blib::IDrawableLine::LinePart>& lines = ((blib::IDrawableLine&)drawable).getLines(); //ewww
+		for(std::list<blib::IDrawableLine::LinePart>::const_iterator it = lines.begin(); it != lines.end(); it++)
 		{
 			verts[lineCount].position = glm::vec2(transform * glm::vec4(it->p1,0,1));
 			verts[lineCount].color = color;
