@@ -36,6 +36,8 @@ namespace blib
 
 			enddirection = glm::vec2(-n2.y, n2.x);
 
+			offset = 0;
+
 		}
 
 
@@ -51,7 +53,9 @@ namespace blib
 
 		void ArcPath::buildLines()
 		{
-			if (fabs(radius) < 400) //TODO: nasty condition here... to protect from 'straight lines'
+			float rad = fabs(radius) + offset;
+
+			if (rad < 400) //TODO: nasty condition here... to protect from 'straight lines'
 			{
 				float r1 = atan2(begin.y - origin.y, begin.x - origin.x);
 				float r2 = atan2(end.y - origin.y, end.x - origin.x);
@@ -69,26 +73,26 @@ namespace blib
 					if (f < -M_PI)
 						f += M_PI * 2;
 
-					lines.push_back(LinePart(origin + fabs(radius) * blib::util::fromAngle(f), origin + fabs(radius) * blib::util::fromAngle(f + inc)));
+					lines.push_back(LinePart(origin + rad * blib::util::fromAngle(f), origin + rad * blib::util::fromAngle(f + inc)));
 					last = f + inc;
 				}
 				if (!lines.empty())
 				{
 					//	lines.pop_back();
-					lines.push_back(LinePart(origin + fabs(radius) * blib::util::fromAngle(last), origin + fabs(radius) * blib::util::fromAngle(r2)));
+					lines.push_back(LinePart(origin + rad * blib::util::fromAngle(last), origin + rad * blib::util::fromAngle(r2)));
 				}
 				else
-					lines.push_back(LinePart(origin + radius * blib::util::fromAngle(r1), origin + radius * blib::util::fromAngle(r2)));
+					lines.push_back(LinePart(origin + rad * blib::util::fromAngle(r1), origin + rad * blib::util::fromAngle(r2)));
 			}
 			else
 			{
-				lines.push_back(LinePart(begin, end));
+				lines.push_back(LinePart(begin + offset * glm::vec2(begindirection.y, -begindirection.x), end + offset * glm::vec2(begindirection.y, -begindirection.x)));
 			}
 		}
 
-		void ArcPath::offset(float f)
+		void ArcPath::setOffset(float f)
 		{
-			radius += f;
+			offset = f;
 		}
 
 		float ArcPath::length() const

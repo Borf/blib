@@ -86,15 +86,8 @@ namespace blib
 				Log::out << "OOHAOEIURHA" << Log::newline;
 			}
 
+//			buildLines();
 
-			if (p1.lines.empty())
-			{
-				p1.buildLines();
-				p2.buildLines();
-			}
-			lines.clear();
-			lines.insert(lines.end(), p1.lines.begin(), p1.lines.end());
-			lines.insert(lines.end(), p2.lines.begin(), p2.lines.end());
 
 		//	lines.push_back(LinePart(midPoint + glm::vec2(-2, -2), midPoint + glm::vec2(2, 2)));
 		//	lines.push_back(LinePart(midPoint + glm::vec2(-2, 2), midPoint + glm::vec2(2, -2)));
@@ -116,10 +109,27 @@ namespace blib
 
 		}
 
+
+		void BiArc::setOffset(float offset)
+		{
+			resetLines();
+
+			p1.setOffset(offset);
+			p2.setOffset(offset);
+
+
+		}
+
 		void BiArc::buildLines()
 		{
-
-
+			if (p1.lines.empty())
+			{
+				p1.buildLines();
+				p2.buildLines();
+			}
+			lines.clear();
+			lines.insert(lines.end(), p1.lines.begin(), p1.lines.end());
+			lines.insert(lines.end(), p2.lines.begin(), p2.lines.end());
 		}
 
 	}

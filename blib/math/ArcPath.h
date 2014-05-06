@@ -20,6 +20,7 @@ namespace blib
 			glm::vec2 origin;
 			float radius;
 
+			float offset;
 
 
 			ArcPath(const glm::vec2 &begin, const glm::vec2 &direction, const glm::vec2 &end);
@@ -28,7 +29,7 @@ namespace blib
 
 			float length() const;
 
-			void offset(float f);
+			void setOffset(float f);
 
 			void buildLines();
 		};

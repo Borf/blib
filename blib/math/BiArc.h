@@ -19,6 +19,7 @@ namespace blib
 			float midPointRadius;
 		public:
 			BiArc(const glm::vec2 &begin, const glm::vec2 &beginDirection, const glm::vec2 &end, const glm::vec2 &endDirection);
+			void setOffset(float offset);
 
 			void buildLines();
 		};
