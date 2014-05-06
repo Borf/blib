@@ -1,5 +1,8 @@
 #include "ArcPath.h"
 #include <blib/Util.h>
+#include <blib/util/Log.h>
+
+using blib::util::Log;
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -31,43 +34,73 @@ namespace blib
 
 			glm::vec2 n2 = glm::normalize(origin - end) * (sign_n ? -1.0f : 1.0f);
 
-			enddirection = glm::vec2();
+			enddirection = glm::vec2(-n2.y, n2.x);
 
+		}
+
+
+		float angleDist(float a1, float a2)
+		{
+			float dist = a1 - a2;
+			if (dist > 2 * M_PI)
+				dist -= 2 * M_PI;
+			if (dist < 0)
+				dist += 2 * M_PI;
+			return dist;
 		}
 
 		void ArcPath::buildLines()
 		{
-			float r1 = atan2(begin.y - origin.y, begin.x - origin.x);
-			float r2 = atan2(end.y - origin.y, end.x - origin.x);
-
-			if (radius < 0 && !sign_n)
+			if (fabs(radius) < 400) //TODO: nasty condition here... to protect from 'straight lines'
 			{
-				r1 -= M_PI;
-				r2 -= M_PI;
+				float r1 = atan2(begin.y - origin.y, begin.x - origin.x);
+				float r2 = atan2(end.y - origin.y, end.x - origin.x);
+
+				float inc = M_PI / glm::min(100.0f, fabs(radius));
+				if (sign_n)
+					inc = -inc;
+
+				//todo: fix condition here
+				float last = r1;
+				for (float f = r1; fabs(angleDist(f + inc, r2)) > fabs(inc); f += inc)
+				{
+					if (f > M_PI)
+						f -= M_PI * 2;
+					if (f < -M_PI)
+						f += M_PI * 2;
+
+					lines.push_back(LinePart(origin + fabs(radius) * blib::util::fromAngle(f), origin + fabs(radius) * blib::util::fromAngle(f + inc)));
+					last = f + inc;
+				}
+				if (!lines.empty())
+				{
+					//	lines.pop_back();
+					lines.push_back(LinePart(origin + fabs(radius) * blib::util::fromAngle(last), origin + fabs(radius) * blib::util::fromAngle(r2)));
+				}
+				else
+					lines.push_back(LinePart(origin + radius * blib::util::fromAngle(r1), origin + radius * blib::util::fromAngle(r2)));
 			}
-			else if (radius > 0 && sign_n && r2 > 0)
+			else
 			{
-				while (r1 < 0)
-					r1 += 2 * M_PI;
+				lines.push_back(LinePart(begin, end));
 			}
-
-
-			float inc = M_PI / (r1 > r2 ? -fabs(radius) : fabs(radius)) * 1.0f;
-
-			float last;
-			for (float f = r1; r1 < r2 ? f < r2 : f > r2; f += inc)
-			{
-				lines.push_back(LinePart(origin + radius * blib::util::fromAngle(f), origin + radius * blib::util::fromAngle(f+inc)));
-				last = f;
-			}
-			lines.push_back(LinePart(origin + radius * blib::util::fromAngle(last), origin + radius * blib::util::fromAngle(r2)));
-
-
 		}
 
 		void ArcPath::offset(float f)
 		{
 			radius += f;
+		}
+
+		float ArcPath::length() const
+		{
+			float a1 = atan2(begin.y - origin.y, begin.x - origin.x);
+			float a2 = atan2(end.y - origin.y, end.x - origin.x);
+			// NOTE: sign_t means that the angular span exceeds 180 deg.
+			float da = fabs(a2 - a1);
+			if (sign_t == (da > M_PI)) {
+				da = 2 * M_PI - da;
+			}
+			return fabs(da * radius);
 		}
 
 	}

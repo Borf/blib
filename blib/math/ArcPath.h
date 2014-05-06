@@ -25,6 +25,9 @@ namespace blib
 			ArcPath(const glm::vec2 &begin, const glm::vec2 &direction, const glm::vec2 &end);
 			ArcPath() {};
 
+
+			float length() const;
+
 			void offset(float f);
 
 			void buildLines();
