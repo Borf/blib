@@ -21,7 +21,11 @@ namespace blib
 			BiArc(const glm::vec2 &begin, const glm::vec2 &beginDirection, const glm::vec2 &end, const glm::vec2 &endDirection);
 			void setOffset(float offset);
 
+			glm::vec2 getPoint(float f) const;
+			glm::vec2 getPointLinear(float f) const;
+
 			void buildLines();
+			inline float length() const { return p1.length() + p2.length(); };
 		};
 	}
 }

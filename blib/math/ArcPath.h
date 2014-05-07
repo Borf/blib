@@ -19,7 +19,6 @@ namespace blib
 
 			glm::vec2 origin;
 			float radius;
-
 			float offset;
 
 
@@ -28,6 +27,7 @@ namespace blib
 
 
 			float length() const;
+			glm::vec2 getPoint(float f) const;
 
 			void setOffset(float f);
 

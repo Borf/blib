@@ -32,10 +32,13 @@ namespace blib
 			sign_t = glm::dot(v, support) > 0;
 			sign_n = glm::dot(v, n1) > 0;
 
-			glm::vec2 n2 = glm::normalize(origin - end) * (sign_n ? -1.0f : 1.0f);
-
-			enddirection = glm::vec2(-n2.y, n2.x);
-
+			if (fabs(curvature) > 0.00001)
+			{
+				glm::vec2 n2 = glm::normalize(origin - end) * (sign_n ? -1.0f : 1.0f);
+				enddirection = glm::vec2(-n2.y, n2.x);
+			}
+			else
+				enddirection = begindirection;
 			offset = 0;
 
 		}
@@ -53,14 +56,14 @@ namespace blib
 
 		void ArcPath::buildLines()
 		{
-			float rad = fabs(radius) + offset;
+			float rad = fabs(radius+offset);
 
 			if (rad < 400) //TODO: nasty condition here... to protect from 'straight lines'
 			{
 				float r1 = atan2(begin.y - origin.y, begin.x - origin.x);
 				float r2 = atan2(end.y - origin.y, end.x - origin.x);
 
-				float inc = M_PI / glm::min(100.0f, fabs(radius));
+				float inc = M_PI / (5 + glm::min(100.0f, fabs(radius+offset)));
 				if (sign_n)
 					inc = -inc;
 
@@ -86,25 +89,63 @@ namespace blib
 			}
 			else
 			{
-				lines.push_back(LinePart(begin + offset * glm::vec2(begindirection.y, -begindirection.x), end + offset * glm::vec2(begindirection.y, -begindirection.x)));
+				lines.push_back(LinePart(begin, end));
 			}
-		}
-
-		void ArcPath::setOffset(float f)
-		{
-			offset = f;
 		}
 
 		float ArcPath::length() const
 		{
-			float a1 = atan2(begin.y - origin.y, begin.x - origin.x);
-			float a2 = atan2(end.y - origin.y, end.x - origin.x);
-			// NOTE: sign_t means that the angular span exceeds 180 deg.
-			float da = fabs(a2 - a1);
-			if (sign_t == (da > M_PI)) {
-				da = 2 * M_PI - da;
+			if (fabs(radius + offset) < 400.0f)
+			{
+				float a1 = atan2(begin.y - origin.y, begin.x - origin.x);
+				float a2 = atan2(end.y - origin.y, end.x - origin.x);
+				// NOTE: sign_t means that the angular span exceeds 180 deg.
+				float da = fabs(a2 - a1);
+				if (sign_t == (da > M_PI)) {
+					da = 2 * M_PI - da;
+				}
+				return fabs(da * (radius + offset));
 			}
-			return fabs(da * radius);
+			else
+			{
+				return glm::length(begin - end);
+			}
+		}
+
+		void ArcPath::setOffset(float offset)
+		{
+			this->offset = offset;
+		}
+
+		glm::vec2 ArcPath::getPoint(float f) const
+		{
+			float rad = fabs(radius+offset);
+
+			if (rad < 400) //TODO: nasty condition here... to protect from 'straight lines'
+			{
+				float r1 = atan2(begin.y - origin.y, begin.x - origin.x);
+				float r2 = atan2(end.y - origin.y, end.x - origin.x);
+
+				float inc = 0;
+				if (!sign_n)
+					inc = angleDist(r2, r1) * f;
+				else
+					inc = angleDist(r1, r2) * f;
+
+				if (sign_n)
+					inc = -inc;
+
+				//todo: fix condition here
+				float angle = r1 + inc;
+				return origin + rad * blib::util::fromAngle(angle);
+			}
+			else
+			{
+				glm::vec2 beginNormal(begindirection.y, -begindirection.x);
+				return begin + (sign_n ? -offset : offset) * glm::normalize(beginNormal) + f * (end - begin);
+			}
+
+
 		}
 
 	}

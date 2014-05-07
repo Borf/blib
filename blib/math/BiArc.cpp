@@ -76,7 +76,7 @@ namespace blib
 
 			p1 = ArcPath(begin, beginDirection, midPoint);
 			p2 = ArcPath(end, endDirection, midPoint);
-
+			p2 = ArcPath(midPoint, p2.enddirection, end);
 
 			
 
@@ -110,16 +110,6 @@ namespace blib
 		}
 
 
-		void BiArc::setOffset(float offset)
-		{
-			resetLines();
-
-			p1.setOffset(offset);
-			p2.setOffset(offset);
-
-
-		}
-
 		void BiArc::buildLines()
 		{
 			if (p1.lines.empty())
@@ -130,6 +120,39 @@ namespace blib
 			lines.clear();
 			lines.insert(lines.end(), p1.lines.begin(), p1.lines.end());
 			lines.insert(lines.end(), p2.lines.begin(), p2.lines.end());
+		}
+
+		void BiArc::setOffset(float offset)
+		{
+			p1.setOffset(offset);
+			p2.setOffset(offset);
+		}
+
+		glm::vec2 BiArc::getPoint(float f) const
+		{
+			float len1 = p1.length();
+			float len2 = p2.length();
+			float totalLen = len1 + len2;
+			float pos = f * totalLen;
+
+			float midPoint = len1 / totalLen;
+
+			if (f < midPoint)
+			{
+				return p1.getPoint(f / midPoint);
+			}
+			else
+				return p2.getPoint((f - midPoint) / (1 - midPoint));
+		}
+
+		glm::vec2 BiArc::getPointLinear(float f) const
+		{
+			if (f < 0.5)
+			{
+				return p1.getPoint(f * 2);
+			}
+			else
+				return p2.getPoint((f - 0.5f) * 2);
 		}
 
 	}

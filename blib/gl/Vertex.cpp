@@ -33,21 +33,30 @@ VertexDef(VertexP2C4T2T2F1,						_size,		float, 1, VertexP2C4T2T2)
 
 	void VertexP2::setAttribPointers(bool enabledVertexAttributes[10], void* offset, int *index, int totalSize) \
 	{
+		if (!glEnableVertexAttribArray) //wtf
+			glewInit();
+
 		int tmpIndex = 0;
 		if(!index)
 		index = &tmpIndex;
 		Vertex::setAttribPointers(enabledVertexAttributes, offset, index, totalSize);
-		if(!enabledVertexAttributes[*index])
+		if (!enabledVertexAttributes[*index] && glEnableVertexAttribArray)
 		glEnableVertexAttribArray(*index);
 		enabledVertexAttributes[*index] = true;
-		glVertexAttribPointer((*index)++, 2, GL_FLOAT, GL_FALSE, totalSize, (void*)((char*)offset + Vertex::size()));
+
+	//	int parentSize = Vertex::size();
+
+		if (glVertexAttribPointer)
+			glVertexAttribPointer((*index)++, 2, GL_FLOAT, GL_FALSE, totalSize, (void*)((char*)offset));
+
 		if(index == &tmpIndex)
 		{
 			for(int i = *index; i < 10; i++)
 				if(enabledVertexAttributes[i])
 				{
 					enabledVertexAttributes[i] = false;
-					glDisableVertexAttribArray(i);
+					if (glDisableVertexAttribArray)
+						glDisableVertexAttribArray(i);
 				}
 		}
 	}
