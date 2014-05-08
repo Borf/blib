@@ -94,7 +94,8 @@ void main()\n\
 			renderState.activeFbo = fbo;
 
 		materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
-		renderState.activeShader->setUniform(Matrix, matrix);
+		if (renderState.activeShader == shader)
+			renderState.activeShader->setUniform(Matrix, matrix);
 		int lastIndex = 0;
 		for(size_t i = 0; i < materialIndices.size(); i++)
 		{
@@ -283,7 +284,8 @@ void main()\n\
 
 	void SpriteBatch::resizeGl( int width, int height )
 	{
-		renderState.activeShader->setUniform(ProjectionMatrix, glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
+		if (renderState.activeShader = shader)
+			renderState.activeShader->setUniform(ProjectionMatrix, glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
 
 	SpriteBatch::Cache::~Cache()
