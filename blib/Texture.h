@@ -14,7 +14,6 @@ namespace blib
 			NoResize = 1,
 			KeepData = 2,
 			LoadLater = 4,
-			TextureWrap = 8,
 		};
 
 
@@ -44,8 +43,12 @@ namespace blib
 		static void clearCache();
 
 
+		void setTextureRepeat(bool repeat) { textureRepeat = repeat;  }
+
 	protected:
+		Texture() { textureRepeat = false; }
 		virtual ~Texture() {};
+		bool textureRepeat;
 
 
 	};
