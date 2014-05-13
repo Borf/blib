@@ -142,7 +142,7 @@ namespace blib
 			else
 			{
 				glm::vec2 beginNormal(begindirection.y, -begindirection.x);
-				return begin + (sign_n ? -offset : offset) * glm::normalize(beginNormal) + f * (end - begin);
+				return begin + (sign_t ? -offset : offset) * glm::normalize(beginNormal) + f * (end - begin);
 			}
 
 
