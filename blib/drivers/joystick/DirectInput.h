@@ -35,9 +35,10 @@ namespace blib
 
 			class DirectInput : public Driver
 			{
-				JoyState joystates[64];
 
 			public:
+				JoyState joystates[64];
+
 				struct DI_ENUM_CONTEXT
 				{
 					DIJOYCONFIG* pPreferredJoyCfg;

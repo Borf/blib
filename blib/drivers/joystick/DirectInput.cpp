@@ -83,6 +83,20 @@ namespace blib
 				if( FAILED( hr ) )
 					return DIENUM_CONTINUE;
 
+
+				//pdidInstance->guidProduct == "{02A1045E-0000-0000-0000-504944564944}"
+
+
+				if (pdidInstance->guidProduct == _GUID{ 0x02a1045e, 0x0000, 0x0000, { 0x00, 0x00, 0x50, 0x49, 0x44, 0x56, 0x49, 0x44 } })//xbox
+					di->joystates[di->joysticks.size()].type = JoyState::ControllerType::Xbox;
+				else if (pdidInstance->guidProduct == _GUID{ 0xF7051A34, 0x0000, 0x0000, { 0x00, 0x00, 0x50, 0x49, 0x44, 0x56, 0x49, 0x44 } })//gamecube
+					di->joystates[di->joysticks.size()].type = JoyState::ControllerType::GameCube;
+				else if (pdidInstance->guidProduct == _GUID{ 0x00012836, 0x0000, 0x0000, { 0x00, 0x00, 0x50, 0x49, 0x44, 0x56, 0x49, 0x44 } })//ouya
+					di->joystates[di->joysticks.size()].type = JoyState::ControllerType::Xbox;
+				else
+					Log::out << "Unknown controller: " << pdidInstance->tszProductName << Log::newline;
+
+
 				di->joysticks.push_back(joystick);
 				return DIENUM_CONTINUE;
 			}
@@ -215,17 +229,40 @@ namespace blib
 						return; // The device should have been acquired during the Poll()
 
 					joystates[i].connected = true;
-					joystates[i].leftStick.x = js.lX / 10000.0f;
-					joystates[i].leftStick.y = js.lY / 10000.0f;
-					joystates[i].rightStick.x = js.lRx / 10000.0f;
-					joystates[i].rightStick.y = js.lRy / 10000.0f;
-					joystates[i].leftTrigger = js.lZ > 0 ? (js.lZ / 10000.0f) : 0;
-					joystates[i].rightTrigger = js.lZ < 0 ? (-js.lZ / 10000.0f) : 0;
+					if (joystates[i].type == JoyState::ControllerType::Xbox || joystates[i].type == JoyState::ControllerType::Other)
+					{
+						joystates[i].leftStick.x = js.lX / 10000.0f;
+						joystates[i].leftStick.y = js.lY / 10000.0f;
+						joystates[i].rightStick.x = js.lRx / 10000.0f;
+						joystates[i].rightStick.y = js.lRy / 10000.0f;
+						joystates[i].leftTrigger = js.lZ > 0 ? (js.lZ / 10000.0f) : 0;
+						joystates[i].rightTrigger = js.lZ < 0 ? (-js.lZ / 10000.0f) : 0;
 
-					joystates[i].button = 0;
-					for(int ii = 0; ii < 10; ii++)
-						if(js.rgbButtons[ii] != 0)
-							joystates[i].button |= 1<<ii;
+						joystates[i].button = 0;
+						for (int ii = 0; ii < 10; ii++)
+							if (js.rgbButtons[ii] != 0)
+								joystates[i].button |= 1 << ii;
+					}
+					else if (joystates[i].type == JoyState::ControllerType::GameCube)
+					{
+						joystates[i].leftStick.x = js.lX / 10000.0f;
+						joystates[i].leftStick.y = js.lY / 10000.0f;
+						joystates[i].rightStick.x = js.lRz / 10000.0f;
+						joystates[i].rightStick.y = js.lZ / 10000.0f;
+						joystates[i].leftTrigger = js.lRx > 0 ? (js.lRx / 10000.0f) : 0;
+						joystates[i].rightTrigger = js.lRy < 0 ? (-js.lRy / 10000.0f) : 0;
+
+						joystates[i].button = 0;
+						for (int ii = 0; ii < 10; ii++)
+							if (js.rgbButtons[ii] != 0)
+								joystates[i].button |= 1 << ii;
+					
+						joystates[i].button =	(joystates[i].button & 0x7) >> 1 |
+												(joystates[i].button & 0x1) << 2 |
+												joystates[i].button & ~0x7;
+
+					}
+
 				}
 
 			}

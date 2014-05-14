@@ -7,13 +7,23 @@ namespace blib
 	struct JoyState
 	{
 	public:
+		enum class ControllerType
+		{
+			Xbox,
+			GameCube,
+			Other,
+		};
+
 		JoyState()
 		{
 			leftTrigger = 0;
 			rightTrigger = 0;
 			button = 0;
 			connected = false;
+			type = ControllerType::Other;
 		}
+
+		ControllerType type;
 
 		glm::vec2 leftStick;
 		glm::vec2 rightStick;
