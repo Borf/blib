@@ -206,12 +206,12 @@ namespace blib
 				App* app;
 			public:
 				AppKeyListener(App* app)			{			this->app = app;							}
-				bool onKeyDown( blib::Key key )		{			app->keyState.pressedKeys[key] = true;	
-					if(key == 'P')
+				bool onKeyDown( blib::Key key )		{			app->keyState.pressedKeys[(int)key] = true;	
+					if(key == Key::P)
 						app->showProfiler = !app->showProfiler;
 					return false;
 				}
-				bool onKeyUp(blib::Key key)			{			app->keyState.pressedKeys[key] = false;	return false; }
+				bool onKeyUp(blib::Key key)			{			app->keyState.pressedKeys[(int)key] = false;	return false; }
 			};
 			addKeyListener(new AppKeyListener(this));
 		}

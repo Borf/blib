@@ -22,7 +22,7 @@ namespace blib
 		{
 		public:
 			std::string name;
-			FileSystemHandler(std::string name) : name(name) {};
+			FileSystemHandler(const std::string &name) : name(name) {};
 
 			virtual StreamInFile* openRead(const std::string &fileName) { return NULL; };
 			virtual StreamOut* openWrite(const std::string &fileName) { return NULL; };

@@ -11,6 +11,7 @@
 
 namespace blib
 {
+	enum class Key;
 	class Window;
 	class MouseListener;
 	class SpriteBatch;
@@ -35,9 +36,9 @@ namespace blib
 	struct KeyState
 	{
 		bool pressedKeys[255];
-		inline bool isPressed(int index)
+		inline bool isPressed(blib::Key index)
 		{
-			return pressedKeys[index];
+			return pressedKeys[(int)index];
 		}
 	};
 	struct MouseState

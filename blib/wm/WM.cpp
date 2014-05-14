@@ -220,7 +220,7 @@ namespace blib
 			Menu* root = new Menu(menuData);
 
 			root->foreach([this](MenuItem* item) {
-				if (item->key != KEY_NONE)
+				if (item->key != Key::NONE)
 				{
 					menuKeys[item->key] = item;
 				}
@@ -558,7 +558,7 @@ namespace blib
 
 		bool WM::onKeyDown(Key key)
 		{
-			if (key == KEY_SPACE)
+			if (key == Key::SPACE)
 			{
 				radialMenu = radialMenu ? NULL : radialMenuRoot;
 				radialMenuPosition.x = (float)mouseState.x;

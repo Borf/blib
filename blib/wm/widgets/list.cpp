@@ -185,9 +185,9 @@ namespace blib
 				Widget::keyboardSpecial(key);
 				if (!selectedItems.empty())
 				{
-					if (key == blib::KEY_DOWN)
+					if ((blib::Key)key == blib::Key::DOWN)
 						selectedItems[0] = glm::min((int)items.size() - 1, selectedItems[0] + 1);
-					if (key == blib::KEY_UP)
+					if ((blib::Key)key == blib::Key::UP)
 						selectedItems[0] = glm::max(0, selectedItems[0] - 1);
 				}
 			}

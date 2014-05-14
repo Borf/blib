@@ -36,18 +36,18 @@ namespace blib
 			keyMapping["y"] = (Key)'Y';
 			keyMapping["z"] = (Key)'Z';
 
-			keyMapping["f1"] = KEY_F1;
-			keyMapping["f2"] = KEY_F2;
-			keyMapping["f3"] = KEY_F3;
-			keyMapping["f4"] = KEY_F4;
-			keyMapping["f5"] = KEY_F5;
-			keyMapping["f6"] = KEY_F6;
-			keyMapping["f7"] = KEY_F7;
-			keyMapping["f8"] = KEY_F8;
-			keyMapping["f9"] = KEY_F9;
-			keyMapping["f10"] = KEY_F10;
-			keyMapping["f11"] = KEY_F11;
-			keyMapping["f12"] = KEY_F12;
+			keyMapping["f1"] = Key::F1;
+			keyMapping["f2"] = Key::F2;
+			keyMapping["f3"] = Key::F3;
+			keyMapping["f4"] = Key::F4;
+			keyMapping["f5"] = Key::F5;
+			keyMapping["f6"] = Key::F6;
+			keyMapping["f7"] = Key::F7;
+			keyMapping["f8"] = Key::F8;
+			keyMapping["f9"] = Key::F9;
+			keyMapping["f10"] = Key::F10;
+			keyMapping["f11"] = Key::F11;
+			keyMapping["f12"] = Key::F12;
 
 			keyMapping["1"] = (Key)'1';
 			keyMapping["2"] = (Key)'2';

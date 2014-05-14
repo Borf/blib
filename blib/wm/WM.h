@@ -18,7 +18,7 @@ namespace blib
 	class Texture; 
 	class SpriteBatch;
 	class ResourceManager;
-	enum Key;
+	enum class Key;
 
 	namespace wm
 	{

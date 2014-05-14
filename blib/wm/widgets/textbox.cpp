@@ -129,9 +129,9 @@ namespace blib
 
 			void Textbox::keyboardSpecial( int key )
 			{
-				if(key == blib::KEY_HOME)
+				if ((blib::Key)key == blib::Key::HOME)
 					cursor = 0;
-				else if(key == blib::KEY_HOME)
+				else if ((blib::Key)key == blib::Key::HOME)
 					cursor = text.size();
 				Widget::keyboardSpecial(key);
 			}

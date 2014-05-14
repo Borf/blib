@@ -5,7 +5,7 @@
 
 namespace blib
 {
-	enum Key;
+	enum class Key;
 
 	namespace wm
 	{
