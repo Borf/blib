@@ -42,6 +42,8 @@ namespace blib
 
 		DIVIDE = VK_DIVIDE,
 
+		DEL = VK_DELETE,
+
 
 		A = 'A',
 		B = 'B',
