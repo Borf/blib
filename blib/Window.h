@@ -8,6 +8,8 @@
 #include <blib/platform/linux/window.h>
 #elif defined(BLIB_ANDROID)
 #include <blib/platform/android/window.h>
+#elif defined(BLIB_IOS)
+#include <blib/platform/ios/window.h>
 #else
 #include <blib/IWindow.h>
 #endif
@@ -24,6 +26,8 @@ namespace blib
 	#define WINDOW_SUPER platform::linux::Window
 #elif defined(BLIB_ANDROID)
 	#define WINDOW_SUPER platform::android::Window
+#elif defined(BLIB_IOS)
+    #define WINDOW_SUPER platform::ios::Window
 #else
 	class Window : public IWindow
 	#define WINDOW_SUPER IWindow

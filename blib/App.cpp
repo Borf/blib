@@ -9,6 +9,7 @@
 #include <blib/util/Profiler.h>
 #include <blib/RenderState.h>
 #include <blib/MouseListener.h>
+#include <blib/KeyListener.h>
 #include <blib/SpriteBatch.h>
 #include <blib/Renderer.h>
 #include <blib/util/Signal.h>
@@ -207,7 +208,7 @@ namespace blib
 			public:
 				AppKeyListener(App* app)			{			this->app = app;							}
 				bool onKeyDown( blib::Key key )		{			app->keyState.pressedKeys[(int)key] = true;	
-					if(key == Key::P)
+					if((int)key == 'P'/*blib::Key::P*/)
 						app->showProfiler = !app->showProfiler;
 					return false;
 				}

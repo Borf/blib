@@ -1,10 +1,18 @@
 #include <blib/gl/Renderer.h>
 
-#ifdef ANDROID
+#include <blib/config.h>
+
+#if defined(BLIB_IOS)
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+#elif defined(BLIB_ANDROID)
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #else
 #include <GL/glew.h>
+#ifdef WIN32
+#include <GL/wglew.h>
+#endif
 #endif
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -158,10 +166,11 @@ namespace blib
 							glDisable(GL_STENCIL_TEST);
 							glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 						}
-
+#if !defined(BLIB_IOS)
 					if (!lastRenderState || r->renderState.renderStyle != lastRenderState->renderStyle)
 						glPolygonMode(GL_FRONT_AND_BACK, r->renderState.renderStyle == RenderState::WIREFRAME ? GL_LINE : GL_FILL);
-
+#endif
+                    
 					if (!lastRenderState || lastRenderState->activeTexture[0] != r->renderState.activeTexture[0])
 						if (r->renderState.activeTexture[0])
 							r->renderState.activeTexture[0]->use();
@@ -225,7 +234,7 @@ namespace blib
 						glDrawArrays(GL_LINES, start, r->vertexCount());
 					else if(r->command == Render::DrawPoints)
 					{
-#ifndef ANDROID
+#if !defined(BLIB_ANDROID) && !defined(BLIB_IOS)
 						glEnable(GL_POINT_SPRITE);
 						glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 #endif

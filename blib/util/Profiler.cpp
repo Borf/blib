@@ -1,5 +1,6 @@
 #include "Profiler.h"
 #include "Log.h"
+#include <blib/config.h>
 
 #define SHOWFPS
 #define NOPROFILE
@@ -74,23 +75,32 @@ namespace blib
 
 		double Profiler::getTime()
 		{
+#ifdef BLIB_IOS
+            return 0; //TODO: fix this
+#else
 			struct timespec current;
 			clock_gettime(CLOCK_REALTIME, &current);
 
 			double dSeconds = (double)(current.tv_sec - frameBegin.tv_sec);
 			double dNanoSeconds = (double)( current.tv_nsec - frameBegin.tv_nsec ) / 1000000000L;
 			return dSeconds + dNanoSeconds;
+#endif
 		}
 
 
 		double Profiler::getAppTime()
 		{
-			struct timespec current;
+#ifdef BLIB_IOS
+            return 0; //TODO: fix this
+#else
+			
+            struct timespec current;
 			clock_gettime(CLOCK_REALTIME, &current);
 
 			double dSeconds = (double)(current.tv_sec - appBegin.tv_sec);
 			double dNanoSeconds = (double)( current.tv_nsec - appBegin.tv_nsec ) / 1000000000L;
 			return dSeconds + dNanoSeconds;
+#endif
 		}
 
 
@@ -110,8 +120,10 @@ namespace blib
 			frameCount = 0;
 			fpsFrameCount = 0;
 			fps = 0;
+#ifndef BLIB_IOS
 			clock_gettime(CLOCK_REALTIME, &frameBegin);
 			clock_gettime(CLOCK_REALTIME, &appBegin);
+#endif
 		}
 
 
@@ -160,7 +172,9 @@ namespace blib
 			}
 			currentFrameTimes.clear();
 #endif
+#ifndef BLIB_IOS
 			clock_gettime(CLOCK_REALTIME, &frameBegin);
+#endif
 		}
 
 

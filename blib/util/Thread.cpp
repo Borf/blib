@@ -4,8 +4,13 @@
 #include <blib/linq.h>
 #endif
 
-#ifndef WIN32
+#include <blib/config.h>
+
+#if defined(BLIB_ANDROID) || defined(BLIB_LINUX)
 #include <sys/prctl.h>
+#endif
+
+#if defined(BLIB_IOS) || defined(BLIB_LINUX) || defined(BLIB_ANDROID)
 #include <unistd.h>
 #endif
 
@@ -100,7 +105,7 @@ namespace blib
 		void* Thread::threadStarter(void* lpParam)
 		{
 #ifdef WIN32
-#else
+#elif defined(BLIB_ANDROID) || defined(BLIB_LINUX)
 			prctl(PR_SET_NAME, (unsigned long)((Thread*)lpParam)->name.substr(0, std::min(16, (int)((Thread*)lpParam)->name.size())).c_str());
 #endif
 			pthread_exit((void*)((Thread*)lpParam)->run());

@@ -1,12 +1,20 @@
 #include "Vertex.h"
 
+#include <blib/config.h>
 
-#ifdef ANDROID
+#if defined(BLIB_IOS)
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+#elif defined(BLIB_ANDROID)
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #else
 #include <GL/glew.h>
+#ifdef WIN32
+#include <GL/wglew.h>
 #endif
+#endif
+
 
 
 namespace blib
@@ -33,9 +41,10 @@ VertexDef(VertexP2C4T2T2F1,						_size,		float, 1, VertexP2C4T2T2)
 
 	void VertexP2::setAttribPointers(bool enabledVertexAttributes[10], void* offset, int *index, int totalSize) \
 	{
+#ifdef __glew_h__
 		if (!glEnableVertexAttribArray) //wtf
 			glewInit();
-
+#endif
 		int tmpIndex = 0;
 		if(!index)
 		index = &tmpIndex;

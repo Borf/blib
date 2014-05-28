@@ -133,7 +133,9 @@ Reader::parse( std::istream& sin,
    // Since std::string is reference-counted, this at least does not
    // create an extra copy.
    std::string doc;
-   std::getline(sin, doc, (char)EOF);
+    
+    
+   //TODO std::getline(sin, doc, (char)EOF);
    return parse( doc, root, collectComments );
 }
 

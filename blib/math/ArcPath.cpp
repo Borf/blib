@@ -1,6 +1,7 @@
 #include "ArcPath.h"
 #include <blib/Util.h>
 #include <blib/util/Log.h>
+#include <glm/glm.hpp>
 
 using blib::util::Log;
 
@@ -63,7 +64,7 @@ namespace blib
 				float r1 = atan2(begin.y - origin.y, begin.x - origin.x);
 				float r2 = atan2(end.y - origin.y, end.x - origin.x);
 
-				float inc = M_PI / (5 + glm::min(100.0f, fabs(radius+offset)));
+				float inc = M_PI / (5 + glm::min(100.0f, glm::abs(radius+offset)));
 				if (sign_n)
 					inc = -inc;
 

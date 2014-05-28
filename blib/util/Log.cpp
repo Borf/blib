@@ -1,6 +1,7 @@
 #ifdef WIN32
 #include <blib/linq.h>
 #endif
+#include <blib/config.h>
 
 #include "Log.h"
 
@@ -15,10 +16,9 @@
 
 #ifdef WIN32
 #include <windows.h>
+#endif
 #include <blib/util/Thread.h>
 #include <blib/util/Mutex.h>
-#endif
-
 
 namespace blib
 {
@@ -35,7 +35,7 @@ namespace blib
 		#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 		#endif
 
-#ifdef WIN32
+#ifndef BLIB_ANDROID
 		static Mutex* logMutex = new Mutex();
 #endif
 		Log logger;
@@ -137,7 +137,6 @@ namespace blib
 		#ifdef ANDROID
 			LOGI("%s", buffer.c_str());
 		#else
-
 			printf("%s\r\n", buffer.c_str());
 		#endif
 			buffer = "";

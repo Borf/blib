@@ -1,5 +1,7 @@
 #include "FBO.h"
 
+#include <blib/config.h>
+
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -62,7 +64,7 @@ namespace blib
 			{
 				glGenRenderbuffers(1, &depthBuffer);
 				glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
-#ifdef ANDROID
+#if defined(BLIB_ANDROID) || defined(BLIB_IOS)
 				glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
 #else
 				if(depth && !stencil)
@@ -90,9 +92,10 @@ namespace blib
 			glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 			if(depthBuffer > 0)
 				glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
-
+#if !defined(BLIB_ANDROID) && !defined(BLIB_IOS)
 			GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
 			glDrawBuffers(2, buffers);
+#endif
 
 
 		}

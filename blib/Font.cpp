@@ -9,11 +9,19 @@ using blib::util::Log;
 
 #include <vector>
 
-#ifdef ANDROID
+#include <blib/config.h>
+
+#if defined(BLIB_IOS)
+#include <OpenGLES/ES2/gl.h>
+#include <OpenGLES/ES2/glext.h>
+#elif defined(BLIB_ANDROID)
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #else
 #include <GL/glew.h>
+#ifdef WIN32
+#include <GL/wglew.h>
+#endif
 #endif
 
 namespace blib

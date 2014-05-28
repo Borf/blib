@@ -229,7 +229,7 @@ namespace blib
 				glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 
 
-				if (textureRepeat)
+				if (T::textureRepeat)
 				{
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -276,7 +276,7 @@ namespace blib
 
 
 
-#ifndef ANDROID
+#if !defined(BLIB_ANDROID) && !defined(BLIB_IOS)
 		MultiTextureMap::~MultiTextureMap()
 		{
 		}
