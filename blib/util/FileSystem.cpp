@@ -234,9 +234,9 @@ namespace blib
 			}
 			Json::Value ret;
 			Json::Reader reader;
-            //TODO
-			//if(!reader.parse(data, ret))
-			//	Log::out<<reader.getFormattedErrorMessages()<<Log::newline;
+            //TODO: IOS
+			if(!reader.parse(data, ret))
+				Log::out<<reader.getFormattedErrorMessages()<<Log::newline;
 
 			return ret;
 		}

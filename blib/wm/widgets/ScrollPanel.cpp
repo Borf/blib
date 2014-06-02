@@ -6,6 +6,8 @@
 #include <blib/SpriteBatch.h>
 
 
+#define CLIPPING
+
 namespace blib
 {
 	namespace wm
@@ -48,14 +50,16 @@ namespace blib
 					glm::vec2(skin["scroll"]["background"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["top"].asInt() / (float)texture->originalHeight),
 					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["height"].asInt() / (float)texture->originalHeight));
 
-
-			/*	spriteBatch.end();
+				
+#ifdef CLIPPING
+				spriteBatch.end();
 				spriteBatch.renderState.scissor = true;
 				spriteBatch.renderState.scissorArea[0] = (int)matrix[3][0]+x+2;
 				spriteBatch.renderState.scissorArea[1] = (int)matrix[3][1] + y + 2;
 				spriteBatch.renderState.scissorArea[2] = width - 4 - skin["scroll"]["width"].asInt();
 				spriteBatch.renderState.scissorArea[3] = height-4;
-				spriteBatch.begin();*/
+				spriteBatch.begin();
+#endif
 
 				matrix = glm::translate(matrix, glm::vec3(x+2,y+2-scrollY,0));
 				for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
@@ -70,9 +74,11 @@ namespace blib
 				}
 
 
-				/*spriteBatch.end();
+#ifdef CLIPPING
+				spriteBatch.end();
 				spriteBatch.renderState.scissor = false;
-				spriteBatch.begin();*/
+				spriteBatch.begin();
+#endif
 
 			}
 

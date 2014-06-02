@@ -369,6 +369,9 @@
       <AdditionalDependencies>opengl32.lib;glew32s.lib;winmm.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)\externals\glew\lib</AdditionalLibraryDirectories>
     </Lib>
+    <PreBuildEvent>
+      <Command>svnversion "$(ProjectPath)" &gt; $(MSBuildProjectDirectory)\version.h</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
