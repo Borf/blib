@@ -6,6 +6,24 @@
 #define NOPROFILE
 
 
+#ifdef BLIB_IOS
+
+#include <sys/time.h>
+
+//clock_gettime is not implemented on OSX
+#define CLOCK_REALTIME 0
+int clock_gettime(int clk_id, struct timespec* t)
+{
+    struct timeval now;
+    int rv = gettimeofday(&now, NULL);
+    if(rv) return rv;
+    t->tv_sec  = now.tv_sec;
+    t->tv_nsec = now.tv_usec * 1000;
+    return 0;
+}
+
+#endif
+
 
 namespace blib
 {
@@ -75,24 +93,17 @@ namespace blib
 
 		double Profiler::getTime()
 		{
-#ifdef BLIB_IOS
-            return 0; //TODO: fix this
-#else
 			struct timespec current;
 			clock_gettime(CLOCK_REALTIME, &current);
 
 			double dSeconds = (double)(current.tv_sec - frameBegin.tv_sec);
 			double dNanoSeconds = (double)( current.tv_nsec - frameBegin.tv_nsec ) / 1000000000L;
 			return dSeconds + dNanoSeconds;
-#endif
 		}
 
 
 		double Profiler::getAppTime()
 		{
-#ifdef BLIB_IOS
-            return 0; //TODO: fix this
-#else
 			
             struct timespec current;
 			clock_gettime(CLOCK_REALTIME, &current);
@@ -100,7 +111,6 @@ namespace blib
 			double dSeconds = (double)(current.tv_sec - appBegin.tv_sec);
 			double dNanoSeconds = (double)( current.tv_nsec - appBegin.tv_nsec ) / 1000000000L;
 			return dSeconds + dNanoSeconds;
-#endif
 		}
 
 
@@ -120,10 +130,8 @@ namespace blib
 			frameCount = 0;
 			fpsFrameCount = 0;
 			fps = 0;
-#ifndef BLIB_IOS
 			clock_gettime(CLOCK_REALTIME, &frameBegin);
 			clock_gettime(CLOCK_REALTIME, &appBegin);
-#endif
 		}
 
 
@@ -172,9 +180,7 @@ namespace blib
 			}
 			currentFrameTimes.clear();
 #endif
-#ifndef BLIB_IOS
 			clock_gettime(CLOCK_REALTIME, &frameBegin);
-#endif
 		}
 
 

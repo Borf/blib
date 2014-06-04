@@ -49,6 +49,9 @@ namespace blib
 
 		void Renderer::flush()
 		{
+            GLint oldFbo;
+            glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
+            
 			int totalVerts = 0;
 			RenderState* lastRenderState = NULL;
 
@@ -58,7 +61,7 @@ namespace blib
 				if(r->command == Render::Clear)
 				{
 					if(r->renderState.activeFbo == NULL)
-						glBindFramebuffer(GL_FRAMEBUFFER, 0);
+						glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 					else
 					{
 						r->renderState.activeFbo->bind();
@@ -139,7 +142,7 @@ namespace blib
 
 					if (!lastRenderState || lastRenderState->activeFbo != r->renderState.activeFbo)
 						if(r->renderState.activeFbo == NULL)
-							glBindFramebuffer(GL_FRAMEBUFFER, 0);
+							glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 						else
 							r->renderState.activeFbo->bind();
 
@@ -251,6 +254,7 @@ namespace blib
 		//		delete toRender[1-activeLayer][i];
 			allocators[1 - activeLayer].clear(); // deletes all objects
 			toRender[1-activeLayer].clear();
+            glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 		}
 
 	}

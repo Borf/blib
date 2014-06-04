@@ -31,6 +31,7 @@ namespace blib
 
 		class PhysicalFileSystemHandler : public FileSystemHandler
 		{
+		public:
 			class StreamInFilePhysical : public StreamInFile
 			{
 				std::ifstream* stream;
@@ -45,7 +46,7 @@ namespace blib
 				virtual bool opened();
 			};
 			std::string directory;
-		public:
+
 			PhysicalFileSystemHandler(std::string directory = ".") : FileSystemHandler("physical"), directory(directory) {}
 			virtual StreamInFile* openRead( const std::string &fileName );
 			virtual StreamOut* openWrite( const std::string &fileName );

@@ -326,7 +326,9 @@ namespace blib
 
 			renderer->flush();
 			window->swapBuffers();
-		}
+
+		
+        }
 	}
 
 

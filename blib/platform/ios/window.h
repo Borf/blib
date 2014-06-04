@@ -25,7 +25,7 @@ namespace blib
 				virtual void create(int icon, std::string title);
 				virtual void makeCurrent();
 				virtual void unmakeCurrent();
-                virtual void tick() { Log::out<<"Tick\t"<<Log::newline; }
+                virtual void tick() { }
 			};
 		}
 	}

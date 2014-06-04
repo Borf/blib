@@ -35,8 +35,8 @@ namespace blib
 attribute vec2 a_position;\n\
 attribute vec2 a_texture;\n\
 attribute vec4 a_color;\n\
-varying vec2 texCoord;\n\
-varying vec4 color;\n\
+varying lowp vec2 texCoord;\n\
+varying lowp vec4 color;\n\
 uniform mat4 matrix;\n\
 uniform mat4 projectionmatrix;\n\
 void main()\n\
@@ -47,8 +47,8 @@ void main()\n\
 }\n\
 ", "\
 uniform sampler2D s_texture;\n\
-varying vec2 texCoord;\n\
-varying vec4 color;\n\
+varying lowp vec2 texCoord;\n\
+varying lowp vec4 color;\n\
 void main()\n\
 {\n\
 	gl_FragColor = color*texture2D(s_texture, texCoord);\n\
@@ -70,7 +70,7 @@ void main()\n\
 
 	void SpriteBatch::begin(const glm::mat4 &matrix, FBO* fbo)
 	{
-		assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+		//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 		assert(!active);
 		active = true;
 		currentTexture = NULL;
@@ -83,7 +83,7 @@ void main()\n\
 
 	void SpriteBatch::end()
 	{
-		assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+	//	assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 		assert(active);
 		active = false;
 
@@ -284,7 +284,7 @@ void main()\n\
 
 	void SpriteBatch::resizeGl( int width, int height )
 	{
-		if (renderState.activeShader = shader)
+		if (renderState.activeShader == shader)
 			renderState.activeShader->setUniform(ProjectionMatrix, glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
 
