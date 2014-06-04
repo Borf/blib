@@ -17,7 +17,7 @@ namespace blib
 
 				Button(std::string text);
 
-				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix);
+				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const;
 			};
 		}
 	}

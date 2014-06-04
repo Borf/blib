@@ -24,7 +24,7 @@ namespace blib
 			}
 
 
-			void ScrollPanel::draw( SpriteBatch &spriteBatch, glm::mat4 matrix)
+			void ScrollPanel::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
 
 				Json::Value skin = WM::getInstance()->skin["list"];
@@ -62,7 +62,7 @@ namespace blib
 #endif
 
 				matrix = glm::translate(matrix, glm::vec3(x+2,y+2-scrollY,0));
-				for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+				for (std::list<Widget*>::const_iterator it = children.begin(); it != children.end(); it++)
 				{
 					Widget* w = *it;
 					if (w->x + w->width < scrollX || w->y + w->height < scrollY)
@@ -70,7 +70,7 @@ namespace blib
 					if (w->x > scrollX + width || w->y > scrollY + height)
 						continue;
 
-					w->draw(spriteBatch, matrix);
+					w->draw(spriteBatch, matrix, renderer);
 				}
 
 

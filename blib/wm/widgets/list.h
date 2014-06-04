@@ -1,5 +1,6 @@
 #pragma once
 
+#include <blib/blib.h>
 #include "Widget.h"
 
 #include <vector>
@@ -19,14 +20,14 @@ namespace blib
 
 
 				int scrollPosition;
-				int selectedItem();
-				bool selectedItem(int item);
+				int selectedItem() const;
+				bool selectedItem(int item) const;
 				std::vector<int> selectedItems;
 				std::vector<std::string> items;
 
 
 
-				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix);
+				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const;
 
 				virtual void mousewheel( int direction, int x, int y );
 				virtual void mouseclick(int x, int y, int clickcount);

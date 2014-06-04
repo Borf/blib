@@ -19,7 +19,7 @@ namespace blib
 
 
 
-			void Button::draw( SpriteBatch &spriteBatch, glm::mat4 matrix)
+			void Button::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
 				if(this->hover)
 					spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["button"], glm::vec2(width, height), glm::vec4(0.7f, 0.7f, 0.9f, 1.0f));

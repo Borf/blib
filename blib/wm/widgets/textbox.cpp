@@ -32,11 +32,12 @@ namespace blib
 				selectionStart = 0;
 				selectionEnd = 0;
 				scrollPosition = 0;
+				canHaveKeyboardFocus = true;
 			}
 
 
 
-			void Textbox::draw( SpriteBatch& spriteBatch, glm::mat4 matrix)
+			void Textbox::draw(SpriteBatch& spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
 				Json::Value skin = WM::getInstance()->skin["input"];
 

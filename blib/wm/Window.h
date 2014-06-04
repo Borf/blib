@@ -49,7 +49,7 @@ namespace blib
 		void hide();
 		void setVisible(bool visible);
 
-		virtual void draw(SpriteBatch &spriteBatch);
+		virtual void draw(SpriteBatch &spriteBatch, Renderer* renderer);
 		Widget::PositionHelp toPositionHelp( std::string text );
 		bool inWindow( int x, int y );
 		virtual void arrangeComponents( int oldWidth, int oldHeight );
@@ -65,7 +65,7 @@ namespace blib
 
 
 		template<class T>
-		T* getComponent(std::string name)
+		T* getComponent(std::string name) const
 		{
 			return (T*)rootPanel->getComponent(name);
 		}

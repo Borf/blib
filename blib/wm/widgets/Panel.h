@@ -12,7 +12,7 @@ namespace blib
 			class Panel : public ContainerWidget
 			{
 			public:
-				virtual void draw(SpriteBatch& spriteBatch, glm::mat4 matrix);
+				virtual void draw(SpriteBatch& spriteBatch, glm::mat4 matrix, Renderer* renderer) const;
 				void arrangeComponents( int oldWidth, int oldHeight );
 			};
 		}

@@ -33,7 +33,7 @@ namespace blib
 
 
 
-			void List::draw( SpriteBatch &spriteBatch, glm::mat4 matrix)
+			void List::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
 				Json::Value skin = WM::getInstance()->skin["list"];
 				Texture* texture = WM::getInstance()->skinTexture;
@@ -193,12 +193,12 @@ namespace blib
 			}
 
 
-			int List::selectedItem()
+			int List::selectedItem() const
 			{
 				return selectedItems.empty() ? -1 : selectedItems[0];
 			}
 
-			bool List::selectedItem(int item)
+			bool List::selectedItem(int item) const
 			{
 				return false;
 			}

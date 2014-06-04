@@ -70,9 +70,9 @@ namespace blib
 	
 		}
 
-		void WM::draw( SpriteBatch &spriteBatch )
+		void WM::draw(SpriteBatch &spriteBatch, Renderer* renderer)
 		{
-			for(std::list<fastdelegate::FastDelegate0<> >::iterator it = tasks.begin(); it != tasks.end(); it++)
+			for(std::list<std::function<void()> >::iterator it = tasks.begin(); it != tasks.end(); it++)
 				(*it)();
 
 			for(std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
@@ -95,7 +95,7 @@ namespace blib
 				for (std::list<Window*>::reverse_iterator it = windows.rbegin(); it != windows.rend(); it++)
 				{
 					if ((*it)->visible)
-						(*it)->draw(spriteBatch);
+						(*it)->draw(spriteBatch, renderer);
 				}
 			}
 
@@ -208,7 +208,7 @@ namespace blib
 			return glm::vec4(r,g,b,1);
 		}
 
-		void WM::addTask( fastdelegate::FastDelegate0<> task )
+		void WM::addTask( const std::function<void()> & task )
 		{
 			tasks.push_back(task);
 		}
@@ -566,7 +566,7 @@ namespace blib
 			}
 
 
-			if (!windows.empty() && windows.front()->selectedWidget)
+			if (!windows.empty() && windows.front()->selectedWidget && windows.front()->selectedWidget->canHaveKeyboardFocus)
 				return true;
 
 			if (menuKeys.find(key) != menuKeys.end())

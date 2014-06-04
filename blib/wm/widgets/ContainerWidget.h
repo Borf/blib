@@ -23,7 +23,7 @@ namespace blib
 				void add(Widget* toAdd);
 				void clear();
 
-				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix);
+				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const;
 				virtual Widget* getComponent(std::string name);
 				virtual Widget* getComponent(int x, int y);
 				virtual void mousewheel( int direction, int x, int y );

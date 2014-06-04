@@ -1,5 +1,6 @@
 #pragma once
 
+#include <blib/blib.h>
 #include <string>
 #include <list>
 #include <glm/glm.hpp>
@@ -10,6 +11,7 @@ namespace blib
 {
 	class SpriteBatch; 
 	class Texture;
+	class Renderer;
 
 	namespace wm
 	{
@@ -35,6 +37,7 @@ namespace blib
 			bool selected;
 			bool hover;
 
+			bool canHaveKeyboardFocus;
 
 			enum PositionHelp
 			{
@@ -51,7 +54,7 @@ namespace blib
 	
 			Widget();
 			virtual ~Widget();
-			virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix) = 0;
+			virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const = 0;
 			virtual Widget* getComponent(std::string name);
 			virtual bool inComponent(int x, int y); // x,y are relative to the widget's base, no recursion
 			virtual Widget* getComponent(int x, int y); //recursion !

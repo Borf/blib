@@ -14,6 +14,7 @@ namespace blib
 
 			selected = false;
 			hover = false;
+			canHaveKeyboardFocus = false;
 		}
 
 		Widget::~Widget()

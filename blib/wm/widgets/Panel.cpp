@@ -7,9 +7,9 @@ namespace blib
 	{
 		namespace widgets
 		{
-			void Panel::draw( SpriteBatch &spriteBatch, glm::mat4 matrix)
+			void Panel::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
-				ContainerWidget::draw(spriteBatch, glm::translate(matrix, glm::vec3(x,y,0)));
+				ContainerWidget::draw(spriteBatch, glm::translate(matrix, glm::vec3(x,y,0)), renderer);
 			}
 
 			void Panel::arrangeComponents( int oldWidth, int oldHeight )

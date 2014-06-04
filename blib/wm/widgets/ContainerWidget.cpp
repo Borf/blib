@@ -26,12 +26,12 @@ namespace blib
 			}
 
 
-			void ContainerWidget::draw( SpriteBatch &spriteBatch, glm::mat4 matrix )
+			void ContainerWidget::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
-				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+				for(std::list<Widget*>::const_iterator it = children.begin(); it != children.end(); it++)
 				{
 					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
-						(*it)->draw(spriteBatch, matrix);
+						(*it)->draw(spriteBatch, matrix, renderer);
 				}
 			}
 

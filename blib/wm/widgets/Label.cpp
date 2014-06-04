@@ -22,7 +22,7 @@ namespace blib
 
 
 
-			void Label::draw( SpriteBatch &spriteBatch, glm::mat4 matrix)
+			void Label::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
 				spriteBatch.draw(WM::getInstance()->font, text, glm::translate(matrix, glm::vec3(x,y,0)), glm::vec4(0,0,0,1));
 /*				glScissor((int)shader->matrix[3][0]+1,0/*shader->height-(int)shader->matrix[3][1]-height+1*//*,width-2,1999+height-2);

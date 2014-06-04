@@ -114,12 +114,12 @@ namespace blib
 			setVisible(false);
 		}
 
-		void Window::draw( SpriteBatch &spriteBatch )
+		void Window::draw(SpriteBatch &spriteBatch, Renderer* renderer)
 		{
 			glm::mat4 matrix = glm::translate(glm::mat4(), glm::vec3(x,y,0));
 			spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, matrix, WM::getInstance()->skin["window"], glm::vec2(width,height));
 			spriteBatch.draw(WM::getInstance()->font, title, glm::translate(glm::mat4(), glm::vec3(x+20, y+1,0)), glm::vec4(0,0,0,1));
-			rootPanel->draw(spriteBatch, glm::translate(matrix, glm::vec3(WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), WM::getInstance()->skin["window"]["offsets"]["top"].asInt(),0)));
+			rootPanel->draw(spriteBatch, glm::translate(matrix, glm::vec3(WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), WM::getInstance()->skin["window"]["offsets"]["top"].asInt(),0)), renderer);
 		}
 
 		void Window::addWidgets( widgets::Panel* panel, Json::Value skin, ResourceManager* resourceManager )

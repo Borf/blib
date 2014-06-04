@@ -9,8 +9,8 @@
 #include <blib/App.h> //for mousestate
 #include <json/value.h>
 #include <glm/glm.hpp>
-#include <blib/util/FastDelegate.h>
 #include <blib/gl/GlResizeRegister.h>
+#include <functional>
 
 namespace blib
 {
@@ -38,7 +38,7 @@ namespace blib
 			Widget* clickWidget;
 			Widget* hoverWidget;
 
-			std::list<fastdelegate::FastDelegate0<> > tasks;
+			std::list<std::function<void()> > tasks;
 
 			blib::wm::Menu* radialMenuRoot;
 			blib::wm::Menu* radialMenu;
@@ -62,8 +62,8 @@ namespace blib
 			void setSkin(std::string skinFile, ResourceManager* resourceManager);
 			void setFont(Font* font);
 
-			void addTask(fastdelegate::FastDelegate0<> task);
-			void draw(SpriteBatch &spriteBatch);
+			void addTask(const std::function<void()> &task);
+			void draw(SpriteBatch &spriteBatch, Renderer* renderer);
 			bool keyboard(char key);
 			bool keyboardSpecial(int key);
 			bool hasModalWindow();
