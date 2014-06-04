@@ -162,10 +162,10 @@ namespace blib
 			void List::mousewheel( int direction, int x, int y )
 			{
 				scrollPosition -= direction / abs(direction)*height/2;
-				if(scrollPosition < 0)
-					scrollPosition = 0;
 				if(scrollPosition > 12*(int)items.size()-12)
 					scrollPosition = 12*items.size()-12;
+				if(scrollPosition < 0)
+					scrollPosition = 0;
 			}
 
 
