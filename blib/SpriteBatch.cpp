@@ -31,7 +31,7 @@ namespace blib
 		renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 
 		shader = resourceManager->getResource<Shader>();
-		shader->initFromData("\precision mediump float;\
+		shader->initFromData("precision mediump float;\
 attribute vec2 a_position;\n\
 attribute vec2 a_texture;\n\
 attribute vec4 a_color;\n\
@@ -45,7 +45,7 @@ void main()\n\
 	texCoord = a_texture;\n\
 	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\n\
 }\n\
-", "\precision mediump float;\
+", "precision mediump float;\
 uniform sampler2D s_texture;\n\
 varying vec2 texCoord;\n\
 varying vec4 color;\n\
