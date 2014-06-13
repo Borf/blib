@@ -60,7 +60,7 @@ namespace blib
 					glBindAttribLocation(programId, it->second, it->first.c_str());
 				link();
 				glUseProgram(programId);
-				for (size_t i = 0; i < uniformCount; i++)
+				for (int i = 0; i < uniformCount; i++)
 				{
 					if (uniforms[i])
 						uniforms[i]->id = glGetUniformLocation(programId, uniforms[i]->name.c_str());

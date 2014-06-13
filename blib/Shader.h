@@ -49,6 +49,12 @@ namespace blib
 				(T&)(data[index]) = value;
 			}
 
+			template<class T>
+			T get(char* data)
+			{
+				return (T)(data[index]);
+			}
+
 		};
 
 		char* uniformData;
@@ -88,8 +94,15 @@ namespace blib
 		{
 			assert(uniformData);
 			uniforms[(int)name]->set(uniformData, value);
-
 		}
+		template <class T, class Enum>
+		inline T getUniform(Enum name)
+		{
+			assert(uniformData);
+			return uniforms[(int)name]->get<T>(uniformData);
+		}
+
+
 		virtual void use() = 0;
 		virtual void initFromData(std::string vertexShader, std::string fragmentShader);
 		virtual void bindAttributeLocation(std::string name, int index);
