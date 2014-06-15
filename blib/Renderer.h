@@ -12,6 +12,9 @@ namespace blib
 {
 	class App;
 
+	namespace math { class Ray; };
+
+
 	class Renderer
 	{
 	public:
@@ -145,6 +148,9 @@ namespace blib
 		public:
 			glm::vec2 mousePosition;
 			glm::vec4* target;
+
+			blib::math::Ray* ray;
+
 			glm::mat4 modelMatrix;
 			glm::mat4 projectionMatrix;
 
@@ -325,7 +331,20 @@ namespace blib
 			toRender[activeLayer].push_back(block);
 		}
 
-
+		template<class T>
+		void drawLines(const std::vector<T> &vertices, const RenderState& renderState)
+		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+			block->command = Render::DrawLines;	//TODO : move to constructor
+			block->renderState = renderState;
+			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
+			block->vertexStart = vertexIndex[activeLayer];
+			block->count = vertices.size();
+			memcpy(this->vertices[activeLayer] + vertexIndex[activeLayer], &vertices[0], sizeof(T)* vertices.size());
+			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * vertices.size();
+			toRender[activeLayer].push_back(block);
+		}
 
 		template<class T>
 		void drawPoints(const std::vector<T> &vertices, const RenderState& renderState)
@@ -376,13 +395,14 @@ namespace blib
 			toRender[activeLayer].push_back(command);
 		}
 
-		void unproject(glm::vec2 mousePosition, glm::vec4* target, const glm::mat4 &modelMatrix, const glm::mat4 &projectionMatrix)
+		void unproject(glm::vec2 mousePosition, glm::vec4* target, blib::math::Ray* ray, const glm::mat4 &modelMatrix, const glm::mat4 &projectionMatrix)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderUnproject* command = allocators[activeLayer].get<RenderUnproject>();
 			command->command = Render::Unproject;
 			command->mousePosition = mousePosition;
 			command->target = target;
+			command->ray = ray;
 			command->modelMatrix = modelMatrix;
 			command->projectionMatrix = projectionMatrix;
 

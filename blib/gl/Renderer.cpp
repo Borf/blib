@@ -25,6 +25,7 @@
 #include <blib/util/Log.h>
 #include <blib/gl/Vertex.h>
 #include <blib/App.h>
+#include <blib/math/Ray.h>
 
 using blib::util::Log;
 
@@ -118,12 +119,22 @@ namespace blib
 
 					ru->mousePosition.y = Viewport[3] - ru->mousePosition.y;
 
-					float winZ;
-					glReadPixels((int)ru->mousePosition.x, (int)ru->mousePosition.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ); //TODO: maybe need to do windowheight-mouse3d.y
-					glm::vec4 ret = glm::vec4(glm::unProject(glm::vec3(ru->mousePosition, winZ), ru->modelMatrix, ru->projectionMatrix, glm::vec4(Viewport[0], Viewport[1], Viewport[2], Viewport[3])),winZ);
 
+					if (ru->target)
+					{
+						float winZ;
+						glReadPixels((int)ru->mousePosition.x, (int)ru->mousePosition.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ); //TODO: maybe need to do windowheight-mouse3d.y
+						glm::vec4 ret = glm::vec4(glm::unProject(glm::vec3(ru->mousePosition, winZ), ru->modelMatrix, ru->projectionMatrix, glm::vec4(Viewport[0], Viewport[1], Viewport[2], Viewport[3])), winZ);
+						app->runLater<int>([ret, ru](int) {*ru->target = ret; }, 0);
+					}
+					if (ru->ray)
+					{
+						glm::vec3 retNear = glm::unProject(glm::vec3(ru->mousePosition, 0), ru->modelMatrix, ru->projectionMatrix, glm::vec4(Viewport[0], Viewport[1], Viewport[2], Viewport[3]));
+						glm::vec3 retFar = glm::unProject(glm::vec3(ru->mousePosition, 1), ru->modelMatrix, ru->projectionMatrix, glm::vec4(Viewport[0], Viewport[1], Viewport[2], Viewport[3]));
 
-					app->runLater<int>([ret, ru](int) {*ru->target = ret; }, 0);
+						app->runLater<int>([retNear, retFar, ru](int) { ru->ray->origin = retNear; ru->ray->dir = glm::normalize(retFar - retNear); ru->ray->calcSign();  }, 0);
+					}
+
 
 				}
 				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints)

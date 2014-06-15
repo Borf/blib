@@ -67,8 +67,12 @@ VertexDefBegin(VertexP2,								position,	glm::vec2, 2, Vertex)
 	VertexP2(glm::vec2 position) : position(position) {};
 VertexDefEnd();
 
-VertexDefBegin(VertexP3T2,								texCoord,	glm::vec2, 2, VertexP3)
-	VertexP3T2(glm::vec3 position, glm::vec2 texCoord) : VertexP3(position), texCoord(texCoord) {};
+VertexDefBegin(VertexP3T2, texCoord, glm::vec2, 2, VertexP3)
+VertexP3T2(glm::vec3 position, glm::vec2 texCoord) : VertexP3(position), texCoord(texCoord) {};
+VertexDefEnd();
+
+VertexDefBegin(VertexP3T2N3, normal, glm::vec3, 3, VertexP3T2)
+VertexP3T2N3(glm::vec3 position, glm::vec2 texCoord, glm::vec3 normal) : VertexP3T2(position, texCoord), normal(normal) {};
 VertexDefEnd();
 
 VertexDefBegin(VertexP2T2,								texCoord,	glm::vec2, 2, VertexP2)

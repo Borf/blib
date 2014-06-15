@@ -16,13 +16,14 @@
 #endif
 
 
-
+//TODO: const reference for constructors
 namespace blib
 {
 
 VertexDef(VertexP3,								position,	glm::vec3, 3, Vertex)
 //VertexDef(VertexP2,								position,	glm::vec2, 2, Vertex)
 VertexDef(VertexP3T2,							texCoord,	glm::vec2, 2, VertexP3)
+VertexDef(VertexP3T2N3,							normal,		glm::vec3, 3, VertexP3T2)
 VertexDef(VertexP2T2,							texCoord,	glm::vec2, 2, VertexP2)
 VertexDef(VertexP2T2T2,							texCoord2,	glm::vec2, 2, VertexP2T2)
 VertexDef(VertexP2T3,							texCoord,	glm::vec3, 3, VertexP2)

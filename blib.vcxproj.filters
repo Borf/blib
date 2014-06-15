@@ -502,6 +502,9 @@
     <ClInclude Include="blib\math\Triangle.h">
       <Filter>math</Filter>
     </ClInclude>
+    <ClInclude Include="blib\math\AABB.h">
+      <Filter>math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -823,6 +826,15 @@
       <Filter>math</Filter>
     </ClCompile>
     <ClCompile Include="blib\math\Triangle.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\AABB.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\Ray.cpp">
+      <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\Plane.cpp">
       <Filter>math</Filter>
     </ClCompile>
   </ItemGroup>

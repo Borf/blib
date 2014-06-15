@@ -45,6 +45,7 @@
     <ClInclude Include="blib\LineBatch.h" />
     <ClInclude Include="blib\linq.h" />
     <ClInclude Include="blib\Math.h" />
+    <ClInclude Include="blib\math\AABB.h" />
     <ClInclude Include="blib\math\ArcPath.h" />
     <ClInclude Include="blib\math\BiArc.h" />
     <ClInclude Include="blib\math\Circle.h" />
@@ -207,12 +208,15 @@
     <ClCompile Include="blib\LineBatch.cpp" />
     <ClCompile Include="blib\linq.cpp" />
     <ClCompile Include="blib\Math.cpp" />
+    <ClCompile Include="blib\math\AABB.cpp" />
     <ClCompile Include="blib\math\ArcPath.cpp" />
     <ClCompile Include="blib\math\BiArc.cpp" />
     <ClCompile Include="blib\math\HermiteCurve.cpp" />
     <ClCompile Include="blib\math\Line.cpp" />
+    <ClCompile Include="blib\math\Plane.cpp" />
     <ClCompile Include="blib\math\Polygon.cpp" />
     <ClCompile Include="blib\math\Random.cpp" />
+    <ClCompile Include="blib\math\Ray.cpp" />
     <ClCompile Include="blib\math\Rectangle.cpp" />
     <ClCompile Include="blib\math\Triangle.cpp" />
     <ClCompile Include="blib\ParticleSystem.cpp" />
