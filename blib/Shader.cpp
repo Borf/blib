@@ -54,9 +54,16 @@ namespace blib
 					glUniform1i(location, (int&)state[uniforms[i]->index]);
 					break;
 				case Mat4:
-					if (activeUniformData[uniforms[i]->index-1] != state[uniforms[i]->index-1])
+					if (activeUniformData[uniforms[i]->index - 1] != state[uniforms[i]->index - 1])
 					{
 						glUniformMatrix4fv(location, 1, 0, &((float&)state[uniforms[i]->index]));
+						activeUniformData[uniforms[i]->index - 1] = state[uniforms[i]->index - 1];
+					}
+					break;
+				case Mat3:
+					if (activeUniformData[uniforms[i]->index - 1] != state[uniforms[i]->index - 1])
+					{
+						glUniformMatrix3fv(location, 1, 0, &((float&)state[uniforms[i]->index]));
 						activeUniformData[uniforms[i]->index - 1] = state[uniforms[i]->index - 1];
 					}
 					break;
