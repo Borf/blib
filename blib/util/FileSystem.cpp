@@ -21,14 +21,14 @@ namespace blib
 {
 	namespace util
 	{
-		StreamInFile* PhysicalFileSystemHandler::openRead( const std::string &fileName )
+		StreamInFile* PhysicalFileSystemHandler::openRead(const std::string &fileName)
 		{
 			std::ifstream* stream = NULL;
-			if(directory != "")
+			if (directory != "")
 				stream = new std::ifstream((directory + "/" + fileName).c_str(), std::ios_base::binary);
 			else
 				stream = new std::ifstream(fileName.c_str(), std::ios_base::binary);
-			if(stream->is_open())
+			if (stream->is_open())
 			{
 				return new StreamInFilePhysical(stream);
 			}
@@ -37,7 +37,7 @@ namespace blib
 
 		}
 
-		StreamOut* PhysicalFileSystemHandler::openWrite( const std::string &fileName )
+		StreamOut* PhysicalFileSystemHandler::openWrite(const std::string &fileName)
 		{
 			throw "The method or operation is not implemented.";
 		}
@@ -54,21 +54,21 @@ namespace blib
 				{
 					if(strcmp(ep->d_name, ".") == 0 || strcmp(ep->d_name, "..") == 0)
 						continue;
-						
+
 					struct stat stFileInfo;
 					stat((directory + "/" + ep->d_name).c_str(), &stFileInfo);
-					
+
 					if((stFileInfo.st_mode & S_IFDIR))// && recursive)
 					{
 						/*vector<string> dirContents = getFiles(dir + "/" + ep->d_name, filter, recursive);
 						for(unsigned int i = 0; i < dirContents.size(); i++)
-							files.push_back(dirContents[i]);*/
+						files.push_back(dirContents[i]);*/
 						files.push_back(std::string(ep->d_name) + "/");
 					}
 					else
 					{
-//						if(fnmatch(filter.c_str(), ep->d_name,0) == 0)
-							files.push_back(ep->d_name);
+						//						if(fnmatch(filter.c_str(), ep->d_name,0) == 0)
+						files.push_back(ep->d_name);
 					}
 				}
 				closedir(dp);
@@ -77,16 +77,16 @@ namespace blib
 				Log::out<<"Could not open directory '"<<directory<<"'"<<Log::newline;
 #else
 			WIN32_FIND_DATA FileData;													// thingy for searching through a directory
-			HANDLE hSearch;	
-			if(directory != "")
+			HANDLE hSearch;
+			if (directory != "")
 				hSearch = FindFirstFile(std::string(directory + "/" + path + "/*.*").c_str(), &FileData);
 			else
 				hSearch = FindFirstFile(std::string(path + "/*.*").c_str(), &FileData);
 			if (hSearch != INVALID_HANDLE_VALUE)										// if there are results...
 			{
 				while (true)														// loop through all the files
-				{ 
-					if((FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
+				{
+					if ((FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0)
 					{
 						files.push_back(std::string(FileData.cFileName) + "/");
 					}
@@ -97,7 +97,7 @@ namespace blib
 					{
 						if (GetLastError() == ERROR_NO_MORE_FILES)						// we're finished when there are no more files
 							break;
-						else 
+						else
 							return;													// wow, something really weird happened
 					}
 				}
@@ -120,7 +120,7 @@ namespace blib
 			stream = NULL;
 		}
 
-		unsigned int PhysicalFileSystemHandler::StreamInFilePhysical::read( char* data, int count )
+		unsigned int PhysicalFileSystemHandler::StreamInFilePhysical::read(char* data, int count)
 		{
 			stream->read(data, count);
 			return (unsigned int)stream->gcount();
@@ -136,13 +136,13 @@ namespace blib
 			return stream->eof();
 		}
 
-		void PhysicalFileSystemHandler::StreamInFilePhysical::seek( int offset, StreamOffset offsetTo )
+		void PhysicalFileSystemHandler::StreamInFilePhysical::seek(int offset, StreamOffset offsetTo)
 		{
-			if(offsetTo == StreamSeekable::BEGIN)
+			if (offsetTo == StreamSeekable::BEGIN)
 				stream->seekg(offset, std::ios_base::beg);
-			else if(offsetTo == StreamSeekable::CURRENT)
+			else if (offsetTo == StreamSeekable::CURRENT)
 				stream->seekg(offset, std::ios_base::cur);
-			else if(offsetTo == StreamSeekable::END)
+			else if (offsetTo == StreamSeekable::END)
 				stream->seekg(offset, std::ios_base::end);
 		}
 
@@ -153,7 +153,7 @@ namespace blib
 
 		bool PhysicalFileSystemHandler::StreamInFilePhysical::opened()
 		{
-			if(!stream)
+			if (!stream)
 				return false;
 			return stream->is_open();
 		}
@@ -180,18 +180,18 @@ namespace blib
 
 		std::list<FileSystemHandler*> FileSystem::handlers;
 
-		StreamInFile* FileSystem::openRead( const std::string &fileName )
+		StreamInFile* FileSystem::openRead(const std::string &fileName)
 		{
-			for(std::list<FileSystemHandler*>::iterator it = handlers.begin(); it != handlers.end(); it++)
+			for (std::list<FileSystemHandler*>::iterator it = handlers.begin(); it != handlers.end(); it++)
 			{
 				StreamInFile* stream = (*it)->openRead(fileName);
-				if(stream)
+				if (stream)
 					return stream;
 			}
 			return NULL;
 		}
 
-		void FileSystem::registerHandler( FileSystemHandler* handler )
+		void FileSystem::registerHandler(FileSystemHandler* handler)
 		{
 			handlers.push_back(handler);
 		}
@@ -199,7 +199,7 @@ namespace blib
 		int FileSystem::getData(const std::string &fileName, char* &data)
 		{
 			StreamInFile file(fileName);
-			if(!file.opened())
+			if (!file.opened())
 				return 0;
 			file.seek(0, StreamSeekable::END);
 			unsigned int size = file.tell();
@@ -211,12 +211,12 @@ namespace blib
 		std::string FileSystem::getData(const std::string &fileName)
 		{
 			StreamInFile file(fileName);
-			if(!file.opened())
+			if (!file.opened())
 				return "";
 			std::string ret;
 			char buf[1024];
 
-			while(!file.eof())
+			while (!file.eof())
 			{
 				int rc = file.read(buf, 1024);
 				ret += std::string(buf, rc);
@@ -224,19 +224,19 @@ namespace blib
 			return ret;
 		}
 
-		Json::Value FileSystem::getJson( const std::string &fileName )
+		Json::Value FileSystem::getJson(const std::string &fileName)
 		{
 			std::string data = getData(fileName);
-			if(data == "")
+			if (data == "")
 			{
-				Log::out<<"Could not open file "<<fileName<<Log::newline;
+				Log::out << "Could not open file " << fileName << Log::newline;
 				return Json::nullValue;
 			}
 			Json::Value ret;
 			Json::Reader reader;
-            //TODO: IOS
-			if(!reader.parse(data, ret))
-				Log::out<<reader.getFormattedErrorMessages()<<Log::newline;
+			//TODO: IOS
+			if (!reader.parse(data, ret))
+				Log::out << reader.getFormattedErrorMessages() << Log::newline;
 
 			return ret;
 		}
@@ -245,7 +245,7 @@ namespace blib
 		std::vector<std::string> FileSystem::getFileList(const std::string &path)
 		{
 			std::vector<std::string> ret;
-			for(std::list<FileSystemHandler*>::iterator it = handlers.begin(); it != handlers.end(); it++)
+			for (std::list<FileSystemHandler*>::iterator it = handlers.begin(); it != handlers.end(); it++)
 				(*it)->getFileList(path, ret);
 
 
@@ -257,23 +257,23 @@ namespace blib
 			return handlers;
 		}
 
-		bool FileSystem::exists( const std::string &fileName )
+		bool FileSystem::exists(const std::string &fileName)
 		{
 			StreamInFile* file = openRead(fileName);
 			bool e = file != NULL;
-			if(file)
+			if (file)
 				delete file;
 			return e;
 		}
 
 
-		MemoryFile::MemoryFile( char* data, int length, bool copy )
+		MemoryFile::MemoryFile(char* data, int length, bool copy)
 		{
 			this->data = data;
 			this->length = length;
 			this->copied = copy;
 			this->index = 0;
-			if(copy)
+			if (copy)
 			{
 				this->data = new char[length];
 				memcpy(this->data, data, length);
@@ -282,17 +282,17 @@ namespace blib
 		}
 		MemoryFile::~MemoryFile()
 		{
-			if(copied && data)
+			if (copied && data)
 			{
 				delete data;
 				data = NULL;
 			}
 		}
 
-		unsigned int MemoryFile::read( char* data, int count )
+		unsigned int MemoryFile::read(char* data, int count)
 		{
 			int remaining = length - index;
-			if(count > remaining)
+			if (count > remaining)
 				count = remaining;
 
 			memcpy(data, this->data + index, count);
@@ -300,11 +300,11 @@ namespace blib
 
 			return count;
 		}
-		
+
 		char MemoryFile::get()
 		{
 			index++;
-			return this->data[index-1];
+			return this->data[index - 1];
 		}
 
 		bool MemoryFile::eof()
@@ -312,13 +312,13 @@ namespace blib
 			return index >= length;
 		}
 
-		void MemoryFile::seek( int offset, StreamOffset offsetTo )
+		void MemoryFile::seek(int offset, StreamOffset offsetTo)
 		{
-			if(offsetTo == StreamSeekable::BEGIN)
+			if (offsetTo == StreamSeekable::BEGIN)
 				index = offset;
-			else if(offsetTo == StreamSeekable::CURRENT)
+			else if (offsetTo == StreamSeekable::CURRENT)
 				index += offset;
-			else if(offsetTo == StreamSeekable::END)
+			else if (offsetTo == StreamSeekable::END)
 				index = length + offset;
 		}
 
@@ -330,6 +330,31 @@ namespace blib
 		bool MemoryFile::opened()
 		{
 			return true;
+		}
+
+
+		PhysicalFileSystemHandler::StreamOutFilePhysical::StreamOutFilePhysical(std::string filename)
+		{
+			this->fileName = filename;
+			deleteOnDestruct = true;
+			index = 0;
+			stream = new std::ofstream(fileName.c_str(), std::ios_base::out | std::ios_base::binary);
+		}
+		PhysicalFileSystemHandler::StreamOutFilePhysical::~StreamOutFilePhysical()
+		{
+			if (deleteOnDestruct)
+				delete stream;
+		}
+
+		void PhysicalFileSystemHandler::StreamOutFilePhysical::write(char* data, int count)
+		{
+			stream->write(data, count);
+			index += count;
+		}
+
+		bool PhysicalFileSystemHandler::StreamOutFilePhysical::opened()
+		{
+			return stream->is_open();
 		}
 
 	}

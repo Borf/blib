@@ -6,6 +6,7 @@
 #include <vector>
 
 #include <blib/util/StreamInFile.h>
+#include <blib/util/StreamOutFile.h>
 #include <blib/util/StreamSeekable.h>
 
 
@@ -45,6 +46,20 @@ namespace blib
 				virtual unsigned int tell();
 				virtual bool opened();
 			};
+			class StreamOutFilePhysical : public StreamOutFile
+			{
+				std::ofstream* stream;
+				bool deleteOnDestruct;
+				int index;
+			public:
+				StreamOutFilePhysical(std::string filename);
+				StreamOutFilePhysical(std::ofstream* stream);
+				~StreamOutFilePhysical();
+				virtual void write(char* data, int count);
+				virtual bool opened();
+			};
+
+
 			std::string directory;
 
 			PhysicalFileSystemHandler(std::string directory = ".") : FileSystemHandler("physical"), directory(directory) {}

@@ -239,6 +239,7 @@
     <ClCompile Include="blib\util\Stream.cpp" />
     <ClCompile Include="blib\util\StreamIn.cpp" />
     <ClCompile Include="blib\util\StreamInFile.cpp" />
+    <ClCompile Include="blib\util\StreamOut.cpp" />
     <ClCompile Include="blib\util\Thread.cpp" />
     <ClCompile Include="blib\Window.cpp" />
     <ClCompile Include="blib\wm\Menu.cpp" />

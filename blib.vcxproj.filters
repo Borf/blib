@@ -837,6 +837,9 @@
     <ClCompile Include="blib\math\Plane.cpp">
       <Filter>math</Filter>
     </ClCompile>
+    <ClCompile Include="blib\util\StreamOut.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">
