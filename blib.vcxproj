@@ -94,6 +94,7 @@
     <ClInclude Include="blib\util\StreamSeekable.h" />
     <ClInclude Include="blib\util\StreamWriter.h" />
     <ClInclude Include="blib\util\Thread.h" />
+    <ClInclude Include="blib\util\Tree.h" />
     <ClInclude Include="blib\VBO.h" />
     <ClInclude Include="blib\VIO.h" />
     <ClInclude Include="blib\Window.h" />

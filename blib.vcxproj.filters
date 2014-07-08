@@ -505,6 +505,9 @@
     <ClInclude Include="blib\math\AABB.h">
       <Filter>math</Filter>
     </ClInclude>
+    <ClInclude Include="blib\util\Tree.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
