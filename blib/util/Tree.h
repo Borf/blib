@@ -26,7 +26,14 @@ namespace blib
 					if (children[i] != NULL)
 						children[i]->foreach(op);
 			}
-
+			template<class T>
+			void foreachLevel(T op, int level = 0)
+			{
+				op((child*)this, level);
+				for (int i = 0; i < childCount; i++)
+					if (children[i] != NULL)
+						children[i]->foreachLevel(op, level+1);
+			}
 			std::vector<Tree*> flatten()
 			{
 				std::vector<Tree*> ret;
