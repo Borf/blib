@@ -29,11 +29,13 @@ namespace blib
 			glm::vec2 bottomright;
 
 			inline glm::vec2 center() const { return (topleft + bottomright) * 0.5f; };
-
 			inline glm::vec2 size() const { return bottomright - topleft; };
 
 			inline float width() const { return bottomright.x - topleft.x; };
 			inline float height() const { return bottomright.y - topleft.y; };
+
+			Rectangle operator * (const glm::mat4 &matrix);
+			void operator *= (const glm::mat4 &matrix);
 
 
 			bool contains(const glm::vec2 &point) const;

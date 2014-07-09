@@ -49,9 +49,9 @@ namespace blib
 		{
 			float dist = a1 - a2;
 			if (dist > 2 * M_PI)
-				dist -= 2 * M_PI;
+				dist -= (float)(2 * M_PI);
 			if (dist < 0)
-				dist += 2 * M_PI;
+				dist += (float)(2 * M_PI);
 			return dist;
 		}
 
@@ -64,7 +64,7 @@ namespace blib
 				float r1 = atan2(begin.y - origin.y, begin.x - origin.x);
 				float r2 = atan2(end.y - origin.y, end.x - origin.x);
 
-				float inc = M_PI / (5 + glm::min(100.0f, glm::abs(radius+offset)));
+				float inc = (float)(M_PI / (5 + glm::min(100.0f, glm::abs(radius+offset))));
 				if (sign_n)
 					inc = -inc;
 
@@ -73,9 +73,9 @@ namespace blib
 				for (float f = r1; fabs(angleDist(f + inc, r2)) > fabs(inc); f += inc)
 				{
 					if (f > M_PI)
-						f -= M_PI * 2;
+						f -= (float)(M_PI * 2);
 					if (f < -M_PI)
-						f += M_PI * 2;
+						f += (float)(M_PI * 2);
 
 					lines.push_back(LinePart(origin + rad * blib::util::fromAngle(f), origin + rad * blib::util::fromAngle(f + inc)));
 					last = f + inc;
@@ -103,7 +103,7 @@ namespace blib
 				// NOTE: sign_t means that the angular span exceeds 180 deg.
 				float da = fabs(a2 - a1);
 				if (sign_t == (da > M_PI)) {
-					da = 2 * M_PI - da;
+					da = 2 * (float)M_PI - da;
 				}
 				return fabs(da * (radius + offset));
 			}

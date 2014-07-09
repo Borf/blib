@@ -96,6 +96,15 @@ namespace blib
 			bottomright.y += y;
 		}
 
+		Rectangle Rectangle::operator*(const glm::mat4 &matrix)
+		{
+			return Rectangle(glm::vec2(matrix * glm::vec4(topleft, 0, 1)), glm::vec2(matrix * glm::vec4(bottomright, 0, 1)));
+		}
+		void Rectangle::operator*=(const glm::mat4 &matrix)
+		{
+			topleft = glm::vec2(matrix * glm::vec4(topleft, 0, 1));
+			bottomright = glm::vec2(matrix * glm::vec4(bottomright, 0, 1));
+		}
 
 	}
 }

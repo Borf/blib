@@ -376,7 +376,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)\externals\glew\lib</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>$(SolutionDir)\svnversion "$(ProjectPath)" &gt; $(MSBuildProjectDirectory)\version.h</Command>
+      <Command>$(ProjectDir)\svnversion "$(ProjectPath)" &gt; $(MSBuildProjectDirectory)\version.h</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -403,6 +403,9 @@
       <AdditionalDependencies>opengl32.lib;glew32s.lib;winmm.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)\externals\glew\lib</AdditionalLibraryDirectories>
     </Lib>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)\svnversion "$(ProjectPath)" &gt; $(MSBuildProjectDirectory)\version.h</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -53,8 +53,7 @@ namespace blib
 
 			/*	if (Intersection == EndLine)
 			return false;*/
-			int vertex;
-			for (vertex = 0; vertex < vertices.size(); vertex++)
+			for (size_t vertex = 0; vertex < vertices.size(); vertex++)
 			{
 				Plane edgePlane;
 				int NextVertex = (vertex + 1) % vertices.size();
