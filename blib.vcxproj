@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blib\AnimatableSprite.h" />
     <ClInclude Include="blib\Animation.h" />
     <ClInclude Include="blib\App.h" />
     <ClInclude Include="blib\audio\AudioManager.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="externals\poly2tri\sweep\sweep_context.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="blib\AnimatableSprite.cpp" />
     <ClCompile Include="blib\Animation.cpp" />
     <ClCompile Include="blib\App.cpp" />
     <ClCompile Include="blib\audio\AudioManagerWindows.cpp" />
@@ -347,10 +349,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IntDir>$(SolutionDir)$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IntDir>$(SolutionDir)$(Configuration)\</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

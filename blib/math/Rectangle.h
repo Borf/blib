@@ -37,6 +37,8 @@ namespace blib
 			Rectangle operator * (const glm::mat4 &matrix);
 			void operator *= (const glm::mat4 &matrix);
 
+			Rectangle operator + (const glm::vec2 &offset);
+
 
 			bool contains(const glm::vec2 &point) const;
 			bool intersect(const blib::math::Rectangle &other) const;

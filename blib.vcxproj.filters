@@ -508,6 +508,7 @@
     <ClInclude Include="blib\util\Tree.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="blib\AnimatableSprite.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -843,6 +844,7 @@
     <ClCompile Include="blib\util\StreamOut.cpp">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="blib\AnimatableSprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

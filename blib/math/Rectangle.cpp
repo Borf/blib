@@ -106,5 +106,10 @@ namespace blib
 			bottomright = glm::vec2(matrix * glm::vec4(bottomright, 0, 1));
 		}
 
+		Rectangle Rectangle::operator+(const glm::vec2 &offset)
+		{
+			return Rectangle(topleft + offset, bottomright + offset);
+		}
+
 	}
 }
