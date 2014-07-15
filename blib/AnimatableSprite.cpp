@@ -9,7 +9,10 @@ namespace blib
 	{
 		this->texture = texture;
 	}
-
+	AnimatableSprite::AnimatableSprite(blib::Texture* texture, const glm::vec2 &pos) : rect(pos, texture->originalWidth, texture->originalHeight)
+	{
+		this->texture = texture;
+	}
 
 	void AnimatableSprite::draw(SpriteBatch* spriteBatch)
 	{

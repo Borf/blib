@@ -57,6 +57,7 @@ namespace blib
 
 
 		AnimatableSprite(blib::Texture* texture, const blib::math::Rectangle &rect);
+		AnimatableSprite(blib::Texture* texture, const glm::vec2 &pos);
 
 
 		void moveTo(const glm::vec2 &targetPosition, float time, const std::function<void()> &onDone = nullptr);
