@@ -32,8 +32,12 @@ namespace blib
 			animation->apply(this);
 			if (animation->elapsedTime >= animation->duration)
 			{
+				if (animations.size() == 0)
+					Sleep(0);
 				if (animation->onDone != nullptr)
 					animation->onDone();
+				if (animations.size() == 0)
+					Sleep(0);
 				delete animation;
 
 				animations.erase(animations.begin() + i);
@@ -63,6 +67,17 @@ namespace blib
 		animations.push_back(new ShakeAnimation(rect));
 	}
 
+	void AnimatableSprite::clearAnimations()
+	{
+		for (size_t i = 0; i < animations.size(); i++)
+		{
+			animations[i]->finish(this);
+			animations[i]->elapsedTime = 10;
+			animations[i]->duration = 10;
+		}
+	}
+
+
 
 	MoveToAnimation::MoveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest) : src(src), dest(dest)
 	{
@@ -79,12 +94,23 @@ namespace blib
 	ShakeAnimation::ShakeAnimation(const blib::math::Rectangle& original) : original(original)
 	{
 		duration = 999999;
+		done = false;
+		this->elapsedTime = rand() / (float)RAND_MAX;
 	}
 
 	void ShakeAnimation::apply(AnimatableSprite* sprite)
 	{
-		duration = elapsedTime + 100;
-		sprite->rect = original + glm::vec2(glm::sin(100 * elapsedTime), glm::cos(40 * elapsedTime));
+		if (!done)
+			duration = elapsedTime + 100;
+		sprite->rect = original + 2.0f * glm::vec2(glm::sin(30 * elapsedTime), glm::cos(20 * elapsedTime));
 	}
+
+	void ShakeAnimation::finish(AnimatableSprite* sprite)
+	{
+		done = true;
+		duration = elapsedTime;
+		sprite->rect = original;
+	}
+
 
 }

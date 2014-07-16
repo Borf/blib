@@ -26,6 +26,7 @@ namespace blib
 		}
 
 		virtual void apply(AnimatableSprite* sprite) = 0;
+		virtual void finish(AnimatableSprite* sprite) {};
 	};
 
 
@@ -41,9 +42,11 @@ namespace blib
 	class ShakeAnimation : public Animation
 	{
 		blib::math::Rectangle original;
+		bool done;
 	public:
 		ShakeAnimation(const blib::math::Rectangle& original);
 		virtual void apply(AnimatableSprite* sprite);
+		void finish(AnimatableSprite* sprite);;
 	};
 
 
@@ -69,5 +72,6 @@ namespace blib
 		void draw(SpriteBatch* spriteBatch);
 		void update(float elapsedTime);
 		void shake();
+		void clearAnimations();
 	};
 }
