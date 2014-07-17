@@ -47,6 +47,8 @@ namespace blib
 			bool intersect(const blib::math::Ray &other) const;
 			bool intersect(const blib::math::Triangle &other) const;
 
+			float overlap(const Rectangle &other) const;
+
 			void inflate(float x, float y);
 
 			void buildLines();

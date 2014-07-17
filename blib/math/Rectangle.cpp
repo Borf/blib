@@ -111,5 +111,11 @@ namespace blib
 			return Rectangle(topleft + offset, bottomright + offset);
 		}
 
+		float Rectangle::overlap(const Rectangle &other) const
+		{
+			glm::vec2 o = glm::max(glm::vec2(0,0), glm::min(bottomright, other.bottomright) - glm::max(topleft, other.topleft));
+			return o.x * o.y;
+		}
+
 	}
 }
