@@ -9,7 +9,7 @@ namespace blib
 		class Tree
 		{
 		public:
-			Tree<childCount, child>* children[childCount];
+			child* children[childCount];
 
 
 			Tree()
