@@ -236,7 +236,7 @@ namespace blib
 		Storage reverse(const Storage &data)
 		{
 			Storage ret;
-			for (typename Storage::const_reverse_iterator it = std::rbegin(data); it != std::rend(data); it++)
+			for (typename Storage::const_reverse_iterator it = data.rbegin(); it != data.rend(); it++)
 				ret.push_back(*it);
 			return ret;
 		}

@@ -26,6 +26,14 @@ namespace blib
 				virtual void makeCurrent();
 				virtual void unmakeCurrent();
                 virtual void tick() { }
+                
+                void setWidth(int w) { width = w; };
+                void setHeight(int h) { height = h; };
+                
+                
+                void touchDownEvent(int x, int y);
+                void touchUpEvent(int x, int y);
+                void touchMoveEvent(int x, int y);
 			};
 		}
 	}

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06213CBE197E92F10070C415 /* AnimatableSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06213CBC197E92F10070C415 /* AnimatableSprite.cpp */; };
+		06213CC1197E93170070C415 /* StreamOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06213CBF197E93170070C415 /* StreamOut.cpp */; };
+		06213CC3197E93560070C415 /* Ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06213CC2197E93560070C415 /* Ray.cpp */; };
 		069DD2D2194655DB00583161 /* IOSFileSystemHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 069DD2D1194655DB00583161 /* IOSFileSystemHandler.mm */; };
 		069DD70319465EDD00583161 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD2DD19465ED900583161 /* b2BroadPhase.cpp */; };
 		069DD70419465EDD00583161 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD2DF19465ED900583161 /* b2CollideCircle.cpp */; };
@@ -142,6 +145,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		06213CBC197E92F10070C415 /* AnimatableSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AnimatableSprite.cpp; sourceTree = "<group>"; };
+		06213CBD197E92F10070C415 /* AnimatableSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatableSprite.h; sourceTree = "<group>"; };
+		06213CBF197E93170070C415 /* StreamOut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StreamOut.cpp; sourceTree = "<group>"; };
+		06213CC0197E93170070C415 /* StreamOutFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StreamOutFile.h; sourceTree = "<group>"; };
+		06213CC2197E93560070C415 /* Ray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ray.cpp; sourceTree = "<group>"; };
 		069DD2D0194655DB00583161 /* IOSFileSystemHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSFileSystemHandler.h; sourceTree = "<group>"; };
 		069DD2D1194655DB00583161 /* IOSFileSystemHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IOSFileSystemHandler.mm; sourceTree = "<group>"; };
 		069DD2D919465ED900583161 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -1216,6 +1224,8 @@
 		069E99151944A850001C0AF2 /* blib */ = {
 			isa = PBXGroup;
 			children = (
+				06213CBC197E92F10070C415 /* AnimatableSprite.cpp */,
+				06213CBD197E92F10070C415 /* AnimatableSprite.h */,
 				069E99161944A850001C0AF2 /* Android.mk */,
 				069E99171944A850001C0AF2 /* Animation.cpp */,
 				069E99181944A850001C0AF2 /* Animation.h */,
@@ -1336,6 +1346,7 @@
 		069E99551944A850001C0AF2 /* math */ = {
 			isa = PBXGroup;
 			children = (
+				06213CC2197E93560070C415 /* Ray.cpp */,
 				069E99561944A850001C0AF2 /* ArcPath.cpp */,
 				069E99571944A850001C0AF2 /* ArcPath.h */,
 				069E99581944A850001C0AF2 /* BiArc.cpp */,
@@ -1382,6 +1393,8 @@
 		069E99921944A850001C0AF2 /* util */ = {
 			isa = PBXGroup;
 			children = (
+				06213CBF197E93170070C415 /* StreamOut.cpp */,
+				06213CC0197E93170070C415 /* StreamOutFile.h */,
 				069E99931944A850001C0AF2 /* Allocator.h */,
 				069E99941944A850001C0AF2 /* FastDelegate.h */,
 				069E99951944A850001C0AF2 /* FastDelegateBind.h */,
@@ -1533,6 +1546,7 @@
 				069DD72619465EDD00583161 /* b2GearJoint.cpp in Sources */,
 				069E99F01944A850001C0AF2 /* linq.cpp in Sources */,
 				069DD70519465EDD00583161 /* b2CollideEdge.cpp in Sources */,
+				06213CBE197E92F10070C415 /* AnimatableSprite.cpp in Sources */,
 				069E9A001944A850001C0AF2 /* Renderer.cpp in Sources */,
 				069E9A051944A850001C0AF2 /* SpriteSheet.cpp in Sources */,
 				069DD70619465EDD00583161 /* b2CollidePolygon.cpp in Sources */,
@@ -1616,6 +1630,7 @@
 				069E9A1D1944A850001C0AF2 /* textbox.cpp in Sources */,
 				069E99E91944A850001C0AF2 /* Texture.cpp in Sources */,
 				069E99FA1944A850001C0AF2 /* ParticleSystem.cpp in Sources */,
+				06213CC1197E93170070C415 /* StreamOut.cpp in Sources */,
 				069E9A041944A850001C0AF2 /* SpriteBatch.cpp in Sources */,
 				069E99F21944A850001C0AF2 /* BiArc.cpp in Sources */,
 				069DD71D19465EDD00583161 /* b2CircleContact.cpp in Sources */,
@@ -1629,6 +1644,7 @@
 				069E99F11944A850001C0AF2 /* ArcPath.cpp in Sources */,
 				069E9A181944A850001C0AF2 /* Image.cpp in Sources */,
 				069DD72E19465EDD00583161 /* b2WheelJoint.cpp in Sources */,
+				06213CC3197E93560070C415 /* Ray.cpp in Sources */,
 				069E9A111944A850001C0AF2 /* Util.cpp in Sources */,
 				069DD72819465EDD00583161 /* b2MouseJoint.cpp in Sources */,
 				069DD72019465EDD00583161 /* b2EdgeAndCircleContact.cpp in Sources */,

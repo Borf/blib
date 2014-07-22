@@ -32,12 +32,8 @@ namespace blib
 			animation->apply(this);
 			if (animation->elapsedTime >= animation->duration)
 			{
-				if (animations.size() == 0)
-					Sleep(0);
 				if (animation->onDone != nullptr)
 					animation->onDone();
-				if (animations.size() == 0)
-					Sleep(0);
 				delete animation;
 
 				animations.erase(animations.begin() + i);

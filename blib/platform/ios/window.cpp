@@ -37,9 +37,24 @@ namespace blib
 			void Window::swapBuffers()
 			{
 			}
-
-
-
+            
+            void Window::touchDownEvent(int x, int y)
+            {
+                for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+                    (*it)->onMouseDown(x,y,MouseListener::Left, 1);
+            }
+            
+            void Window::touchUpEvent(int x, int y)
+            {
+                for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+                    (*it)->onMouseUp(x,y,MouseListener::Left, 1);
+            }
+            void Window::touchMoveEvent(int x, int y)
+            {
+                for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+                    (*it)->onMouseMove(x,y,MouseListener::Left);
+            }
+            
 		}
 	}
 }
