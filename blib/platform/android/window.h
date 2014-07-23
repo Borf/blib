@@ -8,6 +8,7 @@
 
 namespace blib
 {
+	class App;
 	namespace platform
 	{
 		namespace android
@@ -20,9 +21,10 @@ namespace blib
 			    EGLContext context;
 			protected:
 			public:
-				Window();
+				Window(App* app);
 				virtual ~Window();
 
+				void tick() {};
 				virtual void swapBuffers();
 				virtual void create(int icon, std::string title);
 				virtual void makeCurrent();

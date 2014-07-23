@@ -26,7 +26,7 @@ namespace blib
 	{
 		namespace android
 		{
-			Window::Window()
+			Window::Window(App* app)
 			{
 			}
 			Window::~Window()

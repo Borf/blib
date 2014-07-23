@@ -35,9 +35,7 @@ namespace blib
 		#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
 		#endif
 
-#ifndef BLIB_ANDROID
 		static Mutex* logMutex = new Mutex();
-#endif
 		Log logger;
 
 		Log::Log()

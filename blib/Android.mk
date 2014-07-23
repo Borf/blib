@@ -14,11 +14,9 @@
 #
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
-LOCAL_CPP_FEATURES += exceptions
-LOCAL_CFLAGS += -std=gnu++11
-LOCAL_CPPFLAGS += -std=gnu++11
 LOCAL_MODULE    := blib
 LOCAL_SRC_FILES :=\
+	./AnimatableSprite.cpp\
 	./Animation.cpp\
 	./Box2DDebug.cpp\
 	./Color.cpp\
@@ -44,6 +42,7 @@ LOCAL_SRC_FILES :=\
 	./util/Stream.cpp\
 	./util/StreamIn.cpp\
 	./util/StreamInFile.cpp\
+	./util/StreamOut.cpp\
 	./util/Thread.cpp\
 	./gl/FBO.cpp\
 	./gl/GlResizeRegister.cpp\
@@ -56,6 +55,7 @@ LOCAL_SRC_FILES :=\
 	./math/Line.cpp\
 	./math/Polygon.cpp\
 	./math/Random.cpp\
+	./math/Ray.cpp\
 	./math/Rectangle.cpp\
 	./wm/Window.cpp\
 	./wm/WM.cpp\
@@ -72,7 +72,7 @@ LOCAL_SRC_FILES :=\
 	./platform/android/Window.cpp\
 	./App.cpp\
 	./ParticleSystem.cpp
-LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/../ $(LOCAL_PATH)/../externals $(LOCAL_PATH)/../externals/box2d $(NDK_ROOT)/sources/android/native_app_glue
+LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) C:/Android/android-ndk-r9/platforms/android-14/arch-arm/usr/include $(LOCAL_PATH)/../ $(LOCAL_PATH)/../externals $(LOCAL_PATH)/../externals/box2d $(NDK_ROOT)/sources/android/native_app_glue
 
 #include $(BUILD_SHARED_LIBRARY)
 include $(BUILD_STATIC_LIBRARY)

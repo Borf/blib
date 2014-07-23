@@ -241,6 +241,15 @@ namespace blib
 			return ret;
 		}
 
+		template<class R, class Q>
+		R flatten(const Q &data)
+		{
+			R ret;
+			for (auto row : data)
+				for (auto el : row)
+					ret.push_back(el);
+			return ret;
+		}
 
 	}
 
