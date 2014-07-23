@@ -104,7 +104,7 @@ namespace blib
 
 				glm::vec2 diff = radialMenuPosition - glm::vec2(mouseState.x, mouseState.y);
 				float angle = atan2(diff.y, diff.x);
-				int id = (int)round(((angle+2*M_PI) / (2 * M_PI)) * 8+7) % 8;
+				int id = (int)glm::round(((angle+2*M_PI) / (2 * M_PI)) * 8+7) % 8;
 
 
 				for (int i = 0; i < 8; i++)
@@ -245,7 +245,7 @@ namespace blib
 			{
 				glm::vec2 diff = radialMenuPosition - glm::vec2(mouseState.x, mouseState.y);
 				float angle = atan2(diff.y, diff.x);
-				int id = (int)round(((angle + 2 * M_PI) / (2 * M_PI)) * 8) % 8;
+				int id = (int)glm::round(((angle + 2 * M_PI) / (2 * M_PI)) * 8) % 8;
 				if (id < (int)radialMenu->menuItems.size())
 				{
 					SubMenuMenuItem* submenuitem = dynamic_cast<SubMenuMenuItem*>(radialMenu->menuItems[id]);

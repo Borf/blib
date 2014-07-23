@@ -86,12 +86,16 @@ namespace blib
 
 				//pdidInstance->guidProduct == "{02A1045E-0000-0000-0000-504944564944}"
 
+				GUID xbox = { 0x02a1045e, 0x0000, 0x0000, { 0x00, 0x00, 0x50, 0x49, 0x44, 0x56, 0x49, 0x44 } };
+				GUID gamecube = { 0xF7051A34, 0x0000, 0x0000, { 0x00, 0x00, 0x50, 0x49, 0x44, 0x56, 0x49, 0x44 } };
+				GUID ouya = { 0x00012836, 0x0000, 0x0000, { 0x00, 0x00, 0x50, 0x49, 0x44, 0x56, 0x49, 0x44 } };
 
-				if (pdidInstance->guidProduct == _GUID{ 0x02a1045e, 0x0000, 0x0000, { 0x00, 0x00, 0x50, 0x49, 0x44, 0x56, 0x49, 0x44 } })//xbox
+
+				if (pdidInstance->guidProduct == xbox)//xbox
 					di->joystates[di->joysticks.size()].type = JoyState::ControllerType::Xbox;
-				else if (pdidInstance->guidProduct == _GUID{ 0xF7051A34, 0x0000, 0x0000, { 0x00, 0x00, 0x50, 0x49, 0x44, 0x56, 0x49, 0x44 } })//gamecube
+				else if (pdidInstance->guidProduct == gamecube)//gamecube
 					di->joystates[di->joysticks.size()].type = JoyState::ControllerType::GameCube;
-				else if (pdidInstance->guidProduct == _GUID{ 0x00012836, 0x0000, 0x0000, { 0x00, 0x00, 0x50, 0x49, 0x44, 0x56, 0x49, 0x44 } })//ouya
+				else if (pdidInstance->guidProduct == ouya)//ouya
 					di->joystates[di->joysticks.size()].type = JoyState::ControllerType::Xbox;
 				else
 					Log::out << "Unknown controller: " << pdidInstance->tszProductName << Log::newline;
