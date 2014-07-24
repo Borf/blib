@@ -66,6 +66,13 @@ namespace blib
 		updateThread = NULL;
 		runnerMutex = NULL;		
 
+		for (int i = 0; i < 1000; i++)
+		{
+			frameTimes[i].drawTime = 0;
+			frameTimes[i].fps = 0;
+			frameTimes[i].updateTime = 0;
+		}
+
 	}
 
 	App::~App()

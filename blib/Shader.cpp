@@ -108,6 +108,7 @@ namespace blib
 		uniformData = new char[uniformSize];
 		activeUniformData = new char[uniformSize];
 		memset(activeUniformData, 0, uniformSize);
+		memset(activeUniformData, 0, uniformSize);
 	}
 
 

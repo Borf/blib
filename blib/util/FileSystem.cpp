@@ -284,7 +284,7 @@ namespace blib
 		{
 			if (copied && data)
 			{
-				delete data;
+				delete[] data;
 				data = NULL;
 			}
 		}

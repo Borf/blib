@@ -31,12 +31,15 @@ namespace blib
 			{
 				if(showBorder)
 					spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["box"], glm::vec2(width, height));
+
 				if (texture)
 				{
+					if (!texture->loaded)
+						return;
 					glm::vec2 scale = glm::vec2((width - 2.0f) / texture->originalWidth, (height - 2.0f) / texture->originalHeight);
 
 					if (scaleAspect)
-						scale.x = (scale.y = glm::min(scale.x, scale.y));
+						scale.x = (scale.y = glm::min(scale.x, scale.y));	//uninitialized read in min function?
 
 					spriteBatch.draw(texture, blib::math::easyMatrix(
 						glm::vec2(x + 2, y + 2),
