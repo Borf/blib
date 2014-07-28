@@ -200,6 +200,8 @@ namespace blib
 		template<class T>
 		void drawTriangles(const std::vector<T> &vertices, const RenderState& renderState)
 		{
+			if (vertices.empty())
+				return;
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
