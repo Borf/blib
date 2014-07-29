@@ -138,11 +138,59 @@ namespace blib
 	{
 		for (int i = 0; i < 3; i++)
 			((float&)data[index + i*sizeof(float)]) = value[i];
-	}	template<>
-		void Shader::Uniform::set(char* data, const glm::vec4& value)
+	}
+
+	template<>
+	void Shader::Uniform::set(char* data, const glm::vec4& value)
 	{
 			for (int i = 0; i < 4; i++)
 				((float&)data[index + i*sizeof(float)]) = value[i];
 	}
+
+
+	template<>
+	glm::mat4 Shader::Uniform::get(char* data)
+	{
+		glm::mat4 ret;
+		for (int x = 0; x < 4; x++)
+			for (int y = 0; y < 4; y++)
+				ret[y][x] = ((float&)data[index + (4 * y + x)*sizeof(float)]);
+		return ret;
+	}
+	template<>
+	glm::mat3 Shader::Uniform::get(char* data)
+	{
+		glm::mat3 ret;
+		for (int x = 0; x < 3; x++)
+			for (int y = 0; y < 3; y++)
+				ret[y][x] = ((float&)data[index + (3 * y + x)*sizeof(float)]);
+		return ret;
+	}
+
+	template<>
+	glm::vec2 Shader::Uniform::get(char* data)
+	{
+		glm::vec2 ret;
+		for (int i = 0; i < 2; i++)
+			ret[i] = ((float&)data[index + i*sizeof(float)]);
+		return ret;
+	}
+	template<>
+	glm::vec3 Shader::Uniform::get(char* data)
+	{
+		glm::vec3 ret;
+		for (int i = 0; i < 3; i++)
+			ret[i] = ((float&)data[index + i*sizeof(float)]);
+		return ret;
+	}
+	template<>
+	glm::vec4 Shader::Uniform::get(char* data)
+	{
+		glm::vec4 ret;
+		for (int i = 0; i < 4; i++)
+			ret[i] = ((float&)data[index + i*sizeof(float)]);
+		return ret;
+	}
+
 #endif
 }

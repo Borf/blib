@@ -136,6 +136,17 @@ namespace blib
 	void Shader::Uniform::set<glm::vec3>(char* data, const glm::vec3& value);
 	template<>
 	void Shader::Uniform::set<glm::vec4>(char* data, const glm::vec4& value);
+
+	template<>
+	glm::mat4 Shader::Uniform::get<glm::mat4>(char* data);
+	template<>
+	glm::mat3 Shader::Uniform::get<glm::mat3>(char* data);
+	template<>
+	glm::vec2 Shader::Uniform::get<glm::vec2>(char* data);
+	template<>
+	glm::vec3 Shader::Uniform::get<glm::vec3>(char* data);
+	template<>
+	glm::vec4 Shader::Uniform::get<glm::vec4>(char* data);
 #endif
 
 }
