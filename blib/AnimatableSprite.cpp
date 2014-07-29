@@ -1,6 +1,7 @@
 #include "AnimatableSprite.h"
 #include <blib/SpriteBatch.h>
 #include <blib/Math.h>
+#include <blib/Color.h>
 
 namespace blib
 {
@@ -8,15 +9,17 @@ namespace blib
 	AnimatableSprite::AnimatableSprite(blib::Texture* texture, const blib::math::Rectangle &rect) : rect(rect)
 	{
 		this->texture = texture;
+		color = blib::Color::white;
 	}
 	AnimatableSprite::AnimatableSprite(blib::Texture* texture, const glm::vec2 &pos) : rect(pos, texture->originalWidth, texture->originalHeight)
 	{
 		this->texture = texture;
+		color = blib::Color::white;
 	}
 
 	void AnimatableSprite::draw(SpriteBatch* spriteBatch)
 	{
-		spriteBatch->draw(texture, blib::math::easyMatrix(texture, rect));
+		spriteBatch->draw(texture, blib::math::easyMatrix(texture, rect), color);
 	}
 
 
@@ -53,6 +56,14 @@ namespace blib
 	void AnimatableSprite::moveTo(const blib::math::Rectangle &targetRect, float time, const std::function<void()> &onDone /* = nullptr */)
 	{
 		MoveToAnimation* animation = new MoveToAnimation(rect, targetRect);
+		animation->onDone = onDone;
+		animation->duration = time;
+		animations.push_back(animation);
+	}
+
+	void AnimatableSprite::alphaTo(const float target, float time, const std::function<void()> &onDone /* = nullptr */)
+	{
+		AlphaAnimation* animation = new AlphaAnimation(color.a, target);
 		animation->onDone = onDone;
 		animation->duration = time;
 		animations.push_back(animation);
@@ -108,5 +119,17 @@ namespace blib
 		sprite->rect = original;
 	}
 
+
+	AlphaAnimation::AlphaAnimation(const float src, const float dest)
+	{
+		this->src = src;
+		this->dest = dest;
+	}
+
+	void AlphaAnimation::apply(AnimatableSprite* sprite)
+	{
+		float fac = elapsedTime / duration;
+		sprite->color.a = glm::mix(src, dest, fac);
+	}
 
 }

@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <glm/glm.hpp>
+#include <blib/config.h>
 
 namespace blib
 {
@@ -122,9 +123,10 @@ namespace blib
 		virtual void doUniform(const std::string &name,			const glm::vec2& value) = 0;
 	};
 
-    
+#ifdef BLIB_IOS    
 #define STUPIDIPHONE
-    
+#endif
+
 #ifdef STUPIDIPHONE
 	template<>
 	void Shader::Uniform::set<glm::mat4>(char* data, const glm::mat4& value);

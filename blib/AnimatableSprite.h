@@ -49,11 +49,21 @@ namespace blib
 		void finish(AnimatableSprite* sprite);;
 	};
 
+	class AlphaAnimation : public Animation
+	{
+		float src;
+		float dest;
+	public:
+		AlphaAnimation(const float src, const float dest);
+		virtual void apply(AnimatableSprite* sprite);
+	};
+
 
 	class AnimatableSprite
 	{
 	public:
 		blib::math::Rectangle rect;
+		glm::vec4 color;
 		blib::Texture* texture;
 		std::vector<Animation*> animations;
 
@@ -66,6 +76,7 @@ namespace blib
 		void moveTo(const glm::vec2 &targetPosition, float time, const std::function<void()> &onDone = nullptr);
 		void resizeTo(const glm::vec2 &targetSize, float time, const std::function<void()> &onDone = nullptr);
 		void moveTo(const blib::math::Rectangle &targetRect, float time, const std::function<void()> &onDone = nullptr);
+		void alphaTo(const float targetAlpha, float time, const std::function<void()> &onDone = nullptr);
 
 		void setAnimation(Animation* animation);
 
