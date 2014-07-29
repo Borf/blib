@@ -112,4 +112,36 @@ namespace blib
 	}
 
 
+
+	template<>
+	void Shader::Uniform::set(char* data, const glm::mat4& value)
+	{
+		for (int x = 0; x < 4; x++)
+			for (int y = 0; y < 4; y++)
+				((float&)data[index + (4 * y + x)*sizeof(float)]) = value[y][x];
+	}
+	template<>
+	void Shader::Uniform::set(char* data, const glm::mat3& value)
+	{
+		for (int x = 0; x < 3; x++)
+			for (int y = 0; y < 3; y++)
+				((float&)data[index + (3 * y + x)*sizeof(float)]) = value[y][x];
+	}
+	template<>
+	void Shader::Uniform::set(char* data, const glm::vec2& value)
+	{
+		for (int i = 0; i < 2; i++)
+				((float&)data[index + i*sizeof(float)]) = value[i];
+	}
+	template<>
+	void Shader::Uniform::set(char* data, const glm::vec3& value)
+	{
+		for (int i = 0; i < 3; i++)
+			((float&)data[index + i*sizeof(float)]) = value[i];
+	}	template<>
+		void Shader::Uniform::set(char* data, const glm::vec4& value)
+	{
+			for (int i = 0; i < 4; i++)
+				((float&)data[index + i*sizeof(float)]) = value[i];
+	}
 }
