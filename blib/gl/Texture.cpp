@@ -79,10 +79,17 @@ namespace blib
 
 			int depth;
 
-			int &originalWidth = T::originalWidth;
-			int &originalHeight = T::originalHeight;
+			int &_originalWidth = T::originalWidth;
+			int &_originalHeight = T::originalHeight;
 
-			unsigned char* tmpData = stbi_load_from_memory((stbi_uc*)fileData, length, &originalWidth, &originalHeight, &depth, 0);
+            _originalWidth = 10;
+            _originalHeight = 10;
+            depth = 1;
+            
+			unsigned char* tmpData = stbi_load_from_memory((stbi_uc*)fileData, length, &_originalWidth, &_originalHeight, &depth, 0);
+            
+            printf("Loaded image: %s -> %d x %d\n", fileName.c_str(), _originalWidth, _originalHeight);
+            
 			delete[] fileData;
 			data = new unsigned char[T::originalWidth*T::originalHeight*depth];
 			memcpy(data, tmpData, T::originalWidth*T::originalHeight*depth);
