@@ -122,6 +122,10 @@ namespace blib
 		virtual void doUniform(const std::string &name,			const glm::vec2& value) = 0;
 	};
 
+    
+#define STUPIDIPHONE
+    
+#ifdef STUPIDIPHONE
 	template<>
 	void Shader::Uniform::set<glm::mat4>(char* data, const glm::mat4& value);
 	template<>
@@ -132,5 +136,7 @@ namespace blib
 	void Shader::Uniform::set<glm::vec3>(char* data, const glm::vec3& value);
 	template<>
 	void Shader::Uniform::set<glm::vec4>(char* data, const glm::vec4& value);
+#endif
+
 }
 

@@ -112,7 +112,7 @@ namespace blib
 	}
 
 
-
+#ifdef STUPIDIPHONE
 	template<>
 	void Shader::Uniform::set(char* data, const glm::mat4& value)
 	{
@@ -144,4 +144,5 @@ namespace blib
 			for (int i = 0; i < 4; i++)
 				((float&)data[index + i*sizeof(float)]) = value[i];
 	}
+#endif
 }
