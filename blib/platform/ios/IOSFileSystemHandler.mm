@@ -17,13 +17,12 @@ blib::util::StreamInFile* IOSFileSystemHandler::openRead( const std::string &fil
     ext = ext.substr(ext.rfind(".")+1);
     file = file.substr(0, file.rfind("."));
     
-    file = file.substr(file.rfind("/")+1);
+//    file = file.substr(file.rfind("/")+1);
     
     NSString* path = [[NSBundle mainBundle] pathForResource:[NSString stringWithCString:file.c_str()] ofType:[NSString stringWithCString:ext.c_str()]];
-//    NSString* path = [[NSBundle mainBundle] pathForResource:@"chest_closed" ofType:@"png"];
     const char* cpath = [path cStringUsingEncoding:1 ];
 
-    printf("%s\n", cpath);
+  //  printf("%s\n", cpath);
     
     std::ifstream* stream = new std::ifstream(cpath, std::ios_base::binary);
     if(stream->is_open())

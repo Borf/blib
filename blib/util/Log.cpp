@@ -135,7 +135,7 @@ namespace blib
 		#ifdef ANDROID
 			LOGI("%s", buffer.c_str());
 		#else
-			printf("%s\r\n", buffer.c_str());
+			printf("%s\n", buffer.c_str());
 		#endif
 			buffer = "";
 #ifdef WIN32
