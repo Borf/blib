@@ -119,6 +119,8 @@ namespace blib
 #ifdef BLIB_OPENGL
 		else if (appSetup.renderer == AppSetup::GlRenderer)
 			resourceManager = new gl::ResourceManager();
+		else if (appSetup.renderer == AppSetup::DirectGlRenderer)
+			resourceManager = new gl::ResourceManager();
 #endif
 #ifdef BLIB_DIRECTX
 		else if(appSetup.renderer == AppSetup::DxRenderer)

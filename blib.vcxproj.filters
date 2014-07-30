@@ -49,6 +49,9 @@
     <Filter Include="platform\win32">
       <UniqueIdentifier>{edf7f2a6-e896-4929-a144-5e86f0887621}</UniqueIdentifier>
     </Filter>
+    <Filter Include="gl\direct">
+      <UniqueIdentifier>{b5bd9405-400d-4e50-aa92-89da941b93ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="blib\VIO.h" />
@@ -509,6 +512,9 @@
       <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="blib\AnimatableSprite.h" />
+    <ClInclude Include="blib\gl\direct\ResourceManager.h">
+      <Filter>gl\direct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -845,6 +851,9 @@
       <Filter>util</Filter>
     </ClCompile>
     <ClCompile Include="blib\AnimatableSprite.cpp" />
+    <ClCompile Include="blib\gl\direct\ResourceManager.cpp">
+      <Filter>gl\direct</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

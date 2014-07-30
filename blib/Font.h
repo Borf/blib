@@ -7,7 +7,8 @@ namespace blib
 {
 	class Texture;
 	class ResourceManager;
-	namespace gl { class ResourceManager; };
+	namespace gl {
+		class ResourceManager; namespace direct { class ResourceManager; }	};
 	class Glyph
 	{
 	public:
@@ -30,6 +31,7 @@ namespace blib
 
 
 		friend class gl::ResourceManager;
+		friend class gl::direct::ResourceManager;
 		friend class SpriteBatch;
 
 	public:

@@ -81,6 +81,7 @@ namespace blib
 		{
 			NullRenderer,
 			GlRenderer,
+			DirectGlRenderer,
 			DxRenderer,
 		} renderer;
 
