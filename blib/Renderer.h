@@ -8,9 +8,12 @@
 #include <blib/util/Thread.h>
 #include <vector>
 
-//#define CUSTOMMEMALLOCATOR
+#include <blib/config.h>
+#if defined(BLIB_IOS)
 
-
+#else
+#define CUSTOMMEMALLOCATOR
+#endif
 
 namespace blib
 {
@@ -42,7 +45,7 @@ namespace blib
 			} command;
 			Render()
 			{
-				blib::util::callstack();
+//				blib::util::callstack();
 			}
 			virtual ~Render() {};
 			RenderState renderState;

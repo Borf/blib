@@ -259,7 +259,7 @@ namespace blib
 
 
 			}
-			Log::out<<toRender[1-activeLayer].size()<< " render commands, "<<totalVerts<<" vertices, verts"<<vertexIndex[1-activeLayer]<<Log::newline;
+//			Log::out<<toRender[1-activeLayer].size()<< " render commands, "<<totalVerts<<" vertices, verts"<<vertexIndex[1-activeLayer]<<Log::newline;
 			//delete takes up a lot of time here, let's see if we can reuse the list of vertices
 
 			clearCommands();
