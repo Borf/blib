@@ -261,10 +261,8 @@ namespace blib
 			}
 			Log::out<<toRender[1-activeLayer].size()<< " render commands, "<<totalVerts<<" vertices, verts"<<vertexIndex[1-activeLayer]<<Log::newline;
 			//delete takes up a lot of time here, let's see if we can reuse the list of vertices
-		//	for(size_t i = 0; i < toRender[1-activeLayer].size(); i++)
-		//		delete toRender[1-activeLayer][i];
-			allocators[1 - activeLayer].clear(); // deletes all objects
-			toRender[1-activeLayer].clear();
+
+			clearCommands();
             glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 		}
 

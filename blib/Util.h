@@ -61,6 +61,8 @@ namespace blib
 		};
 
 
+		std::string callstack();
+
 		glm::vec3 hsv2rgb(glm::vec3 hsv);
 		glm::vec3 rgb2hsv(glm::vec3 rgb);
 

@@ -3,9 +3,13 @@
 #include <blib/Shader.h>
 #include <blib/RenderState.h>
 #include <blib/VBO.h>
+#include <blib/util.h>
 #include <blib/util/ListAllocator.h>
 #include <blib/util/Thread.h>
 #include <vector>
+
+//#define CUSTOMMEMALLOCATOR
+
 
 
 namespace blib
@@ -36,6 +40,10 @@ namespace blib
 				SetViewPort,
 				Unproject,
 			} command;
+			Render()
+			{
+				blib::util::callstack();
+			}
 			virtual ~Render() {};
 			RenderState renderState;
 			char shaderState[1024];
@@ -203,7 +211,11 @@ namespace blib
 			if (vertices.empty())
 				return;
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+#else
+			RenderBlock<T>* block = new RenderBlock<T>();
+#endif
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->renderState = renderState;
 			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
@@ -224,7 +236,11 @@ namespace blib
 		void drawTriangles(int count, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+#else
+			RenderBlock<T>* block = new RenderBlock<T>();
+#endif
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->vertexStart = 0;
 			block->count = count;
@@ -237,7 +253,11 @@ namespace blib
 		void drawTriangles(int first, int count, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+#else
+			RenderBlock<T>* block = new RenderBlock<T>();
+#endif
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->vertexStart = first;// * (T::size() / sizeof(float));
 			block->count = count;
@@ -257,7 +277,11 @@ namespace blib
 		void drawTriangles(T* first, int count, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+#else
+			RenderBlock<T>* block = new RenderBlock<T>();
+#endif
 			block->command = Render::DrawTriangles;	//TODO : move to constructor
 			block->renderState = renderState;
 			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
@@ -274,7 +298,11 @@ namespace blib
 		void clear(const glm::vec4 &color, int bits, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
-			RenderClear* block = allocators[activeLayer].get<RenderClear>(); //new RenderClear();
+#ifdef CUSTOMMEMALLOCATOR
+			RenderClear* block = allocators[activeLayer].get<RenderClear>(); //new RenderClear<T>();
+#else
+			RenderClear* block = new RenderClear();
+#endif
 			block->command = Render::Clear;
 			block->color = color;
 			block->renderState = renderState;
@@ -288,7 +316,11 @@ namespace blib
 		void setVbo(VBO* vbo, const std::vector<T> &vertices)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderSetVbo<T>* block = allocators[activeLayer].get<RenderSetVbo<T>>(); //new RenderSetVbo<T>();
+#else
+			RenderSetVbo<T>* block = new RenderSetVbo<T>();
+#endif
 			block->command = Render::SetVbo;	//TODO : move to constructor
 			block->vertexStart = vertexIndex[activeLayer];
 			block->count = vertices.size();
@@ -309,7 +341,11 @@ namespace blib
 		void drawLines(T* first, int count, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+#else
+			RenderBlock<T>* block = new RenderBlock<T>();
+#endif
 			block->command = Render::DrawLines;	//TODO : move to constructor
 			block->renderState = renderState;
 			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
@@ -324,7 +360,11 @@ namespace blib
 		void drawLines(int count, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+#else
+			RenderBlock<T>* block = new RenderBlock<T>();
+#endif
 			block->command = Render::DrawLines;	//TODO : move to constructor
 			block->vertexStart = 0;
 			block->count = count;
@@ -337,7 +377,11 @@ namespace blib
 		void drawLines(const std::vector<T> &vertices, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+#else
+			RenderBlock<T>* block = new RenderBlock<T>();
+#endif
 			block->command = Render::DrawLines;	//TODO : move to constructor
 			block->renderState = renderState;
 			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
@@ -352,7 +396,11 @@ namespace blib
 		void drawPoints(const std::vector<T> &vertices, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+#else
+			RenderBlock<T>* block = new RenderBlock<T>();
+#endif
 			block->command = Render::DrawPoints;	//TODO : move to constructor
 			block->renderState = renderState;
 			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
@@ -366,7 +414,11 @@ namespace blib
 		void setTextureSubImage(blib::Texture* texture, int x, int y, int width, int height, char* data)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderSetSubTexture* command = allocators[activeLayer].get<RenderSetSubTexture>(); //new RenderSetSubTexture();
+#else
+			RenderSetSubTexture* command = new RenderSetSubTexture();
+#endif
 			command->command = Render::SetSubTexture;
 			command->texture = texture;
 			command->x = x;
@@ -390,7 +442,11 @@ namespace blib
 		void setViewPort(int width, int height)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderSetViewPort* command = allocators[activeLayer].get<RenderSetViewPort>();
+#else
+			RenderSetViewPort* command = new RenderSetViewPort();
+#endif
 			command->command = Render::SetViewPort;
 			command->width = width;
 			command->height = height;
@@ -400,7 +456,11 @@ namespace blib
 		void unproject(glm::vec2 mousePosition, glm::vec4* target, blib::math::Ray* ray, const glm::mat4 &modelMatrix, const glm::mat4 &projectionMatrix)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
 			RenderUnproject* command = allocators[activeLayer].get<RenderUnproject>();
+#else
+			RenderUnproject* command = new RenderUnproject();
+#endif
 			command->command = Render::Unproject;
 			command->mousePosition = mousePosition;
 			command->target = target;
@@ -420,6 +480,19 @@ namespace blib
 			activeLayer = 1 - activeLayer;
 			vertexIndex[activeLayer] = 0;
 //			memset(vertices[activeLayer], 0, 1024 * 1024 * 50 * sizeof(float));
+		}
+
+
+		void clearCommands()
+		{
+#ifdef CUSTOMMEMALLOCATOR
+			allocators[1 - activeLayer].clear(); // deletes all objects
+#else
+			for(size_t i = 0; i < toRender[1-activeLayer].size(); i++)
+				delete toRender[1-activeLayer][i];
+#endif
+
+			toRender[1 - activeLayer].clear();
 		}
 
 

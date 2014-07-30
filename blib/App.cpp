@@ -171,7 +171,8 @@ namespace blib
 			Log::out<<"Invalid joystick driver"<<Log::newline;
 		blib::Box2DDebug::getInstance()->init(lineBatch, renderer);
 
-		if(looping)
+		blib::util::Profiler::startFrame();
+		if (looping)
 			run();
 	}
 
