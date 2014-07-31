@@ -179,9 +179,26 @@ void main()\
 			renderState.activeShader->setUniform("matrix", matrix);
 			renderer->drawPoints(vertices, renderState);*/
 
-			for(int i = 0; i < nParticles; i++)
+			if (nParticles > 0 && particles[0].emitter->emitterTemplate->blendMode == EmitterTemplate::BlendMode::Add)
 			{
+				spriteBatch->end();
+				spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE;
+				spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE;
+				spriteBatch->begin(spriteBatch->getMatrix());
+			}
+
+			for (int i = 0; i < nParticles; i++)
+			{
+
 				spriteBatch->draw(particles[i].texture, blib::math::easyMatrix(particles[i].vertex.position, 0, 0.01f * particles[i].vertex._size), glm::vec2(32,32), particles[i].vertex.color);
+			}
+
+			if (nParticles > 0 && particles[0].emitter->emitterTemplate->blendMode == EmitterTemplate::BlendMode::Add)
+			{
+				spriteBatch->end();
+				spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
+				spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
+				spriteBatch->begin(spriteBatch->getMatrix());
 			}
 
 		}

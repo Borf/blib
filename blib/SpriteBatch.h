@@ -88,5 +88,7 @@ namespace blib
 		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, Json::Value skin, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));
 
 		virtual void resizeGl( int width, int height );
+
+		inline const glm::mat4& getMatrix() const { return matrix; };
 	};
 }
