@@ -8,7 +8,7 @@
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/gl/Vertex.h>
 
-#define MAX_PARTICLES 1000000
+#define MAX_PARTICLES 50000
 
 namespace blib
 {

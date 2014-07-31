@@ -3,6 +3,7 @@
 #include <blib/config.h>
 #include <blib/util/stb_image.h>
 #include <blib/util/FileSystem.h>
+#include <blib/config.h>
 #include <blib/util/Log.h>
 using blib::util::Log;
 
@@ -17,6 +18,10 @@ namespace blib
 			texid = 0;
 			width = 2048;
 			height = 2048;
+#ifdef BLIB_IOS
+            width = 1024;
+            height = 1024;
+#endif
 			taken = new bool[width/32*height/32];
 			for(int i = 0; i < width/32*height/32; i++)
 				taken[i] = false;
