@@ -343,4 +343,9 @@ void main()\
 		renderState.activeShader->setUniform(ShaderUniforms::projectionmatrix, glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
 
+	ParticleSystem::~ParticleSystem()
+	{
+
+	}
+
 }

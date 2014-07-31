@@ -140,6 +140,7 @@ namespace blib
 		TextureMap* textureMap;
 	public:
 		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch);
+		~ParticleSystem();
 		void update(double elapsedTime);
 		void draw(glm::mat4 matrix);
 
