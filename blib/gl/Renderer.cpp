@@ -125,14 +125,17 @@ namespace blib
 						float winZ;
 						glReadPixels((int)ru->mousePosition.x, (int)ru->mousePosition.y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ); //TODO: maybe need to do windowheight-mouse3d.y
 						glm::vec4 ret = glm::vec4(glm::unProject(glm::vec3(ru->mousePosition, winZ), ru->modelMatrix, ru->projectionMatrix, glm::vec4(Viewport[0], Viewport[1], Viewport[2], Viewport[3])), winZ);
-						app->runLater<int>([ret, ru](int) {*ru->target = ret; }, 0);
+
+						glm::vec4* target = ru->target;
+						app->runLater<int>([ret, target](int) {*target = ret; }, 0);
 					}
 					if (ru->ray)
 					{
 						glm::vec3 retNear = glm::unProject(glm::vec3(ru->mousePosition, 0), ru->modelMatrix, ru->projectionMatrix, glm::vec4(Viewport[0], Viewport[1], Viewport[2], Viewport[3]));
 						glm::vec3 retFar = glm::unProject(glm::vec3(ru->mousePosition, 1), ru->modelMatrix, ru->projectionMatrix, glm::vec4(Viewport[0], Viewport[1], Viewport[2], Viewport[3]));
 
-						app->runLater<int>([retNear, retFar, ru](int) { ru->ray->origin = retNear; ru->ray->dir = glm::normalize(retFar - retNear); ru->ray->calcSign();  }, 0);
+						blib::math::Ray* ray = ru->ray;
+						app->runLater<int>([retNear, retFar, ray](int) { ray->origin = retNear; ray->dir = glm::normalize(retFar - retNear); ray->calcSign();  }, 0);
 					}
 
 

@@ -12,7 +12,7 @@
 #if defined(BLIB_IOS)
 
 #else
-#define CUSTOMMEMALLOCATOR
+//#define CUSTOMMEMALLOCATOR
 #endif
 
 namespace blib
