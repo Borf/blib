@@ -21,6 +21,19 @@ namespace blib
 
 		std::string getDataDir();
 
+		long tickcount()
+		{
+#ifdef WIN32
+			return GetTickCount();
+#else
+			struct timeval tv;
+			if (gettimeofday(&tv, NULL) != 0)
+				return 0;
+
+			return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+#endif
+		}
+
 		template<class T>
 		T swapByteOrder( T val)
 		{
