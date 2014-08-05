@@ -88,8 +88,6 @@ namespace blib
             
 			unsigned char* tmpData = stbi_load_from_memory((stbi_uc*)fileData, length, &_originalWidth, &_originalHeight, &depth, 0);
             
-            printf("Loaded image: %s -> %d x %d\n", fileName.c_str(), _originalWidth, _originalHeight);
-            
 			delete[] fileData;
 			data = new unsigned char[T::originalWidth*T::originalHeight*depth];
 			memcpy(data, tmpData, T::originalWidth*T::originalHeight*depth);
@@ -162,6 +160,7 @@ namespace blib
 				}
 				T::center = glm::vec2(T::originalWidth/2.0f, T::originalHeight/2.0f);
 			}
+			printf("Loaded image: %s -> %d x %d, resized to %d x %d\n", fileName.c_str(), _originalWidth, _originalHeight, T::width, T::height);
 			T::loaded = true;
 		}
 

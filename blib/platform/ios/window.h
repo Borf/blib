@@ -21,6 +21,9 @@ namespace blib
 				Window(App* app);
 				virtual ~Window();
 
+				std::vector<long> clicks;
+
+
 				virtual void swapBuffers();
 				virtual void create(int icon, std::string title);
 				virtual void makeCurrent();

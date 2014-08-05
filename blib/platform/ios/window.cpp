@@ -40,8 +40,20 @@ namespace blib
             
             void Window::touchDownEvent(int x, int y)
             {
-                for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-                    (*it)->onMouseDown(x,y,MouseListener::Left, 1);
+				clickCount = 1;
+				clicks.push_back(GetTickCount());
+				int i = clicks.size() - 2;
+				while (i >= 0 && clicks[i] > clicks[i + 1] - 200)
+				{
+					i--;
+					clickCount++;
+				}
+				if (clickCount < clicks.size())
+					clicks.erase(clicks.begin(), clicks.begin() + clicks.size() - clickCount);
+
+				
+				for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+					(*it)->onMouseDown(x, y, MouseListener::Left, clickCount);
             }
             
             void Window::touchUpEvent(int x, int y)
