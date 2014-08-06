@@ -5,6 +5,7 @@
 #include <blib/MouseListener.h>
 #include <blib/gl/Window.h>
 #include <blib/App.h>
+#include <blib/Util.h>
 
 using blib::util::Log;
 
@@ -40,8 +41,8 @@ namespace blib
             
             void Window::touchDownEvent(int x, int y)
             {
-				clickCount = 1;
-				clicks.push_back(GetTickCount());
+				int clickCount = 1;
+				clicks.push_back(blib::util::tickcount());
 				int i = clicks.size() - 2;
 				while (i >= 0 && clicks[i] > clicks[i + 1] - 200)
 				{

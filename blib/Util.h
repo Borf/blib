@@ -6,6 +6,10 @@
 #include <string.h>
 #include <functional>
 
+#ifndef WIN32
+#include <sys/time.h>
+#endif
+
 namespace blib
 {
 	namespace util
