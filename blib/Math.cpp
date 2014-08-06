@@ -93,6 +93,21 @@ namespace blib
 			return glm::scale(glm::translate(glm::mat4(), glm::vec3(rect.topleft,0)), glm::vec3(scale,1));
 		}
 
+		glm::mat4 easyMatrix(const Texture* texture, const Rectangle &rect, glm::vec2 pivot, float rotation)
+		{
+			glm::vec2 scale = rect.size() / glm::vec2(texture->originalWidth, texture->originalHeight);
+
+			glm::mat4 ret;
+			ret = glm::translate(ret, glm::vec3(rect.topleft, 0));
+			ret = glm::translate(ret, glm::vec3((pivot - rect.topleft), 0));
+			ret = glm::rotate(ret, rotation, glm::vec3(0, 0, 1));
+			ret = glm::translate(ret, glm::vec3(-(pivot - rect.topleft), 0));
+			ret = glm::scale(ret, glm::vec3(scale, 1));
+
+
+			return ret;
+		}
+
 		float round( float number, int digits )
 		{
 			for(int i = 0; i < digits; i++)

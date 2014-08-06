@@ -9,6 +9,8 @@
 #include <shlobj.h>
 #include <DbgHelp.h>
 #pragma comment(lib,"dbghelp.lib")
+#else
+#include <sys/time.h>
 #endif
 
 #ifndef NAN
@@ -281,6 +283,19 @@ return "~/";
 			free(symbol);
 #endif
 			return "";
+		}
+
+		long tickcount()
+		{
+#ifdef WIN32
+			return GetTickCount();
+#else
+			struct timeval tv;
+			if (gettimeofday(&tv, NULL) != 0)
+				return 0;
+
+			return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+#endif
 		}
 
 	}

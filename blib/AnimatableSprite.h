@@ -64,6 +64,7 @@ namespace blib
 	public:
 		blib::math::Rectangle rect;
 		glm::vec4 color;
+		float rotation;
 		blib::Texture* texture;
 		std::vector<Animation*> animations;
 
@@ -84,5 +85,7 @@ namespace blib
 		void update(float elapsedTime);
 		void shake();
 		void clearAnimations();
+
+		bool contains(glm::vec2 point);
 	};
 }

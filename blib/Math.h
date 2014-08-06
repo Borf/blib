@@ -28,7 +28,8 @@ namespace blib
 		glm::mat4 easyMatrix(const glm::vec2 &position, const glm::vec3 &rotation,				glm::mat4 matrix = glm::mat4());
 		glm::mat4 easyMatrix(const glm::vec2 &position, float rotation, float scale,			glm::mat4 matrix = glm::mat4());
 		glm::mat4 easyMatrix(const glm::vec2 &position, float rotation, const glm::vec2 &scale, glm::mat4 matrix = glm::mat4());
-		glm::mat4 easyMatrix(const Texture* texture,const blib::math::Rectangle &rect);
+		glm::mat4 easyMatrix(const Texture* texture, const blib::math::Rectangle &rect);
+		glm::mat4 easyMatrix(const Texture* texture, const blib::math::Rectangle &rect, glm::vec2 pivot, float rotation);
 		glm::mat4 easyMatrix(const TextureMap::TexInfo* texture, const blib::math::Rectangle &rect);
 
 
