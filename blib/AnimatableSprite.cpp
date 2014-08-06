@@ -3,6 +3,7 @@
 #include <blib/Math.h>
 #include <blib/Color.h>
 #include <blib/util/Profiler.h>
+#include <blib/Util.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -69,6 +70,14 @@ namespace blib
 	void AnimatableSprite::alphaTo(const float target, float time, const std::function<void()> &onDone /* = nullptr */)
 	{
 		AlphaAnimation* animation = new AlphaAnimation(color.a, target);
+		animation->onDone = onDone;
+		animation->duration = time;
+		animations.push_back(animation);
+	}
+
+	void AnimatableSprite::curveTo(const glm::vec2 &targetPosition, float direction, float incomingDirection, float time, const std::function<void()> &onDone /*= nullptr*/)
+	{
+		CurveToAnimation* animation = new CurveToAnimation(rect, blib::math::Rectangle(targetPosition, rect.width(), rect.height()), direction, incomingDirection);
 		animation->onDone = onDone;
 		animation->duration = time;
 		animations.push_back(animation);
@@ -146,6 +155,22 @@ namespace blib
 	{
 		float fac = elapsedTime / duration;
 		sprite->color.a = glm::mix(src, dest, fac);
+	}
+
+
+	CurveToAnimation::CurveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest, float direction, float incomingDirection) : src(src), dest(dest)
+	{
+		path = math::BiArc(src.center(), blib::util::fromAngle(direction), dest.center(), blib::util::fromAngle(incomingDirection));
+	}
+
+	void CurveToAnimation::apply(AnimatableSprite* sprite)
+	{
+		float fac = elapsedTime / duration;
+
+		glm::vec2 size = glm::mix(src.size(), dest.size(), fac);
+		glm::vec2 pos = path.getPoint(fac);
+
+		sprite->rect = blib::math::Rectangle(pos-size/2.0f, pos+size/2.0f);
 	}
 
 }

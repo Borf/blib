@@ -17,6 +17,7 @@ namespace blib
 
 		ArcPath::ArcPath(const glm::vec2 &begin, const glm::vec2 &direction, const glm::vec2 &end)
 		{
+			printf("Direction: %f,%f\n", direction.x, direction.y);
 			this->begin = begin;
 			this->end = end;
 			this->begindirection = glm::normalize(direction);

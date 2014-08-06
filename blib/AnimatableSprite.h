@@ -1,6 +1,7 @@
 #pragma once
 
 #include <blib/math/Rectangle.h>
+#include <blib/math/BiArc.h>
 #include <glm/glm.hpp>
 #include <functional>
 
@@ -36,6 +37,15 @@ namespace blib
 		blib::math::Rectangle dest;
 	public:
 		MoveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest);
+		virtual void apply(AnimatableSprite* sprite);
+	};
+	class CurveToAnimation : public Animation
+	{
+		blib::math::Rectangle src;
+		blib::math::Rectangle dest;
+		blib::math::BiArc path;
+	public:
+		CurveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest, float srcdirection, float dstdirection);
 		virtual void apply(AnimatableSprite* sprite);
 	};
 
@@ -78,6 +88,7 @@ namespace blib
 		void resizeTo(const glm::vec2 &targetSize, float time, const std::function<void()> &onDone = nullptr);
 		void moveTo(const blib::math::Rectangle &targetRect, float time, const std::function<void()> &onDone = nullptr);
 		void alphaTo(const float targetAlpha, float time, const std::function<void()> &onDone = nullptr);
+		void curveTo(const glm::vec2 &targetPosition, float direction, float incomingdirection, float time, const std::function<void()> &onDone = nullptr);
 
 		void setAnimation(Animation* animation);
 

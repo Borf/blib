@@ -38,6 +38,8 @@ namespace blib
 			void operator *= (const glm::mat4 &matrix);
 
 			Rectangle operator + (const glm::vec2 &offset);
+			Rectangle operator * (float scalar);
+			void operator *= (float scalar);
 
 
 			bool contains(const glm::vec2 &point) const;

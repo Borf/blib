@@ -105,10 +105,19 @@ namespace blib
 			topleft = glm::vec2(matrix * glm::vec4(topleft, 0, 1));
 			bottomright = glm::vec2(matrix * glm::vec4(bottomright, 0, 1));
 		}
+		void Rectangle::operator*=(float scalar)
+		{
+			topleft *= scalar;
+			bottomright *= scalar;
+		}
 
 		Rectangle Rectangle::operator+(const glm::vec2 &offset)
 		{
 			return Rectangle(topleft + offset, bottomright + offset);
+		}
+		Rectangle Rectangle::operator*(float scalar)
+		{
+			return Rectangle(topleft * scalar, bottomright * scalar);
 		}
 
 		float Rectangle::overlap(const Rectangle &other) const
