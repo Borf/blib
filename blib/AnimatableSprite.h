@@ -67,6 +67,14 @@ namespace blib
 		AlphaAnimation(const float src, const float dest);
 		virtual void apply(AnimatableSprite* sprite);
 	};
+	class RotateAnimation : public Animation
+	{
+		float src;
+		float dest;
+	public:
+		RotateAnimation(const float src, const float dest);
+		virtual void apply(AnimatableSprite* sprite);
+	};
 
 
 	class AnimatableSprite
@@ -89,6 +97,7 @@ namespace blib
 		void moveTo(const blib::math::Rectangle &targetRect, float time, const std::function<void()> &onDone = nullptr);
 		void alphaTo(const float targetAlpha, float time, const std::function<void()> &onDone = nullptr);
 		void curveTo(const glm::vec2 &targetPosition, float direction, float incomingdirection, float time, const std::function<void()> &onDone = nullptr);
+		void rotateTo(const float rotation, float time, const std::function<void()> &onDone = nullptr);
 
 		void setAnimation(Animation* animation);
 

@@ -75,6 +75,14 @@ namespace blib
 		animations.push_back(animation);
 	}
 
+	void AnimatableSprite::rotateTo(const float target, float time, const std::function<void()> &onDone /* = nullptr */)
+	{
+		RotateAnimation* animation = new RotateAnimation(rotation, target);
+		animation->onDone = onDone;
+		animation->duration = time;
+		animations.push_back(animation);
+	}
+
 	void AnimatableSprite::curveTo(const glm::vec2 &targetPosition, float direction, float incomingDirection, float time, const std::function<void()> &onDone /*= nullptr*/)
 	{
 		CurveToAnimation* animation = new CurveToAnimation(rect, blib::math::Rectangle(targetPosition, rect.width(), rect.height()), direction, incomingDirection);
@@ -156,6 +164,18 @@ namespace blib
 		float fac = elapsedTime / duration;
 		sprite->color.a = glm::mix(src, dest, fac);
 	}
+	RotateAnimation::RotateAnimation(const float src, const float dest)
+	{
+		this->src = src;
+		this->dest = dest;
+	}
+
+	void RotateAnimation::apply(AnimatableSprite* sprite)
+	{
+		float fac = elapsedTime / duration;
+		sprite->rotation = glm::mix(src, dest, fac);
+	}
+
 
 
 	CurveToAnimation::CurveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest, float direction, float incomingDirection) : src(src), dest(dest)
