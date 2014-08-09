@@ -15,17 +15,19 @@ namespace blib
 		this->texture = texture;
 		color = blib::Color::white;
 		rotation = 0;
+		pivot = glm::vec2(0.5f, 0.5f);
 	}
 	AnimatableSprite::AnimatableSprite(blib::Texture* texture, const glm::vec2 &pos) : rect(pos, texture->originalWidth, texture->originalHeight)
 	{
 		this->texture = texture;
 		color = blib::Color::white;
 		rotation = 0;
+		pivot = glm::vec2(0.5f, 0.5f);
 	}
 
 	void AnimatableSprite::draw(SpriteBatch* spriteBatch)
 	{
-		spriteBatch->draw(texture, blib::math::easyMatrix(texture, rect, rect.center(), rotation), color);
+		spriteBatch->draw(texture, blib::math::easyMatrix(texture, rect, glm::mix(rect.topleft, rect.bottomright, pivot), rotation), color);
 	}
 
 
@@ -109,9 +111,9 @@ namespace blib
 	bool AnimatableSprite::contains(glm::vec2 point)
 	{
 		glm::mat4 mat;
-		mat = glm::translate(mat, glm::vec3(rect.center(), 0));
+		mat = glm::translate(mat, glm::vec3(glm::mix(rect.topleft, rect.bottomright, pivot), 0));
 		mat = glm::rotate(mat, rotation, glm::vec3(0, 0, 1));
-		mat = glm::translate(mat, glm::vec3(-rect.center(), 0));
+		mat = glm::translate(mat, glm::vec3(-glm::mix(rect.topleft, rect.bottomright, pivot), 0));
 		mat = glm::inverse(mat);
 		point = glm::vec2(mat * glm::vec4(point, 0, 1));
 		return rect.contains(point);

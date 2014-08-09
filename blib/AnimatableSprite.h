@@ -83,6 +83,8 @@ namespace blib
 		blib::math::Rectangle rect;
 		glm::vec4 color;
 		float rotation;
+		glm::vec2 pivot;
+
 		blib::Texture* texture;
 		std::vector<Animation*> animations;
 
