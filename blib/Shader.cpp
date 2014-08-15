@@ -54,14 +54,18 @@ namespace blib
 					glUniform1i(location, (int&)state[uniforms[i]->index]);
 					break;
 				case Mat4:
+#ifndef BLIB_EMSCRIPTEN
 					if (activeUniformData[uniforms[i]->index - 1] != state[uniforms[i]->index - 1])
+#endif
 					{
 						glUniformMatrix4fv(location, 1, 0, &((float&)state[uniforms[i]->index]));
 						activeUniformData[uniforms[i]->index - 1] = state[uniforms[i]->index - 1];
 					}
 					break;
 				case Mat3:
+#ifndef BLIB_EMSCRIPTEN
 					if (activeUniformData[uniforms[i]->index - 1] != state[uniforms[i]->index - 1])
+#endif
 					{
 						glUniformMatrix3fv(location, 1, 0, &((float&)state[uniforms[i]->index]));
 						activeUniformData[uniforms[i]->index - 1] = state[uniforms[i]->index - 1];

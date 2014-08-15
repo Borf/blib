@@ -25,6 +25,7 @@ namespace blib
 			duration = 1;
 			elapsedTime = 0;
 		}
+		virtual ~Animation() {}
 
 		virtual void apply(AnimatableSprite* sprite) = 0;
 		virtual void finish(AnimatableSprite* sprite) {};

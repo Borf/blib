@@ -53,8 +53,10 @@
 
 #ifndef WIN32
 #ifndef ANDROID
+#ifndef EMSCRIPTEN
 #pragma GCC diagnostic ignored "-Wreorder"
 #pragma GCC diagnostic ignored "-Wunused-local-typedefs"
+#endif
 #endif
 #endif
 

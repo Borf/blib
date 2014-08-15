@@ -54,6 +54,7 @@ namespace blib
 		FBO* fbo;
 
 		int cacheStart;
+		VBO* vbo;
 
 
 	public:

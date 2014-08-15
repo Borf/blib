@@ -10,6 +10,8 @@
 #include <blib/platform/android/window.h>
 #elif defined(BLIB_IOS)
 #include <blib/platform/ios/window.h>
+#elif defined(BLIB_EMSCRIPTEN)
+#include <blib/platform/emscripten/window.h>
 #else
 #include <blib/IWindow.h>
 #endif
@@ -28,6 +30,8 @@ namespace blib
 	#define WINDOW_SUPER platform::android::Window
 #elif defined(BLIB_IOS)
     #define WINDOW_SUPER platform::ios::Window
+#elif defined(BLIB_EMSCRIPTEN)
+	#define WINDOW_SUPER platform::emscripten::Window
 #else
 	class Window : public IWindow
 	#define WINDOW_SUPER IWindow

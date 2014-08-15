@@ -66,7 +66,7 @@ VertexDef(VertexP2C4T2T2F1,						_size,		float, 1, VertexP2C4T2T2)
 				if(enabledVertexAttributes[i])
 				{
 					enabledVertexAttributes[i] = false;
-					if (glDisableVertexAttribArray)
+//					if (glDisableVertexAttribArray)
 						glDisableVertexAttribArray(i);
 				}
 		}

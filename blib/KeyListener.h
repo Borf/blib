@@ -45,6 +45,39 @@ namespace blib
 		DEL = VK_DELETE,
 
 
+
+
+#else
+		ESC,
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN,
+		SPACE,
+		ENTER,
+		HOME,
+		END,
+		SHIFT,
+		CONTROL,
+		ALT,
+		PLUS,
+		MINUS,
+
+		F1,
+		F2,
+		F3,
+		F4,
+		F5,
+		F6,
+		F7,
+		F8,
+		F9,
+		F10,
+		F11,
+		F12,
+		DIVIDE,
+
+#endif
 		A = 'A',
 		B = 'B',
 		C = 'C',
@@ -82,38 +115,6 @@ namespace blib
 		_7 = '7',
 		_8 = '8',
 		_9 = '9',
-
-#else
-		ESC,
-		LEFT,
-		RIGHT,
-		UP,
-		DOWN,
-		SPACE,
-		ENTER,
-		HOME,
-		END,
-		SHIFT,
-		CONTROL,
-		ALT,
-		PLUS,
-		MINUS,
-
-		F1,
-		F2,
-		F3,
-		F4,
-		F5,
-		F6,
-		F7,
-		F8,
-		F9,
-		F10,
-		F11,
-		F12,
-		DIVIDE,
-
-#endif
 	};
 
 	class KeyListener

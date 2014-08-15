@@ -64,7 +64,9 @@ void main()\n\
 
 		shader->setUniform(s_texture, 0);
 		renderState.activeShader = shader;
-
+		vbo = resourceManager->getResource<blib::VBO>();
+		vbo->setVertexFormat<vertexDef>();
+		renderState.activeVbo = vbo;
 		vertices.reserve(MAX_SPRITES);
 	}
 
@@ -93,6 +95,8 @@ void main()\n\
 		if (fbo)
 			renderState.activeFbo = fbo;
 
+		renderer->setVbo(vbo, vertices);
+
 		materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
 		if (renderState.activeShader == shader)
 			renderState.activeShader->setUniform(Matrix, matrix);
@@ -100,7 +104,8 @@ void main()\n\
 		for(size_t i = 0; i < materialIndices.size(); i++)
 		{
 			renderState.activeTexture[0] = const_cast<Texture*>(materialIndices[i].first);
-			renderer->drawTriangles<vertexDef>(&vertices[lastIndex], materialIndices[i].second - lastIndex, renderState);
+			//renderer->drawTriangles<vertexDef>(&vertices[lastIndex], materialIndices[i].second - lastIndex, renderState);
+			renderer->drawTriangles<vertexDef>(lastIndex, materialIndices[i].second - lastIndex, renderState);
 			lastIndex = materialIndices[i].second;
 		}
 		renderState.activeFbo = oldFbo;

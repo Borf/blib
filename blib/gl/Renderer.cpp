@@ -183,7 +183,7 @@ namespace blib
 							glDisable(GL_STENCIL_TEST);
 							glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 						}
-#if !defined(BLIB_IOS) && !defined(BLIB_ANDROID)
+#if !defined(BLIB_IOS) && !defined(BLIB_ANDROID) && !defined(BLIB_EMSCRIPTEN)
 					if (!lastRenderState || r->renderState.renderStyle != lastRenderState->renderStyle)
 						glPolygonMode(GL_FRONT_AND_BACK, r->renderState.renderStyle == RenderState::WIREFRAME ? GL_LINE : GL_FILL);
 #endif

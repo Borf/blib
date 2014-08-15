@@ -39,10 +39,10 @@ namespace blib
 	if(!index)\
 	index = &tmpIndex;\
 	base::setAttribPointers(enabledVertexAttributes, offset, index, totalSize);\
-	if(!enabledVertexAttributes[*index] && glEnableVertexAttribArray)\
+	if(!enabledVertexAttributes[*index]/* && glEnableVertexAttribArray*/)\
 	glEnableVertexAttribArray(*index);\
 	enabledVertexAttributes[*index] = true;\
-	if(glVertexAttribPointer)\
+/*	if(glVertexAttribPointer)*/\
 	glVertexAttribPointer((*index)++, count, GL_FLOAT, GL_FALSE, totalSize, (void*)((char*)offset + base::size()));\
 	if(index == &tmpIndex)\
 {\
@@ -50,7 +50,7 @@ namespace blib
 	if(enabledVertexAttributes[i])\
 {\
 	enabledVertexAttributes[i] = false;\
-	if(glDisableVertexAttribArray)\
+/*	if(glDisableVertexAttribArray)*/\
 	glDisableVertexAttribArray(i);\
 }\
 }\

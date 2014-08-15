@@ -43,6 +43,11 @@
 #ifdef BLIB_WIN
 #include <gl/wglew.h>
 #endif
+
+#ifdef BLIB_EMSCRIPTEN
+#include <emscripten.h>
+#endif
+
 using blib::util::Log;
 
 namespace blib
@@ -64,7 +69,7 @@ namespace blib
 		semaphore = NULL;
 		renderThread = NULL;
 		updateThread = NULL;
-		runnerMutex = NULL;		
+		runnerMutex = NULL;
 
 		for (int i = 0; i < 1000; i++)
 		{
@@ -77,7 +82,7 @@ namespace blib
 
 	App::~App()
 	{
-		if(appSetup.threaded)
+		if (appSetup.threaded)
 		{
 			renderThread->semaphore->signal();
 			updateThread->semaphore->signal();
@@ -85,7 +90,7 @@ namespace blib
 			renderThread->waitForTermination();
 		}
 
-		if(joystickDriver)
+		if (joystickDriver)
 			delete joystickDriver;
 		joystickDriver = NULL;
 
@@ -97,7 +102,7 @@ namespace blib
 		delete lineBatch;
 		delete renderer;
 
-		if(appSetup.threaded)
+		if (appSetup.threaded)
 		{
 			delete semaphore;
 			delete renderThread;
@@ -107,6 +112,14 @@ namespace blib
 			delete runnerMutex;
 
 	}
+
+#ifdef BLIB_EMSCRIPTEN
+	App* app;
+	void blaStep()
+	{
+		app->step();
+	}
+#endif
 
 
 	void App::start(bool looping)
@@ -179,10 +192,15 @@ namespace blib
 	void App::run()
 	{
 		Log::out<<"App::run"<<Log::newline;
+#ifdef BLIB_EMSCRIPTEN
+		app = this;
+		emscripten_set_main_loop(blaStep, 60, 1);
+#else
 		while(running)
 		{
 			step();
 		}
+#endif
 	}
 
 

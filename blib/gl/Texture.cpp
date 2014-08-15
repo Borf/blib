@@ -282,7 +282,7 @@ namespace blib
 
 
 
-#if !defined(BLIB_ANDROID) && !defined(BLIB_IOS)
+#if !defined(BLIB_ANDROID) && !defined(BLIB_IOS) && !defined(BLIB_EMSCRIPTEN)
 		MultiTextureMap::~MultiTextureMap()
 		{
 		}

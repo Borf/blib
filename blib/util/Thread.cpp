@@ -10,7 +10,7 @@
 #include <sys/prctl.h>
 #endif
 
-#if defined(BLIB_IOS) || defined(BLIB_LINUX) || defined(BLIB_ANDROID)
+#if defined(BLIB_IOS) || defined(BLIB_LINUX) || defined(BLIB_ANDROID) || defined(BLIB_EMSCRIPTEN)
 #include <unistd.h>
 #endif
 
