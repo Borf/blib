@@ -38,6 +38,8 @@ namespace blib
 		void onDebug(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, GLvoid* userParam)
 #endif
 		{
+			if (type == 33361) //VBO setdata
+				return;
 			util::Log::out<<message<<Log::newline;
 		}
 

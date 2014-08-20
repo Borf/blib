@@ -13,16 +13,16 @@ namespace blib
 	class Renderer;
 	class IDrawableLine;
 	class ResourceManager;
+	class VBO;
 
 	class LineBatch : public gl::GlResizeRegister
 	{
 		typedef VertexP2C4 vertexDef;
 
-#define MAX_LINES 400000
-
-
 		Renderer*	renderer;
-		vertexDef	verts[MAX_LINES];
+		std::vector<vertexDef>	verts;
+
+		VBO*		vbo;
 
 		int lineCount;
 		bool active;

@@ -41,6 +41,10 @@ void main()\n\
 		shader->finishUniformSetup();
 
 		renderState.activeShader = shader;
+		vbo = resourceManager->getResource<blib::VBO>();
+		vbo->setVertexFormat<vertexDef>();
+		renderState.activeVbo = vbo;
+		verts.reserve(10000);
 	}
 
 
@@ -59,8 +63,9 @@ void main()\n\
 		if(lineCount == 0)
 			return;
 
+		renderer->setVbo(vbo, verts);
 		renderState.activeShader->setUniform(Uniforms::matrix, matrix);
-		renderer->drawLines<vertexDef>(verts, lineCount, renderState);
+		renderer->drawLines<vertexDef>(lineCount, renderState);
 	}
 
 
@@ -68,13 +73,9 @@ void main()\n\
 	void LineBatch::draw(glm::vec2 v1, glm::vec2 v2, glm::vec4 color, glm::mat4 transform )
 	{
 		assert(active);
-		verts[lineCount].position = glm::vec2(transform * glm::vec4(v1,0,1));
-		verts[lineCount].color = color;
-		lineCount++;
-
-		verts[lineCount].position = glm::vec2(transform * glm::vec4(v2,0,1));
-		verts[lineCount].color = color;
-		lineCount++;
+		verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(v1, 0, 1)), color));
+		verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(v1, 0, 1)), color));
+		lineCount+=2;
 	}
 
 	void LineBatch::draw(const blib::IDrawableLine& drawable, glm::vec4 color, bool showNormal, glm::mat4 transform)
@@ -83,17 +84,12 @@ void main()\n\
 		const std::list<blib::IDrawableLine::LinePart>& lines = ((blib::IDrawableLine&)drawable).getLines(); //ewww
 		for(std::list<blib::IDrawableLine::LinePart>::const_iterator it = lines.begin(); it != lines.end(); it++)
 		{
-			verts[lineCount].position = glm::vec2(transform * glm::vec4(it->p1,0,1));
-			verts[lineCount].color = color;
-			lineCount++;
-
-			verts[lineCount].position = glm::vec2(transform * glm::vec4(it->p2,0,1));
-			verts[lineCount].color = color;
-			lineCount++;
+			verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(it->p1, 0, 1)), color));
+			verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(it->p2, 0, 1)), color));
 
 			if(showNormal)
 			{
-				glm::vec2 center = (it->p1 + it->p2) / 2.0f;
+/*				glm::vec2 center = (it->p1 + it->p2) / 2.0f;
 				glm::vec2 normal = glm::normalize(glm::vec2(it->p2.y - it->p1.y, -(it->p2.x - it->p1.x)));
 
 				verts[lineCount].position = glm::vec2(transform * glm::vec4(center,0,1));
@@ -102,7 +98,7 @@ void main()\n\
 
 				verts[lineCount].position = glm::vec2(transform * glm::vec4(center + 10.0f * normal,0,1));
 				verts[lineCount].color = glm::clamp(color * 1.25f, 0, 1);
-				lineCount++;
+				lineCount++;*/
 
 
 			}
