@@ -24,7 +24,6 @@ namespace blib
 
 		VBO*		vbo;
 
-		int lineCount;
 		bool active;
 
 	public:

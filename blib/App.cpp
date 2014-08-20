@@ -194,7 +194,7 @@ namespace blib
 		Log::out<<"App::run"<<Log::newline;
 #ifdef BLIB_EMSCRIPTEN
 		app = this;
-		emscripten_set_main_loop(blaStep, 60, 1);
+		emscripten_set_main_loop(blaStep, 0, 1);
 #else
 		while(running)
 		{

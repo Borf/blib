@@ -52,20 +52,20 @@ void main()\n\
 	{
 		assert(!active);
 		active = true;
-		lineCount = 0;
 		this->matrix = matrix;
+		verts.clear();
 	}
 
 	void LineBatch::end()
 	{
 		assert(active);
 		active = false;
-		if(lineCount == 0)
+		if (verts.empty())
 			return;
 
 		renderer->setVbo(vbo, verts);
 		renderState.activeShader->setUniform(Uniforms::matrix, matrix);
-		renderer->drawLines<vertexDef>(lineCount, renderState);
+		renderer->drawLines<vertexDef>(verts.size(), renderState);
 	}
 
 
@@ -75,7 +75,6 @@ void main()\n\
 		assert(active);
 		verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(v1, 0, 1)), color));
 		verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(v1, 0, 1)), color));
-		lineCount+=2;
 	}
 
 	void LineBatch::draw(const blib::IDrawableLine& drawable, glm::vec4 color, bool showNormal, glm::mat4 transform)
@@ -89,18 +88,11 @@ void main()\n\
 
 			if(showNormal)
 			{
-/*				glm::vec2 center = (it->p1 + it->p2) / 2.0f;
+				glm::vec2 center = (it->p1 + it->p2) / 2.0f;
 				glm::vec2 normal = glm::normalize(glm::vec2(it->p2.y - it->p1.y, -(it->p2.x - it->p1.x)));
 
-				verts[lineCount].position = glm::vec2(transform * glm::vec4(center,0,1));
-				verts[lineCount].color = glm::clamp(color * 1.25f, 0, 1);
-				lineCount++;
-
-				verts[lineCount].position = glm::vec2(transform * glm::vec4(center + 10.0f * normal,0,1));
-				verts[lineCount].color = glm::clamp(color * 1.25f, 0, 1);
-				lineCount++;*/
-
-
+				verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(center,0,1)), glm::clamp(color * 1.25f, 0, 1)));
+				verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(center + 10.0f * normal,0,1)), glm::clamp(color * 1.25f, 0, 1)));
 			}
 
 		}
