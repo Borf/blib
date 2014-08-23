@@ -12,6 +12,10 @@ namespace blib
 
 	namespace math
 	{
+        static const double  pi = 3.14159265358979323846;
+        static const float pif = 3.14159265358979323846f;
+
+
 		class Rectangle;
 
 

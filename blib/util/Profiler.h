@@ -5,7 +5,9 @@
 #include <list>
 #include <map>
 
-#ifdef WIN32
+#include <blib/config.h>
+
+#ifdef BLIB_VISUALSTUDIO
 #define CLOCK_REALTIME 0
 struct timespec
 {

@@ -175,9 +175,19 @@ namespace blib
 		std::string getDataDir()
 		{
 #ifdef BLIB_WIN
-			TCHAR szPath[MAX_PATH];
-			SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, szPath);
-			return std::string(szPath);
+            TCHAR szPath[MAX_PATH];
+            SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, szPath);
+
+#ifdef UNICODE
+            size_t size = wcslen(szPath);
+            char * buffer = new char [2*size+2];
+            wcstombs(buffer,szPath,2*size+2);
+            std::string string(buffer);
+            delete [] buffer;
+            return string;
+#else
+            return std::string(szPath);
+#endif
 #endif
 return "~/";
 		}

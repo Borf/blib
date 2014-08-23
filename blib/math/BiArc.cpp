@@ -61,7 +61,7 @@ namespace blib
 				float a1 = atan2(begin.y - intersection.y, begin.x - intersection.x);
 				float a2 = atan2(end.y - intersection.y, end.x - intersection.x);
 				float newAngle1 = (a1 + a2) / 2;
-				float newAngle2 = (float)(newAngle1 + M_PI);
+                float newAngle2 = (float)(newAngle1 + blib::math::pif);
 
 				float len1 = ArcPath(begin, beginDirection, intersection + radius * blib::util::fromAngle(newAngle1)).length() +
 					ArcPath(end, endDirection, intersection + radius * blib::util::fromAngle(newAngle1)).length();

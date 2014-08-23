@@ -40,7 +40,7 @@ namespace blib
 				ret.push_back(this);
 				for (int i = 0; i < childCount; i++)
 					if (children[i] != NULL)
-						ret.insert(ret.end(), [i]->flatten());
+                        ret.insert(ret.end(), children[i]->flatten());
 				return ret;
 			}
 		};

@@ -1,20 +1,31 @@
 TEMPLATE = lib
 CONFIG += staticlib
 CONFIG += threads
-CONFIG += object_with_source
-CONFIG += object_parallel_to_source
 CONFIG += c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 CONFIG -= warn_on
+CONFIG -= unicode
+unix
+{
+    CONFIG += object_with_source
+    CONFIG += object_parallel_to_source
+}
 
+DEFINES -= UNICODE
 
-INCLUDEPATH += blib
+INCLUDEPATH += .
 INCLUDEPATH += externals
 INCLUDEPATH += externals/box2d
+windows
+{
+    INCLUDEPATH += externals/glew/include
+}
 
 #QMAKE_EXT_CPP += .c
-QMAKE_CXXFLAGS += -Wall -Wno-unused-variable
+QMAKE_CXXFLAGS += -Wall -Wno-unused-variable -fpermissive
+CONFIG += object_with_source
+CONFIG += object_parallel_to_source
 
 SOURCES += \
     blib/Animation.cpp \
@@ -56,12 +67,10 @@ SOURCES += \
     blib/util/StreamIn.cpp \
     blib/util/StreamInFile.cpp \
     blib/util/Thread.cpp \
-    blib/util/stb_image.cpp \
     blib/math/Line.cpp \
     blib/math/Polygon.cpp \
     blib/math/Random.cpp \
     blib/math/Rectangle.cpp \
-    blib/platform/linux/window.cpp \
     blib/wm/Menu.cpp \
     blib/wm/MenuItem.cpp \
     blib/wm/SubMenuMenuItem.cpp \
@@ -131,7 +140,17 @@ SOURCES += \
     externals/box2d/Box2D/Dynamics/Joints/b2RopeJoint.cpp \
     externals/box2d/Box2D/Dynamics/Joints/b2WeldJoint.cpp \
     externals/box2d/Box2D/Dynamics/Joints/b2WheelJoint.cpp \
-    externals/box2d/Box2D/Rope/b2Rope.cpp
+    externals/box2d/Box2D/Rope/b2Rope.cpp \
+    blib/math/AABB.cpp \
+    blib/math/ArcPath.cpp \
+    blib/math/BiArc.cpp \
+    blib/math/HermiteCurve.cpp \
+    blib/math/Plane.cpp \
+    blib/math/Quad.cpp \
+    blib/math/Ray.cpp \
+    blib/math/Triangle.cpp \
+    blib/util/StreamOut.cpp \
+    blib/util/stb_image.c
 
 HEADERS += \
     blib/Animation.h \
@@ -149,7 +168,6 @@ HEADERS += \
     blib/KeyListener.h \
     blib/LineBatch.h \
     blib/linq.h \
-    blib/Math.h \
     blib/MouseListener.h \
     blib/ParticleSystem.h \
     blib/Renderer.h \
@@ -289,5 +307,22 @@ HEADERS += \
     externals/box2d/Box2D/Dynamics/Joints/b2RopeJoint.h \
     externals/box2d/Box2D/Dynamics/Joints/b2WeldJoint.h \
     externals/box2d/Box2D/Dynamics/Joints/b2WheelJoint.h \
-    externals/box2d/Box2D/Rope/b2Rope.h
+    externals/box2d/Box2D/Rope/b2Rope.h \
+    blib/Math.h \
+    blib/math/AABB.h \
+    blib/math/ArcPath.h \
+    blib/math/BiArc.h \
+    blib/math/HermiteCurve.h \
+    blib/math/Quad.h \
+    blib/math/Triangle.h \
+    blib/util/Tree.h
 
+unix {
+    SOURCES += blib/platform/linux/window.cpp
+
+}
+
+windows {
+    SOURCES += blib/platform/win32/window.cpp
+    SOURCES += blib/platform/win32/Registry.cpp
+}

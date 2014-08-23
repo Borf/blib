@@ -515,6 +515,9 @@
     <ClInclude Include="blib\gl\direct\ResourceManager.h">
       <Filter>gl\direct</Filter>
     </ClInclude>
+    <ClInclude Include="blib\math\Quad.h">
+      <Filter>math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -853,6 +856,9 @@
     <ClCompile Include="blib\AnimatableSprite.cpp" />
     <ClCompile Include="blib\gl\direct\ResourceManager.cpp">
       <Filter>gl\direct</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\math\Quad.cpp">
+      <Filter>math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

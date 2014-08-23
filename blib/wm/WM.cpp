@@ -104,7 +104,7 @@ namespace blib
 
 				glm::vec2 diff = radialMenuPosition - glm::vec2(mouseState.x, mouseState.y);
 				float angle = atan2(diff.y, diff.x);
-				int id = (int)glm::round(((angle+2*M_PI) / (2 * M_PI)) * 8+7) % 8;
+                int id = (int)glm::round(((angle+2*blib::math::pif) / (2 * blib::math::pif)) * 8+7) % 8;
 
 
 				for (int i = 0; i < 8; i++)
@@ -245,7 +245,7 @@ namespace blib
 			{
 				glm::vec2 diff = radialMenuPosition - glm::vec2(mouseState.x, mouseState.y);
 				float angle = atan2(diff.y, diff.x);
-				int id = (int)glm::round(((angle + 2 * M_PI) / (2 * M_PI)) * 8) % 8;
+                int id = (int)glm::round(((angle + 2 * blib::math::pif) / (2 * blib::math::pif)) * 8) % 8;
 				if (id < (int)radialMenu->menuItems.size())
 				{
 					SubMenuMenuItem* submenuitem = dynamic_cast<SubMenuMenuItem*>(radialMenu->menuItems[id]);
@@ -455,15 +455,15 @@ namespace blib
 					currentCursor = newCursor;
 #ifdef WIN32 //todo: make abstract thingy here
 					if (currentCursor == ARROW)
-						SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW)));
+                        SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_ARROW)));
 					else if (currentCursor == RESIZE_H)
-						SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEWE)));
+                        SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEWE)));
 					else if (currentCursor == RESIZE_V)
-						SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENS)));
+                        SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENS)));
 					else if (currentCursor == RESIZE_TL)
-						SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENWSE)));
+                        SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENWSE)));
 					else if (currentCursor == RESIZE_BL)
-						SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENESW)));
+                        SetCursor(LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENESW)));
 #endif
 
 				}

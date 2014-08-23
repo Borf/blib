@@ -55,6 +55,7 @@
     <ClInclude Include="blib\math\Line.h" />
     <ClInclude Include="blib\math\Plane.h" />
     <ClInclude Include="blib\math\Polygon.h" />
+    <ClInclude Include="blib\math\Quad.h" />
     <ClInclude Include="blib\math\Random.h" />
     <ClInclude Include="blib\math\Ray.h" />
     <ClInclude Include="blib\math\Rectangle.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="blib\math\Line.cpp" />
     <ClCompile Include="blib\math\Plane.cpp" />
     <ClCompile Include="blib\math\Polygon.cpp" />
+    <ClCompile Include="blib\math\Quad.cpp" />
     <ClCompile Include="blib\math\Random.cpp" />
     <ClCompile Include="blib\math\Ray.cpp" />
     <ClCompile Include="blib\math\Rectangle.cpp" />

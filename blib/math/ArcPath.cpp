@@ -5,9 +5,7 @@
 
 using blib::util::Log;
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-
+#include <blib/Math.h>
 
 namespace blib
 {
@@ -49,10 +47,10 @@ namespace blib
 		float angleDist(float a1, float a2)
 		{
 			float dist = a1 - a2;
-			if (dist > 2 * M_PI)
-				dist -= (float)(2 * M_PI);
+            if (dist > 2 * blib::math::pi)
+                dist -= (float)(2 * blib::math::pi);
 			if (dist < 0)
-				dist += (float)(2 * M_PI);
+                dist += (float)(2 * blib::math::pi);
 			return dist;
 		}
 
@@ -65,7 +63,7 @@ namespace blib
 				float r1 = atan2(begin.y - origin.y, begin.x - origin.x);
 				float r2 = atan2(end.y - origin.y, end.x - origin.x);
 
-				float inc = (float)(M_PI / (5 + glm::min(100.0f, glm::abs(radius+offset))));
+                float inc = blib::math::pif / (5 + glm::min(100.0f, glm::abs(radius+offset)));
 				if (sign_n)
 					inc = -inc;
 
@@ -73,10 +71,10 @@ namespace blib
 				float last = r1;
 				for (float f = r1; fabs(angleDist(f + inc, r2)) > fabs(inc); f += inc)
 				{
-					if (f > M_PI)
-						f -= (float)(M_PI * 2);
-					if (f < -M_PI)
-						f += (float)(M_PI * 2);
+                    if (f > blib::math::pif)
+                        f -= blib::math::pif * 2;
+                    if (f < -blib::math::pif)
+                        f += blib::math::pif * 2;
 
 					lines.push_back(LinePart(origin + rad * blib::util::fromAngle(f), origin + rad * blib::util::fromAngle(f + inc)));
 					last = f + inc;
@@ -103,8 +101,8 @@ namespace blib
 				float a2 = atan2(end.y - origin.y, end.x - origin.x);
 				// NOTE: sign_t means that the angular span exceeds 180 deg.
 				float da = fabs(a2 - a1);
-				if (sign_t == (da > M_PI)) {
-					da = 2 * (float)M_PI - da;
+                if (sign_t == (da > blib::math::pif)) {
+                    da = 2 * blib::math::pif - da;
 				}
 				return fabs(da * (radius + offset));
 			}

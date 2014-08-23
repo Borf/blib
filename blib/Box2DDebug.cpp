@@ -5,9 +5,7 @@
 #include <blib/Util.h>
 
 #include <glm/gtc/matrix_transform.hpp>
-
-#define _USE_MATH_DEFINES
-#include <math.h>
+#include <blib/Math.h>
 
 namespace blib
 {
@@ -64,9 +62,9 @@ namespace blib
 
 	void Box2DDebug::DrawCircle( const b2Vec2& center, float32 radius, const b2Color& color )
 	{
-		float inc = (float)(M_PI/16);
+        float inc = blib::math::pif/16;
 		glm::vec2 c =(b2Vec2)center;
-		for(float i = 0; i < 2*M_PI; i+=inc)
+        for(float i = 0; i < 2*blib::math::pif; i+=inc)
 			lineBatch->draw(c + util::fromAngle(i)*radius, c + util::fromAngle(i+inc)*radius, glm::vec4(color.r, color.g, color.b, 1));
 	}
 
@@ -88,9 +86,9 @@ namespace blib
 		lineBatch->shader->setUniform(LineBatch::Uniforms::matrix, lineBatch->matrix);
 		renderer->drawTriangles(verts);*/
 
-		float inc = (float)(M_PI / 16);
+        float inc = blib::math::pif / 16;
 		glm::vec2 c = (b2Vec2)center;
-		for (float i = 0; i < 2 * M_PI; i += inc)
+        for (float i = 0; i < 2 * blib::math::pif; i += inc)
 			lineBatch->draw(c + util::fromAngle(i)*radius, c + util::fromAngle(i + inc)*radius, glm::vec4(color.r, color.g, color.b, 1));
 
 

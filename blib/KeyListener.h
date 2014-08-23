@@ -1,6 +1,8 @@
 #pragma once
 
-#ifdef WIN32
+#include <blib/config.h>
+
+#ifdef BLIB_WIN
 #include <Windows.h>
 #endif
 
@@ -11,7 +13,7 @@ namespace blib
 	enum class Key
 	{
 		NONE = -1,
-#ifdef WIN32
+#ifdef BLIB_WIN
 		ESC =		VK_ESCAPE,
 		LEFT =		VK_LEFT,
 		RIGHT =		VK_RIGHT,
