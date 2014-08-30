@@ -104,5 +104,17 @@ namespace blib
 			return ret;		
 		}
 
+		bool Polygon::contains(glm::vec2 point) const
+		{
+			//http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+			int i, j, c = 0;
+			for (i = 0, j = (int)size() - 1; i < (int)size(); j = i++) {
+				if ((((*this)[i].y>point.y) != ((*this)[j].y > point.y)) &&
+					(point.x < ((*this)[j].x - (*this)[i].x) * (point.y - (*this)[i].y) / (float)((*this)[j].y - (*this)[i].y) + (*this)[i].x))
+					c = !c;
+			}
+			return c;
+		}
+
 	}
 }
