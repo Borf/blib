@@ -382,7 +382,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)\externals\glew\lib</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>$(ProjectDir)\svnversion "$(ProjectPath)" &gt; $(MSBuildProjectDirectory)\version.h</Command>
+      <Command>"$(ProjectDir)\svnversion.exe" "$(ProjectPath)" &gt; "$(MSBuildProjectDirectory)\version.h"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -410,7 +410,7 @@
       <AdditionalLibraryDirectories>$(ProjectDir)\externals\glew\lib</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>"$(ProjectDir)\svnversion.exe" "$(ProjectPath)" &gt; $(MSBuildProjectDirectory)\version.h</Command>
+      <Command>"$(ProjectDir)\svnversion.exe" "$(ProjectPath)" &gt; "$(MSBuildProjectDirectory)\version.h"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
