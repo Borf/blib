@@ -146,7 +146,7 @@ namespace blib
 					app->running = false;
 					break;
 				case WM_KEYDOWN:
-					if((lParam & 0x40000000) == 0)
+					if ((lParam & 0x40000000) == 0)
 						for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
 							(*it)->onKeyDown((blib::Key)wParam);
 					break;
@@ -205,6 +205,11 @@ namespace blib
 							break;
 					return true;
 					break;
+				case WM_SYSCOMMAND:
+					if (wParam == SC_KEYMENU && (lParam >> 16) <= 0) 
+						return 0;
+					break;
+
 				}
 
 				return DefWindowProc(hWnd, message, wParam, lParam);
