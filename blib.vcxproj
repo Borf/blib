@@ -88,6 +88,7 @@
     <ClInclude Include="blib\util\Signal.h" />
     <ClInclude Include="blib\util\Singleton.h" />
     <ClInclude Include="blib\util\stb_image.h" />
+    <ClInclude Include="blib\util\stb_image_create.h" />
     <ClInclude Include="blib\util\Stream.h" />
     <ClInclude Include="blib\util\StreamIn.h" />
     <ClInclude Include="blib\util\StreamInFile.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="blib\util\Semaphore.cpp" />
     <ClCompile Include="blib\util\Signal.cpp" />
     <ClCompile Include="blib\util\stb_image.c" />
+    <ClCompile Include="blib\util\stb_image_create.cpp" />
     <ClCompile Include="blib\util\Stream.cpp" />
     <ClCompile Include="blib\util\StreamIn.cpp" />
     <ClCompile Include="blib\util\StreamInFile.cpp" />

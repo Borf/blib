@@ -40,6 +40,10 @@ namespace blib
 		{
 			return pressedKeys[(int)index];
 		}
+		KeyState()
+		{
+			ZeroMemory(pressedKeys, sizeof(pressedKeys));
+		}
 	};
 	struct MouseState
 	{

@@ -518,6 +518,9 @@
     <ClInclude Include="blib\math\Quad.h">
       <Filter>math</Filter>
     </ClInclude>
+    <ClInclude Include="blib\util\stb_image_create.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -859,6 +862,9 @@
     </ClCompile>
     <ClCompile Include="blib\math\Quad.cpp">
       <Filter>math</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\stb_image_create.cpp">
+      <Filter>util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
