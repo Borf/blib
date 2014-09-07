@@ -21,7 +21,7 @@ namespace blib
 			MenuItem* getItem(std::string path);
 
 			void foreach(std::function<void(MenuItem*)> callback);
-
+			void setMenu(std::string menuLoc, blib::wm::MenuItem* menuItem);
 			std::vector<MenuItem*> menuItems;
 		};
 	}

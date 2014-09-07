@@ -149,3 +149,29 @@ void blib::wm::Menu::foreach(std::function<void(MenuItem*)> callback)
 	}
 }
 
+void blib::wm::Menu::setMenu(std::string menuLoc, blib::wm::MenuItem* menuItem)
+{
+	if (menuLoc == "")
+	{
+		menuItems.push_back(menuItem);
+		return;
+	}
+
+	std::string first = menuLoc;
+	if (first.find("/") != std::string::npos)
+		first = first.substr(0, first.find("/"));
+
+	for (size_t i = 0; i < menuItems.size(); i++)
+	{
+		if (menuItems[i]->name == first)
+		{
+			((SubMenuMenuItem*)menuItems[i])->menu->setMenu(menuLoc.substr(first.length() + 1), menuItem);
+			return;
+		}
+	}
+	
+	Menu* menu = new Menu(Json::Value(Json::arrayValue));
+	menu->setMenu(menuLoc.substr(first.length() == menuLoc.length() ? first.length() : first.length() + 1), menuItem);
+	menuItems.push_back(new SubMenuMenuItem(first, menu));
+}
+

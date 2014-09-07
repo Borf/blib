@@ -25,7 +25,7 @@ namespace blib
 		END =		VK_END,
 		SHIFT =		VK_SHIFT,
 		CONTROL =	VK_CONTROL,
-		ALT,
+		ALT =		VK_MENU,
 		PLUS =	VK_ADD,
 		MINUS = VK_SUBTRACT,
 

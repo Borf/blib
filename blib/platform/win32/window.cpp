@@ -145,11 +145,13 @@ namespace blib
 					PostQuitMessage(0);
 					app->running = false;
 					break;
+				case WM_SYSKEYDOWN:
 				case WM_KEYDOWN:
 					if ((lParam & 0x40000000) == 0)
 						for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
 							(*it)->onKeyDown((blib::Key)wParam);
 					break;
+				case WM_SYSKEYUP:
 				case WM_KEYUP:
 					for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
 						(*it)->onKeyUp((blib::Key)wParam);

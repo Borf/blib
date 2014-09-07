@@ -384,7 +384,8 @@
       <AdditionalLibraryDirectories>$(ProjectDir)\externals\glew\lib</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>"$(ProjectDir)\svnversion.exe" "$(ProjectPath)" &gt; "$(MSBuildProjectDirectory)\version.h"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

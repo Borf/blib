@@ -160,7 +160,7 @@ namespace blib
 				}
 				T::center = glm::vec2(T::originalWidth/2.0f, T::originalHeight/2.0f);
 			}
-			printf("Loaded image: %s -> %d x %d, resized to %d x %d\n", fileName.c_str(), _originalWidth, _originalHeight, T::width, T::height);
+			//printf("Loaded image: %s -> %d x %d, resized to %d x %d\n", fileName.c_str(), _originalWidth, _originalHeight, T::width, T::height);
 			T::loaded = true;
 		}
 
