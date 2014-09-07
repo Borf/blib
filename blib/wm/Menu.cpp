@@ -165,7 +165,7 @@ void blib::wm::Menu::setMenu(std::string menuLoc, blib::wm::MenuItem* menuItem)
 	{
 		if (menuItems[i]->name == first)
 		{
-			((SubMenuMenuItem*)menuItems[i])->menu->setMenu(menuLoc.substr(first.length() + 1), menuItem);
+			((SubMenuMenuItem*)menuItems[i])->menu->setMenu(menuLoc.substr(first.length() == menuLoc.length() ? first.length() : first.length() + 1), menuItem);
 			return;
 		}
 	}
