@@ -9,60 +9,71 @@ namespace blib
 {
 	namespace util
 	{
-		template<class T>
-		class ListNode
+		class ListNodeBase
 		{
 		public:
-			ListNode<T>* next;
+			ListNodeBase* next;
+		};
+
+		template<class T>
+		class ListNode : public ListNodeBase
+		{
+		public:
 			T* data;
 		};
 
+
 		class ListAllocator
 		{
-			std::vector<std::function<void()>> resetFuncs;
+			static int typeCount;
 		public:
+
+			std::vector<ListNodeBase*> data;
+			std::vector<ListNodeBase*> first;
+
+
 			template<class T> 
 			T* get()
 			{
-				static ListNode<T>* firstNode = NULL;
-				static ListNode<T>* currentNode = firstNode;
+				static int typeId = -1;
+				if (typeId == -1)
+					typeId = typeCount++;
 
-				if (currentNode == NULL)
+				if (typeId >= (int)data.size())
 				{
-					currentNode = new ListNode<T>();
-					currentNode->data = new T();
-					currentNode->next = NULL;
-					if (firstNode == NULL)
-					{
-						firstNode = currentNode;
-						resetFuncs.push_back([]()
-						{
-							currentNode = firstNode;
-						});
-					}
-					return currentNode->data;
+					data.resize(typeId + 1, NULL);
+					first.resize(typeId + 1, NULL);
 				}
-				else
+
+				if (data[typeId] == NULL) // if first
 				{
-					if (currentNode->next)
-					{
-						currentNode = currentNode->next;
-						return currentNode->data;
-					}
-					else
-					{
-						currentNode = currentNode->next = new ListNode<T>();
-						currentNode->data = new T();
-						currentNode->next = NULL;
-						return currentNode->data;
-					}
+					ListNode<T>* node = new ListNode<T>();
+					first[typeId] = data[typeId] = node;
+					node->next = NULL;
+					node->data = new T();
+					return node->data;
 				}
+				
+				if (data[typeId]->next) //if next data is allocated
+				{
+					data[typeId] = data[typeId]->next;
+					return ((ListNode<T>*)data[typeId])->data;
+				}
+
+				ListNode<T>* newNode = new ListNode<T>();
+				newNode->data = new T();
+				newNode->next = NULL;
+				data[typeId]->next = newNode;
+				data[typeId] = newNode;
+				return newNode->data;
 			}
 
 			void clear()
 			{
-				for (size_t i = 0; i < resetFuncs.size(); i++)
-					resetFuncs[i]();
+				for (size_t i = 0; i < data.size(); i++)
+				{
+					data[i] = first[i];
+				}
 			}
 		};
 	}

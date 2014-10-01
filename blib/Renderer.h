@@ -3,6 +3,7 @@
 #include <blib/Shader.h>
 #include <blib/RenderState.h>
 #include <blib/VBO.h>
+#include <blib/util/Log.h>
 #include <blib/util.h>
 #include <blib/util/ListAllocator.h>
 #include <blib/util/Thread.h>
@@ -201,7 +202,6 @@ namespace blib
 			vertexIndex[1] = 0;
 			for(int i = 0; i < 10; i++)
 				enabledVertexAttributes[i] = false;
-
 		}
 
 		template<class T>

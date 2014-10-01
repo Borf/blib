@@ -238,6 +238,7 @@
     <ClCompile Include="blib\SpriteSheet.cpp" />
     <ClCompile Include="blib\Util.cpp" />
     <ClCompile Include="blib\util\FileSystem.cpp" />
+    <ClCompile Include="blib\util\ListAllocator.cpp" />
     <ClCompile Include="blib\util\Log.cpp" />
     <ClCompile Include="blib\util\Mutex.cpp" />
     <ClCompile Include="blib\util\Profiler.cpp" />

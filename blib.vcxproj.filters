@@ -866,6 +866,9 @@
     <ClCompile Include="blib\util\stb_image_create.cpp">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="blib\util\ListAllocator.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">
