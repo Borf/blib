@@ -9,44 +9,60 @@ namespace blib
 {
 	namespace util
 	{
+		template<class T>
+		class ListNode
+		{
+		public:
+			ListNode<T>* next;
+			T* data;
+		};
+
 		class ListAllocator
 		{
-			std::map<int, std::pair<size_t, std::vector<void*> > > objects;
-
+			std::vector<std::function<void()>> resetFuncs;
 		public:
-
 			template<class T> 
 			T* get()
 			{
-				static int size = typeid(T).hash_code();
-				static bool loaded = false;
-				static std::map<int, std::pair<size_t, std::vector<void*> > >::iterator it;
-				if (!loaded)
+				static ListNode<T>* firstNode = NULL;
+				static ListNode<T>* currentNode = firstNode;
+
+				if (currentNode == NULL)
 				{
-					it = objects.find(size);
-					if (it == objects.end())
+					currentNode = new ListNode<T>();
+					currentNode->data = new T();
+					currentNode->next = NULL;
+					if (firstNode == NULL)
 					{
-						objects[size] = std::pair<size_t, std::vector<void*> >(0, std::vector<void*>());
-						it = objects.find(size);
+						firstNode = currentNode;
+						resetFuncs.push_back([]()
+						{
+							currentNode = firstNode;
+						});
 					}
-					loaded = true;
+					return currentNode->data;
 				}
-				static std::pair < size_t, std::vector<void*> > &cache = it->second;
-				if (cache.first < cache.second.size())
-					return (T*)cache.second[cache.first++];
-
-				T* newValue = new T();
-
-				cache.second.push_back((void*)newValue);
-				cache.first++;
-
-				return newValue;
+				else
+				{
+					if (currentNode->next)
+					{
+						currentNode = currentNode->next;
+						return currentNode->data;
+					}
+					else
+					{
+						currentNode = currentNode->next = new ListNode<T>();
+						currentNode->data = new T();
+						currentNode->next = NULL;
+						return currentNode->data;
+					}
+				}
 			}
 
 			void clear()
 			{
-				for (std::map<int, std::pair<size_t, std::vector<void*> > >::iterator it = objects.begin(); it != objects.end(); it++)
-					it->second.first = 0;
+				for (size_t i = 0; i < resetFuncs.size(); i++)
+					resetFuncs[i]();
 			}
 		};
 	}
