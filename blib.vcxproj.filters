@@ -490,9 +490,6 @@
       <Filter>wm</Filter>
     </ClInclude>
     <ClInclude Include="blib\Shapes.h" />
-    <ClInclude Include="blib\wm\GroupMenuItem.h">
-      <Filter>wm</Filter>
-    </ClInclude>
     <ClInclude Include="blib\math\HermiteCurve.h">
       <Filter>math</Filter>
     </ClInclude>
