@@ -60,7 +60,7 @@ namespace blib
 			void use();
 			void link();
 
-
+			std::string createcallstack;
 			char** uniformNames;
 
 			enum Uniforms

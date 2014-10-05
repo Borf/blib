@@ -268,6 +268,7 @@ return "~/";
 		std::string callstack()
 		{
 #ifdef WIN32
+			std::string ret;
 			unsigned int   i;
 			void         * stack[100];
 			unsigned short frames;
@@ -286,11 +287,14 @@ return "~/";
 			for (i = 0; i < frames; i++)
 			{
 				SymFromAddr(process, (DWORD64)(stack[i]), 0, symbol);
-
-				printf("%i: %s - 0x%0X\n", frames - i - 1, symbol->Name, symbol->Address);
+				char buf[1024];
+				sprintf(buf, "%i: %s - 0x%0X\n", frames - i - 1, symbol->Name, symbol->Address);
+				ret += buf;
 			}
 
 			free(symbol);
+
+			return ret;
 #endif
 			return "";
 		}

@@ -1,5 +1,6 @@
 #include "Shader.h"
 #include <blib/util/FileSystem.h>
+#include <blib/Util.h>
 #include <blib/util/Log.h>
 using blib::util::Log;
 #include <glm/gtc/type_ptr.hpp>
@@ -11,6 +12,7 @@ namespace blib
 		Shader::Shader()
 		{
 			programId = 0;
+			this->createcallstack = blib::util::callstack();
 		}
 
 		Shader::Shader(std::string vertex, std::string fragment)
@@ -18,6 +20,7 @@ namespace blib
 			programId = 0;
 			this->vertexShader = vertex;
 			this->fragmentShader = fragment;
+			this->createcallstack = blib::util::callstack();
 		}
 
 
@@ -51,6 +54,12 @@ namespace blib
 
 				shaders.push_back(SubShader::fromData(vertexShader.c_str(), SubShader::Vertex));
 				shaders.push_back(SubShader::fromData(fragmentShader.c_str(), SubShader::Fragment));
+
+				for (std::list<SubShader*>::iterator it = shaders.begin(); it != shaders.end(); it++)
+					if (*it == NULL)
+						Log::out << "Error creating shader...\n" << createcallstack << Log::newline;
+
+
 				for(std::list<SubShader*>::iterator it = shaders.begin(); it != shaders.end(); it++)
 					(*it)->attach(programId);
 				
