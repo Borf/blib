@@ -34,8 +34,8 @@ namespace blib
 
 				if (texture)
 				{
-					if (!texture->loaded)
-						return;
+//					if (!texture->loaded)
+//						return;
 					glm::vec2 scale = glm::vec2((width - 2.0f) / texture->originalWidth, (height - 2.0f) / texture->originalHeight);
 
 					if (scaleAspect)

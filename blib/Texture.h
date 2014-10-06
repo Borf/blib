@@ -46,7 +46,7 @@ namespace blib
 		void setTextureRepeat(bool repeat) { textureRepeat = repeat;  }
 
 	protected:
-		Texture() { textureRepeat = false; loaded = false; }
+		Texture() { textureRepeat = false; loaded = false; width = 0; height = 0; originalHeight = 0; originalWidth = 0; }
 		virtual ~Texture() {};
 		bool textureRepeat;
 
