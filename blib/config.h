@@ -14,3 +14,12 @@
 #else
 #include <blib/platform/linux/config.h>
 #endif
+
+
+#ifdef BLIB_OPENGL
+#if !defined(BLIB_GL_ES) && !defined(BLIB_GL_FULL)
+
+#error Please choose an OpenGL profile... ES or FULL
+
+#endif
+#endif

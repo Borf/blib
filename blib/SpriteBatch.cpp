@@ -30,30 +30,7 @@ namespace blib
 		renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 		renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 
-		shader = resourceManager->getResource<Shader>();
-		shader->initFromData("precision mediump float;\
-attribute vec2 a_position;\n\
-attribute vec2 a_texture;\n\
-attribute vec4 a_color;\n\
-varying vec2 texCoord;\n\
-varying vec4 color;\n\
-uniform mat4 matrix;\n\
-uniform mat4 projectionmatrix;\n\
-void main()\n\
-{\n\
-	color = a_color;\n\
-	texCoord = a_texture;\n\
-	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\n\
-}\n\
-", "precision mediump float;\
-uniform sampler2D s_texture;\n\
-varying vec2 texCoord;\n\
-varying vec4 color;\n\
-void main()\n\
-{\n\
-	gl_FragColor = color*texture2D(s_texture, texCoord);\n\
-}\n\
-");
+		shader = resourceManager->getResource<Shader>("SpriteBatch");
 		shader->bindAttributeLocation("a_position", 0);
 		shader->bindAttributeLocation("a_texture", 1);
 		shader->bindAttributeLocation("a_color", 2);

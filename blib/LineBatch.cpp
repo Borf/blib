@@ -14,25 +14,8 @@ namespace blib
 		renderState = baseRenderState;
 		active = false;
 		this->renderer = renderer;
-		shader = resourceManager->getResource<Shader>();
-		shader->initFromData("\
-attribute vec2 a_position;\n\
-attribute vec4 a_color;\n\
-varying vec4 color;\n\
-uniform mat4 projectionmatrix;\n\
-uniform mat4 matrix;\n\
-void main()\n\
-{\n\
-	color = a_color;\n\
-	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\n\
-}\n\
-", "\
-varying vec4 color;\n\
-void main()\n\
-{\n\
-	gl_FragColor = color;\n\
-}\n\
-");
+		shader = resourceManager->getResource<Shader>("LineBatch");
+		
 		shader->bindAttributeLocation("a_position", 0);
 		shader->bindAttributeLocation("a_color", 1);
 

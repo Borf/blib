@@ -102,7 +102,13 @@ namespace blib
 		Shader::SubShader* Shader::SubShader::fromFile(std::string filename, ShaderType shaderType)
 		{
 			SubShader* subShader = new SubShader(shaderType);
-			std::string data = blib::util::FileSystem::getData(filename);
+#if defined(BLIB_GL_FULL)
+			std::string data = blib::util::FileSystem::getData("assets/shaders/gl/" + filename);
+#elif defined(BLIB_GL_ES)
+			std::string data = blib::util::FileSystem::getData("assets/shaders/gles/" + filename);
+#else
+#error	You need to define a GL version...
+#endif
 			const char* cdata = data.c_str();
 			glShaderSource(subShader->shaderId, 1, &cdata,NULL);
 			glCompileShader(subShader->shaderId);
