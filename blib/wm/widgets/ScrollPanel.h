@@ -25,12 +25,6 @@ namespace blib
 				void arrangeComponents( int oldWidth, int oldHeight );
 
 				virtual Widget* getComponent( int x, int y );
-
-				virtual void mousedown( int x, int y );
-				virtual void mouseup( int x, int y );
-				virtual void mouseclick( int x, int y, int clickcount );
-				virtual void mousedrag( int x, int y );
-
 			};
 		}
 	}

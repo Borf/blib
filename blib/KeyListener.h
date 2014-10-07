@@ -28,6 +28,8 @@ namespace blib
 		ALT =		VK_MENU,
 		PLUS =	VK_ADD,
 		MINUS = VK_SUBTRACT,
+		TAB	=		VK_TAB,
+		BACKSPACE =	VK_BACK,
 
 		F1 =	VK_F1,
 		F2 =	VK_F2,

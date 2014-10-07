@@ -139,14 +139,14 @@ namespace blib
 			if (menuBar)
 			{
 				spriteBatch.drawStretchyRect(skinTexture, glm::mat4(), skin["list"], glm::vec2(screenSize.x, 18));
-				int posX = 10;
+				float posX = 10;
 				int posY = 2;
 
 				for (size_t i = 0; i < menuBar->menuItems.size(); i++)
 				{
 					SubMenuMenuItem* item = dynamic_cast<SubMenuMenuItem*>(menuBar->menuItems[i]);
 
-					int len = font->textlen(menuBar->menuItems[i]->name);
+					float len = font->textlen(menuBar->menuItems[i]->name);
 
 					if (item && item->opened)
 						spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(posX-2, posY)), skin["list"], glm::vec2(len + 40, 16), glm::vec4(0.9f, 0.9f, 1.0f, 1.0f));
@@ -284,11 +284,11 @@ namespace blib
 					popupMenus.clear();
 					if (menuBarOpen)
 					{
-						int posX = 10;
+						float posX = 10;
 						for (size_t i = 0; i < menuBar->menuItems.size(); i++)
 						{
 							SubMenuMenuItem* item = dynamic_cast<SubMenuMenuItem*>(menuBar->menuItems[i]);
-							int len = font->textlen(menuBar->menuItems[i]->name);
+							float len = font->textlen(menuBar->menuItems[i]->name);
 							if (mouseState.x > posX && mouseState.x < posX + len + 40 && mouseState.y > 0 && mouseState.y < 0 + 16)
 								popupMenus.push_back(std::pair<glm::vec2, Menu*>(glm::vec2(posX - 10, 18), ((SubMenuMenuItem*)menuBar->menuItems[i])->menu));
 							posX += len + 40;
@@ -304,7 +304,7 @@ namespace blib
 				if (x > item.first.x && x < item.first.x + 200 &&
 					y > item.first.y && y < item.first.y + 16 * item.second->menuItems.size())
 				{
-					int selected = (y - item.first.y) / 16;
+					int selected = (int)glm::floor(y - item.first.y) / 16;
 					SubMenuMenuItem* subMenu = dynamic_cast<SubMenuMenuItem*>(item.second->menuItems[selected]);
 					if (subMenu)
 					{
@@ -331,15 +331,16 @@ namespace blib
 				Window* w = (*it);
 				if (w->inWindow(x, y) && w->visible)
 				{
+					bool ret = false;
 					if (w->inComponent(x, y))
 					{
-						w->mousedown(x, y);
+						ret = w->onMouseDown(x, y, clickCount);
 						clickX = x;
 						clickY = y;
 					}
 					else
 						draggingWindow = w;
-					return true;
+					return ret;
 				}
 			}
 			return false;
@@ -373,10 +374,10 @@ namespace blib
 				Window* w = (*it);
 				if (w->inWindow(x, y) && w->visible)
 				{
-					w->mouseup(x, y);
+					w->onMouseUp(x, y, clickCount);
 					if (abs(clickX - x) < 3 && abs(clickY - y) < 3)
 					{
-						w->mouseclick(x, y, clickCount);
+						w->onMouseClick(x, y, clickCount);
 					}
 					return true;
 				}
@@ -396,11 +397,11 @@ namespace blib
 				if (y < 16)
 				{
 					popupMenus.clear();
-					int posX = 10;
+					float posX = 10;
 					for (size_t i = 0; i < menuBar->menuItems.size(); i++)
 					{
 						SubMenuMenuItem* item = dynamic_cast<SubMenuMenuItem*>(menuBar->menuItems[i]);
-						int len = font->textlen(menuBar->menuItems[i]->name);
+						float len = font->textlen(menuBar->menuItems[i]->name);
 						if (mouseState.x > posX && mouseState.x < posX + len + 40 && mouseState.y > 0 && mouseState.y < 0 + 16)
 							popupMenus.push_back(std::pair<glm::vec2, Menu*>(glm::vec2(posX-10, 18), ((SubMenuMenuItem*)menuBar->menuItems[i])->menu));
 						posX += len + 40;
@@ -509,7 +510,7 @@ namespace blib
 					Window* w = (*it);
 					if (w->inWindow(x, y) && w->visible)
 					{
-						w->mousedrag(x, y);
+						//w->mousedrag(x, y); lci
 						handled = true;
 						break;
 					}
@@ -547,7 +548,7 @@ namespace blib
 				Window* w = (*it);
 				if (w->inWindow(mouseState.x, mouseState.y) && w->visible)
 				{
-					w->mousewheel(delta, mouseState.x, mouseState.y);
+					w->onScroll(mouseState.x, mouseState.y, delta);
 					return true;
 				}
 				if (it == windows.begin() && w->modal)
@@ -566,7 +567,7 @@ namespace blib
 			}
 
 
-			if (!windows.empty() && windows.front()->selectedWidget && windows.front()->selectedWidget->canHaveKeyboardFocus)
+			if (!windows.empty() && windows.front()->selectedWidget && !windows.front()->selectedWidget->canHaveKeyboardFocus)
 				return true;
 
 			if (menuKeys.find(key) != menuKeys.end())
@@ -587,26 +588,25 @@ namespace blib
 				}
 			}
 
-			/*if (windows.empty())
+			if (windows.empty())
 				return false;
-			windows.front()->keyboard(key);*/
+			if (windows.front()->onKeyDown(key))
+				return true;
 			return false;
 		}
 
 		bool WM::onKeyUp(Key key)
 		{
-		/*	if (windows.empty())
+			if (windows.empty())
 				return false;
-			windows.front()->keyboard(key);
-			return true;*/
-			return false;
+			return windows.front()->onKeyUp(key);
 		}
 
 		bool WM::onChar(char character)
 		{
 			if (windows.empty())
 				return false;
-			windows.front()->keyboard(character);
+			windows.front()->onChar(character);
 			return true;
 		}
 

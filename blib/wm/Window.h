@@ -4,6 +4,8 @@
 #include <json/value.h>
 #include <blib/wm/widgets/Widget.h>
 #include <blib/wm/widgets/Panel.h>
+#include <blib/wm/KeyboardFocusable.h>
+#include <blib/wm/MouseClickable.h>
 
 namespace blib
 {
@@ -11,7 +13,7 @@ namespace blib
 	namespace wm
 	{
 
-	class Window
+	class Window : public KeyboardFocusable, MouseClickable
 	{
 		friend class WM;
 		void addWidgets( widgets::Panel* panel, Json::Value skin, ResourceManager* resourceManager );
@@ -53,16 +55,6 @@ namespace blib
 		Widget::PositionHelp toPositionHelp( std::string text );
 		bool inWindow( int x, int y );
 		virtual void arrangeComponents( int oldWidth, int oldHeight );
-
-
-		void mousewheel(int direction, int x, int y);
-		void mousedown(int x, int y);
-		void mouseup(int x, int y);
-		void mouseclick(int x, int y, int clickcount);
-		void mousedrag(int x, int y);
-		void keyboard(char key);
-		void keyboardSpecial(int key);
-
 
 		template<class T>
 		T* getComponent(std::string name) const

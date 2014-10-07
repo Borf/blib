@@ -102,7 +102,7 @@ namespace blib
 				return Panel::getComponent(x+scrollX+2, y+scrollY+2);
 			}
 
-			void ScrollPanel::mousedown( int x, int y )
+		/*	void ScrollPanel::mousedown( int x, int y )
 			{
 				Panel::mousedown(x+scrollX+2, y+scrollY+2);
 			}
@@ -120,7 +120,7 @@ namespace blib
 			void ScrollPanel::mousedrag( int x, int y )
 			{
 				Panel::mousedrag(x+scrollX+2, y+scrollY+2);
-			}
+			}*/
 		}
 	}
 }

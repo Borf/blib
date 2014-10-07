@@ -10,6 +10,41 @@ namespace blib
 			ContainerWidget::ContainerWidget()
 			{
 				checkVisibility = true;
+
+				addMouseDownHandler([this](int x, int y, int clickcount) 
+				{ 
+					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
+							if ((*it)->inComponent(x - this->x, y - this->y))
+								return (*it)->onMouseDown(x - this->x, y - this->y, clickcount);
+					return false;
+				});
+
+				addMouseUpHandler([this](int x, int y, int clickcount)
+				{
+					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
+							if ((*it)->inComponent(x - this->x, y - this->y))
+								return (*it)->onMouseUp(x - this->x, y - this->y, clickcount);
+					return false;
+				});
+
+				addClickHandler([this](int x, int y, int clickcount)
+				{
+					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
+							if ((*it)->inComponent(x - this->x, y - this->y))
+							return (*it)->onMouseClick(x - this->x, y - this->y, clickcount);
+					return false;
+				});
+
+				addScrollHandler([this](int x, int y, int delta) {
+					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
+							if ((*it)->inComponent(x - this->x, y - this->y))
+								return (*it)->onScroll(x - this->x, y - this->y, delta);
+					return false;
+				});
 			}
 
 
@@ -64,69 +99,6 @@ namespace blib
 					return this;
 				else
 					return NULL;
-			}
-
-			void ContainerWidget::mousewheel( int direction, int x, int y )
-			{
-				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
-				{
-					if(!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0))
-						if((*it)->inComponent(x-this->x, y - this->y))
-						{
-							(*it)->mousewheel(direction, x-this->x, y-this->y);
-							return;
-						}
-				}
-			}
-
-			void ContainerWidget::mousedown(int x, int y )
-			{
-				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
-				{
-					if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
-						if((*it)->inComponent(x-this->x, y - this->y))
-						{
-							(*it)->mousedown(x-this->x, y-this->y);
-							return;
-						}
-				}
-			}
-			void ContainerWidget::mouseup(int x, int y )
-			{
-				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
-				{
-					if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
-						if((*it)->inComponent(x-this->x, y - this->y))
-						{
-							(*it)->mouseup(x-this->x, y-this->y);
-							return;
-						}
-				}
-			}
-			void ContainerWidget::mousedrag(int x, int y )
-			{
-				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
-				{
-					if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
-						if((*it)->inComponent(x-this->x, y - this->y))
-						{
-							(*it)->mousedrag(x-this->x, y-this->y);
-							return;
-						}
-				}
-			}
-
-			void ContainerWidget::mouseclick(int x, int y, int clickcount )
-			{
-				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
-				{
-					if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
-						if((*it)->inComponent(x-this->x, y - this->y))
-						{
-							(*it)->mouseclick(x-this->x, y-this->y, clickcount);
-							return;
-						}
-				}
 			}
 		}
 	}

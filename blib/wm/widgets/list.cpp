@@ -29,6 +29,22 @@ namespace blib
 				this->height = 25;
 				scrollPosition = 0;
 				multiselect = false;
+
+				addClickHandler([this](int x, int y, int clickCount)
+				{
+					Json::Value skin = WM::getInstance()->skin["list"];
+					if (x - this->x < width - skin["scroll"]["width"].asInt())
+					{
+						selectedItems.clear();
+						selectedItems.push_back((y - this->y + scrollPosition) / 12);
+						return true;
+					}
+					return false;
+				});
+
+
+
+
 			}
 
 
@@ -136,7 +152,7 @@ namespace blib
 
 				for (int i = scrollPosition / 12; i < glm::min((int)items.size(), scrollPosition / 12 + (int)ceil(height / 12.0)); i++)
 				{
-					if (!selectedItems.empty() && selectionIndex < selectedItems.size())
+					if (!selectedItems.empty() && selectionIndex < (int)selectedItems.size())
 					{
 						if (selectedItems[selectionIndex] == i)
 						{
@@ -169,18 +185,7 @@ namespace blib
 			}
 
 
-			void List::mouseclick(int x, int y, int clickcount)
-			{
-				Json::Value skin = WM::getInstance()->skin["list"];
-				if(x-this->x < width - skin["scroll"]["width"].asInt())
-				{
-					selectedItems.clear();
-					selectedItems.push_back((y-this->y+scrollPosition)/12);
-				}
-				Widget::mouseclick(x, y, clickcount);
-			}
-
-			void List::keyboardSpecial( int key )
+/*			void List::keyboardSpecial( int key )
 			{
 				Widget::keyboardSpecial(key);
 				if (!selectedItems.empty())
@@ -190,7 +195,7 @@ namespace blib
 					if ((blib::Key)key == blib::Key::UP)
 						selectedItems[0] = glm::max(0, selectedItems[0] - 1);
 				}
-			}
+			}*/
 
 
 			int List::selectedItem() const

@@ -28,6 +28,7 @@ namespace blib
 		class MenuItem;
 
 
+
 		class WM : public util::Singleton<WM>, public MouseListener, public KeyListener, blib::gl::GlResizeRegister
 		{
 			MouseState mouseState;
@@ -72,6 +73,7 @@ namespace blib
 			void setRadialMenu( blib::wm::Menu* param1 );
 			void setMenuBar(blib::wm::Menu* menu);
 
+			//from listeners
 			virtual bool onMouseDown(int x, int y, Button button, int clickCount);
 			virtual bool onMouseUp(int x, int y, Button button, int clickCount);
 			virtual bool onMouseMove(int x, int y, Buttons button);

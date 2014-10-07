@@ -103,8 +103,10 @@
     <ClInclude Include="blib\VIO.h" />
     <ClInclude Include="blib\Window.h" />
     <ClInclude Include="blib\wm\ActionMenuItem.h" />
+    <ClInclude Include="blib\wm\KeyboardFocusable.h" />
     <ClInclude Include="blib\wm\Menu.h" />
     <ClInclude Include="blib\wm\MenuItem.h" />
+    <ClInclude Include="blib\wm\MouseClickable.h" />
     <ClInclude Include="blib\wm\SubMenuMenuItem.h" />
     <ClInclude Include="blib\wm\ToggleMenuItem.h" />
     <ClInclude Include="blib\wm\widgets\button.h" />
@@ -251,8 +253,10 @@
     <ClCompile Include="blib\util\StreamOut.cpp" />
     <ClCompile Include="blib\util\Thread.cpp" />
     <ClCompile Include="blib\Window.cpp" />
+    <ClCompile Include="blib\wm\KeyboardFocusable.cpp" />
     <ClCompile Include="blib\wm\Menu.cpp" />
     <ClCompile Include="blib\wm\MenuItem.cpp" />
+    <ClCompile Include="blib\wm\MouseClickable.cpp" />
     <ClCompile Include="blib\wm\SubMenuMenuItem.cpp" />
     <ClCompile Include="blib\wm\widgets\button.cpp" />
     <ClCompile Include="blib\wm\widgets\ContainerWidget.cpp" />

@@ -30,9 +30,6 @@ namespace blib
 				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const;
 
 				virtual void mousewheel( int direction, int x, int y );
-				virtual void mouseclick(int x, int y, int clickcount);
-
-				virtual void keyboardSpecial(int key);
 			};
 		}
 	}

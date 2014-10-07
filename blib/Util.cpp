@@ -230,7 +230,7 @@ return "~/";
 		glm::vec3 rgb2hsv(glm::vec3 rgb)
 		{
 			glm::vec3         out;
-			double      min, max, delta;
+			float      min, max, delta;
 
 			min = rgb.r < rgb.g ? rgb.r : rgb.g;
 			min = min  < rgb.b ? min : rgb.b;

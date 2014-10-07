@@ -1,6 +1,9 @@
 #pragma once
 
 #include <blib/blib.h>
+#include <blib/wm/KeyboardFocusable.h>
+#include <blib/wm/MouseClickable.h>
+
 #include <string>
 #include <list>
 #include <glm/glm.hpp>
@@ -12,19 +15,12 @@ namespace blib
 	class SpriteBatch; 
 	class Texture;
 	class Renderer;
+	enum class Key;
 
 	namespace wm
 	{
-		class Widget
+		class Widget : public KeyboardFocusable, public MouseClickable
 		{
-		public:
-			typedef std::function<void(Widget* widget, int x, int y, int clickCount)> mouseHandler;
-			typedef std::function<void(char key)> keyHandler;
-			typedef std::function<void(char key)> keySpecialHandler;
-
-			std::list<mouseHandler>		clickHandlers;
-			std::list<keyHandler>					keyHandlers;
-			std::list<keySpecialHandler>			keySpecialHandlers;
 		public:
 
 
@@ -36,8 +32,6 @@ namespace blib
 
 			bool selected;
 			bool hover;
-
-			bool canHaveKeyboardFocus;
 
 			enum PositionHelp
 			{
@@ -58,19 +52,6 @@ namespace blib
 			virtual Widget* getComponent(std::string name);
 			virtual bool inComponent(int x, int y); // x,y are relative to the widget's base, no recursion
 			virtual Widget* getComponent(int x, int y); //recursion !
-
-			virtual void mousewheel(int direction, int x, int y) {};
-			virtual void mousedown(int x, int y){};
-			virtual void mouseup(int x, int y){};
-			virtual void mouseclick(int x, int y, int clickcount);
-			virtual void mousedrag(int x, int y) {};
-			virtual void keyboard(char key);
-			virtual void keyboardSpecial(int key);
-
-
-			void addClickHandler(mouseHandler handler);
-			void addKeyHandler(keyHandler handler);
-			void addKeySpecialHandler(keySpecialHandler handler);
 		};
 	}
 }

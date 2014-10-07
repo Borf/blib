@@ -40,47 +40,5 @@ namespace blib
 		{
 			return inComponent(x,y) ? this : NULL;
 		}
-
-		void Widget::mouseclick( int x, int y, int clickcount )
-		{
-			for(std::list< mouseHandler >::iterator it = clickHandlers.begin(); it != clickHandlers.end(); it++)
-			{
-				mouseHandler &handler = *it;
-				handler(this, x, y, clickcount);
-			}
-		}
-
-		void Widget::addClickHandler( mouseHandler handler)
-		{
-			clickHandlers.push_back(handler);
-		}
-
-		void Widget::addKeyHandler( keyHandler handler)
-		{
-			keyHandlers.push_back(handler);
-		}
-
-		void Widget::keyboard( char key )
-		{
-			for(std::list< keyHandler >::iterator it = keyHandlers.begin(); it != keyHandlers.end(); it++)
-			{
-				keyHandler &handler = *it;
-				handler(key);
-			}
-		}
-
-		void Widget::addKeySpecialHandler( keySpecialHandler handler)
-		{
-			keySpecialHandlers.push_back(handler);
-		}
-
-		void Widget::keyboardSpecial( int key )
-		{
-			for(std::list< keySpecialHandler >::iterator it = keySpecialHandlers.begin(); it != keySpecialHandlers.end(); it++)
-			{
-				keySpecialHandler &handler = *it;
-				handler(key);
-			}
-		}
 	}
 }

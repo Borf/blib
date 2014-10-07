@@ -518,6 +518,12 @@
     <ClInclude Include="blib\util\stb_image_create.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="blib\wm\KeyboardFocusable.h">
+      <Filter>wm</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\wm\MouseClickable.h">
+      <Filter>wm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -865,6 +871,12 @@
     </ClCompile>
     <ClCompile Include="blib\util\ListAllocator.cpp">
       <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\KeyboardFocusable.cpp">
+      <Filter>wm</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\MouseClickable.cpp">
+      <Filter>wm</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -28,10 +28,6 @@ namespace blib
 				Textbox();
 
 				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const;
-
-				virtual void keyboard(char key);
-				virtual void keyboardSpecial(int key);
-				virtual void mousedown(int x, int y);
 			};
 		}
 	}

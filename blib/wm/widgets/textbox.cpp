@@ -33,6 +33,78 @@ namespace blib
 				selectionEnd = 0;
 				scrollPosition = 0;
 				canHaveKeyboardFocus = true;
+
+
+				addCharHandler([this](char key)
+				{
+					if (key >= ' ') //only printable
+					{
+						text = text.substr(0, cursor) + (char)key + text.substr(cursor);
+						cursor++;
+						selectionStart = cursor;
+						selectionEnd = cursor;
+						return true;
+					}
+				});
+
+
+				addKeyDownHandler([this](blib::Key key)
+				{
+					switch (key)
+					{
+					case blib::Key::BACKSPACE:
+						if (cursor > 0)
+						{
+							//TODO: erase selection
+							text = text.substr(0, cursor - 1) + text.substr(cursor);
+							cursor--;
+						}
+						return true;
+					case blib::Key::TAB:
+						return true;
+					case blib::Key::DEL:
+						if (cursor < text.size())
+						{
+							//TODO: erase selection
+							text = text.substr(0, cursor) + text.substr(cursor + 1);
+						}
+						return true;
+					case blib::Key::HOME:
+						cursor = 0;
+						return true;
+					case blib::Key::END:
+						cursor = text.size();
+						return true;
+					}
+					return false;
+				});
+
+
+				addClickHandler([this](int x, int y, int clickCount)
+				{
+					x -= this->x;//position
+					x -= 1;//padding
+					x += scrollPosition;
+
+					for (unsigned int i = 0; i < text.size(); i++)
+					{
+						float adv = WM::getInstance()->font->textlen(text.substr(0, i).c_str());
+						if (x < adv)
+						{
+							cursor = i;
+							if (cursor < 0)
+								cursor = 0;
+							if (cursor > text.size())
+								cursor = text.size();
+							return true;
+						}
+					}
+					cursor = text.size();
+					return true;
+				});
+
+					
+
 			}
 
 
@@ -94,72 +166,7 @@ namespace blib
 				glDisable(GL_SCISSOR_TEST);*/
 			}
 
-			void Textbox::keyboard( char key )
-			{
-				if(key == 8)//backspace
-				{
-					if(cursor > 0)
-					{
-						//TODO: erase selection
-						text = text.substr(0, cursor-1) + text.substr(cursor);
-						cursor--;
-					}
-				}
-				else if(key == 9)//tab
-				{}
-				else if(key == 127) //delete
-				{
-					if(cursor < text.size())
-					{
-						//TODO: erase selection
-						text = text.substr(0, cursor) + text.substr(cursor+1);
-					}
-				}
-				else if(key >= 32)
-				{
-					text = text.substr(0, cursor) + key + text.substr(cursor);
-					cursor++;
-					selectionStart = cursor;
-					selectionEnd = cursor;
-				}
-	
 
-
-				Widget::keyboard(key);
-			}
-
-			void Textbox::keyboardSpecial( int key )
-			{
-				if ((blib::Key)key == blib::Key::HOME)
-					cursor = 0;
-				else if ((blib::Key)key == blib::Key::HOME)
-					cursor = text.size();
-				Widget::keyboardSpecial(key);
-			}
-
-
-			void Textbox::mousedown(int x, int y)
-			{
-				Widget::mousedown(x, y);
-				x-=this->x;//position
-				x-=1;//padding
-				x+=scrollPosition;
-
-				for(unsigned int i = 0; i < text.size(); i++)
-				{
-					float adv = WM::getInstance()->font->textlen(text.substr(0, i).c_str());
-					if(x < adv)
-					{
-						cursor = i;
-						if(cursor < 0)
-							cursor = 0;
-						if(cursor > text.size())
-							cursor = text.size();
-						return;
-					}
-				}
-				cursor = text.size();
-			}
 		}
 	}
 }

@@ -76,6 +76,39 @@ namespace blib
 
 			if(skinFile != "")
 				this->addWidgets(this->rootPanel, skin["widgets"], resourceManager);
+			
+
+			addKeyDownHandler([this](blib::Key key) { 
+				if (selectedWidget)
+					return selectedWidget->onKeyDown(key);
+				return false;
+			});
+			addKeyUpHandler([this](blib::Key key) { 
+				if (selectedWidget)
+					return selectedWidget->onKeyUp(key);
+				return false;
+			});
+			addCharHandler([this](char key) { 
+				if (selectedWidget)
+					return selectedWidget->onChar(key);
+				return false;
+			});
+
+
+			addClickHandler([this](int x, int y, int clickcount) 
+			{ 
+				if (selectedWidget)
+					selectedWidget->selected = false;
+				selectedWidget = rootPanel->getComponent(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
+				if (selectedWidget)
+					selectedWidget->selected = true;
+				return rootPanel->onMouseClick(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount);
+			});
+			addMouseUpHandler([this](int x, int y, int clickcount) { return rootPanel->onMouseUp(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });
+			addMouseDownHandler([this](int x, int y, int clickcount) { return rootPanel->onMouseDown(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });
+			addScrollHandler([this](int x, int y, int delta) { return rootPanel->onScroll(x, y, delta); });
+
+
 
 			WM::getInstance()->addWindow(this);
 		}
@@ -217,10 +250,10 @@ namespace blib
 			rootPanel->arrangeComponents(oldPanelWidth, oldPanelHeight);
 		}
 
-		void Window::mousewheel( int direction, int x, int y )
+		/*void Window::mousewheel( int direction, int x, int y )
 		{
 			rootPanel->mousewheel(direction, x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
-		}
+		}*/
 
 		bool Window::inComponent( int x, int y )
 		{
@@ -230,44 +263,6 @@ namespace blib
 		Widget* Window::getComponent( int x, int y )
 		{
 			return rootPanel->getComponent(x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
-		}
-
-
-		void Window::mousedown(int x, int y)
-		{
-			rootPanel->mousedown(x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
-		}
-
-		void Window::mousedrag(int x, int y)
-		{
-			rootPanel->mousedrag(x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
-		}
-
-		void Window::mouseup(int x, int y)
-		{
-			rootPanel->mouseup(x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
-		}
-
-		void Window::mouseclick(int x, int y, int clickcount)
-		{
-			if(selectedWidget)
-				selectedWidget->selected = false;
-			selectedWidget = rootPanel->getComponent(x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
-			if(selectedWidget)
-				selectedWidget->selected = true;
-			rootPanel->mouseclick(x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount);
-		}
-
-		void Window::keyboard(char key)
-		{
-			if(selectedWidget)
-				selectedWidget->keyboard(key);
-		}
-
-		void Window::keyboardSpecial(int key)
-		{
-			if(selectedWidget)
-				selectedWidget->keyboardSpecial(key);
 		}
 
 		Widget* Window::getComponent( std::string name )
