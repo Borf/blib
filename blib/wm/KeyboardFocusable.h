@@ -28,6 +28,8 @@ namespace blib
 			bool onKeyUp(blib::Key key);
 			bool onChar(char key);
 
+
+			void clearKeyboardListeners();
 		};
 	}
 }

@@ -1,4 +1,5 @@
 #include "KeyboardFocusable.h"
+#include <blib/linq.h>
 
 namespace blib
 {
@@ -48,6 +49,13 @@ namespace blib
 				ret |= (*it)(key);
 			}
 			return ret;
+		}
+
+		void KeyboardFocusable::clearKeyboardListeners()
+		{
+			keyDownHandlers.clear();
+			keyUpHandlers.clear();
+			charHandlers.clear();
 		}
 
 	}

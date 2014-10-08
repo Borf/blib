@@ -21,6 +21,55 @@ namespace blib
 				scrollX = 0;
 				scrollY = 0;
 				checkVisibility = false;
+
+				clearMouseListeners();
+				clearKeyboardListeners();
+
+
+				addMouseDownHandler([this](int x, int y, int clickcount)
+				{
+					x += scrollX + 2;
+					y += scrollY + 2;
+					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
+							if ((*it)->inComponent(x - this->x, y - this->y))
+								return (*it)->onMouseDown(x - this->x, y - this->y, clickcount);
+					return false;
+				});
+
+				addMouseUpHandler([this](int x, int y, int clickcount)
+				{
+					x += scrollX + 2;
+					y += scrollY + 2;
+					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
+							if ((*it)->inComponent(x - this->x, y - this->y))
+								return (*it)->onMouseUp(x - this->x, y - this->y, clickcount);
+					return false;
+				});
+
+				addClickHandler([this](int x, int y, int clickcount)
+				{
+					x += scrollX + 2;
+					y += scrollY + 2;
+					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
+							if ((*it)->inComponent(x - this->x, y - this->y))
+								return (*it)->onMouseClick(x - this->x, y - this->y, clickcount);
+					return false;
+				});
+
+				addScrollHandler([this](int x, int y, int delta) {
+					scrollY -= delta;
+					if (scrollY > internalHeight - height)
+						scrollY = internalHeight - height;
+					if (scrollY < 0)
+						scrollY = 0;
+					return true;
+				});
+
+
+
 			}
 
 
@@ -88,19 +137,11 @@ namespace blib
 
 
 
-			void ScrollPanel::mousewheel( int direction, int x, int y )
-			{
-				scrollY -= 16 * direction / 120;
-				if(scrollY > internalHeight-height)
-					scrollY = internalHeight-height;
-				if(scrollY < 0)
-					scrollY = 0;
-			}
-
 			Widget* ScrollPanel::getComponent( int x, int y )
 			{
 				return Panel::getComponent(x+scrollX+2, y+scrollY+2);
 			}
+
 
 		/*	void ScrollPanel::mousedown( int x, int y )
 			{

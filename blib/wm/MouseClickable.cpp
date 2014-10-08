@@ -21,6 +21,11 @@ namespace blib
 			scrollHandlers.push_back(handler);
 		}
 
+		void MouseClickable::addDragHandler(mouseDragHandler handler)
+		{
+			mouseDragHandlers.push_back(handler);
+		}
+
 
 		bool MouseClickable::onMouseClick(int x, int y, int clickCount)
 		{
@@ -58,5 +63,23 @@ namespace blib
 			}
 			return ret;
 		}
+		bool MouseClickable::onDrag(int x, int y)
+		{
+			bool ret = false;
+			for (std::list<mouseDragHandler>::iterator it = mouseDragHandlers.begin(); it != mouseDragHandlers.end(); it++)
+			{
+				ret |= (*it)(x, y);
+			}
+			return ret;
+		}
+
+		void MouseClickable::clearMouseListeners()
+		{
+			clickHandlers.clear();
+			scrollHandlers.clear();
+			mouseDownHandlers.clear();
+			mouseUpHandlers.clear();
+		}
+
 	}
 }

@@ -20,7 +20,6 @@ namespace blib
 				ScrollPanel();
 
 				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const;
-				virtual void mousewheel( int direction, int x, int y );
 
 				void arrangeComponents( int oldWidth, int oldHeight );
 

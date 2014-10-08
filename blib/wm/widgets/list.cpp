@@ -43,6 +43,34 @@ namespace blib
 				});
 
 
+				addScrollHandler([this](int x, int y, int delta)
+				{
+					scrollPosition -= delta / abs(delta)*height / 2;
+					if (scrollPosition > 12 * (int)items.size() - 12)
+						scrollPosition = 12 * items.size() - 12;
+					if (scrollPosition < 0)
+						scrollPosition = 0;
+					return true;
+				});
+
+				addKeyDownHandler([this](blib::Key key)
+				{
+					if (!selectedItems.empty())
+					{
+						if (key == blib::Key::DOWN)
+						{
+							selectedItems[0] = glm::min((int)items.size() - 1, selectedItems[0] + 1);
+							return true;
+						}
+						if (key == blib::Key::UP)
+						{
+							selectedItems[0] = glm::max(0, selectedItems[0] - 1);
+							return true;
+						}
+					}
+					return false;
+				});
+
 
 
 			}
@@ -174,29 +202,6 @@ namespace blib
 
 
 			}
-
-			void List::mousewheel( int direction, int x, int y )
-			{
-				scrollPosition -= direction / abs(direction)*height/2;
-				if(scrollPosition > 12*(int)items.size()-12)
-					scrollPosition = 12*items.size()-12;
-				if(scrollPosition < 0)
-					scrollPosition = 0;
-			}
-
-
-/*			void List::keyboardSpecial( int key )
-			{
-				Widget::keyboardSpecial(key);
-				if (!selectedItems.empty())
-				{
-					if ((blib::Key)key == blib::Key::DOWN)
-						selectedItems[0] = glm::min((int)items.size() - 1, selectedItems[0] + 1);
-					if ((blib::Key)key == blib::Key::UP)
-						selectedItems[0] = glm::max(0, selectedItems[0] - 1);
-				}
-			}*/
-
 
 			int List::selectedItem() const
 			{

@@ -508,9 +508,9 @@ namespace blib
 				for (std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
 				{
 					Window* w = (*it);
-					if (w->inWindow(x, y) && w->visible)
+					if (w->inWindow(x, y) && w->visible && w->selectedWidget)
 					{
-						//w->mousedrag(x, y); lci
+						w->selectedWidget->onDrag(x, y);
 						handled = true;
 						break;
 					}

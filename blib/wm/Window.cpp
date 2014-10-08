@@ -106,7 +106,7 @@ namespace blib
 			});
 			addMouseUpHandler([this](int x, int y, int clickcount) { return rootPanel->onMouseUp(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });
 			addMouseDownHandler([this](int x, int y, int clickcount) { return rootPanel->onMouseDown(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });
-			addScrollHandler([this](int x, int y, int delta) { return rootPanel->onScroll(x, y, delta); });
+			addScrollHandler([this](int x, int y, int delta) { return rootPanel->onScroll(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), delta); });
 
 
 
