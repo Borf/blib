@@ -13,7 +13,7 @@ namespace blib
 
 				addMouseDownHandler([this](int x, int y, int clickcount) 
 				{ 
-					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+					for (std::list<Widget*>::reverse_iterator it = children.rbegin(); it != children.rend(); it++)
 						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
 							if ((*it)->inComponent(x - this->x, y - this->y))
 								return (*it)->onMouseDown(x - this->x, y - this->y, clickcount);
@@ -22,7 +22,7 @@ namespace blib
 
 				addMouseUpHandler([this](int x, int y, int clickcount)
 				{
-					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+					for (std::list<Widget*>::reverse_iterator it = children.rbegin(); it != children.rend(); it++)
 						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
 							if ((*it)->inComponent(x - this->x, y - this->y))
 								return (*it)->onMouseUp(x - this->x, y - this->y, clickcount);
@@ -31,7 +31,7 @@ namespace blib
 
 				addClickHandler([this](int x, int y, int clickcount)
 				{
-					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+					for (std::list<Widget*>::reverse_iterator it = children.rbegin(); it != children.rend(); it++)
 						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
 							if ((*it)->inComponent(x - this->x, y - this->y))
 							return (*it)->onMouseClick(x - this->x, y - this->y, clickcount);
@@ -39,7 +39,7 @@ namespace blib
 				});
 
 				addScrollHandler([this](int x, int y, int delta) {
-					for (std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+					for (std::list<Widget*>::reverse_iterator it = children.rbegin(); it != children.rend(); it++)
 						if (!checkVisibility || ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0))
 							if ((*it)->inComponent(x - this->x, y - this->y))
 								return (*it)->onScroll(x - this->x, y - this->y, delta);
@@ -74,7 +74,7 @@ namespace blib
 			{
 				if(this->name == name)
 					return this;
-				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+				for(std::list<Widget*>::reverse_iterator it = children.rbegin(); it != children.rend(); it++)
 				{
 					Widget* ret = (*it)->getComponent(name);
 					if(ret)
@@ -85,7 +85,7 @@ namespace blib
 
 			Widget* ContainerWidget::getComponent( int x, int y )
 			{
-				for(std::list<Widget*>::iterator it = children.begin(); it != children.end(); it++)
+				for(std::list<Widget*>::reverse_iterator it = children.rbegin(); it != children.rend(); it++)
 				{
 					if((*it)->x < width && (*it)->y < height && (*it)->x+(*it)->width > 0 && (*it)->y+(*it)->height > 0)
 					{
