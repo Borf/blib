@@ -510,7 +510,9 @@ namespace blib
 					Window* w = (*it);
 					if (w->inWindow(x, y) && w->visible && w->selectedWidget)
 					{
-						w->selectedWidget->onDrag(x, y);
+						w->selectedWidget->onDrag(
+							x - w->x - w->selectedWidget->absoluteX() - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), 
+							y - w->y - w->selectedWidget->absoluteY() - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
 						handled = true;
 						break;
 					}

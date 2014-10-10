@@ -15,6 +15,7 @@ namespace blib
 			selected = false;
 			hover = false;
 			canHaveKeyboardFocus = false;
+			parent = NULL;
 		}
 
 		Widget::~Widget()
@@ -40,5 +41,19 @@ namespace blib
 		{
 			return inComponent(x,y) ? this : NULL;
 		}
+
+		int Widget::absoluteX()
+		{
+			if (parent)
+				return parent->absoluteX() + x;
+			return x;
+		}
+		int Widget::absoluteY()
+		{
+			if (parent)
+				return parent->absoluteY() + y;
+			return y;
+		}
+
 	}
 }

@@ -97,16 +97,21 @@ namespace blib
 
 			addClickHandler([this](int x, int y, int clickcount) 
 			{ 
+				return rootPanel->onMouseClick(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount);
+			});
+			addMouseUpHandler([this](int x, int y, int clickcount) { return rootPanel->onMouseUp(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });
+			addMouseDownHandler([this](int x, int y, int clickcount) { 
 				if (selectedWidget)
 					selectedWidget->selected = false;
 				selectedWidget = rootPanel->getComponent(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
 				if (selectedWidget)
 					selectedWidget->selected = true;
-				return rootPanel->onMouseClick(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount);
-			});
-			addMouseUpHandler([this](int x, int y, int clickcount) { return rootPanel->onMouseUp(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });
-			addMouseDownHandler([this](int x, int y, int clickcount) { return rootPanel->onMouseDown(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });
-			addScrollHandler([this](int x, int y, int delta) { return rootPanel->onScroll(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), delta); });
+
+				return rootPanel->onMouseDown(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });
+			addScrollHandler([this](int x, int y, int delta) { 
+				return rootPanel->onScroll(
+					x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), 
+					y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), delta); });
 
 
 
@@ -205,6 +210,7 @@ namespace blib
 				if(widgetSkin["size"][1u].asInt() != -1)
 					widget->height = widgetSkin["size"][1u].asInt();
 
+				widget->parent = panel;
 				widget->positionHelpLeft =	toPositionHelp(widgetSkin["positionhelp"]["left"].asString());
 				widget->positionHelpRight = toPositionHelp(widgetSkin["positionhelp"]["right"].asString());
 				widget->positionHelpTop =	toPositionHelp(widgetSkin["positionhelp"]["top"].asString());

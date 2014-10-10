@@ -142,6 +142,16 @@ namespace blib
 				return Panel::getComponent(x+scrollX+2, y+scrollY+2);
 			}
 
+			int ScrollPanel::absoluteX()
+			{
+				return Widget::absoluteX() - scrollY + 2;
+			}
+
+			int ScrollPanel::absoluteY()
+			{
+				return Widget::absoluteY() - scrollY - 2;
+			}
+
 
 		/*	void ScrollPanel::mousedown( int x, int y )
 			{
