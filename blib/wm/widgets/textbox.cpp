@@ -45,6 +45,7 @@ namespace blib
 						selectionEnd = cursor;
 						return true;
 					}
+					return false;
 				});
 
 
