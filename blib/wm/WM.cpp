@@ -331,6 +331,15 @@ namespace blib
 				Window* w = (*it);
 				if (w->inWindow(x, y) && w->visible)
 				{
+					if (windows.front() != w && windows.front()->selectedWidget) //unselect stuff
+					{
+						windows.front()->selectedWidget->selected = false;
+						windows.front()->selectedWidget = NULL;
+					}
+
+					windows.erase(it); // move window to top
+					windows.push_front(w);
+
 					bool ret = false;
 					if (w->inComponent(x, y))
 					{
@@ -508,6 +517,8 @@ namespace blib
 				for (std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
 				{
 					Window* w = (*it);
+					if (!w->inWindow(x, y))
+						Log::out << "Blabla" << Log::newline;
 					if (w->inWindow(x, y) && w->visible && w->selectedWidget)
 					{
 						w->selectedWidget->onDrag(
@@ -561,23 +572,23 @@ namespace blib
 
 		bool WM::onKeyDown(Key key)
 		{
-			if (key == Key::SPACE)
-			{
-				radialMenu = radialMenu ? NULL : radialMenuRoot;
-				radialMenuPosition.x = (float)mouseState.x;
-				radialMenuPosition.y = (float)mouseState.y;
-			}
 
+//			if (!windows.empty() && windows.front()->selectedWidget && !windows.front()->selectedWidget->canHaveKeyboardFocus)
+//				return true;
 
-			if (!windows.empty() && windows.front()->selectedWidget && !windows.front()->selectedWidget->canHaveKeyboardFocus)
-				return true;
+			if (!windows.empty())
+				if (windows.front()->onKeyDown(key))
+					return true;
 
 			if (menuKeys.find(key) != menuKeys.end())
 			{
 				{
 					ToggleMenuItem* item = dynamic_cast<ToggleMenuItem*>(menuKeys[key]);
 					if (item)
+					{
 						item->toggle();
+						return true;
+					}
 				}
 
 				{
@@ -585,15 +596,21 @@ namespace blib
 					if (item)
 					{
 						if (item->callback)
+						{
 							item->callback();
+							return true;
+						}
 					}
 				}
 			}
 
-			if (windows.empty())
-				return false;
-			if (windows.front()->onKeyDown(key))
-				return true;
+			if (key == Key::SPACE)
+			{
+				radialMenu = radialMenu ? NULL : radialMenuRoot;
+				radialMenuPosition.x = (float)mouseState.x;
+				radialMenuPosition.y = (float)mouseState.y;
+			}
+
 			return false;
 		}
 

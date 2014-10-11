@@ -78,7 +78,7 @@ namespace blib
 				this->addWidgets(this->rootPanel, skin["widgets"], resourceManager);
 			
 
-			addKeyDownHandler([this](blib::Key key) { 
+		/*	addKeyDownHandler([this](blib::Key key) { 
 				if (selectedWidget)
 					return selectedWidget->onKeyDown(key);
 				return false;
@@ -92,7 +92,7 @@ namespace blib
 				if (selectedWidget)
 					return selectedWidget->onChar(key);
 				return false;
-			});
+			});*/
 
 
 			addClickHandler([this](int x, int y, int clickcount) 

@@ -50,6 +50,7 @@ namespace blib
 
 			void ContainerWidget::add( Widget* toAdd )
 			{
+				toAdd->parent = this;
 				children.push_back(toAdd);
 			}
 

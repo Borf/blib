@@ -139,12 +139,28 @@ namespace blib
 
 			Widget* ScrollPanel::getComponent( int x, int y )
 			{
-				return Panel::getComponent(x+scrollX+2, y+scrollY+2);
+				x += scrollX + 2;
+				y += scrollY + 2;
+				for (std::list<Widget*>::reverse_iterator it = children.rbegin(); it != children.rend(); it++)
+				{
+					//if ((*it)->x < width && (*it)->y < height && (*it)->x + (*it)->width > 0 && (*it)->y + (*it)->height > 0)
+					{
+						Widget* widget = (*it)->getComponent(x - this->x, y - this->y);
+						if (widget)
+							return widget;
+					}
+				}
+
+				if (inComponent(x, y))
+					return this;
+				else
+					return NULL;
+
 			}
 
 			int ScrollPanel::absoluteX()
 			{
-				return Widget::absoluteX() - scrollY + 2;
+				return Widget::absoluteX() - scrollX - 2;
 			}
 
 			int ScrollPanel::absoluteY()

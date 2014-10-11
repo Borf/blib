@@ -153,12 +153,21 @@ namespace blib
 		glm::vec2 texFactor(1.0f / font->texture->width, 1.0f / font->texture->height);
 
 		float x = 0;
+		float y = 0;
+		int lineHeight = 12;
 		for(size_t i = 0; i < text.size(); i++)
 		{
+			if (text[i] == '\n')
+			{
+				x = 0;
+				y += lineHeight;
+				lineHeight = 12;
+			}
 			if(font->charmap.find(text[i]) == font->charmap.end())
 				continue;
 			const Glyph* g = font->getGlyph(text[i]);
-			draw(font->texture, glm::translate(transform, glm::vec3(x+g->xoffset,g->yoffset,0)), glm::vec2(0,0), blib::math::Rectangle(g->x*texFactor.x,g->y*texFactor.y,g->width*texFactor.x,g->height*texFactor.y), color);
+			lineHeight = glm::max(lineHeight, g->height);
+			draw(font->texture, glm::translate(transform, glm::vec3(x+g->xoffset,y+g->yoffset,0)), glm::vec2(0,0), blib::math::Rectangle(g->x*texFactor.x,g->y*texFactor.y,g->width*texFactor.x,g->height*texFactor.y), color);
 
 			x+=g->xadvance;
 		}
