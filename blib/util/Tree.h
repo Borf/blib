@@ -1,5 +1,6 @@
 #pragma once
 
+#include <list>
 
 namespace blib
 {
@@ -43,6 +44,16 @@ namespace blib
                         ret.insert(ret.end(), children[i]->flatten());
 				return ret;
 			}
+		};
+
+
+		template<class child>
+		class DynTree
+		{
+		public:
+			std::list<child*> children;
+
+
 		};
 	}
 }

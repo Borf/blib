@@ -517,8 +517,6 @@ namespace blib
 				for (std::list<Window*>::iterator it = windows.begin(); it != windows.end(); it++)
 				{
 					Window* w = (*it);
-					if (!w->inWindow(x, y))
-						Log::out << "Blabla" << Log::newline;
 					if (w->inWindow(x, y) && w->visible && w->selectedWidget)
 					{
 						w->selectedWidget->onDrag(

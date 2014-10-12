@@ -109,6 +109,7 @@
     <ClInclude Include="blib\wm\MouseClickable.h" />
     <ClInclude Include="blib\wm\SubMenuMenuItem.h" />
     <ClInclude Include="blib\wm\ToggleMenuItem.h" />
+    <ClInclude Include="blib\wm\widgets\BmlBox.h" />
     <ClInclude Include="blib\wm\widgets\button.h" />
     <ClInclude Include="blib\wm\widgets\ContainerWidget.h" />
     <ClInclude Include="blib\wm\widgets\Image.h" />
@@ -258,6 +259,7 @@
     <ClCompile Include="blib\wm\MenuItem.cpp" />
     <ClCompile Include="blib\wm\MouseClickable.cpp" />
     <ClCompile Include="blib\wm\SubMenuMenuItem.cpp" />
+    <ClCompile Include="blib\wm\widgets\BmlBox.cpp" />
     <ClCompile Include="blib\wm\widgets\button.cpp" />
     <ClCompile Include="blib\wm\widgets\ContainerWidget.cpp" />
     <ClCompile Include="blib\wm\widgets\Image.cpp" />

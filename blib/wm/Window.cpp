@@ -39,6 +39,7 @@
 #include <blib/wm/widgets/list.h>
 #include <blib/wm/widgets/ScrollPanel.h>
 #include <blib/wm/widgets/Image.h>
+#include <blib/wm/widgets/BmlBox.h>
 
 using blib::util::Log;
 
@@ -191,8 +192,10 @@ namespace blib
 				}
 				else if(type == "scrollpanel")
 					widget = new widgets::ScrollPanel();
-				else if(type == "image")
+				else if (type == "image")
 					widget = new widgets::Image(resourceManager->getResource<blib::Texture>(widgetSkin["src"].asString()));
+				else if (type == "bmlbox")
+					widget = new widgets::BmlBox(resourceManager);
 				else
 				{
 					Log::out<<"Unknown widget type: "<<type<<Log::newline;
