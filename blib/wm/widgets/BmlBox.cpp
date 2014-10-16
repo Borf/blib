@@ -154,9 +154,30 @@ namespace blib
 
 			BmlBox::BmlBox(ResourceManager* resourceManager)
 			{
-				renderData.resourceManager = resourceManager;
 				bml::BmlFontProperties font;
 
+				width = 550;
+
+
+				font.size = 2;
+				commands.push_back(new bml::Text("Hello World\n", font, glm::ivec2(0, width)));
+				font.size = 1;
+				commands.push_back(new bml::Text("This is some text", font, glm::ivec2(0, width)));
+				font.bold = true;
+				commands.push_back(new bml::Text(" and this is in bold... ", font, glm::ivec2(0, width)));
+				font.bold = false;
+				font.italic = true;
+				commands.push_back(new bml::Text(" but italic is possible too....", font, glm::ivec2(0, width)));
+				font.italic = false;
+
+				commands.push_back(new bml::NewLine(24));
+				commands.push_back(new bml::Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam mi enim, mollis at feugiat a, vulputate sit amet dolor. Nam ac est mollis, ullamcorper nibh et, ullamcorper dui. Fusce in ornare ex. Etiam vitae consectetur diam. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum viverra libero justo, ut vulputate elit efficitur sed. Nulla id nibh fringilla, mattis nulla non, porta sapien. Sed sagittis elit at sollicitudin malesuada. Duis luctus est rhoncus aliquam viverra. Duis sagittis augue pellentesque, congue turpis in, venenatis felis. Ut lobortis tellus sed arcu mollis, eu pretium elit molestie.", font, glm::ivec2(0, width)));
+				commands.push_back(new bml::NewLine(24));
+				commands.push_back(new bml::Text("Nullam ornare, ligula vitae eleifend sagittis, odio metus auctor elit, sed condimentum metus erat vel nisi.Nulla sed arcu nisi.Nunc ultrices imperdiet nulla vitae congue.Sed nec ligula eleifend dui semper ultricies sit amet in nisi.Aenean condimentum eget nisi ut blandit.Etiam sit amet enim quis lacus viverra suscipit.Aenean ultrices faucibus ligula eu consequat.Quisque vel enim elementum, accumsan felis in, venenatis tortor.", font, glm::ivec2(0, width)));
+				commands.push_back(new bml::NewLine(24));
+				commands.push_back(new bml::Text("Donec nisl dui, hendrerit et interdum sed, tempor eget justo.Suspendisse efficitur convallis malesuada.Nullam ut commodo orci.Quisque rhoncus ante a mi placerat placerat.Maecenas mauris mauris, rutrum eu molestie id, pharetra sed augue.Cras at semper urna.In eros nisi, tincidunt vitae egestas id, molestie ac metus.Cras convallis, ante id dictum interdum, metus nisl commodo velit, at laoreet augue dolor vitae nibh.Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;", font, glm::ivec2(0, width)));
+
+				renderData.resourceManager = resourceManager;
 
 
 			}
@@ -166,7 +187,16 @@ namespace blib
 
 			void BmlBox::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
-				document->draw(&spriteBatch, glm::translate(matrix, glm::vec3(x, y, 0)), &renderData, bml::BmlFontProperties(), bml::BmlRenderBlock(glm::ivec2(0, 0), glm::ivec2(width, 0)));
+//				document->draw(&spriteBatch, glm::translate(matrix, glm::vec3(x, y, 0)), &renderData, bml::BmlFontProperties(), bml::BmlRenderBlock(glm::ivec2(0, 0), glm::ivec2(width, 0)));
+
+				matrix = glm::translate(matrix, glm::vec3(x, y, 0));
+
+				glm::vec2 cursor;
+				for (std::list<bml::Command*>::const_iterator it = commands.cbegin(); it != commands.cend(); it++)
+				{
+					(*it)->draw(spriteBatch, matrix, cursor, renderData);
+				}
+
 
 
 			//	spriteBatch.draw(WM::getInstance()->font, text, glm::translate(matrix, glm::vec3(x, y, 0)), glm::vec4(0, 0, 0, 1));

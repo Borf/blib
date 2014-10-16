@@ -3,7 +3,10 @@
 #include "Widget.h"
 #include <map>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <blib/ResourceManager.h>
+#include <blib/SpriteBatch.h>
 
 namespace blib
 {
@@ -58,14 +61,16 @@ namespace blib
 						{
 							fonts[properties.font] = FontData();
 							fonts[properties.font].normal = resourceManager->getResource<blib::Font>(properties.font);
+							fonts[properties.font].bold = resourceManager->getResource<blib::Font>(properties.font + ".bold");
+							fonts[properties.font].italic = resourceManager->getResource<blib::Font>(properties.font + ".italic");
 						}
 
 						if (properties.bold && properties.italic)
 							return NULL;
 						if (properties.bold)
-							return NULL;
+							return fonts[properties.font].bold;
 						else if (properties.italic)
-							return NULL;
+							return fonts[properties.font].italic;
 
 						return fonts[properties.font].normal;
 					}
@@ -76,35 +81,49 @@ namespace blib
 				class Command
 				{
 				public:
-					virtual void draw(SpriteBatch* spriteBatch, glm::ivec2 &cursor) const = 0;
+					virtual void draw(SpriteBatch &spriteBatch, const glm::mat4 &matrix, glm::vec2 &cursor, const BmlRenderData &renderData) const = 0;
 				};
 
-				class Text : Command
+				class Text : public Command
 				{
 				public:
 					std::string text;
 					BmlFontProperties font;
 					glm::ivec2 margins;
 
-					void draw(SpriteBatch* spriteBatch, glm::ivec2 &cursor)
+					Text(const std::string &text, const BmlFontProperties &font, const glm::ivec2 margins)
 					{
+						this->text = text;
+						this->font = font;
+						this->margins = margins;
+					}
 
+
+					void draw(SpriteBatch &spriteBatch, const glm::mat4 &matrix, glm::vec2 &cursor, const BmlRenderData &renderData) const
+					{
+						glm::vec2 newPos = spriteBatch.draw(renderData.getFont(font), text, glm::translate(matrix, glm::vec3(margins.x, 0, 0)), font.color, cursor, margins.y - margins.x);
+						cursor.x = newPos.x;
+						cursor.y = newPos.y;
 					}
 
 				};
 
-				class NewLine : Command
+				class NewLine : public Command
 				{
 				public:
-					float lineHeight;
-					void draw(SpriteBatch* spriteBatch, glm::ivec2 &cursor)
+					int lineHeight;
+
+					NewLine(int lineHeight = 12)
+					{
+						this->lineHeight = lineHeight;
+					}
+					void draw(SpriteBatch &spriteBatch, const glm::mat4 &matrix, glm::vec2 &cursor, const BmlRenderData &renderData) const
 					{
 						cursor.y += lineHeight;
 						cursor.x = 0;
 					}
 				};
 
-				std::list<Command> commands;
 
 
 			}
@@ -115,8 +134,9 @@ namespace blib
 			{
 				std::string text;
 
+
 				bml::BmlRenderData renderData;
-				bml::Document* document;
+				std::list<bml::Command*> commands;
 
 			public:
 				BmlBox(ResourceManager* resourceManager);

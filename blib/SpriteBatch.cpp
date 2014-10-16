@@ -148,16 +148,16 @@ namespace blib
 		draw(texture, transform, glm::vec2(0,0), color);
 	}
 
-	void SpriteBatch::draw( const Font* font, const std::string &text, const glm::mat4 &transform, const glm::vec4 &color )
+	glm::vec2 SpriteBatch::draw(const Font* font, const std::string &text, const glm::mat4 &transform, const glm::vec4 &color, glm::vec2 &cursor, int wrapWidth)
 	{
 		glm::vec2 texFactor(1.0f / font->texture->width, 1.0f / font->texture->height);
 
-		float x = 0;
-		float y = 0;
+		float x = cursor.x;
+		float y = cursor.y;
 		int lineHeight = 12;
 		for(size_t i = 0; i < text.size(); i++)
 		{
-			if (text[i] == '\n')
+			if (text[i] == '\n' || (x > wrapWidth && wrapWidth != -1))
 			{
 				x = 0;
 				y += lineHeight;
@@ -171,6 +171,8 @@ namespace blib
 
 			x+=g->xadvance;
 		}
+
+		return glm::vec2(x, y);
 	}
 
 	void SpriteBatch::drawStretchyRect( Texture* sprite, const glm::mat4 &transform, const blib::math::Rectangle &src, const blib::math::Rectangle &innerSrc, const glm::vec2 &size, const glm::vec4 &color )
