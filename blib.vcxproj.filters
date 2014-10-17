@@ -527,6 +527,9 @@
     <ClInclude Include="blib\wm\widgets\BmlBox.h">
       <Filter>wm\widgets</Filter>
     </ClInclude>
+    <ClInclude Include="blib\wm\widgets\CloseButton.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -882,6 +885,9 @@
       <Filter>wm</Filter>
     </ClCompile>
     <ClCompile Include="blib\wm\widgets\BmlBox.cpp">
+      <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\CloseButton.cpp">
       <Filter>wm\widgets</Filter>
     </ClCompile>
   </ItemGroup>
