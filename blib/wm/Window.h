@@ -32,6 +32,7 @@ namespace blib
 		widgets::Panel* rootPanel;
 		bool movable;
 		bool visible;
+		bool closable;
 
 		Widget* selectedWidget;
 

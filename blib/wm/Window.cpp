@@ -78,6 +78,12 @@ namespace blib
 			if(skinFile != "")
 				this->addWidgets(this->rootPanel, skin["widgets"], resourceManager);
 			
+			if (skin.isMember("closable") && skin["closable"].asBool())
+				closable = true;
+			else
+				closable = false;
+
+
 
 		/*	addKeyDownHandler([this](blib::Key key) { 
 				if (selectedWidget)
@@ -98,6 +104,8 @@ namespace blib
 
 			addClickHandler([this](int x, int y, int clickcount) 
 			{ 
+				if (y-this->y < WM::getInstance()->skin["window"]["offsets"]["top"].asInt() && x-this->x > width - WM::getInstance()->skin["window"]["offsets"]["top"].asInt())
+					close();
 				return rootPanel->onMouseClick(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount);
 			});
 			addMouseUpHandler([this](int x, int y, int clickcount) { return rootPanel->onMouseUp(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });

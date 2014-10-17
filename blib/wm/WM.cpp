@@ -341,11 +341,11 @@ namespace blib
 					windows.push_front(w);
 
 					bool ret = false;
+					clickX = x;
+					clickY = y;
 					if (w->inComponent(x, y))
 					{
 						ret = w->onMouseDown(x, y, clickCount);
-						clickX = x;
-						clickY = y;
 					}
 					else
 						draggingWindow = w;

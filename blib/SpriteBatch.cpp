@@ -7,6 +7,7 @@
 #include <blib/gl/Vertex.h>
 #include <blib/util/Log.h>
 #include <blib/util/Thread.h>
+#include <blib/Math.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <json/json.h>

@@ -4,6 +4,7 @@
 #include <blib/SpriteBatch.h>
 #include <blib/wm/WM.h>
 #include <blib/util/Tree.h>
+#include <blib/linq.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -156,7 +157,7 @@ namespace blib
 			{
 				bml::BmlFontProperties font;
 
-				width = 550;
+			/*	width = 550;
 
 
 				font.size = 2;
@@ -176,9 +177,32 @@ namespace blib
 				commands.push_back(new bml::Text("Nullam ornare, ligula vitae eleifend sagittis, odio metus auctor elit, sed condimentum metus erat vel nisi.Nulla sed arcu nisi.Nunc ultrices imperdiet nulla vitae congue.Sed nec ligula eleifend dui semper ultricies sit amet in nisi.Aenean condimentum eget nisi ut blandit.Etiam sit amet enim quis lacus viverra suscipit.Aenean ultrices faucibus ligula eu consequat.Quisque vel enim elementum, accumsan felis in, venenatis tortor.", font, glm::ivec2(0, width)));
 				commands.push_back(new bml::NewLine(24));
 				commands.push_back(new bml::Text("Donec nisl dui, hendrerit et interdum sed, tempor eget justo.Suspendisse efficitur convallis malesuada.Nullam ut commodo orci.Quisque rhoncus ante a mi placerat placerat.Maecenas mauris mauris, rutrum eu molestie id, pharetra sed augue.Cras at semper urna.In eros nisi, tincidunt vitae egestas id, molestie ac metus.Cras convallis, ante id dictum interdum, metus nisl commodo velit, at laoreet augue dolor vitae nibh.Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;", font, glm::ivec2(0, width)));
-
+				*/
 				renderData.resourceManager = resourceManager;
 
+				commands = bml::parseBml("= Header =\n\
+This is some text.Then there's some ways to add layouts\n\
+*bold text*\n\
+_italic text_\n\
+[pagebookmark | You can add links]\n\
+group text together in paragraphs using double newlines\n\
+\n\
+this will be a new paragraph with text.blablabla bla\n\
+- This is a listitem\n\
+- this is another listitem\n\
+- and another one, but this one is a bit longer. This way it should wrap around, and I'm not sure if that will work. Let's see, lalalala yay omg woot I am getting bored now...\n\
+\n\
+== header2 == \n\
+this is a little header\n\
+yay\n\
+\n\
+\n\
+> This will be in a panel\n\
+> inside the panel you can draw more things\n\
+> yay more text\n\
+> -listitem\n\
+> -another listitem\n\
+> -etc");
 
 			}
 
@@ -204,15 +228,105 @@ namespace blib
 
 			void BmlBox::setBml(std::string data)
 			{
-				this->text = data;
-
+				blib::linq::deleteall(commands);
+				commands = bml::parseBml(data);
 			}
+
+			namespace bml
+			{
+				std::list<Command*> parseBml(std::string data)
+				{
+					std::list<Command*> commands;
+					BmlFontProperties font;
+
+					std::string token;
+
+					bool newline = true;
+					bool escape = false;
+					bool inlist = false;
+
+					glm::ivec2 margins(0, 0);
+
+					auto finishToken = [&](){
+						while (token.size() > 0 && token[0] == ' ')
+							token = token.substr(1);
+
+						if (token == "")
+							return;
+
+						Text* text = new Text(token, font, margins);
+						token = "";
+						commands.push_back(text);
+					};
+
+					for (size_t i = 0; i < data.size(); i++)
+					{
+						if (data[i] == '-' && newline)
+						{//list
+							finishToken();
+							token += "- ";
+							finishToken();
+							margins.x += 30;
+							inlist = true;
+						}
+						else if (data[i] == '\\' && !escape)
+						{
+							escape = true;
+						}
+						else if (data[i] == '*' && !escape)
+						{
+							finishToken();
+							font.bold = !font.bold;
+						}
+						else if (data[i] == '_' && !escape)
+						{
+							finishToken();
+							font.italic = !font.italic;
+						}
+						else if (data[i] == '=' && !escape)
+						{
+							finishToken();
+							font.size = 1 - font.size;
+						}
+						else if (data[i] == ' ')
+						{
+							token += ' ';
+							finishToken();
+						}
+						else if (data[i] == '\r')
+							continue;
+						else if (data[i] == '\n')
+						{
+							newline = true;
+							if (inlist)
+							{
+								finishToken();
+								inlist = false;
+								margins.x -= 30;
+							}
+							token += data[i];
+						}
+						else
+						{
+							token += data[i];
+							newline = false;
+						}
+
+					}
+					finishToken();
+
+
+
+
+					return commands;
+				}
+			}
+
 
 
 		}
 	}
 }
-
 
 
 

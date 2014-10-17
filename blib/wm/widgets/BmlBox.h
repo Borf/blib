@@ -7,6 +7,7 @@
 
 #include <blib/ResourceManager.h>
 #include <blib/SpriteBatch.h>
+#include <blib/Math.h>
 
 namespace blib
 {
@@ -101,7 +102,7 @@ namespace blib
 
 					void draw(SpriteBatch &spriteBatch, const glm::mat4 &matrix, glm::vec2 &cursor, const BmlRenderData &renderData) const
 					{
-						glm::vec2 newPos = spriteBatch.draw(renderData.getFont(font), text, glm::translate(matrix, glm::vec3(margins.x, 0, 0)), font.color, cursor, margins.y - margins.x);
+						glm::vec2 newPos = spriteBatch.draw(renderData.getFont(font), text, blib::math::easyMatrix(glm::vec2(margins.x, 0), 0, font.size, matrix), font.color, cursor, 500 - margins.y);
 						cursor.x = newPos.x;
 						cursor.y = newPos.y;
 					}
@@ -124,7 +125,7 @@ namespace blib
 					}
 				};
 
-
+				std::list<bml::Command*> parseBml(std::string bml);
 
 			}
 
