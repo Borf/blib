@@ -196,8 +196,13 @@ namespace blib
 		Renderer()
 		{
 			activeLayer = 0;
-			vertices[0] = new float[1024*1024*50]; // 50M floats
-			vertices[1] = new float[1024*1024*50]; // 50M floats
+#ifdef _DEBUG
+			vertices[0] = new float[1024*1024*25]; // 50M floats
+			vertices[1] = new float[1024*1024*25]; // 50M floats
+#else
+			vertices[0] = new float[1024 * 1024 * 50]; // 50M floats
+			vertices[1] = new float[1024 * 1024 * 50]; // 50M floats
+#endif
 			vertexIndex[0] = 0;
 			vertexIndex[1] = 0;
 			for(int i = 0; i < 10; i++)
