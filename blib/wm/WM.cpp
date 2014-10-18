@@ -580,12 +580,13 @@ namespace blib
 
 			if (menuKeys.find(key) != menuKeys.end())
 			{
+				bool ret = false;
 				{
 					ToggleMenuItem* item = dynamic_cast<ToggleMenuItem*>(menuKeys[key]);
 					if (item)
 					{
 						item->toggle();
-						return true;
+						ret = true;
 					}
 				}
 
@@ -596,10 +597,12 @@ namespace blib
 						if (item->callback)
 						{
 							item->callback();
-							return true;
+							ret = true;
 						}
 					}
 				}
+				if (ret)
+					return true;
 			}
 
 			if (key == Key::SPACE)
