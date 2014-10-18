@@ -118,6 +118,7 @@
     <ClInclude Include="blib\wm\widgets\Panel.h" />
     <ClInclude Include="blib\wm\widgets\ScrollPanel.h" />
     <ClInclude Include="blib\wm\widgets\textbox.h" />
+    <ClInclude Include="blib\wm\widgets\TreeView.h" />
     <ClInclude Include="blib\wm\widgets\Widget.h" />
     <ClInclude Include="blib\wm\Window.h" />
     <ClInclude Include="blib\wm\WM.h" />
@@ -268,6 +269,7 @@
     <ClCompile Include="blib\wm\widgets\Panel.cpp" />
     <ClCompile Include="blib\wm\widgets\ScrollPanel.cpp" />
     <ClCompile Include="blib\wm\widgets\textbox.cpp" />
+    <ClCompile Include="blib\wm\widgets\TreeView.cpp" />
     <ClCompile Include="blib\wm\widgets\Widget.cpp" />
     <ClCompile Include="blib\wm\Window.cpp" />
     <ClCompile Include="blib\wm\WM.cpp" />
