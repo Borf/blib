@@ -253,9 +253,9 @@ return "~/";
 				out.x = (rgb.g - rgb.b) / delta;        // between yellow & magenta
 			else
 				if (rgb.g >= max)
-					out.x = 2.0 + (rgb.b - rgb.r) / delta;  // between cyan & yellow
+					out.x = 2.0f + (rgb.b - rgb.r) / delta;  // between cyan & yellow
 				else
-					out.x = 4.0 + (rgb.r - rgb.g) / delta;  // between magenta & cyan
+					out.x = 4.0f + (rgb.r - rgb.g) / delta;  // between magenta & cyan
 
 			out.x *= 60.0;                              // degrees
 

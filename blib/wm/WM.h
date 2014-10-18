@@ -52,6 +52,8 @@ namespace blib
 
 			std::map<Key, MenuItem*> menuKeys;
 
+
+
 		public:
 			WM();
 			~WM();
@@ -93,6 +95,7 @@ namespace blib
 
 			Window* draggingWindow;
 			int		dragMode;
+			bool keyPressed;
 
 			glm::ivec2 screenSize;
 

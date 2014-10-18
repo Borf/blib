@@ -113,7 +113,7 @@ namespace blib
 					(point.x < ((*this)[j].x - (*this)[i].x) * (point.y - (*this)[i].y) / (float)((*this)[j].y - (*this)[i].y) + (*this)[i].x))
 					c = !c;
 			}
-			return c;
+			return c != 0;
 		}
 
 	}

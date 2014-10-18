@@ -40,6 +40,7 @@
 #include <blib/wm/widgets/ScrollPanel.h>
 #include <blib/wm/widgets/Image.h>
 #include <blib/wm/widgets/BmlBox.h>
+#include <blib/wm/widgets/TreeView.h>
 
 using blib::util::Log;
 
@@ -190,9 +191,11 @@ namespace blib
 						((widgets::Textbox*)widget)->text = widgetSkin["text"].asString();
 			
 				}
-				else if(type == "list")
+				else if (type == "list")
 					widget = new widgets::List();
-				else if(type == "label")
+				else if (type == "tree")
+					widget = new widgets::TreeView();
+				else if (type == "label")
 				{
 					widget = new widgets::Label();
 					if(widgetSkin.isMember("text"))

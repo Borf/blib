@@ -42,6 +42,8 @@ namespace blib
 			radialMenu = NULL;
 			menuBar = NULL;
 			menuBarOpen = false;
+
+			keyPressed = false;
 		}
 
 
@@ -571,12 +573,13 @@ namespace blib
 		bool WM::onKeyDown(Key key)
 		{
 
-//			if (!windows.empty() && windows.front()->selectedWidget && !windows.front()->selectedWidget->canHaveKeyboardFocus)
-//				return true;
-
 			if (!windows.empty())
-				if (windows.front()->onKeyDown(key))
-					return true;
+				if (windows.front()->selectedWidget && windows.front()->selectedWidget->canHaveKeyboardFocus)
+					if(windows.front()->selectedWidget->onKeyDown(key))
+					{
+						keyPressed = true;
+						return true;
+					}
 
 			if (menuKeys.find(key) != menuKeys.end())
 			{
@@ -617,17 +620,26 @@ namespace blib
 
 		bool WM::onKeyUp(Key key)
 		{
-			if (windows.empty())
-				return false;
-			return windows.front()->onKeyUp(key);
+			if (!windows.empty())
+				if (windows.front()->selectedWidget && windows.front()->selectedWidget->canHaveKeyboardFocus)
+					if (windows.front()->selectedWidget->onKeyUp(key))
+					{
+						keyPressed = true;
+						return true;
+					}
+			return false;
 		}
 
 		bool WM::onChar(char character)
 		{
-			if (windows.empty())
-				return false;
-			windows.front()->onChar(character);
-			return true;
+			if (!windows.empty())
+				if (windows.front()->selectedWidget && windows.front()->selectedWidget->canHaveKeyboardFocus)
+					if (windows.front()->selectedWidget->onChar(character))
+					{
+						keyPressed = true;
+						return true;
+					}
+			return false;
 		}
 
 		void WM::resizeGl(int width, int height)

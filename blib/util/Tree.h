@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <vector>
 
 namespace blib
 {
@@ -35,9 +36,10 @@ namespace blib
 					if (children[i] != NULL)
 						children[i]->foreachLevel(op, level+1);
 			}
-			std::vector<Tree*> flatten()
+
+			std::vector<child*> flatten()
 			{
-				std::vector<Tree*> ret;
+				std::vector<child*> ret;
 				ret.push_back(this);
 				for (int i = 0; i < childCount; i++)
 					if (children[i] != NULL)
@@ -53,6 +55,30 @@ namespace blib
 		public:
 			std::list<child*> children;
 
+			template<class T>
+			void foreach(T op)
+			{
+				op((child*)this);
+				for (std::list<child*>::iterator it = children.begin(); it !+ children.end(); it++)
+					(*it)->foreach(op);
+			}
+
+			template<class T>
+			void foreachLevel(T op, int level = 0)
+			{
+				op((child*)this, level);
+				for (std::list<child*>::iterator it = children.begin(); it != children.end(); it++)
+					(*it)->foreachLevel(op, level + 1);
+			}
+
+			std::vector<child*> flatten()
+			{
+				std::vector<child*> ret;
+				ret.push_back(this);
+				for (std::list<child*>::iterator it = children.begin(); it != children.end(); it++)
+					ret.insert(ret.end(), (*it)->flatten());
+				return ret;
+			}
 
 		};
 	}
