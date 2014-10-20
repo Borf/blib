@@ -575,11 +575,11 @@ namespace blib
 
 			if (!windows.empty())
 				if (windows.front()->selectedWidget && windows.front()->selectedWidget->canHaveKeyboardFocus)
-					if(windows.front()->selectedWidget->onKeyDown(key))
-					{
+				{
+					if (windows.front()->selectedWidget->onKeyDown(key))
 						keyPressed = true;
-						return true;
-					}
+					return true;
+				}
 
 			if (menuKeys.find(key) != menuKeys.end())
 			{

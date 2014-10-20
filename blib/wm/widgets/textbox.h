@@ -15,9 +15,12 @@ namespace blib
 			{
 
 				int scrollPosition;
+				unsigned int selectionPosition;
 
-				int selectionStart;
-				int selectionEnd;
+				bool shiftDown;
+
+				double blinkTime;
+
 			public:
 				std::string emptyText;
 

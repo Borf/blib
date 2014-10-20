@@ -29,10 +29,11 @@ namespace blib
 				this->height = 25;
 
 				cursor = 0;
-				selectionStart = 0;
-				selectionEnd = 0;
+				selectionPosition = 0;
 				scrollPosition = 0;
 				canHaveKeyboardFocus = true;
+				shiftDown = false;
+				blinkTime = blib::util::Profiler::getAppTime();
 
 
 				addCharHandler([this](char key)
@@ -41,18 +42,30 @@ namespace blib
 					{
 						text = text.substr(0, cursor) + (char)key + text.substr(cursor);
 						cursor++;
-						selectionStart = cursor;
-						selectionEnd = cursor;
+						selectionPosition = cursor;
+						return true;
+					}
+					return false;
+				});
+				
+				addKeyUpHandler([this](blib::Key key)
+				{
+					if (key == blib::Key::SHIFT)
+					{
+						shiftDown = false;
 						return true;
 					}
 					return false;
 				});
 
-
 				addKeyDownHandler([this](blib::Key key)
 				{
+					blinkTime = blib::util::Profiler::getAppTime();
 					switch (key)
 					{
+					case blib::Key::SHIFT:
+						shiftDown = true;
+						break;
 					case blib::Key::BACKSPACE:
 						if (cursor > 0)
 						{
@@ -72,18 +85,60 @@ namespace blib
 						return true;
 					case blib::Key::HOME:
 						cursor = 0;
+						if (!shiftDown)
+							selectionPosition = cursor;
 						return true;
 					case blib::Key::END:
 						cursor = text.size();
+						if (!shiftDown)
+							selectionPosition = cursor;
+						return true;
+					case blib::Key::LEFT:
+						if (cursor > 0)
+							cursor--;
+						if (!shiftDown)
+							selectionPosition = cursor;
+						return true;
+					case blib::Key::RIGHT:
+						cursor = glm::min(text.length(), cursor + 1);
+						if (!shiftDown)
+							selectionPosition = cursor;
 						return true;
 					}
 					return false;
 				});
 
 
-				addClickHandler([this](int x, int y, int clickCount)
+				addMouseDownHandler([this](int x, int y, int clickCount)
 				{
 					x -= this->x;//position
+					x -= 1;//padding
+					x += scrollPosition;
+
+					for (unsigned int i = 0; i < text.size(); i++)
+					{
+						float adv = WM::getInstance()->font->textlen(text.substr(0, i).c_str());
+						if (x < adv)
+						{
+							cursor = i;
+							if (cursor < 0)
+								cursor = 0;
+							if (cursor > text.size())
+								cursor = text.size();
+							if (!shiftDown)
+								selectionPosition = cursor;
+							return true;
+						}
+					}
+					cursor = text.size();
+					if (!shiftDown)
+						selectionPosition = cursor;
+					return true;
+				});
+
+				addDragHandler([this](int x, int y)
+				{
+					//x -= this->x;//position
 					x -= 1;//padding
 					x += scrollPosition;
 
@@ -104,6 +159,7 @@ namespace blib
 					return true;
 				});
 
+
 					
 
 			}
@@ -112,17 +168,42 @@ namespace blib
 
 			void Textbox::draw(SpriteBatch& spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
+				//ewww
+				if (!selected)
+					const_cast<Textbox*>(this)->selectionPosition = cursor;
+				
+
 				Json::Value skin = WM::getInstance()->skin["input"];
-
-				spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x, y, 0)), skin, glm::vec2(width, height), glm::vec4(selected ? 1 : 0.9f, selected ? 1 : 0.9f, selected ? 1 : 0.9f, 1));
-
-
 				Font* font = WM::getInstance()->font;
+				Texture* texture = WM::getInstance()->skinTexture;
+
+
+				spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x, y, 0)), skin, glm::vec2(width, height), glm::vec4(selected ? 1 : 0.9f, selected ? 1 : 0.9f, selected ? 1 : 0.9f, 1));
+
+
 
 				if (text != "" || selected)
 				{
-					spriteBatch.draw(font, text, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()));
-					if ((int)(blib::util::Profiler::getAppTime()*2) % 2 == 0 && selected)
+					std::string preSelectionText = text.substr(0, glm::min(selectionPosition, cursor));
+					std::string selectionText = text.substr(glm::min(selectionPosition, cursor), glm::max(selectionPosition, cursor) - glm::min(selectionPosition, cursor));
+					std::string postSelectionText = text.substr(glm::max(selectionPosition, cursor));
+
+					if (selectionPosition != cursor)
+					{
+						float posLeft = font->textlen(preSelectionText);
+						float selectionWidth = font->textlen(selectionText);
+						spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2 + posLeft, y + 4, 0)), skin, glm::vec2(selectionWidth, 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
+					}			
+
+
+					glm::vec2 renderPos(0, 0);
+					renderPos = spriteBatch.draw(font, preSelectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()), renderPos);
+					renderPos = spriteBatch.draw(font, selectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["selectfontcolor"].asString()), renderPos);
+					renderPos = spriteBatch.draw(font, postSelectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()), renderPos);
+
+
+
+					if ((int)((blib::util::Profiler::getAppTime() - blinkTime)* 2) % 2 == 0 && selected)
 						spriteBatch.draw(font, "|",  glm::translate(matrix, glm::vec3(x - 1.0f + font->textlen(text.substr(0, cursor)), y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()));
 
 				}
