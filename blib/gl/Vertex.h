@@ -118,8 +118,16 @@ VertexDefBegin(VertexP2C4T2T2F1,							_size,		float, 1, VertexP2C4T2T2)
 VertexDefEnd();
 
 
-VertexDefBegin(VertexP3T2T2,							texCoord2,		glm::vec2, 2, VertexP3T2)
-	VertexP3T2T2(glm::vec3 position, glm::vec2 texCoord, glm::vec2 texCoord2) : VertexP3T2(position, texCoord), texCoord2(texCoord2) {};
+VertexDefBegin(VertexP3T2T2, texCoord2, glm::vec2, 2, VertexP3T2)
+VertexP3T2T2(glm::vec3 position, glm::vec2 texCoord, glm::vec2 texCoord2) : VertexP3T2(position, texCoord), texCoord2(texCoord2) {};
+VertexDefEnd();
+
+VertexDefBegin(VertexP3T2T2C3, color, glm::vec3, 3, VertexP3T2T2)
+VertexP3T2T2C3(glm::vec3 position, glm::vec2 texCoord, glm::vec2 texCoord2, glm::vec3 color) : VertexP3T2T2(position, texCoord, texCoord2), color(color) {};
+VertexDefEnd();
+
+VertexDefBegin(VertexP3T2T2C3N3, normal, glm::vec3, 3, VertexP3T2T2C3)
+VertexP3T2T2C3N3(glm::vec3 position, glm::vec2 texCoord, glm::vec2 texCoord2, glm::vec3 color, glm::vec3 normal) : VertexP3T2T2C3(position, texCoord, texCoord2, color), normal(normal){};
 VertexDefEnd();
 
 
