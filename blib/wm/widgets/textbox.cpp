@@ -72,6 +72,7 @@ namespace blib
 							//TODO: erase selection
 							text = text.substr(0, cursor - 1) + text.substr(cursor);
 							cursor--;
+							selectionPosition = cursor;
 						}
 						return true;
 					case blib::Key::TAB:

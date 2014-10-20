@@ -574,12 +574,16 @@ namespace blib
 		{
 
 			if (!windows.empty())
+			{
+				if (windows.front()->onKeyDown(key))
+					return true;
 				if (windows.front()->selectedWidget && windows.front()->selectedWidget->canHaveKeyboardFocus)
 				{
 					if (windows.front()->selectedWidget->onKeyDown(key))
 						keyPressed = true;
 					return true;
 				}
+			}
 
 			if (menuKeys.find(key) != menuKeys.end())
 			{
@@ -621,24 +625,32 @@ namespace blib
 		bool WM::onKeyUp(Key key)
 		{
 			if (!windows.empty())
+			{
+				if (windows.front()->onKeyUp(key))
+					return true;
 				if (windows.front()->selectedWidget && windows.front()->selectedWidget->canHaveKeyboardFocus)
 					if (windows.front()->selectedWidget->onKeyUp(key))
 					{
 						keyPressed = true;
 						return true;
 					}
+			}
 			return false;
 		}
 
 		bool WM::onChar(char character)
 		{
 			if (!windows.empty())
+			{
+				if (windows.front()->onChar(character))
+					return true;
 				if (windows.front()->selectedWidget && windows.front()->selectedWidget->canHaveKeyboardFocus)
 					if (windows.front()->selectedWidget->onChar(character))
 					{
 						keyPressed = true;
 						return true;
 					}
+			}
 			return false;
 		}
 

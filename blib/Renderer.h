@@ -334,7 +334,8 @@ namespace blib
 			block->command = Render::SetVbo;	//TODO : move to constructor
 			block->vertexStart = vertexIndex[activeLayer];
 			block->count = vertices.size();
-			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
+			if (vertices.size() > 0)
+				memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
 			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * vertices.size();
 			block->vbo = vbo;
 			toRender[activeLayer].push_back(block);
