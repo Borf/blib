@@ -198,6 +198,13 @@ namespace blib
 							r->renderState.activeTexture[1]->use();
 							glActiveTexture(GL_TEXTURE0);
 						}
+					if (!lastRenderState || lastRenderState->activeTexture[2] != r->renderState.activeTexture[2])
+						if (r->renderState.activeTexture[2])
+						{
+						glActiveTexture(GL_TEXTURE2);
+						r->renderState.activeTexture[2]->use();
+						glActiveTexture(GL_TEXTURE0);
+						}
 
 
 					if (!lastRenderState || 

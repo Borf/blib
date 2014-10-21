@@ -45,11 +45,8 @@ namespace blib
 				void attach(GLuint programId);
 			};
 		public:
-			std::map<std::string, GLuint> uniformLocations;
 			std::list<SubShader*> shaders;
 			GLuint programId;
-	 
-			GLuint getUniformLocation(const std::string &name);
 			std::string id;
 		public:
 			Shader();
@@ -71,14 +68,6 @@ namespace blib
 			};
 
 		protected:
-			void doUniform(const std::string &name,			const glm::mat4& value);
-			void doUniform(const std::string &name,			const glm::mat3& value);
-			void doUniform(const std::string &name,			const float& value);
-			void doUniform(const std::string &name,			const int& value);
-			void doUniform(const std::string &name,			const glm::vec4& value);
-			void doUniform(const std::string &name,			const glm::vec3& value);
-			void doUniform(const std::string &name,			const glm::vec2& value);
-
 		};
 	}
 }

@@ -23,23 +23,10 @@ using blib::util::Log;
 
 namespace blib
 {
+
+	//TODO: move this to the opengl shader class
 	void Shader::setState( char* state )
 	{
-	/*	for(std::map<std::string,	float>::iterator it = state.floatValues.begin(); it != state.floatValues.end(); it++)
-			doUniform(it->first, it->second);
-		for(std::map<std::string,	int>::iterator it = state.intValues.begin(); it != state.intValues.end(); it++)
-			doUniform(it->first, it->second);
-		for(std::map<std::string,	glm::vec2>::iterator it = state.vec2Values.begin(); it != state.vec2Values.end(); it++)
-			doUniform(it->first, it->second);
-		for(std::map<std::string,	glm::vec3>::iterator it = state.vec3Values.begin(); it != state.vec3Values.end(); it++)
-			doUniform(it->first, it->second);
-		for(std::map<std::string,	glm::vec4>::iterator it = state.vec4Values.begin(); it != state.vec4Values.end(); it++)
-			doUniform(it->first, it->second);
-		for(std::map<std::string,	glm::mat3>::iterator it = state.mat3Values.begin(); it != state.mat3Values.end(); it++)
-			doUniform(it->first, it->second);
-		for(std::map<std::string,	glm::mat4>::iterator it = state.mat4Values.begin(); it != state.mat4Values.end(); it++)
-			doUniform(it->first, it->second);*/
-
 		for (int i = 0; i < uniformCount; i++)
 		{
 			if (uniforms[i])
@@ -73,6 +60,9 @@ namespace blib
 					break;
 				case Vec2:
 					glUniform2f(location, (float&)state[uniforms[i]->index], (float&)state[uniforms[i]->index + 4]);
+					break;
+				case Vec3:
+					glUniform3f(location, (float&)state[uniforms[i]->index], (float&)state[uniforms[i]->index + 4], (float&)state[uniforms[i]->index + 8]);
 					break;
 				case Vec4:
 					glUniform4f(location, (float&)state[uniforms[i]->index], (float&)state[uniforms[i]->index + 4], (float&)state[uniforms[i]->index + 8], (float&)state[uniforms[i]->index+12]);

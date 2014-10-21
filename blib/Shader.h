@@ -114,13 +114,6 @@ namespace blib
 
 		virtual void setState(char* state);
 	protected:
-		virtual void doUniform(const std::string &name,			const glm::mat4& value) = 0;
-		virtual void doUniform(const std::string &name,			const glm::mat3& value) = 0;
-		virtual void doUniform(const std::string &name,			const float& value) = 0;
-		virtual void doUniform(const std::string &name,			const glm::vec4& value) = 0;
-		virtual void doUniform(const std::string &name,			const int& value) = 0;
-		virtual void doUniform(const std::string &name,			const glm::vec3& value) = 0;
-		virtual void doUniform(const std::string &name,			const glm::vec2& value) = 0;
 	};
 
 #ifdef BLIB_IOS    
