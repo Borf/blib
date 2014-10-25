@@ -34,6 +34,9 @@ namespace blib
 		EQUALS = VK_OEM_PLUS,
 		UNDERSCORE = VK_OEM_MINUS,
 
+		BRACKETLEFT = VK_OEM_4,
+		BRACKETRIGHT = VK_OEM_6,
+
 
 		F1 =	VK_F1,
 		F2 =	VK_F2,
