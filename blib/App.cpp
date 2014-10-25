@@ -427,6 +427,7 @@ namespace blib
 				app->spriteBatch->draw(font, "update time", glm::scale(glm::translate(glm::mat4(), glm::vec3(20, 30,0)), glm::vec3(0.8f, 0.8f, 1)), glm::vec4(0,1,0,1));
 
 				app->spriteBatch->end();
+				app->lineBatch->renderState.depthTest = false;
 				app->lineBatch->begin();
 				app->lineBatch->draw(math::Rectangle(glm::vec2(20,20), 200,100), glm::vec4(1,1,1,1));
 

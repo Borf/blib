@@ -105,7 +105,7 @@ namespace blib
 
 			addClickHandler([this](int x, int y, int clickcount) 
 			{ 
-				if (y-this->y < WM::getInstance()->skin["window"]["offsets"]["top"].asInt() && x-this->x > width - WM::getInstance()->skin["window"]["offsets"]["top"].asInt())
+				if (closable && y-this->y < WM::getInstance()->skin["window"]["offsets"]["top"].asInt() && x-this->x > width - WM::getInstance()->skin["window"]["offsets"]["top"].asInt())
 					close();
 				return rootPanel->onMouseClick(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount);
 			});
