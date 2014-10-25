@@ -31,6 +31,10 @@ namespace blib
 		TAB	=		VK_TAB,
 		BACKSPACE =	VK_BACK,
 
+		EQUALS = VK_OEM_PLUS,
+		UNDERSCORE = VK_OEM_MINUS,
+
+
 		F1 =	VK_F1,
 		F2 =	VK_F2,
 		F3 =	VK_F3,
