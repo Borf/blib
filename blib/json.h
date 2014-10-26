@@ -56,7 +56,7 @@ namespace blib
 
 
 			inline int asInt() const					{ assert(type == Type::intValue); return value.intValue; }
-			inline float asFloat() const				{ assert(type == Type::floatValue); return value.floatValue; }
+			inline float asFloat() const				{ assert(type == Type::floatValue || type == Type::intValue); return type == Type::floatValue ? value.floatValue : value.intValue; }
 			inline bool asBool() const					{ assert(type == Type::boolValue); return value.boolValue; }
 			inline const std::string& asString() const	{ assert(type == Type::stringValue); return *value.stringValue; }
 			inline bool isNull() const					{ return type == Type::nullValue; }
@@ -66,7 +66,7 @@ namespace blib
 			inline bool isFloat() const					{ return type == Type::floatValue; }
 			inline bool isObject() const				{ return type == Type::objectValue; }
 			inline bool isArray() const					{ return type == Type::arrayValue;  }
-			inline bool isMember(const std::string &name) const				{ assert(type == Type::objectValue); return value.objectValue->find(name) == value.objectValue->end(); }
+			inline bool isMember(const std::string &name) const				{ assert(type == Type::objectValue); return value.objectValue->find(name) != value.objectValue->end(); }
 			//array/object
 			virtual size_t size() const;
 			//array
