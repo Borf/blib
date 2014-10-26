@@ -174,7 +174,7 @@ namespace blib
 					const_cast<Textbox*>(this)->selectionPosition = cursor;
 				
 
-				Json::Value skin = WM::getInstance()->skin["input"];
+				json::Value skin = WM::getInstance()->skin["input"];
 				Font* font = WM::getInstance()->font;
 				Texture* texture = WM::getInstance()->skinTexture;
 

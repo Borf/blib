@@ -3,10 +3,11 @@
 #include <vector>
 #include <functional>
 
-namespace Json { class Value; }
 
 namespace blib
 {
+	namespace json { class Value; }
+
 	namespace wm
 	{
 		class MenuItem;
@@ -14,7 +15,7 @@ namespace blib
 		class Menu
 		{
 		public:
-			Menu(const Json::Value &data);
+			Menu(const json::Value &data);
 			void setAction(std::string path, std::function<void() > callback);
 			void linkToggle(std::string path, bool* linkBool);
 			void setEnabled(std::string path, bool value);

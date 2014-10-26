@@ -1,7 +1,5 @@
 #include "Window.h"
 
-#include <json/value.h>
-
 #include <algorithm>
 #include <cctype>
 
@@ -31,6 +29,7 @@
 #include <blib/util/Log.h>
 #include <blib/util/FileSystem.h>
 #include <blib/math/Rectangle.h>
+#include <blib/json.h>
 
 #include <blib/wm/widgets/Panel.h>
 #include <blib/wm/widgets/button.h>
@@ -53,7 +52,7 @@ namespace blib
 		Window::Window( std::string title, std::string skinFile, ResourceManager* resourceManager )
 		{
 			this->title = title;
-			Json::Value skin = util::FileSystem::getJson("assets/windows/" + skinFile);
+			json::Value skin = util::FileSystem::getJson("assets/windows/" + skinFile);
 	
 			this->x = 100;
 			this->y = 100;
@@ -170,12 +169,12 @@ namespace blib
 			rootPanel->draw(spriteBatch, glm::translate(matrix, glm::vec3(WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), WM::getInstance()->skin["window"]["offsets"]["top"].asInt(),0)), renderer);
 		}
 
-		void Window::addWidgets( widgets::Panel* panel, Json::Value skin, ResourceManager* resourceManager )
+		void Window::addWidgets( widgets::Panel* panel, json::Value skin, ResourceManager* resourceManager )
 		{
-			Json::Value::Members members = skin.getMemberNames();
-			for(unsigned int i = 0; i < members.size(); i++)
+			
+			for (auto it = skin.begin(); it != skin.end(); it++)
 			{
-				Json::Value widgetSkin = skin[members[i]];
+				json::Value widgetSkin = it.value();
 				Widget* widget = NULL;
 				std::string type = widgetSkin["type"].asString();
 				if(type == "button")
@@ -213,7 +212,7 @@ namespace blib
 					continue;
 				}
 
-				widget->name = members[i];
+				widget->name = it.key();
 
 				if(widgetSkin["position"][0u].asInt() != -1)
 					widget->x = widgetSkin["position"][0u].asInt();

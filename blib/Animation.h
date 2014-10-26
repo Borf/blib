@@ -5,10 +5,11 @@
 #include <map>
 #include <blib/SpriteBatch.h>
 
-namespace Json { class Value; }
 
 namespace blib
 {
+
+	namespace json { class Value; };
 
 	//TODO: instancing?
 	class Animation
@@ -22,7 +23,7 @@ namespace blib
 			float angleOrig;
 			int frame;
 
-			Bone(Json::Value &config);
+			Bone(json::Value &config);
 			void draw(const Animation& animation, SpriteBatch &spritebatch, glm::mat4 transform);
 		};
 		class State
@@ -35,14 +36,14 @@ namespace blib
 				{
 				public:
 					int frame;
-					BoneFrameInfo(Json::Value &config);
+					BoneFrameInfo(json::Value &config);
 				};
 				float time;
 				std::list<std::pair<Bone*, BoneFrameInfo> > boneInfo;
 
-				KeyFrame(const Animation& animation, Json::Value &config);
+				KeyFrame(const Animation& animation, json::Value &config);
 			};
-			State(const Animation& animation, Json::Value &config);
+			State(const Animation& animation, json::Value &config);
 
 
 			float length;

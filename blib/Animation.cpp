@@ -4,14 +4,14 @@
 #include <blib/util/Log.h>
 using blib::util::Log;
 
-#include <json/value.h>
+#include <blib/json.h>
 
 
 namespace blib
 {
 	Animation::Animation( std::string filename, ResourceManager* resourceManager )
 	{
-		Json::Value config = blib::util::FileSystem::getJson(filename);
+		blib::json::Value config = blib::util::FileSystem::getJson(filename);
 
 		std::string pathName = "";
 		if(filename.find("/") != std::string::npos)
@@ -20,30 +20,29 @@ namespace blib
 		texture = resourceManager->getResource<Texture>(pathName + config["texture"].asString());
 
 			
-		for(Json::ArrayIndex i = 0; i < config["frames"].size(); i++)
+		for(size_t i = 0; i < config["frames"].size(); i++)
 		{
-			Json::Value &v = config["frames"][i];
+			blib::json::Value &v = config["frames"][i];
 			frames.push_back(blib::math::Rectangle( v["pos"][0].asFloat() / texture->originalWidth, 
 													v["pos"][1].asFloat() / texture->originalHeight, 
 													v["size"][0].asFloat() / texture->originalWidth, 
 													v["size"][1].asFloat() / texture->originalHeight));
 		}
 			
-		Json::Value::Members boneNames = config["base"].getMemberNames();
-		for(size_t i = 0; i < boneNames.size(); i++)
-			bones[boneNames[i]] = new Bone(config["base"][boneNames[i]]);
+		
+		for (auto it = config["base"].begin(); it != config["base"].end(); it++)
+			bones[it.key()] = new Bone(it.value());
 		rootBone = bones["root"];
 
 
-		Json::Value::Members animationNames = config["animations"].getMemberNames();
 
-		for(size_t i = 0; i < animationNames.size(); i++)
+		for (auto it = config["animations"].begin(); it != config["animations"].end(); it++)
 		{
-			states.insert(std::map<std::string, State*>::value_type(animationNames[i], new State(*this, config["animations"][animationNames[i]])));
+			states.insert(std::map<std::string, State*>::value_type(it.key(), new State(*this, it.value())));
 		}
 
 
-		setState(animationNames[0]);
+		setState(config["animations"].begin().key());
 	}
 
 
@@ -87,7 +86,7 @@ namespace blib
 
 
 	/////////////////bone
-	Animation::Bone::Bone(Json::Value &config)
+	Animation::Bone::Bone(json::Value &config)
 	{
 		frame = 0;
 	}
@@ -102,35 +101,34 @@ namespace blib
 
 
 
-	Animation::State::State( const Animation& animation, Json::Value &config )
+	Animation::State::State( const Animation& animation, json::Value &config )
 	{
 		length = config["length"].asFloat();
-		for(Json::ArrayIndex i = 0; i < config["keyframes"].size(); i++)
+		for(size_t i = 0; i < config["keyframes"].size(); i++)
 			keyFrames.push_back(KeyFrame(animation, config["keyframes"][i]));
 	}
 
 
 	///////////////////////keyframe
 
-	Animation::State::KeyFrame::KeyFrame( const Animation& animation, Json::Value &config )
+	Animation::State::KeyFrame::KeyFrame( const Animation& animation, json::Value &config )
 	{
 		time = config["time"].asFloat();
 			
-		Json::Value::Members boneNames = config.getMemberNames();
-		for(size_t i = 0; i < boneNames.size(); i++)
+		for (auto it2 = config.begin(); it2 != config.end(); it2++)
 		{
-			std::map<std::string, Bone*>::const_iterator it = animation.bones.find(boneNames[i]);
+			std::map<std::string, Bone*>::const_iterator it = animation.bones.find(it2.key());
 			if(it == animation.bones.end())
 				continue;
 			Bone* bone = it->second;
 				
-			boneInfo.push_back(std::pair<Bone*, BoneFrameInfo>(bone, BoneFrameInfo(config[boneNames[i]])));
+			boneInfo.push_back(std::pair<Bone*, BoneFrameInfo>(bone, BoneFrameInfo(it2.value())));
 
 		}
 	}
 
 	////////////////////////////boneframeinfo
-	Animation::State::KeyFrame::BoneFrameInfo::BoneFrameInfo( Json::Value &config )
+	Animation::State::KeyFrame::BoneFrameInfo::BoneFrameInfo( json::Value &config )
 	{
 		frame = config["frame"].asInt();
 	}

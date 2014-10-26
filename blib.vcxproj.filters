@@ -249,15 +249,6 @@
     <ClInclude Include="externals\json\forwards.h">
       <Filter>external</Filter>
     </ClInclude>
-    <ClInclude Include="externals\json\json.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="externals\json\json_batchallocator.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="externals\json\json_tool.h">
-      <Filter>external</Filter>
-    </ClInclude>
     <ClInclude Include="externals\json\reader.h">
       <Filter>external</Filter>
     </ClInclude>
@@ -530,6 +521,7 @@
     <ClInclude Include="blib\wm\widgets\TreeView.h">
       <Filter>wm\widgets</Filter>
     </ClInclude>
+    <ClInclude Include="blib\json.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -640,15 +632,6 @@
     </ClCompile>
     <ClCompile Include="blib\wm\widgets\Widget.cpp">
       <Filter>wm\widgets</Filter>
-    </ClCompile>
-    <ClCompile Include="externals\json\json_reader.cpp">
-      <Filter>external</Filter>
-    </ClCompile>
-    <ClCompile Include="externals\json\json_value.cpp">
-      <Filter>external</Filter>
-    </ClCompile>
-    <ClCompile Include="externals\json\json_writer.cpp">
-      <Filter>external</Filter>
     </ClCompile>
     <ClCompile Include="externals\poly2tri\common\shapes.cc">
       <Filter>external</Filter>
@@ -890,18 +873,10 @@
     <ClCompile Include="blib\wm\widgets\TreeView.cpp">
       <Filter>wm\widgets</Filter>
     </ClCompile>
+    <ClCompile Include="blib\json.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">
-      <Filter>external</Filter>
-    </None>
-    <None Include="externals\json\json_internalarray.inl">
-      <Filter>external</Filter>
-    </None>
-    <None Include="externals\json\json_internalmap.inl">
-      <Filter>external</Filter>
-    </None>
-    <None Include="externals\json\json_valueiterator.inl">
       <Filter>external</Filter>
     </None>
   </ItemGroup>

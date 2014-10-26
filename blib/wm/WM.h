@@ -7,7 +7,7 @@
 #include <blib/KeyListener.h>
 #include <blib/MouseListener.h>
 #include <blib/App.h> //for mousestate
-#include <json/value.h>
+#include <blib/json.h>
 #include <glm/glm.hpp>
 #include <blib/gl/GlResizeRegister.h>
 #include <functional>
@@ -88,7 +88,7 @@ namespace blib
 
 
 			bool inWindow(int x, int y);
-			Json::Value skin;
+			json::Value skin;
 			Texture* skinTexture;
 			Font* font;
 			Font* radialmenufont;

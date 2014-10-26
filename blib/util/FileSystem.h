@@ -10,10 +10,10 @@
 #include <blib/util/StreamSeekable.h>
 
 
-namespace Json { class Value; }
-
 namespace blib
 {
+	namespace json { class Value; }
+
 	namespace util
 	{
 		class StreamOut;
@@ -99,7 +99,7 @@ namespace blib
 			static const std::list<FileSystemHandler*> getHandlers();
 			static int getData(const std::string &fileName, char* &data);
 			static std::string getData(const std::string &fileName);
-			static Json::Value getJson(const std::string &fileName);
+			static json::Value getJson(const std::string &fileName);
 			static std::vector<std::string> getFileList(const std::string &path);
 		};
 	}

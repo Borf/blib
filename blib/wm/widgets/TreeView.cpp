@@ -21,7 +21,7 @@ namespace blib
 
 				addClickHandler([this](int x, int y, int clickCount)
 				{
-					Json::Value skin = WM::getInstance()->skin["list"];
+					json::Value skin = WM::getInstance()->skin["list"];
 					if (x - this->x < width - skin["scroll"]["width"].asInt())
 					{
 						selectedItem = (y - this->y + scrollPosition) / 12;
@@ -66,7 +66,7 @@ namespace blib
 
 			void TreeView::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
-				Json::Value skin = WM::getInstance()->skin["list"];
+				json::Value skin = WM::getInstance()->skin["list"];
 				Texture* texture = WM::getInstance()->skinTexture;
 
 

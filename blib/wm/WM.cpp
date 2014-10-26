@@ -217,7 +217,7 @@ namespace blib
 
 		blib::wm::Menu* WM::loadMenu( std::string filename )
 		{
-			Json::Value menuData = blib::util::FileSystem::getJson(filename);
+			json::Value menuData = blib::util::FileSystem::getJson(filename);
 
 			Menu* root = new Menu(menuData);
 

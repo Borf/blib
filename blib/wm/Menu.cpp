@@ -5,17 +5,15 @@
 #include "ToggleMenuItem.h"
 #include "ActionMenuItem.h"
 
-
+#include <blib/json.h>
 #include <blib/KeyListener.h>
 #include <blib/util/Log.h>
 using blib::util::Log;
 
-#include <json/value.h>
 
-
-blib::wm::Menu::Menu(const Json::Value &data)
+blib::wm::Menu::Menu(const json::Value &data)
 {
-	for (Json::ArrayIndex i = 0; i < data.size(); i++)
+	for (size_t i = 0; i < data.size(); i++)
 	{
 		MenuItem* subItem = NULL;
 
@@ -170,7 +168,7 @@ void blib::wm::Menu::setMenu(std::string menuLoc, blib::wm::MenuItem* menuItem)
 		}
 	}
 	
-	Menu* menu = new Menu(Json::Value(Json::arrayValue));
+	Menu* menu = new Menu(json::Value(json::Type::arrayValue));
 	menu->setMenu(menuLoc.substr(first.length() == menuLoc.length() ? first.length() : first.length() + 1), menuItem);
 	menuItems.push_back(new SubMenuMenuItem(first, menu));
 }

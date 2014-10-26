@@ -10,7 +10,7 @@
 #include <blib/Math.h>
 #include <blib/util/Log.h>
 #include <blib/SpriteBatch.h>
-#include <json/json.h>
+#include <blib/json.h>
 
 using blib::util::Log;
 
@@ -275,19 +275,19 @@ void main()\
 
 	EmitterTemplate::EmitterTemplate( std::string filename, TextureMap* textureMap )
 	{
-		Json::Value data = util::FileSystem::getJson(filename);
+		json::Value data = util::FileSystem::getJson(filename);
 		if(data.isNull())
 			throw "File not found";
 
 
-		particleType = enumFromString<ParticleType>(data["particletype"].asString(), util::make_vector<std::pair<ParticleType, std::string> >() << 
+		particleType = enumFromString<ParticleType>(data["particletype"], util::make_vector<std::pair<ParticleType, std::string> >() << 
 			std::pair<ParticleType, std::string>(Fading, "fading") );
 
 		
 		if(data["texture"].isString())
 			textures.push_back(data["texture"].asString());
 		else
-			for(Json::ArrayIndex i = 0; i < data["texture"].size(); i++)
+			for(size_t i = 0; i < data["texture"].size(); i++)
 				textures.push_back(data["texture"][i].asString());
 
 		for(size_t i = 0; i < textures.size(); i++)
@@ -331,11 +331,11 @@ void main()\
 
 	
 		particleProps.colorExp = data["particle"]["colorexp"].asFloat();
-		for(Json::ArrayIndex i = 0; i < data["particle"]["size"].size(); i++)
+		for(size_t i = 0; i < data["particle"]["size"].size(); i++)
 			particleProps.size.push_back(data["particle"]["size"][i].asFloat());
 
 		particleProps.sizeExp = data["particle"]["sizeexp"].asFloat();
-		for(Json::ArrayIndex i = 0; i < data["particle"]["colors"].size(); i++)
+		for(size_t i = 0; i < data["particle"]["colors"].size(); i++)
 			particleProps.colors.push_back(glm::vec4(data["particle"]["colors"][i][0u].asFloat(), data["particle"]["colors"][i][1u].asFloat(), data["particle"]["colors"][i][2u].asFloat(), data["particle"]["colors"][i][3u].asFloat()));
 	}
 	void ParticleSystem::resizeGl( int width, int height )

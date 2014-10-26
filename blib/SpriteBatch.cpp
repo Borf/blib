@@ -10,7 +10,7 @@
 #include <blib/Math.h>
 
 #include <glm/gtc/matrix_transform.hpp>
-#include <json/json.h>
+#include <blib/json.h>
 
 using blib::util::Log;
 
@@ -201,7 +201,7 @@ namespace blib
 		draw(sprite, glm::scale(glm::translate(transform, glm::vec3(marginTopLeft,0)), glm::vec3(facWidth,facHeight,1)), glm::vec2(0,0), blib::math::Rectangle(innerSrc.topleft * factor, innerSrc.bottomright * factor), color); //center
 	}
 
-	void SpriteBatch::drawStretchyRect(Texture* sprite, const glm::mat4 &transform, Json::Value skin, const glm::vec2 &size, const glm::vec4 &color)
+	void SpriteBatch::drawStretchyRect(Texture* sprite, const glm::mat4 &transform, json::Value skin, const glm::vec2 &size, const glm::vec4 &color)
 	{
 		drawStretchyRect(
 			sprite, 

@@ -9,7 +9,7 @@
 #include <blib/SpriteSheet.h>
 #include <blib/Font.h>
 
-#include <json/json.h>
+#include <blib/json.h>
 #include <blib/util/FileSystem.h>
 
 
@@ -86,7 +86,7 @@ namespace blib
 
 			blib::SpriteSheet* ResourceManager::getSpriteSheet(const std::string &name)
 			{
-				Json::Value v = util::FileSystem::getJson(name + ".json");
+				json::Value v = util::FileSystem::getJson(name + ".json");
 				std::string directory = name;
 
 				if (directory.find('/') != std::string::npos)

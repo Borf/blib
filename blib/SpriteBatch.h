@@ -9,10 +9,10 @@
 #include <blib/RenderState.h>
 #include <queue>
 
-namespace Json { class Value; }
 
 namespace blib
 {
+	namespace json { class Value; }
 	class Texture;
 	class Shader;
 	class Font;
@@ -86,7 +86,7 @@ namespace blib
 		virtual glm::vec2 draw(const Font* font, const std::string& text, const glm::mat4 &transform, const glm::vec4 &color = glm::vec4(1, 1, 1, 1), glm::vec2 &cursor = glm::vec2(0,0), int wrapWidth = -1);
 
 		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, const blib::math::Rectangle &src, const blib::math::Rectangle &innerSrc, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));
-		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, Json::Value skin, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));
+		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, json::Value skin, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));
 
 		virtual void resizeGl( int width, int height );
 

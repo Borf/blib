@@ -76,7 +76,7 @@ namespace blib
 			void ScrollPanel::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
 
-				Json::Value skin = WM::getInstance()->skin["list"];
+				json::Value skin = WM::getInstance()->skin["list"];
 				blib::Texture* texture = WM::getInstance()->skinTexture;
 
 				spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x,y,0)), skin, glm::vec2(width - skin["scroll"]["width"].asInt(), height));

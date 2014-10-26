@@ -32,7 +32,7 @@ namespace blib
 
 				addClickHandler([this](int x, int y, int clickCount)
 				{
-					Json::Value skin = WM::getInstance()->skin["list"];
+					json::Value skin = WM::getInstance()->skin["list"];
 					if (x - this->x < width - skin["scroll"]["width"].asInt())
 					{
 						selectedItems.clear();
@@ -79,7 +79,7 @@ namespace blib
 
 			void List::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
-				Json::Value skin = WM::getInstance()->skin["list"];
+				json::Value skin = WM::getInstance()->skin["list"];
 				Texture* texture = WM::getInstance()->skinTexture;
 
 

@@ -43,6 +43,7 @@
     <ClInclude Include="blib\IDrawableLine.h" />
     <ClInclude Include="blib\IWindow.h" />
     <ClInclude Include="blib\JoyState.h" />
+    <ClInclude Include="blib\json.h" />
     <ClInclude Include="blib\KeyListener.h" />
     <ClInclude Include="blib\LineBatch.h" />
     <ClInclude Include="blib\linq.h" />
@@ -177,9 +178,6 @@
     <ClInclude Include="externals\json\config.h" />
     <ClInclude Include="externals\json\features.h" />
     <ClInclude Include="externals\json\forwards.h" />
-    <ClInclude Include="externals\json\json.h" />
-    <ClInclude Include="externals\json\json_batchallocator.h" />
-    <ClInclude Include="externals\json\json_tool.h" />
     <ClInclude Include="externals\json\reader.h" />
     <ClInclude Include="externals\json\value.h" />
     <ClInclude Include="externals\json\version.h" />
@@ -214,6 +212,7 @@
     <ClCompile Include="blib\gl\Vertex.cpp" />
     <ClCompile Include="blib\gl\Window.cpp" />
     <ClCompile Include="blib\IWindow.cpp" />
+    <ClCompile Include="blib\json.cpp" />
     <ClCompile Include="blib\KeyListener.cpp" />
     <ClCompile Include="blib\LineBatch.cpp" />
     <ClCompile Include="blib\linq.cpp" />
@@ -319,9 +318,6 @@
     <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="externals\box2d\Box2D\Rope\b2Rope.cpp" />
     <ClCompile Include="externals\clipper\clipper.cpp" />
-    <ClCompile Include="externals\json\json_reader.cpp" />
-    <ClCompile Include="externals\json\json_value.cpp" />
-    <ClCompile Include="externals\json\json_writer.cpp" />
     <ClCompile Include="externals\poly2tri\common\shapes.cc" />
     <ClCompile Include="externals\poly2tri\sweep\advancing_front.cc" />
     <ClCompile Include="externals\poly2tri\sweep\cdt.cc" />
@@ -330,9 +326,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html" />
-    <None Include="externals\json\json_internalarray.inl" />
-    <None Include="externals\json\json_internalmap.inl" />
-    <None Include="externals\json\json_valueiterator.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{22D5CA69-1AFF-4025-AC86-A4F056D79B53}</ProjectGuid>
