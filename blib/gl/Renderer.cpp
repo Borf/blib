@@ -244,6 +244,20 @@ namespace blib
 						else
 							glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+					if (!lastRenderState || lastRenderState->cullFaces != r->renderState.cullFaces)
+					{
+						if (r->renderState.cullFaces == RenderState::CullFaces::NONE)
+							glDisable(GL_CULL_FACE);
+						else
+						{
+							glEnable(GL_CULL_FACE);
+							if (r->renderState.cullFaces == RenderState::CullFaces::CCW)
+								glCullFace(GL_BACK);
+							else
+								glCullFace(GL_FRONT);
+						}
+					}
+
 
 					r->setVertexAttributes(enabledVertexAttributes, vertices[1-activeLayer]);
 					totalVerts += r->vertexCount();

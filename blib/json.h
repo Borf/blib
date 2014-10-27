@@ -41,6 +41,7 @@ namespace blib
 			Value(float value);
 			Value(bool value);
 			Value(const std::string &value);
+			Value(const char* value);
 			Value(const Value& other);
 			virtual ~Value();
 

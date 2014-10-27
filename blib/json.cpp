@@ -1,5 +1,5 @@
 #include "json.h"
-
+#include <iomanip>
 #include <sstream>
 
 namespace blib
@@ -43,6 +43,12 @@ namespace blib
 		}
 
 		Value::Value(const std::string &value)
+		{
+			type = Type::stringValue;
+			this->value.stringValue = new std::string();
+			this->value.stringValue->assign(value);
+		}
+		Value::Value(const char* value)
 		{
 			type = Type::stringValue;
 			this->value.stringValue = new std::string();
@@ -122,7 +128,12 @@ namespace blib
 
 		void Value::push_back(const Value& value)
 		{
-			assert(type == Type::arrayValue);
+			assert(type == Type::arrayValue || type == Type::nullValue);
+			if (type == Type::nullValue)
+			{
+				type = Type::arrayValue;
+				this->value.arrayValue = new std::vector<Value>();
+			}
 			this->value.arrayValue->push_back(value);
 		}
 
@@ -140,7 +151,12 @@ namespace blib
 
 		Value& Value::operator[](const char* key)
 		{
-			assert(type == Type::objectValue);
+			assert(type == Type::objectValue || type == Type::nullValue);
+			if (type == Type::nullValue)
+			{
+				type = Type::objectValue;
+				value.objectValue = new std::map<std::string, Value>();
+			}
 			return (*value.objectValue)[std::string(key)];
 		}
 
@@ -193,16 +209,18 @@ namespace blib
 		{
 			if (type == Type::objectValue)
 				return Iterator(value.objectValue->end());
-			else
+			else if (type == Type::arrayValue)
 				return Iterator(value.arrayValue->end());
+			throw "oops";
 		}
 
 		Value::Iterator Value::begin() const
 		{
 			if (type == Type::objectValue)
 				return Iterator(value.objectValue->begin());
-			else
+			else if (type == Type::arrayValue)
 				return Iterator(value.arrayValue->begin());
+			throw "oops";
 		}
 
 		///iterator stuff
@@ -415,7 +433,14 @@ namespace blib
 				return eatBool(stream);
 			if (token == 'n')
 				return eatNull(stream);
-
+			if (token == '/')
+			{
+				token = stream.get();
+				assert(token == '/');
+				while (token != '\n' && !stream.eof())
+					token = stream.get();
+				return eatValue(stream);
+			}
 			throw "Unable to parse json";
 		};
 
@@ -436,6 +461,7 @@ namespace blib
 
 		std::ostream & operator<<(std::ostream &stream, const Value& value)
 		{
+			stream << std::fixed<< std::setprecision(6);
 			switch (value.type)
 			{
 			case Type::intValue:
@@ -448,7 +474,7 @@ namespace blib
 				stream << value.value.boolValue ? "true" : "false";
 				break;
 			case Type::stringValue:
-				stream << "\"" << *value.value.stringValue << "\"";
+				stream << "\"" << *value.value.stringValue << "\""; //TODO: escape \'s
 				break;
 			case Type::arrayValue:
 			{

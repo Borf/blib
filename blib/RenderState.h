@@ -40,6 +40,13 @@ namespace blib
 		};
 		RenderStyle renderStyle;
 
+		enum class CullFaces
+		{
+			NONE,
+			CCW,
+			CW
+		} cullFaces;
+
 		bool stencilTestEnabled;
 		bool stencilWrite;
 
@@ -76,6 +83,7 @@ namespace blib
 			scissorArea[2] = 0;
 			scissorArea[3] = 0;
 
+			cullFaces = CullFaces::NONE;
 		}
 	};
 

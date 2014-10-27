@@ -76,7 +76,7 @@ namespace blib
 		Return sum(const Storage& data, Operator func)
 		{
 			Return ret = 0;
-			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			for(auto it = std::begin(data); it != std::end(data); it++)
 				ret += func(*it);
 			return ret;
 		}
