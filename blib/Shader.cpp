@@ -23,6 +23,59 @@ using blib::util::Log;
 
 namespace blib
 {
+	void setUniform_(Shader::Uniform* uniform, char* state, char* activeUniformData)
+	{
+		int location = uniform->id;
+		switch (uniform->type)
+		{
+		case Shader::Float:
+			glUniform1f(location, (float&)state[uniform->index]);
+			break;
+		case Shader::Int:
+			glUniform1i(location, (int&)state[uniform->index]);
+			break;
+		case Shader::Mat4:
+#ifndef BLIB_EMSCRIPTEN
+			if (activeUniformData[uniform->index - 1] != state[uniform->index - 1])
+#endif
+			{
+				glUniformMatrix4fv(location, 1, 0, &((float&)state[uniform->index]));
+				activeUniformData[uniform->index - 1] = state[uniform->index - 1];
+			}
+			break;
+		case Shader::Mat3:
+#ifndef BLIB_EMSCRIPTEN
+			if (activeUniformData[uniform->index - 1] != state[uniform->index - 1])
+#endif
+			{
+				glUniformMatrix3fv(location, 1, 0, &((float&)state[uniform->index]));
+				activeUniformData[uniform->index - 1] = state[uniform->index - 1];
+			}
+			break;
+		case Shader::Vec2:
+			glUniform2f(location, (float&)state[uniform->index], (float&)state[uniform->index + 4]);
+			break;
+		case Shader::Vec3:
+			glUniform3f(location, (float&)state[uniform->index], (float&)state[uniform->index + 4], (float&)state[uniform->index + 8]);
+			break;
+		case Shader::Vec4:
+			glUniform4f(location, (float&)state[uniform->index], (float&)state[uniform->index + 4], (float&)state[uniform->index + 8], (float&)state[uniform->index + 12]);
+			break;
+		case Shader::Struct:
+		{
+			Shader::UniformStruct* uniformStruct = (Shader::UniformStruct*)uniform;
+			for (size_t i = 0; i < uniformStruct->members.size(); i++)
+			{
+				setUniform_(uniformStruct->members[i]->uniform, state, activeUniformData);
+			}
+		}
+			break;
+		default:
+			Log::out << "Error in uniform type" << Log::newline;
+		}
+
+	}
+
 
 	//TODO: move this to the opengl shader class
 	void Shader::setState( char* state )
@@ -31,46 +84,7 @@ namespace blib
 		{
 			if (uniforms[i])
 			{
-				int location = uniforms[i]->id;
-				switch (uniforms[i]->type)
-				{
-				case Float:
-					glUniform1f(location, (float&)state[uniforms[i]->index]);
-					break;
-				case Int:
-					glUniform1i(location, (int&)state[uniforms[i]->index]);
-					break;
-				case Mat4:
-#ifndef BLIB_EMSCRIPTEN
-					if (activeUniformData[uniforms[i]->index - 1] != state[uniforms[i]->index - 1])
-#endif
-					{
-						glUniformMatrix4fv(location, 1, 0, &((float&)state[uniforms[i]->index]));
-						activeUniformData[uniforms[i]->index - 1] = state[uniforms[i]->index - 1];
-					}
-					break;
-				case Mat3:
-#ifndef BLIB_EMSCRIPTEN
-					if (activeUniformData[uniforms[i]->index - 1] != state[uniforms[i]->index - 1])
-#endif
-					{
-						glUniformMatrix3fv(location, 1, 0, &((float&)state[uniforms[i]->index]));
-						activeUniformData[uniforms[i]->index - 1] = state[uniforms[i]->index - 1];
-					}
-					break;
-				case Vec2:
-					glUniform2f(location, (float&)state[uniforms[i]->index], (float&)state[uniforms[i]->index + 4]);
-					break;
-				case Vec3:
-					glUniform3f(location, (float&)state[uniforms[i]->index], (float&)state[uniforms[i]->index + 4], (float&)state[uniforms[i]->index + 8]);
-					break;
-				case Vec4:
-					glUniform4f(location, (float&)state[uniforms[i]->index], (float&)state[uniforms[i]->index + 4], (float&)state[uniforms[i]->index + 8], (float&)state[uniforms[i]->index+12]);
-					break;
-				default:
-					Log::out << "Error in uniform type" << Log::newline;
-				}
-
+				setUniform_(uniforms[i], state, activeUniformData);
 			}
 		}
 

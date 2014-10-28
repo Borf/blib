@@ -24,51 +24,9 @@ namespace blib
 			Vec4,
 			Mat3,
 			Mat4,
+			Struct,
 		};
-
-
-		class UniformStruct
-		{
-			class UniformInfoBase
-			{
-			public:
-				std::string name;
-				int size;
-				UniformType type;
-
-				UniformInfoBase(int size, UniformType type, const std::string &name)
-				{
-					this->size = size;
-					this->type = type;
-					this->name = name;
-				}
-
-			};
-			template<class T>
-			class UniformInfo : public UniformInfoBase
-			{
-			public:
-				T& value;
-
-				UniformInfo(T& value, int size, UniformType type, const std::string &name) : value(value), UniformInfoBase(size, type, name)
-				{
-				}
-			};
-
-		public:
-			std::vector<UniformInfoBase*> members;
-
-			UniformStruct() {};
-
-			void reg(glm::vec3& value, const std::string &name) {
-				members.push_back(new UniformInfo<glm::vec3>(value, sizeof(float)*3, Vec3, name));
-			};
-			void reg(float& value, const std::string &name) {
-				members.push_back(new UniformInfo<float>(value, sizeof(float) * 1, Float, name));
-			};
-
-		};
-
+		
 		class Uniform
 		{
 		public:
@@ -104,9 +62,61 @@ namespace blib
 
 
 
+		class UniformStruct : public Uniform
+		{
+			class UniformInfoBase
+			{
+			public:
+				std::string name;
+				int size;
+				UniformType type;
+				Uniform* uniform;
+
+				UniformInfoBase(int size, UniformType type, const std::string &name)
+				{
+					this->size = size;
+					this->type = type;
+					this->name = name;
+				}
+				virtual void set(char* data) = 0;
+
+			};
+			template<class T>
+			class UniformInfo : public UniformInfoBase
+			{
+			public:
+				T& value;
+
+				UniformInfo(T& value, int size, UniformType type, const std::string &name) : value(value), UniformInfoBase(size, type, name)
+				{
+				}
+				virtual void set(char* data)
+				{
+					uniform->set(data, value);
+				}
+			};
+
+		public:
+			std::vector<UniformInfoBase*> members;
+
+			UniformStruct() : Uniform("", 0, Struct)
+			{};
+
+			void reg(glm::vec3& value, const std::string &name) {
+				members.push_back(new UniformInfo<glm::vec3>(value, sizeof(float)*3, Vec3, name));
+			};
+			void reg(float& value, const std::string &name) {
+				members.push_back(new UniformInfo<float>(value, sizeof(float) * 1, Float, name));
+			};
+
+		};
+
+	
+
+
+		int uniformCount;
 		char* uniformData;
 		char* activeUniformData;
-		int uniformCount;
 		int uniformSize;
 		Uniform* uniforms[32];
 		Shader();
@@ -129,8 +139,7 @@ namespace blib
 			assert(uniform);
 
 			uniforms[(int)value] = uniform;
-			uniformCount = glm::max(uniformCount, (int)value+1);
-
+			uniformCount = glm::max(uniformCount, (int)value + 1);
 			uniform->index = uniformSize+1;
 			uniformSize += uniform->size+1;
 		}
@@ -138,12 +147,29 @@ namespace blib
 		template<class T>
 		void setUniformName(T value, const std::string name, UniformStruct* type)
 		{
+			uniforms[(int)value] = type;
+			uniformCount = glm::max(uniformCount, (int)value + 1);
 			for (size_t i = 0; i < type->members.size(); i++)
 			{
 				Uniform* uniform = new Uniform(name + "." + type->members[i]->name, type->members[i]->size, type->members[i]->type);
+				uniform->index = uniformSize + 1;
+				uniformSize += uniform->size + 1;
+				type->members[i]->uniform = uniform;
 			}
 		}
 
+
+		template <class Enum>
+		inline void setUniformStruct(Enum name,		const UniformStruct& value)
+		{
+			assert(uniformData);
+			for (size_t i = 0; i < value.members.size(); i++)
+			{
+				value.members[i]->set(uniformData);
+			}
+
+
+		}
 
 
 		template <class T, class Enum>
@@ -158,7 +184,6 @@ namespace blib
 			assert(uniformData);
 			return uniforms[(int)name]->get<T>(uniformData);
 		}
-
 
 		virtual void use() = 0;
 		virtual void initFromData(std::string vertexShader, std::string fragmentShader);

@@ -72,7 +72,16 @@ namespace blib
 				for (int i = 0; i < uniformCount; i++)
 				{
 					if (uniforms[i])
-						uniforms[i]->id = glGetUniformLocation(programId, uniforms[i]->name.c_str());
+					{
+						if (uniforms[i]->type == Struct)
+						{ //todo: add more recursive way of doing this
+							UniformStruct* uniformStruct = (UniformStruct*)uniforms[i];
+							for (size_t ii = 0; ii < uniformStruct->members.size(); ii++)
+								uniformStruct->members[ii]->uniform->id = glGetUniformLocation(programId, uniformStruct->members[ii]->uniform->name.c_str());
+						}
+						else
+							uniforms[i]->id = glGetUniformLocation(programId, uniforms[i]->name.c_str());
+					}
 				}
 			}
 			glUseProgram(programId);
