@@ -25,6 +25,19 @@ namespace blib
 			Mat4,
 		};
 
+
+		class UniformStruct
+		{
+			std::string name;
+
+		public:
+			UniformStruct(const std::string &instanceName) {};
+
+			void reg(glm::vec3& value, const std::string &name) {};
+			void reg(float& value, const std::string &name) {};
+
+		};
+
 		class Uniform
 		{
 		public:
@@ -74,11 +87,11 @@ namespace blib
 			Uniform* uniform = NULL;
 			switch (type)
 			{
-			case Float:				uniform = new Uniform(name,	sizeof(float), type);	break;
-			case Int:				uniform = new Uniform(name, sizeof(int), type);	break;
-			case Vec2:				uniform = new Uniform(name, sizeof(float)* 2, type);	break;
-			case Vec3:				uniform = new Uniform(name, sizeof(float)* 3, type);	break;
-			case Vec4:				uniform = new Uniform(name, sizeof(float)* 4, type);	break;
+			case Float:				uniform = new Uniform(name,	sizeof(float), type);			break;
+			case Int:				uniform = new Uniform(name, sizeof(int), type);				break;
+			case Vec2:				uniform = new Uniform(name, sizeof(float)* 2, type);		break;
+			case Vec3:				uniform = new Uniform(name, sizeof(float)* 3, type);		break;
+			case Vec4:				uniform = new Uniform(name, sizeof(float)* 4, type);		break;
 			case Mat3:				uniform = new Uniform(name, sizeof(float)* 3 * 3, type);	break;
 			case Mat4:				uniform = new Uniform(name, sizeof(float)* 4 * 4, type);	break;
 			}
@@ -90,6 +103,13 @@ namespace blib
 			uniform->index = uniformSize+1;
 			uniformSize += uniform->size+1;
 		}
+
+		template<class T>
+		void setUniformName(T value, const std::string name, UniformStruct* type)
+		{
+			printf("Hello World\n");
+		}
+
 
 
 		template <class T, class Enum>

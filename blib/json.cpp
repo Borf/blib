@@ -498,7 +498,7 @@ namespace blib
 				{
 					if (!first)
 						stream << ", ";
-					stream << "\"" << v.first << "\" : " << v.second;
+					stream << "\"" << v.first << "\" : " << v.second << std::endl;
 					first = false;
 				}
 				stream << "}";
