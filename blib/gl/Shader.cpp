@@ -68,6 +68,20 @@ namespace blib
 				for(std::map<std::string, int>::iterator it = attributes.begin(); it != attributes.end(); it++)
 					glBindAttribLocation(programId, it->second, it->first.c_str());
 				link();
+
+
+				int total = -1;
+				glGetProgramiv(programId, GL_ACTIVE_UNIFORMS, &total);
+				for (int i = 0; i < total; ++i)  {
+					int name_len = -1, num = -1;
+					GLenum type = GL_ZERO;
+					char name[100];
+					glGetActiveUniform(programId, GLuint(i), sizeof(name) - 1,
+						&name_len, &num, &type, name);
+					name[name_len] = 0;
+					printf("Found uniform %s\n", name);
+				}
+
 				glUseProgram(programId);
 				for (int i = 0; i < uniformCount; i++)
 				{
