@@ -106,6 +106,13 @@ namespace blib
 	}
 
 
+	template<>
+	void Shader::Uniform::set<Shader::UniformStruct>(char* data, const Shader::UniformStruct& value)
+	{
+
+	}
+
+
 #ifdef STUPIDIPHONE
 	template<>
 	void Shader::Uniform::set(char* data, const glm::mat4& value)
