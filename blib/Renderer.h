@@ -42,6 +42,7 @@ namespace blib
 				DrawTriangles,
 				DrawLines,
 				DrawPoints,
+				DrawIndexedTriangles,
 				SetShaderState,
 				SetSubTexture,
 				SetViewPort,
@@ -251,6 +252,22 @@ namespace blib
 			block->count = vertices.size();
 			memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
 			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * vertices.size();
+			toRender[activeLayer].push_back(block);
+		}
+
+		template<class T>
+		void drawIndexedTriangles(int begin, int count, const RenderState& renderState)
+		{
+#ifdef CUSTOMMEMALLOCATOR
+			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+#else
+			RenderBlock<T>* block = new RenderBlock<T>();
+#endif
+			block->command = Render::DrawIndexedTriangles;	//TODO : move to constructor
+			block->renderState = renderState;
+			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
+			block->vertexStart = begin;
+			block->count = count;
 			toRender[activeLayer].push_back(block);
 		}
 

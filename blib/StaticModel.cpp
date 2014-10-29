@@ -40,6 +40,7 @@ namespace blib
 		renderer->setVbo(vbo, vertices);
 
 		vio = resourceManager->getResource<blib::VIO>();
+		vio->setElementType<unsigned short>();
 		renderer->setVio(vio, indices);
 
 	}
@@ -50,9 +51,11 @@ namespace blib
 	{
 
 		renderState.activeVbo = vbo;
+		renderState.activeVio = vio;
 
-		renderer->drawTriangles<VertexP3T2N3>(vbo->getLength(), renderState);
+		renderer->drawIndexedTriangles<VertexP3T2N3>(0, vio->getLength(), renderState);
 
+		renderState.activeVio = NULL;
 		renderState.activeVbo = NULL;
 	}
 

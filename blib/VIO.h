@@ -18,7 +18,7 @@ namespace blib
 		virtual int getLength() = 0;
 
 		template<class T>
-		void setVertexFormat()
+		void setElementType()
 		{
 			elementSize = sizeof(T);
 		}

@@ -22,6 +22,7 @@
 #include <blib/Texture.h>
 #include <blib/gl/FBO.h>
 #include <blib/gl/VBO.h>
+#include <blib/gl/VIO.h>
 #include <blib/util/Log.h>
 #include <blib/gl/Vertex.h>
 #include <blib/App.h>
@@ -144,7 +145,7 @@ namespace blib
 
 
 				}
-				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints)
+				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints || r->command == Render::DrawIndexedTriangles)
 				{
 					if (!lastRenderState || lastRenderState->activeShader != r->renderState.activeShader)
 						r->renderState.activeShader->use();
@@ -248,6 +249,13 @@ namespace blib
 						else
 							glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+					if (!lastRenderState || lastRenderState->activeVio != r->renderState.activeVio)
+						if (r->renderState.activeVio)
+							r->renderState.activeVio->bind();
+						else
+							glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
 					if (!lastRenderState || lastRenderState->cullFaces != r->renderState.cullFaces)
 					{
 						if (r->renderState.cullFaces == RenderState::CullFaces::NONE)
@@ -261,6 +269,7 @@ namespace blib
 								glCullFace(GL_FRONT);
 						}
 					}
+
 
 
 					r->setVertexAttributes(enabledVertexAttributes, vertices[1-activeLayer]);
@@ -281,6 +290,10 @@ namespace blib
 						glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 #endif
 						glDrawArrays(GL_POINTS, start, r->vertexCount());
+					}
+					else if (r->command == Render::DrawIndexedTriangles)
+					{
+						glDrawElements(GL_TRIANGLES, ((RenderBlock<blib::VertexP3T2>*)r)->count, GL_UNSIGNED_SHORT, (void*)((RenderBlock<blib::VertexP3T2>*)r)->vertexStart);
 					}
 					lastRenderState = &r->renderState;
 				}
