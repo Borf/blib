@@ -15,7 +15,8 @@ namespace blib
 
 	class StaticModel
 	{
-		class Material : public blib::Shader::UniformStruct
+	public:
+		class Material : public blib::Shader::UniformStruct<Material>
 		{
 		public:
 			glm::vec3 diffuse;
@@ -24,7 +25,7 @@ namespace blib
 			float shinyness;
 			float alpha;
 
-			Material()
+			static void init()
 			{
 				reg(diffuse, "diffuse");
 				reg(ambient, "ambient");
@@ -33,7 +34,7 @@ namespace blib
 				reg(alpha, "alpha");
 			}
 		};
-
+	private:
 		class Mesh
 		{
 		public:

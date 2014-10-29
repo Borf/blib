@@ -89,9 +89,11 @@ namespace blib
 					{
 						if (uniforms[i]->type == Struct)
 						{ //todo: add more recursive way of doing this
-							UniformStruct* uniformStruct = (UniformStruct*)uniforms[i];
-							for (size_t ii = 0; ii < uniformStruct->members.size(); ii++)
-								uniformStruct->members[ii]->uniform->id = glGetUniformLocation(programId, uniformStruct->members[ii]->uniform->name.c_str());
+							UniformStructBase* uniformStruct = (UniformStructBase*)uniforms[i];
+							std::vector<Shader::UniformStructBase::UniformInfoBase*> &members = uniformStruct->getMembers();
+
+							for (size_t ii = 0; ii < uniformStruct->getMembers().size(); ii++)
+								uniformStruct->getMembers()[ii]->uniform->id = glGetUniformLocation(programId, uniformStruct->getMembers()[ii]->uniform->name.c_str());
 						}
 						else
 							uniforms[i]->id = glGetUniformLocation(programId, uniforms[i]->name.c_str());

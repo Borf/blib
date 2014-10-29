@@ -41,6 +41,7 @@ namespace blib
 			int end = indices.size();
 
 			Mesh* mesh = new Mesh();
+			
 			mesh->begin = start;
 			mesh->count = end - start;
 			meshes.push_back(mesh);
@@ -64,6 +65,8 @@ namespace blib
 		
 		for (auto m : meshes)
 		{
+			//renderState.activeShader->setUniformStruct()
+
 			renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
 		}
 

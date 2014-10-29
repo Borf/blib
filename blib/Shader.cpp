@@ -63,10 +63,10 @@ namespace blib
 			break;
 		case Shader::Struct:
 		{
-			Shader::UniformStruct* uniformStruct = (Shader::UniformStruct*)uniform;
-			for (size_t i = 0; i < uniformStruct->members.size(); i++)
+			Shader::UniformStructBase* uniformStruct = (Shader::UniformStructBase*)uniform;
+			for (size_t i = 0; i < uniformStruct->getMembers().size(); i++)
 			{
-				setUniform_(uniformStruct->members[i]->uniform, state, activeUniformData);
+				setUniform_(uniformStruct->getMembers()[i]->uniform, state, activeUniformData);
 			}
 		}
 			break;
@@ -119,12 +119,6 @@ namespace blib
 		memset(activeUniformData, 0, uniformSize);
 	}
 
-
-	template<>
-	void Shader::Uniform::set<Shader::UniformStruct>(char* data, const Shader::UniformStruct& value)
-	{
-
-	}
 
 
 #ifdef STUPIDIPHONE
