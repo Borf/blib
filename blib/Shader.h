@@ -102,11 +102,26 @@ namespace blib
 			UniformStruct() : Uniform("", 0, Struct)
 			{};
 
+			void reg(glm::vec4& value, const std::string &name) {
+				members.push_back(new UniformInfo<glm::vec4>(value, sizeof(float) * 4, Vec4, name));
+			};
 			void reg(glm::vec3& value, const std::string &name) {
 				members.push_back(new UniformInfo<glm::vec3>(value, sizeof(float)*3, Vec3, name));
 			};
+			void reg(glm::vec2& value, const std::string &name) {
+				members.push_back(new UniformInfo<glm::vec2>(value, sizeof(float) * 2, Vec2, name));
+			};
 			void reg(float& value, const std::string &name) {
 				members.push_back(new UniformInfo<float>(value, sizeof(float) * 1, Float, name));
+			};
+			void reg(glm::mat3& value, const std::string &name) {
+				members.push_back(new UniformInfo<glm::mat3>(value, sizeof(float) * 3 * 3, Mat3, name));
+			};
+			void reg(glm::mat4& value, const std::string &name) {
+				members.push_back(new UniformInfo<glm::mat4>(value, sizeof(float) * 4 * 4, Mat4, name));
+			};
+			void reg(int& value, const std::string &name) {
+				members.push_back(new UniformInfo<int>(value, sizeof(int), Int, name));
 			};
 
 		};
