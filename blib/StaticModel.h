@@ -17,10 +17,6 @@ namespace blib
 	{
 		VBO* vbo;
 		VIO* vio;
-
-		std::vector<blib::VertexP3T2N3> vertices; // temporary for copying constructor -> draw
-		std::vector<unsigned short> indices; // temporary for copying constructor -> draw
-
 	public:
 		StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer);
 

@@ -137,7 +137,7 @@ namespace blib
 			virtual void perform(float* firstVertex)
 			{
 				if (!indices.empty())
- 					vio->setData(indices.size() * sizeof(T), &indices[0]);
+ 					vio->setData(indices.size(), &indices[0]);
 			}
 		};
 		class RenderSetSubTexture : public Render

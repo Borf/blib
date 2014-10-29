@@ -20,6 +20,7 @@ namespace blib
 		float* current = &vertex.position.x;
 		float* end = (&vertex.normal.z) + 1;
 
+		std::vector<blib::VertexP3T2N3> vertices;
 		for (float f : modelData["vertices"])
 		{
 			*current = f;
@@ -31,7 +32,7 @@ namespace blib
 			}
 			
 		}
-
+		std::vector<unsigned short> indices;
 		for (int i : modelData["meshes"][0]["faces"])
 			indices.push_back(i);
 
