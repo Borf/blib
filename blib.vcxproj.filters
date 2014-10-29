@@ -522,6 +522,7 @@
       <Filter>wm\widgets</Filter>
     </ClInclude>
     <ClInclude Include="blib\json.h" />
+    <ClInclude Include="blib\StaticModel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -874,6 +875,7 @@
       <Filter>wm\widgets</Filter>
     </ClCompile>
     <ClCompile Include="blib\json.cpp" />
+    <ClCompile Include="blib\StaticModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

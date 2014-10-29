@@ -6,6 +6,7 @@
 #include <blib/gl/Shader.h>
 #include <blib/gl/VBO.h>
 #include <blib/gl/FBO.h>
+#include <blib/gl/VIO.h>
 #include <blib/SpriteSheet.h>
 #include <blib/Font.h>
 
@@ -28,6 +29,7 @@ namespace blib
 			emptyshader = fastdelegate::MakeDelegate(this, &ResourceManager::getShaderEmpty);
 			vbo			= fastdelegate::MakeDelegate(this, &ResourceManager::getVBO);
 			fbo			= fastdelegate::MakeDelegate(this, &ResourceManager::getFBO);
+			vio			= fastdelegate::MakeDelegate(this, &ResourceManager::getVIO);
 
 			spritesheet = fastdelegate::MakeDelegate(this, &ResourceManager::getSpriteSheet);
 
@@ -82,6 +84,10 @@ namespace blib
 		blib::VBO* ResourceManager::getVBO()
 		{
 			return new blib::gl::VBO();
+		}
+		blib::VIO* ResourceManager::getVIO()
+		{
+			return new blib::gl::VIO();
 		}
 
 

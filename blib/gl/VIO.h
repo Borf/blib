@@ -9,27 +9,21 @@
 #endif
 
 #include <blib/util/NotCopyable.h>
-#include <blib/gl/GlInitRegister.h>
 #include <blib/VIO.h>
 
 namespace blib
 {
 	namespace gl
 	{
-
-		template <class T>
-		class VIO : public blib::VIO, public blib::util::NotCopyable, public GlInitRegister
+		class VIO : public blib::VIO, public blib::util::NotCopyable
 		{
 		private:
 			GLuint vio;
-
-			T* element;
 			int length;
 		public:
 			VIO()
 			{
 				length = 0;
-				element = NULL;
 				vio = -1;
 			}
 			~VIO()
@@ -44,11 +38,11 @@ namespace blib
 					glGenBuffers(1, &vio);
 			}
 
-			void setData(int length, T* data, GLenum usage)
+			void setData(int length, void* data)
 			{
 				this->length = length;
 				bind();
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(T) * length, data, usage);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementSize * length, data, GL_STATIC_DRAW);
 			}
 
 
@@ -69,25 +63,6 @@ namespace blib
 				return length;
 			}
 
-			T* mapData(GLenum access)
-			{
-				bind();
-				element = (T*)glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, access);
-				return element;
-			}
-			void unmapData()
-			{
-				bind();
-				glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-				element = NULL;
-			}
-
-			T& operator [](int index)
-			{
-				if(element == NULL)
-					throw "Use mapData before accessing";
-				return element[index];
-			}
 		};
 	}
 }

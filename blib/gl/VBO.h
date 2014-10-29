@@ -18,7 +18,6 @@
 
 #include <blib/VBO.h>
 #include <blib/util/NotCopyable.h>
-#include <blib/util/FastDelegate.h>
 
 namespace blib
 {

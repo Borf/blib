@@ -110,6 +110,10 @@ namespace blib
 //					rsss->shader->use();
 //					rsss->shader->setState(rsss->state);
 				}
+				else if (r->command == Render::SetVio)
+				{
+					r->perform(NULL);
+				}
 				else if (r->command == Render::Unproject)
 				{
 					RenderUnproject* ru = (RenderUnproject*)r;

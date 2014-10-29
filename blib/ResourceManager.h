@@ -8,11 +8,12 @@ namespace blib
 {
 	class Resource;
 	class Texture;
-	class VBO;
 	class Renderer;
 	class Shader;
 	class TextureMap;
+	class VBO;
 	class FBO;
+	class VIO;
 	class Font;
 	class SpriteSheet;
 
@@ -60,6 +61,7 @@ namespace blib
 		fastdelegate::FastDelegate1<const std::string &, Font*>			font;
 		fastdelegate::FastDelegate0<Shader*>							emptyshader;
 		fastdelegate::FastDelegate0<VBO*>								vbo;
+		fastdelegate::FastDelegate0<VIO*>								vio;
 		fastdelegate::FastDelegate0<FBO*>								fbo;
 		fastdelegate::FastDelegate0<TextureMap*>						texturemap;
 	};
@@ -116,6 +118,11 @@ namespace blib
 	inline VBO* ResourceManager::getResource<VBO>()
 	{
 		return vbo();
+	}
+	template<>
+	inline VIO* ResourceManager::getResource<VIO>()
+	{
+		return vio();
 	}
 	template<>
 	inline FBO* ResourceManager::getResource<FBO>()

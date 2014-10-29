@@ -73,6 +73,7 @@
     <ClInclude Include="blib\Shapes.h" />
     <ClInclude Include="blib\SpriteBatch.h" />
     <ClInclude Include="blib\SpriteSheet.h" />
+    <ClInclude Include="blib\StaticModel.h" />
     <ClInclude Include="blib\Texture.h" />
     <ClInclude Include="blib\TextureMap.h" />
     <ClInclude Include="blib\Util.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="blib\Shapes.cpp" />
     <ClCompile Include="blib\SpriteBatch.cpp" />
     <ClCompile Include="blib\SpriteSheet.cpp" />
+    <ClCompile Include="blib\StaticModel.cpp" />
     <ClCompile Include="blib\Util.cpp" />
     <ClCompile Include="blib\util\FileSystem.cpp" />
     <ClCompile Include="blib\util\ListAllocator.cpp" />

@@ -38,6 +38,7 @@ namespace blib
 			enum Command {
 				Clear,
 				SetVbo,
+				SetVio,
 				DrawTriangles,
 				DrawLines,
 				DrawPoints,
@@ -121,6 +122,23 @@ namespace blib
 			}
 		};
 
+		template <class T>
+		class RenderSetVio : public Render
+		{
+		public:
+			VIO* vio;
+			std::vector<T> indices;
+
+			
+			virtual ~RenderSetVio() { };
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex){}
+			virtual int vertexCount(){ return 0; }
+			virtual void perform(float* firstVertex)
+			{
+				if (!indices.empty())
+ 					vio->setData(indices.size() * sizeof(T), &indices[0]);
+			}
+		};
 		class RenderSetSubTexture : public Render
 		{
 		public:
@@ -338,6 +356,20 @@ namespace blib
 				memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
 			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * vertices.size();
 			block->vbo = vbo;
+			toRender[activeLayer].push_back(block);
+		}
+
+		template<class T>
+		void setVio(VIO* vio, const std::vector<T> &indices)
+		{
+#ifdef CUSTOMMEMALLOCATOR
+			RenderSetVio<T>* block = allocators[activeLayer].get<RenderSetVio<T>>();
+#else
+			RenderSetVio<T>* block = new RenderSetVio<T>();
+#endif
+			block->command = Render::SetVio;
+			block->indices = indices;
+			block->vio = vio;
 			toRender[activeLayer].push_back(block);
 		}
 

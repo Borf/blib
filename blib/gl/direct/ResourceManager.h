@@ -24,6 +24,7 @@ namespace blib
 				TextureMap* getTextureMap();
 				FBO* getFBO();
 				VBO* getVBO();
+				VIO* getVIO();
 			};
 		}
 
