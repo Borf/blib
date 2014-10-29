@@ -20,7 +20,7 @@ namespace blib
 		float* current = &vertex.position.x;
 		float* end = (&vertex.normal.z) + 1;
 
-		std::vector<blib::VertexP3T2N3> vertices;
+		//std::vector<blib::VertexP3T2N3> vertices;
 		for (float f : modelData["vertices"])
 		{
 			*current = f;
@@ -33,9 +33,18 @@ namespace blib
 			
 		}
 		std::vector<unsigned short> indices;
-		for (int i : modelData["meshes"][0]["faces"])
-			indices.push_back(i);
+		for (json::Value& mesh : modelData["meshes"])
+		{
+			int start = indices.size();
+			for (int i : mesh["faces"])
+				indices.push_back(i);
+			int end = indices.size();
 
+			Mesh* mesh = new Mesh();
+			mesh->begin = start;
+			mesh->count = end - start;
+			meshes.push_back(mesh);
+		}
 		vbo = resourceManager->getResource<blib::VBO>();
 		vbo->setVertexFormat<blib::VertexP3T2N3>();
 		renderer->setVbo(vbo, vertices);
@@ -43,7 +52,6 @@ namespace blib
 		vio = resourceManager->getResource<blib::VIO>();
 		vio->setElementType<unsigned short>();
 		renderer->setVio(vio, indices);
-
 	}
 
 
@@ -53,8 +61,11 @@ namespace blib
 
 		renderState.activeVbo = vbo;
 		renderState.activeVio = vio;
-
-		renderer->drawIndexedTriangles<VertexP3T2N3>(0, vio->getLength(), renderState);
+		
+		for (auto m : meshes)
+		{
+			renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
+		}
 
 		renderState.activeVio = NULL;
 		renderState.activeVbo = NULL;

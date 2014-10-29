@@ -293,7 +293,9 @@ namespace blib
 					}
 					else if (r->command == Render::DrawIndexedTriangles)
 					{
-						glDrawElements(GL_TRIANGLES, ((RenderBlock<blib::VertexP3T2>*)r)->count, GL_UNSIGNED_SHORT, (void*)((RenderBlock<blib::VertexP3T2>*)r)->vertexStart);
+						//TODO: get the unsigned short from the renderblock
+						//TODO: get rid of these casts here
+						glDrawElements(GL_TRIANGLES, ((RenderBlock<blib::VertexP3T2>*)r)->count, GL_UNSIGNED_SHORT, (void*)(((RenderBlock<blib::VertexP3T2>*)r)->vertexStart * sizeof(unsigned short)));
 					}
 					lastRenderState = &r->renderState;
 				}
