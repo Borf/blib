@@ -58,100 +58,62 @@ namespace blib
 				return (T)(data[index]);
 			}
 		};
-		class UniformStruct : public Uniform
+		class StructUniform : public Uniform
 		{
 		public:
+			StructUniform(const std::string &name) : Uniform(name, 0, Struct) {}
+
 			std::vector<Uniform*> members;
 		};
 
 
 
-		/**/
+		
 		class UniformStructBase
 		{
 		public:
-			class UniformInfoBase
+			class UniformStructMemberBase
 			{
 			public:
 				std::string name;
 				int size;
-				UniformType type;
-				Uniform* uniform;
-
-				UniformInfoBase(int size, UniformType type, const std::string &name)
-				{
-					this->size = size;
-					this->type = type;
-					this->name = name;
-				}
-				virtual void set(char* data) = 0;
+				int type;
 
 			};
 			template<class T>
-			class UniformInfo : public UniformInfoBase
+			class UniformStructMember : public UniformStructMemberBase
 			{
 			public:
-				T& value;
-
-				UniformInfo(T& value, int size, UniformType type, const std::string &name) : value(value), UniformInfoBase(size, type, name)
+				UniformStructMember()
 				{
-				}
-				virtual void set(char* data)
-				{
-					uniform->set(data, value);
 				}
 			};
+
+
+			std::vector<UniformStructMemberBase*> members;
+
+
+			void reg(glm::vec3& value, const std::string &name)
+			{
+
+			}
+			void reg(float& value, const std::string &name)
+			{
+
+			}
+
 
 		public:
-			UniformStructBase() : Uniform("", 0, Struct)
+			UniformStructBase()
 			{};
 
-			virtual std::vector<UniformInfoBase*> &getMembers() = 0;
-			virtual bool canReg() = 0;
-
-			void reg(glm::vec4& value, const std::string &name) {
-				if (canReg())
-					getMembers().push_back(new UniformInfo<glm::vec4>(value, sizeof(float) * 4, Vec4, name));
-			};
-			void reg(glm::vec3& value, const std::string &name) {
-				if (canReg())
-					getMembers().push_back(new UniformInfo<glm::vec3>(value, sizeof(float) * 3, Vec3, name));
-			};
-			void reg(glm::vec2& value, const std::string &name) {
-				if (canReg())
-					getMembers().push_back(new UniformInfo<glm::vec2>(value, sizeof(float) * 2, Vec2, name));
-			};
-			void reg(float& value, const std::string &name) {
-				if (canReg())
-					getMembers().push_back(new UniformInfo<float>(value, sizeof(float) * 1, Float, name));
-			};
-			void reg(glm::mat3& value, const std::string &name) {
-				if (canReg())
-					getMembers().push_back(new UniformInfo<glm::mat3>(value, sizeof(float) * 3 * 3, Mat3, name));
-			};
-			void reg(glm::mat4& value, const std::string &name) {
-				if (canReg())
-					getMembers().push_back(new UniformInfo<glm::mat4>(value, sizeof(float) * 4 * 4, Mat4, name));
-			};
-			void reg(int& value, const std::string &name) {
-				if (canReg())
-					getMembers().push_back(new UniformInfo<int>(value, sizeof(int), Int, name));
-			};
+			virtual std::vector<UniformStructMemberBase*> &getMembers() = 0;
 		};
 
 		template<class SubClass>
 		class UniformStruct : public UniformStructBase
 		{
 		public:
-			static std::vector<UniformInfoBase*> members;
-			static bool doneReg;
-			void finishReg()
-			{
-				doneReg = true;
-			}
-
-			virtual bool canReg() { return doneReg == false; }
-			virtual std::vector<UniformInfoBase*> &getMembers() { return members; };
 		};
 
 
@@ -189,18 +151,18 @@ namespace blib
 		}
 
 		template<class StructType, class T>
-		void setUniformName(T value, const std::string name)
+		void setUniformName(T value, const std::string &name)
 		{
-			UniformStruct* u = new UniformStruct();
+			StructUniform* u = new StructUniform(name);
 			uniforms[(int)value] = u;
 			uniformCount = glm::max(uniformCount, (int)value + 1);
 
-			for (auto m : StructType::members)
+			for (auto m : StructType::memberTypes)
 			{
+				Uniform* uniform = new Uniform(name + "." + m->name, m->size, m->type);
+
 
 			}
-
-			StructType::init();
 
 			/*for (size_t i = 0; i < StructType::members.size(); i++)
 			{
@@ -248,11 +210,9 @@ namespace blib
 	protected:
 	};
 
-	template<class SubClass>
-	bool Shader::UniformStruct<SubClass>::doneReg = false;
 
 	template<class SubClass>
-	std::vector<Shader::UniformStructBase::UniformInfoBase*> Shader::UniformStruct<SubClass>::members;
+	std::vector<Shader::UniformStructBase::UniformStructMemberBase*> Shader::UniformStruct<SubClass>::members;
 
 
 #ifdef BLIB_IOS    

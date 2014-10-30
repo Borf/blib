@@ -25,7 +25,7 @@ namespace blib
 			float shinyness;
 			float alpha;
 
-			static void init()
+			Material()
 			{
 				reg(diffuse, "diffuse");
 				reg(ambient, "ambient");
