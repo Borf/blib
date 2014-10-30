@@ -57,11 +57,17 @@ namespace blib
 			{
 				return (T)(data[index]);
 			}
-
+		};
+		class UniformStruct : public Uniform
+		{
+		public:
+			std::vector<Uniform*> members;
 		};
 
 
-		class UniformStructBase : public Uniform
+
+		/**/
+		class UniformStructBase
 		{
 		public:
 			class UniformInfoBase
@@ -185,10 +191,14 @@ namespace blib
 		template<class StructType, class T>
 		void setUniformName(T value, const std::string name)
 		{
-
-			UniformStruct<StructType>* u = new UniformStruct<StructType>();
+			UniformStruct* u = new UniformStruct();
 			uniforms[(int)value] = u;
 			uniformCount = glm::max(uniformCount, (int)value + 1);
+
+			for (auto m : StructType::members)
+			{
+
+			}
 
 			StructType::init();
 
