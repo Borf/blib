@@ -92,7 +92,7 @@ namespace blib
 							StructUniform* uniformStruct = (StructUniform*)uniforms[i];
 
 							for (size_t ii = 0; ii < uniformStruct->members.size(); ii++)
-								uniformStruct->members[i]->id = glGetUniformLocation(programId, uniformStruct->members[ii]->name.c_str());
+								uniformStruct->members[ii]->id = glGetUniformLocation(programId, uniformStruct->members[ii]->name.c_str());
 						}
 						else
 							uniforms[i]->id = glGetUniformLocation(programId, uniforms[i]->name.c_str());

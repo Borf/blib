@@ -12,6 +12,7 @@ namespace blib
 	class Renderer;
 	class ResourceManager;
 	class RenderState;
+	class Texture;
 
 	class StaticModel
 	{
@@ -25,6 +26,8 @@ namespace blib
 			float shinyness;
 			float alpha;
 
+			Texture* texture;
+
 			Material()
 			{
 				reg(diffuse, "diffuse");
@@ -32,6 +35,16 @@ namespace blib
 				reg(specular, "specular");
 				reg(shinyness, "shinyness");
 				reg(alpha, "alpha");
+				texture = NULL;
+			}
+
+			static void init()
+			{
+				regStatic<glm::vec3>("diffuse");
+				regStatic<glm::vec3>("ambient");
+				regStatic<glm::vec3>("specular");
+				regStatic<float>("shinyness");
+				regStatic<float>("alpha");
 			}
 		};
 	private:
@@ -55,7 +68,7 @@ namespace blib
 		StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer);
 
 
-		void draw(RenderState& renderState, Renderer* renderer);
+		void draw(RenderState& renderState, Renderer* renderer, int materialUniform);
 	};
 
 }

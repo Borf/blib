@@ -8,12 +8,18 @@
 #include <blib/RenderState.h>
 #include <blib/ResourceManager.h>
 #include <blib/Renderer.h>
+#include <blib/Texture.h>
 
 namespace blib
 {
 	StaticModel::StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer)
 	{
 		json::Value modelData = blib::util::FileSystem::getJson(fileName);
+
+		std::string directory = "";
+		if (fileName.find("/") != std::string::npos)
+			directory = fileName.substr(0, fileName.rfind("/"));
+
 
 		
 		blib::VertexP3T2N3 vertex;
@@ -40,11 +46,19 @@ namespace blib
 				indices.push_back(i);
 			int end = indices.size();
 
-			Mesh* mesh = new Mesh();
+			Mesh* newMesh = new Mesh();
+			newMesh->material.alpha = mesh["material"]["alpha"];
+			newMesh->material.diffuse = glm::vec3(mesh["material"]["diffuse"][0u], mesh["material"]["diffuse"][1u], mesh["material"]["diffuse"][2u]);
+			newMesh->material.ambient = glm::vec3(mesh["material"]["ambient"][0u], mesh["material"]["ambient"][1u], mesh["material"]["ambient"][2u]);
+			newMesh->material.specular = glm::vec3(mesh["material"]["specular"][0u], mesh["material"]["specular"][1u], mesh["material"]["specular"][2u]);
+			newMesh->material.shinyness = mesh["material"]["shinyness"];
+
+			newMesh->material.texture = resourceManager->getResource<blib::Texture>(directory + "/" + mesh["material"]["texture"].asString());
+
 			
-			mesh->begin = start;
-			mesh->count = end - start;
-			meshes.push_back(mesh);
+			newMesh->begin = start;
+			newMesh->count = end - start;
+			meshes.push_back(newMesh);
 		}
 		vbo = resourceManager->getResource<blib::VBO>();
 		vbo->setVertexFormat<blib::VertexP3T2N3>();
@@ -57,7 +71,7 @@ namespace blib
 
 
 
-	void StaticModel::draw(RenderState& renderState, Renderer* renderer)
+	void StaticModel::draw(RenderState& renderState, Renderer* renderer, int materialUniform)
 	{
 
 		renderState.activeVbo = vbo;
@@ -65,7 +79,8 @@ namespace blib
 		
 		for (auto m : meshes)
 		{
-			//renderState.activeShader->setUniformStruct()
+			renderState.activeShader->setUniformStruct(materialUniform, m->material);
+			renderState.activeTexture[0] = m->material.texture;
 
 			renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
 		}

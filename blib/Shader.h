@@ -78,50 +78,59 @@ namespace blib
 				std::string name;
 				int size;
 				UniformType type;
+			public:
+				UniformStructMemberBase(const std::string &name, int size, UniformType type)
+				{
+					this->name = name;
+					this->size = size;
+					this->type = type;
+				}
+
+				virtual void set(char* data, Uniform* uniform) { throw "oops"; }
 
 			};
 			template<class T>
 			class UniformStructMember : public UniformStructMemberBase
 			{
+				T& value;
 			public:
-				UniformStructMember()
+				UniformStructMember(T& value, const std::string &name, int size, UniformType type) : UniformStructMemberBase(name, size, type), value(value)
 				{
+				}
+				virtual void set(char* data, Uniform* uniform)
+				{
+					uniform->set(data, value);
 				}
 			};
 
 
+
+
 			std::vector<UniformStructMemberBase*> members;
 
-
-			void reg(glm::vec3& value, const std::string &name)
-			{
-
-			}
-			void reg(float& value, const std::string &name)
-			{
-
-			}
-
-
+			void reg(glm::vec3& value,	const std::string &name)		{				members.push_back(new UniformStructMember<glm::vec3>(value, name, sizeof(float) * 3, Vec3));			}
+			void reg(float& value,		const std::string &name)		{				members.push_back(new UniformStructMember<float>(value, name, sizeof(float) * 1, Float));				}
 		public:
 			UniformStructBase()
 			{};
-
-			virtual std::vector<UniformStructMemberBase*> &getStaticMembers() = 0;
-			virtual bool& isStaticFilled() = 0;
 		};
 
 		template<class SubClass>
 		class UniformStruct : public UniformStructBase
 		{
 		public:
-			static std::vector<UniformStructMemberBase> staticMembers;
-			static bool staticFilled;
-			bool& isStaticFilled() { return staticFilled; };
-			std::vector<UniformStructMemberBase*> &getStaticMembers()
+			template<class T>
+			static void regStatic(const std::string &name)
 			{
-				return members;
+				if (std::is_same<T, float>::value)
+					staticMembers.push_back(new UniformStructMemberBase(name, sizeof(float) * 1, Float));
+				else if (std::is_same<T, glm::vec3>::value)
+					staticMembers.push_back(new UniformStructMemberBase(name, sizeof(float) * 3, Vec3));
 			}
+
+
+			static std::vector<UniformStructMemberBase*> staticMembers;
+			static bool staticFilled;
 		};
 
 
@@ -165,9 +174,15 @@ namespace blib
 			uniforms[(int)value] = u;
 			uniformCount = glm::max(uniformCount, (int)value + 1);
 
+			if(!StructType::staticFilled)
+				StructType::init();
+			StructType::staticFilled = true;
+
 			for (auto m : StructType::staticMembers)
 			{
-				Uniform* uniform = new Uniform(name + "." + m.name, m.size, m.type);
+				Uniform* uniform = new Uniform(name + "." + m->name, m->size, m->type);
+				uniform->index = uniformSize + 1;
+				uniformSize += uniform->size + 1;
 
 				u->members.push_back(uniform);
 			}
@@ -175,8 +190,6 @@ namespace blib
 			/*for (size_t i = 0; i < StructType::members.size(); i++)
 			{
 				Uniform* uniform = new Uniform(name + "." + StructType::members[i]->name, StructType::members[i]->size, StructType::members[i]->type);
-				uniform->index = uniformSize + 1;
-				uniformSize += uniform->size + 1;
 				StructType::members[i]->uniform = uniform;
 			}*/
 		}
@@ -186,9 +199,12 @@ namespace blib
 		inline void setUniformStruct(Enum name,		const UniformStructBase& value)
 		{
 			assert(uniformData);
-			for (size_t i = 0; i < value.getMembers().size(); i++)
+
+			StructUniform* structUniform = (StructUniform*)uniforms[(int)name];
+
+			for (size_t i = 0; i < structUniform->members.size(); i++)
 			{
-				value.getMembers()[i]->set(uniformData);
+				value.members[i]->set(uniformData, structUniform->members[i]);
 			}
 
 
@@ -224,7 +240,7 @@ namespace blib
 
 
 	template<class SubClass>
-	std::vector<Shader::UniformStruct::UniformStructMemberBase> Shader::UniformStruct<SubClass>::staticMembers;
+	std::vector<Shader::UniformStructBase::UniformStructMemberBase*> Shader::UniformStruct<SubClass>::staticMembers;
 	template<class SubClass>
 	bool Shader::UniformStruct<SubClass>::staticFilled = false;
 
