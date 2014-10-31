@@ -77,7 +77,7 @@ namespace blib
 			public:
 				std::string name;
 				int size;
-				int type;
+				UniformType type;
 
 			};
 			template<class T>
@@ -107,13 +107,21 @@ namespace blib
 			UniformStructBase()
 			{};
 
-			virtual std::vector<UniformStructMemberBase*> &getMembers() = 0;
+			virtual std::vector<UniformStructMemberBase*> &getStaticMembers() = 0;
+			virtual bool& isStaticFilled() = 0;
 		};
 
 		template<class SubClass>
 		class UniformStruct : public UniformStructBase
 		{
 		public:
+			static std::vector<UniformStructMemberBase> staticMembers;
+			static bool staticFilled;
+			bool& isStaticFilled() { return staticFilled; };
+			std::vector<UniformStructMemberBase*> &getStaticMembers()
+			{
+				return members;
+			}
 		};
 
 
@@ -157,11 +165,11 @@ namespace blib
 			uniforms[(int)value] = u;
 			uniformCount = glm::max(uniformCount, (int)value + 1);
 
-			for (auto m : StructType::memberTypes)
+			for (auto m : StructType::staticMembers)
 			{
-				Uniform* uniform = new Uniform(name + "." + m->name, m->size, m->type);
+				Uniform* uniform = new Uniform(name + "." + m.name, m.size, m.type);
 
-
+				u->members.push_back(uniform);
 			}
 
 			/*for (size_t i = 0; i < StructType::members.size(); i++)
@@ -211,8 +219,14 @@ namespace blib
 	};
 
 
+//	template<class SubClass>
+//	std::vector<Shader::UniformStructBase::UniformStructMemberBase*> Shader::UniformStruct<SubClass>::members;
+
+
 	template<class SubClass>
-	std::vector<Shader::UniformStructBase::UniformStructMemberBase*> Shader::UniformStruct<SubClass>::members;
+	std::vector<Shader::UniformStruct::UniformStructMemberBase> Shader::UniformStruct<SubClass>::staticMembers;
+	template<class SubClass>
+	bool Shader::UniformStruct<SubClass>::staticFilled = false;
 
 
 #ifdef BLIB_IOS    
