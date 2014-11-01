@@ -90,6 +90,10 @@ namespace blib
 			return ret;
 		}
 
+		std::string replace(std::string orig, const std::string &find, const std::string &replace)
+		{
+			throw "argh";
+		}
 
 
 		bool compareVec4::operator()( const glm::vec4 &a, const glm::vec4 &b ) const

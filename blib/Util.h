@@ -22,6 +22,8 @@ namespace blib
 		std::string toString(float number);
 		std::vector<std::string> split(std::string toSplit, std::string seperator);
 
+		std::string replace(std::string orig, const std::string &find, const std::string &replace);
+
 
 		std::string getDataDir();
 
