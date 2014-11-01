@@ -364,7 +364,10 @@ namespace blib
 			{
 				ltrim(stream);
 				if (stream.peek() == ']')
+				{
+					stream.get();
 					break;
+				}
 				obj.push_back(eatValue(stream));
 				ltrim(stream);
 				char token = stream.get();
@@ -471,7 +474,7 @@ namespace blib
 				stream << value.value.floatValue;
 				break;
 			case Type::boolValue:
-				stream << value.value.boolValue ? "true" : "false";
+				stream << (value.value.boolValue ? "true" : "false");
 				break;
 			case Type::stringValue:
 				stream << "\"" << *value.value.stringValue << "\""; //TODO: escape \'s

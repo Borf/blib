@@ -281,8 +281,10 @@ namespace blib
 
 					if(r->command == Render::DrawTriangles)
 						glDrawArrays(GL_TRIANGLES, start, r->vertexCount());
-					else if(r->command == Render::DrawLines)
+					else if (r->command == Render::DrawLines)
+					{
 						glDrawArrays(GL_LINES, start, r->vertexCount());
+					}
 					else if(r->command == Render::DrawPoints)
 					{
 #if !defined(BLIB_ANDROID) && !defined(BLIB_IOS)
