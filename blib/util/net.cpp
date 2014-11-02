@@ -171,6 +171,12 @@ namespace blib
 				::send(s, data.c_str(), data.length(), 0);
 			}
 
+			void TcpClient::disconnect()
+			{
+				closesocket(s);
+				s = 0;
+			}
+
 		}
 	}
 }

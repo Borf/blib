@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <list>
+#include <streambuf>
 
 #ifdef WIN32
 #include <winsock2.h>
@@ -33,6 +34,9 @@ namespace blib
 
 			class TcpClient
 			{
+				TcpClient(const TcpClient &);
+				TcpClient &operator= (const TcpClient &);
+
 				TcpListener* listener;
 				SOCKET s;
 
@@ -46,6 +50,8 @@ namespace blib
 
 				void connect(std::string hostname, int port);
 				void connectAsync(std::string hostname, int port, const std::function<void()> &callback);
+
+				void disconnect();
 
 				int recv(char* data, int len);
 				void recvAsync(int len, const std::function<void(char* data, int len)> &callback);
