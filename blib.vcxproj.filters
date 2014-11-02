@@ -523,6 +523,9 @@
     </ClInclude>
     <ClInclude Include="blib\json.h" />
     <ClInclude Include="blib\StaticModel.h" />
+    <ClInclude Include="blib\util\net.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -876,6 +879,9 @@
     </ClCompile>
     <ClCompile Include="blib\json.cpp" />
     <ClCompile Include="blib\StaticModel.cpp" />
+    <ClCompile Include="blib\util\net.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

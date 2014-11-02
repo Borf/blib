@@ -84,6 +84,7 @@
     <ClInclude Include="blib\util\ListAllocator.h" />
     <ClInclude Include="blib\util\Log.h" />
     <ClInclude Include="blib\util\Mutex.h" />
+    <ClInclude Include="blib\util\net.h" />
     <ClInclude Include="blib\util\NotCopyable.h" />
     <ClInclude Include="blib\util\Profiler.h" />
     <ClInclude Include="blib\util\Semaphore.h" />
@@ -245,6 +246,7 @@
     <ClCompile Include="blib\util\ListAllocator.cpp" />
     <ClCompile Include="blib\util\Log.cpp" />
     <ClCompile Include="blib\util\Mutex.cpp" />
+    <ClCompile Include="blib\util\net.cpp" />
     <ClCompile Include="blib\util\Profiler.cpp" />
     <ClCompile Include="blib\util\Semaphore.cpp" />
     <ClCompile Include="blib\util\Signal.cpp" />
