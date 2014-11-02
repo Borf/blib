@@ -106,6 +106,14 @@ namespace blib
 				this->asyncDataLen = 0;
 			}
 
+			TcpClient::TcpClient()
+			{
+				this->s = 0;
+				this->ip = "";
+				this->asyncData = NULL;
+				this->asyncDataLen = 0;
+			}
+
 			TcpClient::~TcpClient()
 			{
 				closesocket(s);
@@ -128,6 +136,39 @@ namespace blib
 				}, 0).detach();
 				
 
+			}
+
+			void TcpClient::connectAsync(std::string hostname, int port, const std::function<void()> &callback)
+			{
+				std::thread([this, callback, hostname, port](int)
+				{
+					struct hostent* host;
+					host = gethostbyname(hostname.c_str());
+					if (host == NULL)
+					{
+						Log::out<<"Error: Could not connect to " << hostname << ":" << port << Log::newline;
+						return;
+					}
+
+
+					struct sockaddr_in sin = { 0 };
+					sin.sin_port = htons(port);
+					sin.sin_family = host->h_addrtype;
+					memcpy((char*)&sin.sin_addr.s_addr, host->h_addr_list[0], host->h_length);
+
+					s = socket(AF_INET, SOCK_STREAM, 0);
+					int rc = ::connect(s, (struct sockaddr*) &sin, sizeof(sockaddr_in));
+
+					callback();
+
+
+				}, 0).detach();
+
+			}
+
+			void TcpClient::send(std::string data)
+			{
+				::send(s, data.c_str(), data.length(), 0);
 			}
 
 		}

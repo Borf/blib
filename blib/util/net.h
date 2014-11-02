@@ -41,6 +41,7 @@ namespace blib
 
 			public:
 				TcpClient(SOCKET s, std::string ip);
+				TcpClient();
 				~TcpClient();
 
 				void connect(std::string hostname, int port);
@@ -48,6 +49,8 @@ namespace blib
 
 				int recv(char* data, int len);
 				void recvAsync(int len, const std::function<void(char* data, int len)> &callback);
+
+				void send(std::string data);
 
 				bool isConnected();
 				std::string ip;
