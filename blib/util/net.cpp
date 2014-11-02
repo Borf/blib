@@ -1,5 +1,5 @@
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "net.h"
-
 #ifdef WIN32
 #include <winsock2.h>
 typedef int socklen_t;
@@ -90,7 +90,7 @@ namespace blib
 				socklen_t size = sizeof(client);
 				SOCKET newSocket = ::accept(s, (struct sockaddr*)&client, &size);
 
-				return new TcpClient(s);
+				return new TcpClient(newSocket, inet_ntoa(client.sin_addr));
 
 			}
 
@@ -98,9 +98,12 @@ namespace blib
 
 
 
-			TcpClient::TcpClient(SOCKET s)
+			TcpClient::TcpClient(SOCKET s, std::string ip)
 			{
 				this->s = s;
+				this->ip = ip;
+				this->asyncData = NULL;
+				this->asyncDataLen = 0;
 			}
 
 			TcpClient::~TcpClient()
@@ -110,6 +113,20 @@ namespace blib
 
 			void TcpClient::recvAsync(int len, const std::function<void(char* data, int len)> &callback)
 			{
+				if (asyncDataLen != len || asyncData == NULL)
+				{
+					if (asyncData != NULL)
+						delete asyncData;
+					asyncData = new char[len];
+					asyncDataLen = len;
+				}
+				//TODO: don't start a new thread every time !
+				std::thread([this, callback](int)
+				{
+					int rc = ::recv(s, asyncData, asyncDataLen, 0);
+					callback(asyncData, rc);
+				}, 0).detach();
+				
 
 			}
 

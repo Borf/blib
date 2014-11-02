@@ -35,8 +35,12 @@ namespace blib
 			{
 				TcpListener* listener;
 				SOCKET s;
+
+				char* asyncData;
+				int asyncDataLen;
+
 			public:
-				TcpClient(SOCKET s);
+				TcpClient(SOCKET s, std::string ip);
 				~TcpClient();
 
 				void connect(std::string hostname, int port);
@@ -46,7 +50,7 @@ namespace blib
 				void recvAsync(int len, const std::function<void(char* data, int len)> &callback);
 
 				bool isConnected();
-
+				std::string ip;
 
 			};
 
