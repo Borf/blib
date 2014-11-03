@@ -79,7 +79,7 @@ namespace blib
 					glGetActiveUniform(programId, GLuint(i), sizeof(name) - 1,
 						&name_len, &num, &type, name);
 					name[name_len] = 0;
-					printf("Found uniform %s\n", name);
+					Log::out << "Found uniform " << name << Log::newline;
 				}
 
 				glUseProgram(programId);
@@ -92,10 +92,18 @@ namespace blib
 							StructUniform* uniformStruct = (StructUniform*)uniforms[i];
 
 							for (size_t ii = 0; ii < uniformStruct->members.size(); ii++)
+							{
 								uniformStruct->members[ii]->id = glGetUniformLocation(programId, uniformStruct->members[ii]->name.c_str());
+								if (uniformStruct->members[ii]->id == -1)
+									Log::out << "Error: uniform " << uniformStruct->members[ii]->name << " not found in shader" << Log::newline;
+							}
 						}
 						else
+						{
 							uniforms[i]->id = glGetUniformLocation(programId, uniforms[i]->name.c_str());
+							if (uniforms[i]->id == -1)
+								Log::out << "Error: uniform " << uniforms[i]->name << " not found in shader" << Log::newline;
+						}
 					}
 				}
 			}

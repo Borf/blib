@@ -45,14 +45,14 @@ namespace blib
 //TODO: make a buffer per threadId
 		void Log::logString(const char* fmt, ...)
 		{
-			char text[1024];
+			char text[10240];
 			va_list ap;
 			if (fmt == NULL)
 				return;
 
 		#ifdef WIN32
 			va_start(ap,fmt);
-			vsprintf_s(text,1024,fmt,ap);
+			vsprintf_s(text,10240,fmt,ap);
 			va_end(ap);
 		#else
 			va_start(ap,fmt);
