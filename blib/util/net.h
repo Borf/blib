@@ -27,7 +27,7 @@ namespace blib
 
 				TcpClient* accept();
 				void acceptAsync(const std::function<void()> &callback);
-
+				void stopAccept();
 				friend class TcpClient;
 			};
 

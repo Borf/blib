@@ -94,6 +94,11 @@ namespace blib
 
 			}
 
+			void TcpListener::stopAccept()
+			{
+				closesocket(s);
+			}
+
 
 
 
