@@ -136,6 +136,13 @@ namespace blib
 				if(message == WM_LBUTTONUP || message == WM_MBUTTONUP || message == WM_RBUTTONUP)
 					clickCount = clicks.size();
 				switch (message) {
+				case WM_MOVE:
+					x = (int)(short)LOWORD(lParam);
+					y = (int)(short)HIWORD(lParam);
+					break;
+				case WM_ACTIVATE:
+					active = wParam != 0;
+					break;
 				case WM_SIZE: // If our window is resizing
 					width = LOWORD(lParam);
 					height = HIWORD(lParam);

@@ -20,12 +20,14 @@ namespace blib
 	protected:
 		std::list<KeyListener*> keyListeners;
 		std::list<MouseListener*> mouseListeners;
-
+		
+		int x, y;
 		int width,height;
 		bool resizable;
 		bool showBorder;
 
 		bool opened;
+		bool active;
 		std::string title;
 
 	public:
@@ -37,8 +39,12 @@ namespace blib
 		virtual void setResizable(bool resizable);
 		virtual void setBorder(bool border);
 		virtual bool isOpened();
+		virtual bool isActive();
 		virtual int getWidth() { return width; }
 		virtual int getHeight() { return height; }
+		virtual int getX() { return x; };
+		virtual int getY() { return y; };
+
 
 		virtual void create(int icon, std::string title) = 0;
 		virtual void swapBuffers() = 0;

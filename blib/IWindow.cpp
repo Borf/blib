@@ -15,6 +15,7 @@ namespace blib
 	IWindow::IWindow()
 	{
 		opened = false;
+		active = false;
 	}
 
 
@@ -61,6 +62,11 @@ namespace blib
 	IWindow::~IWindow()
 	{
 		Log::out<<"Window Destroyed"<<Log::newline;
+	}
+
+	bool IWindow::isActive()
+	{
+		return active;
 	}
 
 
