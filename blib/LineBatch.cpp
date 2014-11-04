@@ -59,7 +59,7 @@ namespace blib
 	{
 		assert(active);
 		verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(v1, 0, 1)), color));
-		verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(v2 + glm::vec2(1,0), 0, 1)), color));
+		verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(v2, 0, 1)), color));
 	}
 
 	void LineBatch::draw(const blib::IDrawableLine& drawable, glm::vec4 color, bool showNormal, glm::mat4 transform)
