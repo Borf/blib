@@ -229,18 +229,16 @@ namespace blib
 
 		Log::out<<"App::createWindow::Created window"<<Log::newline;
 		{
-			for(int i = 0; i < 255; i++)
-				keyState.pressedKeys[i] = false;
 			class AppKeyListener : public KeyListener {
 				App* app;
 			public:
 				AppKeyListener(App* app)			{			this->app = app;							}
-				bool onKeyDown( blib::Key key )		{			app->keyState.pressedKeys[(int)key] = true;	
-					if((int)key == 'P'/*blib::Key::P*/)
+				bool onKeyDown( blib::Key key )		{			app->keyState.setPressed(key, true);	
+					if(key == blib::Key::P)
 						app->showProfiler = !app->showProfiler;
 					return false;
 				}
-				bool onKeyUp(blib::Key key)			{			app->keyState.pressedKeys[(int)key] = false;	return false; }
+				bool onKeyUp(blib::Key key)			{			app->keyState.setPressed(key, false);	return false; }
 			};
 			addKeyListener(new AppKeyListener(this));
 		}
@@ -250,9 +248,9 @@ namespace blib
 				App* app;
 			public:
 				AppMouseListener(App* app)										{	this->app = app;								}
-				bool onMouseDown(int x, int y, Button button, int clickCount)	{ app->mouseState.clickcount = clickCount; app->mouseState.x = x; app->mouseState.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = true; return false; };
-				bool onMouseUp(int x, int y, Button button, int clickCount)		{ app->mouseState.clickcount = clickCount; app->mouseState.x = x; app->mouseState.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = false; return false; };
-				bool onMouseMove(int x, int y, Buttons button)					{ app->mouseState.x = x; app->mouseState.y = y; return false; };
+				bool onMouseDown(int x, int y, Button button, int clickCount)	{ app->mouseState.clickcount = clickCount; app->mouseState.position.x = x; app->mouseState.position.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = true; return false; };
+				bool onMouseUp(int x, int y, Button button, int clickCount)		{ app->mouseState.clickcount = clickCount; app->mouseState.position.x = x; app->mouseState.position.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = false; return false; };
+				bool onMouseMove(int x, int y, Buttons button)					{ app->mouseState.position.x = x; app->mouseState.position.y = y; return false; };
 			};
 			addMouseListener(new AppMouseListener(this));
 		}
@@ -260,8 +258,7 @@ namespace blib
 		mouseState.leftButton = false;
 		mouseState.rightButton = false;
 		mouseState.middleButton = false;
-		mouseState.x = 0;
-		mouseState.y = 0;
+		mouseState.position = glm::ivec2(0, 0);
 
 
 #ifdef WIN32

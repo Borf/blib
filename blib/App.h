@@ -32,19 +32,23 @@ namespace blib
 	}
 
 
-
+	// Contains the state of all individual keys on a moment in time
 	struct KeyState
 	{
+	private:
 		bool pressedKeys[255];
-		inline bool isPressed(blib::Key index)
-		{
-			return pressedKeys[(int)index];
-		}
+	public:
+		// returns whether or not a key is pressed
+		inline bool isPressed(blib::Key index) const		{	return pressedKeys[(int)index];	}
+		inline void setPressed(blib::Key index, bool value) { pressedKeys[(int)index] = value; }
 		KeyState()
 		{
 			ZeroMemory(pressedKeys, sizeof(pressedKeys));
 		}
+		friend class AppKeyListener;
 	};
+
+	// Contains the state of the mouse on a moment in time
 	struct MouseState
 	{
 		union
@@ -57,8 +61,8 @@ namespace blib
 				bool rightButton;
 			};
 		};
-		int x;
-		int y;
+		
+		glm::ivec2 position;
 		int clickcount;
 
 		MouseState()
@@ -66,8 +70,8 @@ namespace blib
 			leftButton = false;
 			middleButton = false;
 			rightButton = false;
-			x = -1;
-			y = -1;
+			position.x = -1;
+			position.y = -1;
 			clickcount = 0;
 		}
 	};
