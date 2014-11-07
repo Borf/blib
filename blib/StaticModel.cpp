@@ -53,7 +53,13 @@ namespace blib
 			newMesh->material.specular = glm::vec3(mesh["material"]["specular"][0u], mesh["material"]["specular"][1u], mesh["material"]["specular"][2u]);
 			newMesh->material.shinyness = mesh["material"]["shinyness"];
 
-			newMesh->material.texture = resourceManager->getResource<blib::Texture>(directory + "/" + mesh["material"]["texture"].asString());
+			if (mesh["material"]["texture"].asString() == "")
+				newMesh->material.texture = NULL;
+			else if (mesh["material"]["texture"].asString() != "level1/armour_table_top.jpg")
+			{
+				newMesh->material.texture = resourceManager->getResource<blib::Texture>(directory + "/" + mesh["material"]["texture"].asString());
+				newMesh->material.texture->setTextureRepeat(true);
+			}
 
 			
 			newMesh->begin = start;

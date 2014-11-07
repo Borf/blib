@@ -288,6 +288,7 @@ namespace blib
 
 
 		static void ltrim(std::istream& stream);
+		static void eatComment(std::istream& stream);
 		static Value eatString(std::istream& stream);
 		static Value eatObject(std::istream& stream);
 		static Value eatArray(std::istream& stream);
@@ -371,6 +372,11 @@ namespace blib
 				obj.push_back(eatValue(stream));
 				ltrim(stream);
 				char token = stream.get();
+				if (token == '/')
+				{
+					eatComment(stream);
+					token = stream.get();
+				}
 				if (token == ']')
 					break;
 				assert(token == ',');
@@ -417,7 +423,24 @@ namespace blib
 			return Value(Type::nullValue);
 		};
 
-
+		//precondition: / is already eaten
+		static void eatComment(std::istream& stream)
+		{
+			char token = stream.get();
+			assert(token == '/' || token == '*');
+			if (token == '*')
+			{
+				char last = token;
+				while ((last != '*' || token != '/') && !stream.eof())
+				{
+					last = token;
+					token = stream.get();
+				}
+			}
+			else if (token == '/')
+				while (token != '\n' && !stream.eof())
+					token = stream.get();
+		}
 
 
 		static Value eatValue(std::istream& stream)
@@ -438,10 +461,7 @@ namespace blib
 				return eatNull(stream);
 			if (token == '/')
 			{
-				token = stream.get();
-				assert(token == '/');
-				while (token != '\n' && !stream.eof())
-					token = stream.get();
+				eatComment(stream);
 				return eatValue(stream);
 			}
 			throw "Unable to parse json";
