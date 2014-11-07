@@ -76,15 +76,24 @@ namespace blib
 		}
 	};
 
+	// the settings that are needed to set up the app. Changing these during runtime won't do a thing
 	struct AppSetup
 	{
+		//size of the window
 		int width, height;
+		//should the window have a border
 		bool border;
+		//vsync enabled/disabled
 		bool vsync;
+		//windows: the application icon
 		int icon;
+		//the window title
 		std::string title;
+		//enable/disable threading in the rendering
 		bool threaded;
+		//enable/disable threaded background tasks
 		bool backgroundTasks;
+		//select the renderer used
 		enum RendererPreference
 		{
 			NullRenderer,
@@ -92,7 +101,7 @@ namespace blib
 			DirectGlRenderer,
 			DxRenderer,
 		} renderer;
-
+		//select joystick driver
 		enum JoystickPreference
 		{
 			NullJoystick,
@@ -117,10 +126,11 @@ namespace blib
 		}
 	};
 
+	//application class
 	class App
 	{
 	protected:
-		
+		//thread to render in background
 		class RenderThread : public blib::util::Thread
 		{
 			App* app;
@@ -131,6 +141,7 @@ namespace blib
 			double frameTime;
 		};
 
+		//thread to update in background
 		class UpdateThread : public blib::util::Thread
 		{
 		public:
@@ -143,19 +154,21 @@ namespace blib
 			double frameTime;
 		};
 
-
+		//basic properties to store the states of things
 		double time;
-
 		AppSetup appSetup;
-
-
 		KeyState keyState;
 		MouseState mouseState;
-	public:
-
-	protected:
 		JoyState joyStates[32];
+		ResourceManager* resourceManager;
+		SpriteBatch* spriteBatch;
+		LineBatch* lineBatch;
+		Renderer* renderer;
 
+
+		//add listeners
+		void addKeyListener(KeyListener* keyListener);
+		void addMouseListener(MouseListener* mouseListener);
 
 
 	public:
@@ -170,10 +183,13 @@ namespace blib
 		virtual void init() = 0;
 		virtual void update(double elapsedTime) = 0;
 		virtual void draw() = 0;
-		bool running;
 
+		//set to false to stop the app
+		bool running;
+		//the window interface to access the created window
 		Window* window;
 
+		//method to run a method later, but in the updatethread
 		template<class T>
 		void runLater(std::function<void(T)> toRun, T param)
 		{
@@ -184,23 +200,19 @@ namespace blib
 				runnerMutex->unLock();
 		}
 
-	protected:
-		void addKeyListener(KeyListener* keyListener);
-		void addMouseListener(MouseListener* mouseListener);
-		
-
-
 		template<class T>
 		friend class BackgroundTask;
 	private:
+		//mutex used for void App::runRunners()
 		util::Mutex* runnerMutex;
-
+		//base class for runners
 		class RunnerContainer
 		{
 		public:
 			virtual void run() = 0;
 			virtual ~RunnerContainer() {};
 		};
+		//the actual runner implementation. This one also has a parameter for the function stored
 		template<class T>
 		class RunnerContainerImpl : public RunnerContainer
 		{
@@ -210,24 +222,14 @@ namespace blib
 			T param;
 			void run() { function(param); }
 		};
+		//list of methods that'll be called in the update thread
 		std::list<RunnerContainer*> runners;
 		void runRunners();
-	public:
 
-		ResourceManager* resourceManager;
-
-		SpriteBatch* spriteBatch;
-		LineBatch* lineBatch;
-		Renderer* renderer;
-
-		util::Semaphore* semaphore;
-		RenderThread* renderThread;
-		UpdateThread* updateThread;
-		drivers::joystick::Driver* joystickDriver;
-
+		//performance logging
 		struct PerformanceInfo
 		{
-			union 
+			union
 			{
 				struct {
 					double updateTime;
@@ -238,6 +240,14 @@ namespace blib
 			};
 		}frameTimes[1000];
 		int frameTimeIndex;
+
+		//for multithreaded rendering
+		util::Semaphore* semaphore;
+		RenderThread* renderThread;
+		UpdateThread* updateThread;
+		drivers::joystick::Driver* joystickDriver;
+
+	public:
 
 		bool showProfiler;
 	};
