@@ -491,6 +491,8 @@ namespace blib
 				stream << value.value.intValue;
 				break;
 			case Type::floatValue:
+				assert(!isnan(value.value.floatValue));
+				//assert(isnormal(value.value.floatValue));
 				stream << value.value.floatValue;
 				break;
 			case Type::boolValue:
