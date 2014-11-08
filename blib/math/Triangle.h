@@ -6,16 +6,26 @@ namespace blib
 {
 	namespace math
 	{
-		class Triangle
+		class Triangle2
 		{
 			glm::vec2 v1, v2, v3;
 		public:
 
-			Triangle(glm::vec2 v1, glm::vec2 v2, glm::vec2 v3);
+			Triangle2(glm::vec2 v1, glm::vec2 v2, glm::vec2 v3);
 
 
 			glm::vec2 getInCenter() const;
 
 		};
+
+		class Triangle3
+		{
+			glm::vec3 v1, v2, v3;
+		public:
+
+			Triangle3(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3);
+
+		};
+
 	}
 }

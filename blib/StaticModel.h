@@ -4,6 +4,7 @@
 #include <vector>
 #include <blib/Shader.h>
 #include <blib/gl/Vertex.h>
+#include <blib/math/Triangle.h>
 
 namespace blib
 {
@@ -56,6 +57,8 @@ namespace blib
 			int count;
 		};
 
+
+		std::vector<blib::math::Triangle3> triangles;
 
 
 		VBO* vbo;

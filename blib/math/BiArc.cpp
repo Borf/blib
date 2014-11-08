@@ -1,7 +1,6 @@
 #include "BiArc.h"
 
 #include "Line.h"
-#include "Triangle.h"
 #include <blib/Math.h>
 #include <blib/Util.h>
 #include <blib/util/Log.h>

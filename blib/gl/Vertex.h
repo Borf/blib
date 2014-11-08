@@ -95,6 +95,10 @@ VertexDefBegin(VertexP2T3T2,							texCoord2,	glm::vec2, 2, VertexP2T3)
 	VertexP2T3T2(glm::vec2 position, glm::vec3 texCoord, glm::vec2 texCoord2) : VertexP2T3(position, texCoord), texCoord2(texCoord2) {};
 VertexDefEnd();
 
+VertexDefBegin(VertexP3C4, color, glm::vec4, 4, VertexP3)
+VertexP3C4(glm::vec3 position, glm::vec4 color) : VertexP3(position), color(color) {};
+VertexDefEnd();
+
 
 VertexDefBegin(VertexP3T2C4,							color,		glm::vec4, 4, VertexP3T2)
 	VertexP3T2C4(glm::vec3 position, glm::vec2 texCoord, glm::vec4 color) : VertexP3T2(position, texCoord), color(color) {};
