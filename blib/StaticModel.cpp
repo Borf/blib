@@ -73,6 +73,18 @@ namespace blib
 		vio = resourceManager->getResource<blib::VIO>();
 		vio->setElementType<unsigned short>();
 		renderer->setVio(vio, indices);
+
+		triangles.reserve(indices.size() / 3);
+		for (size_t i = 0; i < indices.size(); i += 3)
+		{
+			triangles.push_back(blib::math::Triangle3(
+				vertices[indices[i]].position,
+				vertices[indices[i+1]].position,
+				vertices[indices[i+2]].position
+				));
+		}
+
+
 	}
 
 

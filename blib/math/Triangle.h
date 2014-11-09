@@ -20,8 +20,8 @@ namespace blib
 
 		class Triangle3
 		{
-			glm::vec3 v1, v2, v3;
 		public:
+			glm::vec3 v1, v2, v3;
 
 			Triangle3(glm::vec3 v1, glm::vec3 v2, glm::vec3 v3);
 

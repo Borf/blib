@@ -59,6 +59,8 @@ namespace blib
 
 
 		std::vector<blib::math::Triangle3> triangles;
+	public:
+		const std::vector<blib::math::Triangle3>& getTriangles() const { return triangles; }
 
 
 		VBO* vbo;
