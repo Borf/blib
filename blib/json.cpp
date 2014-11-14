@@ -341,6 +341,12 @@ namespace blib
 				char token = stream.get();
 				if (token == '}')
 					break; //empty object
+				if (token == '/')
+				{
+					eatComment(stream);
+					token = stream.get();
+				}
+
 				assert(token == '"');
 				Value key = eatString(stream);
 				ltrim(stream);
@@ -440,6 +446,7 @@ namespace blib
 			else if (token == '/')
 				while (token != '\n' && !stream.eof())
 					token = stream.get();
+			ltrim(stream);
 		}
 
 
