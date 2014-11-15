@@ -583,6 +583,12 @@ namespace blib
 						keyPressed = true;
 					return true;
 				}
+				if (windows.front()->defaultWidget)
+				{
+					if (windows.front()->defaultWidget->onKeyDown(key))
+						keyPressed = true;
+					return true;
+				}
 			}
 
 			if (menuKeys.find(key) != menuKeys.end())

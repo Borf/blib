@@ -15,6 +15,17 @@ namespace blib
 				this->text = text;
 				this->width = 100;
 				this->height = 25;
+
+				addKeyDownHandler([this](blib::Key key)
+				{
+					if (key == blib::Key::ENTER)
+					{
+						onMouseClick(0, 0, 1);
+						return true;
+					}
+					return false;
+				});
+
 			}
 
 

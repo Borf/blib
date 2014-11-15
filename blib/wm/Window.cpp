@@ -49,41 +49,42 @@ namespace blib
 	namespace wm
 	{
 
-		Window::Window( std::string title, std::string skinFile, ResourceManager* resourceManager )
+		Window::Window(std::string title, std::string skinFile, ResourceManager* resourceManager)
 		{
 			this->title = title;
 			json::Value skin = util::FileSystem::getJson("assets/windows/" + skinFile);
-	
+
 			this->x = 100;
 			this->y = 100;
 			this->movable = true;
 			this->enabled = true;
 			this->visible = true;
 			this->rootPanel = NULL;
-			if(skinFile != "")
+			if (skinFile != "")
 			{
-				this->setSize(skin["size"][0u].asInt(),skin["size"][1u].asInt());
+				this->setSize(skin["size"][0u].asInt(), skin["size"][1u].asInt());
 				this->modal = skin["modal"].asBool();
 				this->resizable = skin["resizable"].asBool();
 			}
-
 			this->rootPanel = new widgets::Panel();
 			this->rootPanel->x = 0;
 			this->rootPanel->y = 0;
 			this->rootPanel->width = skin["size"][0u].asInt();
 			this->rootPanel->height = skin["size"][1u].asInt();
 
+			defaultWidget = NULL;
 			selectedWidget = NULL;
 
-			if(skinFile != "")
+			if (skinFile != "")
 				this->addWidgets(this->rootPanel, skin["widgets"], resourceManager);
-			
+
 			if (skin.isMember("closable") && skin["closable"].asBool())
 				closable = true;
 			else
 				closable = false;
 
-
+			if (skin.isMember("defaultwidget"))
+				defaultWidget = getComponent(skin["defaultwidget"]);
 
 		/*	addKeyDownHandler([this](blib::Key key) { 
 				if (selectedWidget)

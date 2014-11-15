@@ -35,6 +35,7 @@ namespace blib
 		bool closable;
 
 		Widget* selectedWidget;
+		Widget* defaultWidget;
 
 	public:
 		Window(std::string title, std::string skinFile, ResourceManager* resourceManager);
