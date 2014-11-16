@@ -227,6 +227,11 @@ namespace blib
 		json::Value FileSystem::getJson(const std::string &fileName)
 		{
 			std::string data = getData(fileName);
+			if (data == "")
+			{
+				Log::out << "Could not open " << fileName << Log::newline;
+				return json::Value();
+			}
 			return json::readJson(data);
 		}
 
