@@ -132,12 +132,6 @@
     <ClInclude Include="blib\math\Rectangle.h">
       <Filter>math</Filter>
     </ClInclude>
-    <ClInclude Include="blib\util\FastDelegate.h">
-      <Filter>util</Filter>
-    </ClInclude>
-    <ClInclude Include="blib\util\FastDelegateBind.h">
-      <Filter>util</Filter>
-    </ClInclude>
     <ClInclude Include="blib\util\FileSystem.h">
       <Filter>util</Filter>
     </ClInclude>

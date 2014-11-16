@@ -22,18 +22,19 @@ namespace blib
 
 			ResourceManager::ResourceManager()
 			{
-				renderer = fastdelegate::MakeDelegate(this, &ResourceManager::getRenderer);
-				texture = fastdelegate::MakeDelegate(this, &ResourceManager::getTexture);
-				emptyTexture = fastdelegate::MakeDelegate(this, &ResourceManager::getEmptyTexture);
-				shader = fastdelegate::MakeDelegate(this, &ResourceManager::getShader);
-				emptyshader = fastdelegate::MakeDelegate(this, &ResourceManager::getShaderEmpty);
-				vbo = fastdelegate::MakeDelegate(this, &ResourceManager::getVBO);
-				fbo = fastdelegate::MakeDelegate(this, &ResourceManager::getFBO);
+				renderer	= std::bind(&ResourceManager::getRenderer ,this);
+				texture		= std::bind(&ResourceManager::getTexture, this, std::placeholders::_1, std::placeholders::_2);
+				emptyTexture =std::bind(&ResourceManager::getEmptyTexture, this, std::placeholders::_1, std::placeholders::_2);
+				shader		= std::bind(&ResourceManager::getShader, this, std::placeholders::_1);
+				emptyshader = std::bind(&ResourceManager::getShaderEmpty, this);
+				vbo			= std::bind(&ResourceManager::getVBO, this);
+				fbo			= std::bind(&ResourceManager::getFBO, this);
+				vio			= std::bind(&ResourceManager::getVIO, this);
 
-				spritesheet = fastdelegate::MakeDelegate(this, &ResourceManager::getSpriteSheet);
+				spritesheet = std::bind(&ResourceManager::getSpriteSheet, this, std::placeholders::_1);
 
-				texturemap = fastdelegate::MakeDelegate(this, &ResourceManager::getTextureMap);
-				font = fastdelegate::MakeDelegate(this, &ResourceManager::getFont);
+				texturemap = std::bind(&ResourceManager::getTextureMap, this);
+				font		= std::bind(&ResourceManager::getFont, this, std::placeholders::_1);
 			}
 
 			blib::Renderer* ResourceManager::getRenderer()

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <blib/util/FastDelegate.h>
+#include <functional>
 #include <string>
 #include <blib/VBO.h>
 
@@ -22,8 +22,8 @@ namespace blib
 	public:
 		ResourceManager()
 		{
-			renderer = NULL;
-			texture = NULL;
+//			renderer = NULL;
+//			texture = NULL;
 		}
 		template<class T>
 		inline T* getResource(const std::string &name)
@@ -51,19 +51,18 @@ namespace blib
 		}
 		
 
+		std::function<Renderer*()>										renderer;
+		std::function<Texture*(const std::string &, int)>				texture;
+		std::function<Texture*(int, int)>								emptyTexture;
+		std::function<SpriteSheet*(const std::string &)>				spritesheet;
+		std::function<Shader*(const std::string &)>						shader;
+		std::function<Font*(const std::string &)>						font;
+		std::function<Shader*()>										emptyshader;
+		std::function<VBO*()>											vbo;
+		std::function<VIO*()>											vio;
+		std::function<FBO*()>											fbo;
+		std::function<TextureMap*()>									texturemap;
 
-
-		fastdelegate::FastDelegate0<Renderer*>							renderer;
-		fastdelegate::FastDelegate2<const std::string &, int, Texture*>		texture;
-		fastdelegate::FastDelegate2<int, int, Texture*>					emptyTexture;
-		fastdelegate::FastDelegate1<const std::string &, SpriteSheet*>	spritesheet;
-		fastdelegate::FastDelegate1<const std::string &, Shader*>		shader;
-		fastdelegate::FastDelegate1<const std::string &, Font*>			font;
-		fastdelegate::FastDelegate0<Shader*>							emptyshader;
-		fastdelegate::FastDelegate0<VBO*>								vbo;
-		fastdelegate::FastDelegate0<VIO*>								vio;
-		fastdelegate::FastDelegate0<FBO*>								fbo;
-		fastdelegate::FastDelegate0<TextureMap*>						texturemap;
 	};
 
 	template<>

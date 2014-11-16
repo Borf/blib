@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string.h>
-#include <blib/util/FastDelegate.h>
 #include <blib/config.h>
 
 #include <string>
@@ -12,7 +11,6 @@ namespace blib
 {
 	class KeyListener;
 	class MouseListener;
-	using namespace fastdelegate;
 
 
 	class IWindow

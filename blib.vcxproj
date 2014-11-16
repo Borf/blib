@@ -78,8 +78,6 @@
     <ClInclude Include="blib\TextureMap.h" />
     <ClInclude Include="blib\Util.h" />
     <ClInclude Include="blib\util\Allocator.h" />
-    <ClInclude Include="blib\util\FastDelegate.h" />
-    <ClInclude Include="blib\util\FastDelegateBind.h" />
     <ClInclude Include="blib\util\FileSystem.h" />
     <ClInclude Include="blib\util\ListAllocator.h" />
     <ClInclude Include="blib\util\Log.h" />

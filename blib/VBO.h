@@ -1,7 +1,5 @@
 #pragma once
 
-#include <blib/util/FastDelegate.h>
-
 namespace blib
 {
 	class VBO

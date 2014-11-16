@@ -87,7 +87,11 @@ namespace blib
             depth = 1;
             
 			unsigned char* tmpData = stbi_load_from_memory((stbi_uc*)fileData, length, &_originalWidth, &_originalHeight, &depth, 0);
-            
+			if (!tmpData)
+			{
+				Log::out << "Error loading file " << fileName << Log::newline;
+				return;
+			}
 			delete[] fileData;
 			data = new unsigned char[T::originalWidth*T::originalHeight*depth];
 			memcpy(data, tmpData, T::originalWidth*T::originalHeight*depth);
