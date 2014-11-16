@@ -32,7 +32,7 @@ namespace blib
 		} THREADNAME_INFO;
 #pragma pack(pop)
 
-		void SetThreadName( DWORD dwThreadID, char* threadName)
+		void SetThreadName( DWORD dwThreadID, const char* threadName)
 		{
 #ifdef _MSC_VER
 			THREADNAME_INFO info;
@@ -152,6 +152,11 @@ namespace blib
 #ifdef WIN32
 			threadNames[GetCurrentThreadId()] = "MainThread";
 #endif
+		}
+
+		void Thread::setThreadName(const std::string &name)
+		{
+			SetThreadName(GetCurrentThreadId(), name.c_str());
 		}
 
 

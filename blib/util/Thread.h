@@ -43,10 +43,12 @@ namespace blib
 			std::string name;
 			static std::string getCurrentThreadName();
 			static void setMainThread();
+			static void setThreadName(const std::string &name);
 #ifdef WIN32
 			unsigned long threadId;
 #endif
 		};
+
 
 	}
 }
