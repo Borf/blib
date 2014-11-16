@@ -28,6 +28,10 @@ namespace blib
 		Log Log::out;
 		Log Log::err;
 
+#ifdef BLIB_WIN
+		HANDLE Log::handle = GetStdHandle(STD_OUTPUT_HANDLE);
+#endif
+
 
 		#ifdef ANDROID
 		#define  LOG_TAG    "blib"
@@ -121,9 +125,12 @@ namespace blib
 			logMutex->lock();
 			SYSTEMTIME beg;
 			GetLocalTime(&beg);
-			buffer = format( "[%02d:%02d:%02d:%03d]\t", beg.wHour, beg.wMinute, beg.wSecond, beg.wMilliseconds) + buffer;
 
-			buffer = format("[%20s]",blib::util::Thread::getCurrentThreadName().c_str()) + buffer;
+			SetConsoleTextAttribute(handle, ConsoleForeground::GRAY);
+			printf("[%02d:%02d:%02d:%03d] ", beg.wHour, beg.wMinute, beg.wSecond, beg.wMilliseconds);
+			SetConsoleTextAttribute(handle, ConsoleForeground::GREEN);
+			printf("[%20s] ",blib::util::Thread::getCurrentThreadName().c_str());
+			SetConsoleTextAttribute(handle, ConsoleForeground::WHITE);
 #endif
 
 
