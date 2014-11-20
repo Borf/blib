@@ -13,6 +13,7 @@ namespace blib
 {
 	namespace util
 	{
+#ifdef BLIB_WIN
 		namespace ConsoleForeground
 		{
 			enum {
@@ -34,7 +35,7 @@ namespace blib
 				WHITE = FOREGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE,
 			};
 		}
-
+#endif
 
 		class Log
 		{
