@@ -85,12 +85,6 @@ SOURCES += \
     blib/wm/widgets/ScrollPanel.cpp \
     blib/wm/widgets/textbox.cpp \
     blib/wm/widgets/Widget.cpp \
-    externals/json/json_internalarray.inl \
-    externals/json/json_internalmap.inl \
-    externals/json/json_reader.cpp \
-    externals/json/json_value.cpp \
-    externals/json/json_valueiterator.inl \
-    externals/json/json_writer.cpp \
     externals/poly2tri/common/shapes.cc \
     externals/poly2tri/sweep/advancing_front.cc \
     externals/poly2tri/sweep/cdt.cc \
@@ -243,18 +237,6 @@ HEADERS += \
     blib/wm/widgets/ScrollPanel.h \
     blib/wm/widgets/textbox.h \
     blib/wm/widgets/Widget.h \
-    externals/json/assertions.h \
-    externals/json/autolink.h \
-    externals/json/config.h \
-    externals/json/features.h \
-    externals/json/forwards.h \
-    externals/json/json.h \
-    externals/json/json_batchallocator.h \
-    externals/json/json_tool.h \
-    externals/json/reader.h \
-    externals/json/value.h \
-    externals/json/version.h \
-    externals/json/writer.h \
     externals/poly2tri/poly2tri.h \
     externals/poly2tri/common/shapes.h \
     externals/poly2tri/common/utils.h \
