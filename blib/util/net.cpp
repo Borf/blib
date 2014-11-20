@@ -11,6 +11,7 @@ typedef int socklen_t;
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <string.h>
 inline void closesocket(SOCKET s)
 {
 	close(s);
@@ -62,7 +63,7 @@ namespace blib
 #ifdef WIN32
 				//TODO	sin.sin_addr = inet_addr(bindport.c_str());
 #else
-				inet_aton(ip.c_str(), &sin.sin_addr);
+				inet_aton("0.0.0.0", &sin.sin_addr);
 #endif
 				sin.sin_port = htons(port);
 

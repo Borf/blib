@@ -47,12 +47,12 @@ namespace blib
 				public:
 					void add(T* t)
 					{
-						children.push_back(t);
+						blib::util::DynTree<T>::children.push_back(t);
 					}
 					virtual BmlRenderBlock draw(SpriteBatch* spriteBatch, glm::mat4 matrix, const BmlRenderData* renderData, BmlFontProperties fontProperties, BmlRenderBlock box) const
 					{
 						BmlRenderBlock subBox = box;
-						for (std::list<T*>::const_iterator it = children.cbegin(); it != children.cend(); it++)
+						for (typename std::list<T*>::const_iterator it = blib::util::DynTree<T>::children.cbegin(); it != blib::util::DynTree<T>::children.cend(); it++)
 						{
 							BmlRenderBlock b2 = (*it)->draw(spriteBatch, matrix, renderData, fontProperties, subBox);
 							subBox.topleft.y += b2.size.y;

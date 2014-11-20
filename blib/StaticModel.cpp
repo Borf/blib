@@ -39,7 +39,7 @@ namespace blib
 			
 		}
 		std::vector<unsigned short> indices;
-		for (json::Value& mesh : modelData["meshes"])
+		for (const json::Value& mesh : modelData["meshes"])
 		{
 			int start = indices.size();
 			for (int i : mesh["faces"])

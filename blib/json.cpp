@@ -1,6 +1,9 @@
 #include "json.h"
 #include <iomanip>
 #include <sstream>
+#include <iostream>
+#include <cmath>
+#include <cfloat>
 
 namespace blib
 {

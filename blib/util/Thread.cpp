@@ -156,7 +156,9 @@ namespace blib
 
 		void Thread::setThreadName(const std::string &name)
 		{
+		#ifdef BLIB_WIN
 			SetThreadName(GetCurrentThreadId(), name.c_str());
+		#endif
 		}
 
 

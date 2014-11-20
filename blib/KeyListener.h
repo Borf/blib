@@ -73,6 +73,9 @@ namespace blib
 		ALT,
 		PLUS,
 		MINUS,
+		TAB,
+		DEL,
+		BACKSPACE,
 
 		F1,
 		F2,

@@ -7,7 +7,7 @@
 #ifdef WIN32
 #include <winsock2.h>
 #else
-
+typedef int SOCKET;
 #endif
 
 namespace blib

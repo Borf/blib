@@ -3,8 +3,9 @@
 #include <blib/Shader.h>
 #include <blib/RenderState.h>
 #include <blib/VBO.h>
+#include <blib/VIO.h>
 #include <blib/util/Log.h>
-#include <blib/util.h>
+#include <blib/Util.h>
 #include <blib/util/ListAllocator.h>
 #include <blib/util/Thread.h>
 #include <vector>

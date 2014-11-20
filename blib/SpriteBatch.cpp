@@ -149,6 +149,14 @@ namespace blib
 		draw(texture, transform, glm::vec2(0,0), color);
 	}
 
+
+	glm::vec2 SpriteBatch::draw(const Font* font, const std::string &text, const glm::mat4 &transform, const glm::vec4 &color)
+	{
+		glm::vec2 bla;
+		return draw(font, text, transform, color, bla, -1);
+	}
+
+
 	glm::vec2 SpriteBatch::draw(const Font* font, const std::string &text, const glm::mat4 &transform, const glm::vec4 &color, glm::vec2 &cursor, int wrapWidth)
 	{
 		glm::vec2 texFactor(1.0f / font->texture->width, 1.0f / font->texture->height);

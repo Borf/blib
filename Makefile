@@ -16,7 +16,6 @@ blib/gl \
 blib/wm \
 blib/wm/widgets \
 blib/platform/linux \
-externals/json \
 externals/box2d/Box2D/Collision \
 externals/box2d/Box2D/Collision/Shapes \
 externals/box2d/Box2D/Common \
@@ -151,6 +150,10 @@ obj/depencies_$(PLATFORM).mak: $(DEP_ALL)
 	@mkdir -p obj/blib/util
 	@mkdir -p obj/blib/gl
 	@mkdir -p obj/blib/math
+	@mkdir -p obj/blib/platform
+	@mkdir -p obj/blib/platform/linux
+	@mkdir -p obj/blib/wm
+	@mkdir -p obj/blib/wm/widgets
 # build depencies for objects
 	@cat $^ | sed -r -e 's#^([a-zA-Z0-9]+)\.o#obj/\1_$(PLATFORM).o#' >$@
 # build depencies for depencies

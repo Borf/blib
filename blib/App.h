@@ -9,6 +9,8 @@
 #include <blib/util/Thread.h>
 #include <blib/util/Mutex.h>
 
+#include <string.h> //memset
+
 namespace blib
 {
 	enum class Key;
@@ -43,7 +45,7 @@ namespace blib
 		inline void setPressed(blib::Key index, bool value) { pressedKeys[(int)index] = value; }
 		KeyState()
 		{
-			ZeroMemory(pressedKeys, sizeof(pressedKeys));
+			memset(pressedKeys, 0, sizeof(pressedKeys));
 		}
 		friend class AppKeyListener;
 	};

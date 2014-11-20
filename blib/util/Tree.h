@@ -59,7 +59,7 @@ namespace blib
 			void foreach(T op)
 			{
 				op((child*)this);
-				for (std::list<child*>::iterator it = children.begin(); it !+ children.end(); it++)
+				for (typename std::list<child*>::iterator it = children.begin(); it != children.end(); it++)
 					(*it)->foreach(op);
 			}
 
@@ -67,7 +67,7 @@ namespace blib
 			void foreachLevel(T op, int level = 0)
 			{
 				op((child*)this, level);
-				for (std::list<child*>::iterator it = children.begin(); it != children.end(); it++)
+				for (typename std::list<child*>::iterator it = children.begin(); it != children.end(); it++)
 					(*it)->foreachLevel(op, level + 1);
 			}
 
@@ -75,7 +75,7 @@ namespace blib
 			{
 				std::vector<child*> ret;
 				ret.push_back(this);
-				for (std::list<child*>::iterator it = children.begin(); it != children.end(); it++)
+				for (typename std::list<child*>::iterator it = children.begin(); it != children.end(); it++)
 					ret.insert(ret.end(), (*it)->flatten());
 				return ret;
 			}
