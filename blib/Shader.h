@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <type_traits>
+
 #include <glm/glm.hpp>
 #include <blib/config.h>
 
