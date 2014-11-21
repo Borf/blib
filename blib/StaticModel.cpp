@@ -48,9 +48,9 @@ namespace blib
 
 			Mesh* newMesh = new Mesh();
 			newMesh->material.alpha = mesh["material"]["alpha"];
-			newMesh->material.diffuse = glm::vec3(mesh["material"]["diffuse"][0u], mesh["material"]["diffuse"][1u], mesh["material"]["diffuse"][2u]);
-			newMesh->material.ambient = glm::vec3(mesh["material"]["ambient"][0u], mesh["material"]["ambient"][1u], mesh["material"]["ambient"][2u]);
-			newMesh->material.specular = glm::vec3(mesh["material"]["specular"][0u], mesh["material"]["specular"][1u], mesh["material"]["specular"][2u]);
+			newMesh->material.diffuse = glm::vec3(mesh["material"]["diffuse"][0], mesh["material"]["diffuse"][1], mesh["material"]["diffuse"][2]);
+			newMesh->material.ambient = glm::vec3(mesh["material"]["ambient"][0], mesh["material"]["ambient"][1], mesh["material"]["ambient"][2]);
+			newMesh->material.specular = glm::vec3(mesh["material"]["specular"][0], mesh["material"]["specular"][1], mesh["material"]["specular"][2]);
 			newMesh->material.shinyness = mesh["material"]["shinyness"];
 
 			if (mesh["material"]["texture"].asString() == "")

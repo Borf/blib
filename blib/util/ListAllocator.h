@@ -41,15 +41,15 @@ namespace blib
 
 				if (typeId >= (int)data.size())
 				{
-					data.resize(typeId + 1, NULL);
-					first.resize(typeId + 1, NULL);
+					data.resize(typeId + 1, nullptr);
+					first.resize(typeId + 1, nullptr);
 				}
 
-				if (data[typeId] == NULL) // if first
+				if (data[typeId] == nullptr) // if first
 				{
 					ListNode<T>* node = new ListNode<T>();
 					first[typeId] = data[typeId] = node;
-					node->next = NULL;
+					node->next = nullptr;
 					node->data = new T();
 					return node->data;
 				}
@@ -62,7 +62,7 @@ namespace blib
 
 				ListNode<T>* newNode = new ListNode<T>();
 				newNode->data = new T();
-				newNode->next = NULL;
+				newNode->next = nullptr;
 				data[typeId]->next = newNode;
 				data[typeId] = newNode;
 				return newNode->data;
@@ -70,7 +70,7 @@ namespace blib
 
 			void clear()
 			{
-				for (size_t i = 0; i < data.size(); i++)
+				for (std::size_t i = 0; i < data.size(); i++)
 				{
 					data[i] = first[i];
 				}

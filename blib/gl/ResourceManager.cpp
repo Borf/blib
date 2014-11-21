@@ -109,11 +109,11 @@ namespace blib
 
 			blib::SpriteSheet* spriteSheet = blib::Texture::loadCached<blib::gl::Texture<blib::SpriteSheet> >(directory + v["tex"].asString());
 
-			spriteSheet->spriteCountX = v["count"][0u].asInt();
-			spriteSheet->spriteCountY = v["count"][1u].asInt();
+			spriteSheet->spriteCountX = v["count"][0].asInt();
+			spriteSheet->spriteCountY = v["count"][1].asInt();
 
-			spriteSheet->spriteWidth = spriteSheet->originalWidth / v["count"][0u].asInt();
-			spriteSheet->spriteHeight = spriteSheet->originalHeight / v["count"][1u].asInt();
+			spriteSheet->spriteWidth = spriteSheet->originalWidth / v["count"][0].asInt();
+			spriteSheet->spriteHeight = spriteSheet->originalHeight / v["count"][1].asInt();
 			spriteSheet->spriteCenter = glm::vec2(spriteSheet->spriteWidth / 2, spriteSheet->spriteHeight/2);
 			return spriteSheet;
 		}

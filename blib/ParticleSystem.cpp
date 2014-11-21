@@ -309,25 +309,25 @@ void main()\
 			std::pair<Shape, std::string>(Line, "line")<<
 			std::pair<Shape, std::string>(Circle, "circle") );
 
-		gravity = glm::vec2(data["gravity"][0u].asFloat(), data["gravity"][1u].asFloat());
+		gravity = glm::vec2(data["gravity"][0].asFloat(), data["gravity"][1].asFloat());
 		collision = data["collision"].asBool();
-		particleCountPerSecondMin = data["particlecount"][0u].asInt();
+		particleCountPerSecondMin = data["particlecount"][0].asInt();
 
 
-		particleProps.directionMin = data["particle"]["direction"][0u].asFloat();
-		particleProps.directionMax = data["particle"]["direction"][1u].asFloat();
+		particleProps.directionMin = data["particle"]["direction"][0].asFloat();
+		particleProps.directionMax = data["particle"]["direction"][1].asFloat();
 
-		particleProps.speedMin = data["particle"]["speed"][0u].asFloat();
-		particleProps.speedMax = data["particle"]["speed"][1u].asFloat();
+		particleProps.speedMin = data["particle"]["speed"][0].asFloat();
+		particleProps.speedMax = data["particle"]["speed"][1].asFloat();
 
-		particleProps.rotationMin = data["particle"]["rotation"][0u].asFloat();
-		particleProps.rotationMax = data["particle"]["rotation"][1u].asFloat();
+		particleProps.rotationMin = data["particle"]["rotation"][0].asFloat();
+		particleProps.rotationMax = data["particle"]["rotation"][1].asFloat();
 
 		particleProps.friction = data["particle"]["friction"].asFloat();
 		particleProps.rotationFriction = data["particle"]["rotationfriction"].asFloat();
 
-		particleProps.fadeSpeedMin = data["particle"]["fadespeed"][0u].asFloat();
-		particleProps.fadeSpeedMax = data["particle"]["fadespeed"][1u].asFloat();
+		particleProps.fadeSpeedMin = data["particle"]["fadespeed"][0].asFloat();
+		particleProps.fadeSpeedMax = data["particle"]["fadespeed"][1].asFloat();
 
 	
 		particleProps.colorExp = data["particle"]["colorexp"].asFloat();
@@ -336,7 +336,7 @@ void main()\
 
 		particleProps.sizeExp = data["particle"]["sizeexp"].asFloat();
 		for(size_t i = 0; i < data["particle"]["colors"].size(); i++)
-			particleProps.colors.push_back(glm::vec4(data["particle"]["colors"][i][0u].asFloat(), data["particle"]["colors"][i][1u].asFloat(), data["particle"]["colors"][i][2u].asFloat(), data["particle"]["colors"][i][3u].asFloat()));
+			particleProps.colors.push_back(glm::vec4(data["particle"]["colors"][i][0].asFloat(), data["particle"]["colors"][i][1].asFloat(), data["particle"]["colors"][i][2].asFloat(), data["particle"]["colors"][i][3].asFloat()));
 	}
 	void ParticleSystem::resizeGl( int width, int height )
 	{

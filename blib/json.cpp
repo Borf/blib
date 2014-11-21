@@ -169,7 +169,7 @@ namespace blib
 			return (*value.objectValue)[std::string(key)];
 		}
 
-		/*Value& Value::operator[](size_t index)
+		Value& Value::operator[](size_t index)
 		{
 			assert(type == Type::arrayValue);
 			return (*value.arrayValue)[index];
@@ -178,23 +178,13 @@ namespace blib
 		{
 			assert(type == Type::arrayValue);
 			return (*value.arrayValue)[index];
-		}*/
+		}
 		Value& Value::operator[](int index)
 		{
 			assert(type == Type::arrayValue);
 			return (*value.arrayValue)[index];
 		}
 		Value& Value::operator[](int index) const
-		{
-			assert(type == Type::arrayValue);
-			return (*value.arrayValue)[index];
-		}
-		Value& Value::operator[](unsigned int index)
-		{
-			assert(type == Type::arrayValue);
-			return (*value.arrayValue)[index];
-		}
-		Value& Value::operator[](unsigned int index) const
 		{
 			assert(type == Type::arrayValue);
 			return (*value.arrayValue)[index];

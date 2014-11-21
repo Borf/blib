@@ -62,15 +62,15 @@ namespace blib
 			this->rootPanel = NULL;
 			if (skinFile != "")
 			{
-				this->setSize(skin["size"][0u].asInt(), skin["size"][1u].asInt());
+				this->setSize(skin["size"][0].asInt(), skin["size"][1].asInt());
 				this->modal = skin["modal"].asBool();
 				this->resizable = skin["resizable"].asBool();
 			}
 			this->rootPanel = new widgets::Panel();
 			this->rootPanel->x = 0;
 			this->rootPanel->y = 0;
-			this->rootPanel->width = skin["size"][0u].asInt();
-			this->rootPanel->height = skin["size"][1u].asInt();
+			this->rootPanel->width = skin["size"][0].asInt();
+			this->rootPanel->height = skin["size"][1].asInt();
 
 			defaultWidget = NULL;
 			selectedWidget = NULL;
@@ -215,14 +215,14 @@ namespace blib
 
 				widget->name = it.key();
 
-				if(widgetSkin["position"][0u].asInt() != -1)
-					widget->x = widgetSkin["position"][0u].asInt();
-				if(widgetSkin["position"][1u].asInt() != -1)
-					widget->y = widgetSkin["position"][1u].asInt();
-				if(widgetSkin["size"][0u].asInt() != -1)
-					widget->width = widgetSkin["size"][0u].asInt();
-				if(widgetSkin["size"][1u].asInt() != -1)
-					widget->height = widgetSkin["size"][1u].asInt();
+				if(widgetSkin["position"][0].asInt() != -1)
+					widget->x = widgetSkin["position"][0].asInt();
+				if(widgetSkin["position"][1].asInt() != -1)
+					widget->y = widgetSkin["position"][1].asInt();
+				if(widgetSkin["size"][0].asInt() != -1)
+					widget->width = widgetSkin["size"][0].asInt();
+				if(widgetSkin["size"][1].asInt() != -1)
+					widget->height = widgetSkin["size"][1].asInt();
 
 				widget->parent = panel;
 				widget->positionHelpLeft =	toPositionHelp(widgetSkin["positionhelp"]["left"].asString());
