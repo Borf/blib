@@ -73,10 +73,10 @@ namespace blib
 			//array
 			virtual void push_back(const Value& value);
 			virtual void erase(size_t index);
-			virtual Value& operator [] (size_t index);
+			//virtual Value& operator [] (size_t index);
 			virtual Value& operator [] (int index);
 			virtual Value& operator [] (unsigned int index);
-			virtual Value& operator [] (size_t index) const;
+			//virtual Value& operator [] (size_t index) const;
 			virtual Value& operator [] (int index) const;
 			virtual Value& operator [] (unsigned int index) const;
 
