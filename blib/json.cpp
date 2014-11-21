@@ -189,6 +189,16 @@ namespace blib
 			assert(type == Type::arrayValue);
 			return (*value.arrayValue)[index];
 		}
+		Value& Value::operator[](unsigned int index)
+		{
+			assert(type == Type::arrayValue);
+			return (*value.arrayValue)[index];
+		}
+		Value& Value::operator[](unsigned int index) const
+		{
+			assert(type == Type::arrayValue);
+			return (*value.arrayValue)[index];
+		}
 
 		void Value::erase(size_t index)
 		{

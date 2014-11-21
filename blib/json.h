@@ -75,8 +75,10 @@ namespace blib
 			virtual void erase(size_t index);
 			virtual Value& operator [] (size_t index);
 			virtual Value& operator [] (int index);
+			virtual Value& operator [] (unsigned int index);
 			virtual Value& operator [] (size_t index) const;
 			virtual Value& operator [] (int index) const;
+			virtual Value& operator [] (unsigned int index) const;
 
 			virtual Value& operator [] (const std::string &key);
 			virtual Value& operator [] (const char* key);

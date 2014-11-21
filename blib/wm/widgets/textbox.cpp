@@ -1,6 +1,6 @@
 #include "textbox.h"
 
-//#include <gl/glew.h>
+#include <GL/glew.h>
 
 #include <blib/wm/WM.h>
 #include <blib/Texture.h>
@@ -101,7 +101,7 @@ namespace blib
 							selectionPosition = cursor;
 						return true;
 					case blib::Key::RIGHT:
-						cursor = glm::min(text.length(), cursor + 1);
+						cursor = glm::min((unsigned int)text.length(), ( cursor + 1));
 						if (!shiftDown)
 							selectionPosition = cursor;
 						return true;
@@ -219,7 +219,7 @@ namespace blib
 				GlHelper::drawStretchyRect(x, y, width, height, WM::getInstance()->skin["input"]);
 
 
-				glScissor((int)shader->matrix[3][0]+1,0/*shader->height-(int)shader->matrix[3][1]-height+1*//*,width-2,1999+height-2);
+				glScissor((int)shader->matrix[3][0]+1,0*//*shader->height-(int)shader->matrix[3][1]-height+1*//*,width-2,1999+height-2);
 				glEnable(GL_SCISSOR_TEST);
 	
 				if(selected)

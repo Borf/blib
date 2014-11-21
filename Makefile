@@ -183,6 +183,7 @@ obj/%_$(PLATFORM).dep: %.c
 
 obj/%_$(PLATFORM).dep: %.cpp
 	@echo -en "    [DEP]	$<                                    \r"
+	## @echo -en "$(CXX) $(CPPFLAGS) $(INCLUDES) -MM -MF $@ $<"
 	@$(CXX) $(CPPFLAGS) $(INCLUDES) -MM -MF $@ $<
 
 # Main target
