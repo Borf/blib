@@ -165,31 +165,31 @@ obj/depencies_$(PLATFORM).mak: $(DEP_ALL)
 
 obj/%_$(PLATFORM).o: %.c
 	@echo -e "    [CC]	$<"
-	@$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
 obj/%_rc_$(PLATFORM).o: %.rc
 	@echo -e "    [RC]	$<"
-	@$(WINDRES) -I src -i $< -o $@
+	$(WINDRES) -I src -i $< -o $@
 
 obj/%_$(PLATFORM).o: %.cpp
 	@echo -e "    [CC]	$<"
-	@$(CXX) $(CPPFLAGS) $(INCLUDES) -c -o $@ $<
+	$(CXX) $(CPPFLAGS) $(INCLUDES) -c -o $@ $<
 
 # depencies
 
 obj/%_$(PLATFORM).dep: %.c
 	@echo -en "    [DEP]	$<                                   \r"
-	@$(CC) $(CFLAGS) $(INCLUDES) -MM -MF $@ $<
+	$(CC) $(CFLAGS) $(INCLUDES) -MM -MF $@ $<
 
 obj/%_$(PLATFORM).dep: %.cpp
 	@echo -en "    [DEP]	$<                                    \r"
-	@$(CXX) $(CPPFLAGS) $(INCLUDES) -MM -MF $@ $<
+	$(CXX) $(CPPFLAGS) $(INCLUDES) -MM -MF $@ $<
 
 # Main target
 
 $(TARGET): $(OBJECTS_ALL)
 	@echo -e "    [LD]	$@"
-	@$(LD) r $(LDFLAGS) $@ $^
+	$(LD) r $(LDFLAGS) $@ $^
 # $(LIBS)
 
 
