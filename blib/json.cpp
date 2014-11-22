@@ -492,6 +492,126 @@ namespace blib
 
 
 
+		std::ostream& indent(std::ostream& stream, int level)
+		{
+			for (int i = 0; i < level; i++)
+				stream << '\t';
+			return stream;
+		}
+
+		std::ostream& Value::prettyPrint(std::ostream& stream, blib::json::Value& printConfig, int level)
+		{
+			stream << std::fixed << std::setprecision(6);
+			switch (type)
+			{
+			case Type::intValue:
+				stream << value.intValue;
+				break;
+			case Type::floatValue:
+				assert(!isnan(value.floatValue));
+				//assert(isnormal(value.floatValue));
+				stream << value.floatValue;
+				break;
+			case Type::boolValue:
+				stream << (value.boolValue ? "true" : "false");
+				break;
+			case Type::stringValue:
+				stream << "\"" << *value.stringValue << "\""; //TODO: escape \'s
+				break;
+			case Type::arrayValue:
+			{
+				stream << "[\n";
+				int wrap = 99999;
+				if (value.arrayValue->size() > 10)
+					wrap = 1;
+				if (value.arrayValue->at(0).isArray() || value.arrayValue->at(0).isObject())
+					wrap = 1;
+				else
+					wrap = 3;
+
+				std::string seperator = " ";
+
+				if (!printConfig.isNull() && printConfig.isMember("wrap"))
+					wrap = printConfig["wrap"];
+				if (!printConfig.isNull() && printConfig.isMember("seperator"))
+					seperator = printConfig["seperator"];
+
+
+				int index = 0;
+				indent(stream, level + 1);
+				for (auto v : *this)
+				{
+					if (index > 0)
+					{
+						stream << "," << seperator;
+						if (index % wrap == 0)
+						{
+							stream << "\n";
+							indent(stream, level + 1);
+						}
+					}
+					v.prettyPrint(stream, printConfig.isNull() ? blib::json::Value() : printConfig["elements"], level + 1);
+					index++;
+				}
+				stream << "\n";
+				indent(stream, level);
+				stream << "]";
+				break;
+			}
+			case Type::objectValue:
+			{
+				stream << "{\n";
+				int wrap = 99999;
+				if (value.arrayValue->size() > 10)
+					wrap = 1;
+				if (value.arrayValue->at(0).isArray() || value.arrayValue->at(0).isObject())
+					wrap = 1;
+				else
+					wrap = 3;
+
+				std::string seperator = " ";
+
+				if (!printConfig.isNull() && printConfig.isMember("wrap"))
+					wrap = printConfig["wrap"];
+				if (!printConfig.isNull() && printConfig.isMember("seperator"))
+					seperator = printConfig["seperator"];
+
+
+				int index = 0;
+				indent(stream, level + 1);
+				for (auto v : *value.objectValue)
+				{
+					if (index > 0)
+					{
+						stream << "," << seperator;
+						if (index % wrap == 0)
+						{
+							stream << "\n";
+							indent(stream, level + 1);
+						}
+					}
+					stream << "\"" << v.first << "\" : ";
+					if (v.second.isArray() || v.second.isObject())
+					{
+						stream << "\n";
+						indent(stream, level + 1);
+					}
+					v.second.prettyPrint(stream, printConfig.isNull() ? blib::json::Value() : printConfig[v.first], level + 1);;
+					index++;
+				}
+				stream << "\n";
+				indent(stream, level);
+				stream << "}";
+				break;
+			}
+			case Type::nullValue:
+				stream << "null";
+				break;
+			}
+			return stream;
+		}
+
+
 		std::ostream & operator<<(std::ostream &stream, const Value& value)
 		{
 			stream << std::fixed<< std::setprecision(6);

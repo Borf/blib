@@ -62,7 +62,7 @@ namespace blib
 	class EmitterTemplate
 	{
 	public:
-		EmitterTemplate(std::string filename, TextureMap* textureMap);
+		EmitterTemplate(std::string filename, TextureMap* textureMap, const std::string &textureFolder);
 
 		enum ParticleType
 		{
@@ -121,6 +121,7 @@ namespace blib
 
 	class ParticleSystem : public gl::GlResizeRegister
 	{
+		std::string textureFolder;
 		double lastElapsedTime;
 		Renderer* renderer;
 		SpriteBatch* spriteBatch;
@@ -155,6 +156,7 @@ namespace blib
 		Attractor* addAttractor();
 		void removeAttractor();
 
+		inline void setTextureFolder(const std::string &folder) { this->textureFolder = folder; }
 
 		void resizeGl( int width, int height );
 	};

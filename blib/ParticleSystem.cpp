@@ -33,7 +33,7 @@ namespace blib
 		renderState.srcBlendAlpha = blib::RenderState::SRC_ALPHA;
 		renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 		renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
-
+		textureFolder = "assets/textures/particles/";
 		shader = resourceManager->getResource<blib::Shader>();
 		shader->initFromData(
 "precision mediump float;\
@@ -208,7 +208,7 @@ void main()\
 	{
 		static std::map<std::string, EmitterTemplate*> cache;
 		if(cache.find(name) == cache.end())
-			cache[name] = new EmitterTemplate(name, textureMap);
+			cache[name] = new EmitterTemplate(name, textureMap, textureFolder);
 		EmitterTemplate* emitterTemplate = cache[name];
 		Emitter* emitter = emitterTemplate->getEmitter();
 		emitters.push_back(emitter);
@@ -273,7 +273,7 @@ void main()\
 		throw "Invalid value";
 	}
 
-	EmitterTemplate::EmitterTemplate( std::string filename, TextureMap* textureMap )
+	EmitterTemplate::EmitterTemplate( std::string filename, TextureMap* textureMap, const std::string &textureFolder)
 	{
 		json::Value data = util::FileSystem::getJson(filename);
 		if(data.isNull())
@@ -291,7 +291,7 @@ void main()\
 				textures.push_back(data["texture"][i].asString());
 
 		for(size_t i = 0; i < textures.size(); i++)
-			textureInfos.push_back(textureMap->addTexture("assets/textures/particles/" + textures[i]));
+			textureInfos.push_back(textureMap->addTexture(textureFolder + textures[i]));
 
 
 
