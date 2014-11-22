@@ -9,6 +9,8 @@ namespace blib
 {
 	namespace json
 	{
+	
+		Value Value::null;
 		//constructors
 		Value::Value()
 		{
@@ -295,7 +297,7 @@ namespace blib
 		static Value eatString(std::istream& stream);
 		static Value eatObject(std::istream& stream);
 		static Value eatArray(std::istream& stream);
-		static Value eatNumeric(std::istream& stream);
+		static Value eatNumeric(std::istream& stream, char firstChar);
 		static Value eatBool(std::istream& stream);
 		static Value eatNull(std::istream& stream);
 		static Value eatValue(std::istream& stream);
@@ -534,7 +536,7 @@ namespace blib
 				if (!printConfig.isNull() && printConfig.isMember("wrap"))
 					wrap = printConfig["wrap"];
 				if (!printConfig.isNull() && printConfig.isMember("seperator"))
-					seperator = printConfig["seperator"];
+					seperator = printConfig["seperator"].asString();
 
 
 				int index = 0;
@@ -550,7 +552,7 @@ namespace blib
 							indent(stream, level + 1);
 						}
 					}
-					v.prettyPrint(stream, printConfig.isNull() ? blib::json::Value() : printConfig["elements"], level + 1);
+					v.prettyPrint(stream, printConfig.isNull() ? blib::json::Value::null : printConfig["elements"], level + 1);
 					index++;
 				}
 				stream << "\n";
@@ -574,7 +576,7 @@ namespace blib
 				if (!printConfig.isNull() && printConfig.isMember("wrap"))
 					wrap = printConfig["wrap"];
 				if (!printConfig.isNull() && printConfig.isMember("seperator"))
-					seperator = printConfig["seperator"];
+					seperator = printConfig["seperator"].asString();
 
 
 				int index = 0;
@@ -596,7 +598,7 @@ namespace blib
 						stream << "\n";
 						indent(stream, level + 1);
 					}
-					v.second.prettyPrint(stream, printConfig.isNull() ? blib::json::Value() : printConfig[v.first], level + 1);;
+					v.second.prettyPrint(stream, printConfig.isNull() ? blib::json::Value::null : printConfig[v.first], level + 1);;
 					index++;
 				}
 				stream << "\n";

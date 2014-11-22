@@ -33,7 +33,7 @@ namespace blib
 				std::vector<Value>*				arrayValue;
 				std::map<std::string, Value>*	objectValue;
 			} value;
-
+			static Value null;
 
 			Value();
 			Value(Type type);
@@ -84,7 +84,7 @@ namespace blib
 			virtual Value& operator [] (const char* key) const;
 
 
-			std::ostream& prettyPrint(std::ostream& stream, blib::json::Value& printConfig = blib::json::Value(), int level = 0);
+			std::ostream& prettyPrint(std::ostream& stream, blib::json::Value& printConfig = null, int level = 0);
 
 		private:
 			class Iterator
