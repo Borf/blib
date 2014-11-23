@@ -16,6 +16,8 @@ namespace blib
 	{
 		json::Value modelData = blib::util::FileSystem::getJson(fileName);
 
+		jsonData = modelData;
+
 		std::string directory = "";
 		if (fileName.find("/") != std::string::npos)
 			directory = fileName.substr(0, fileName.rfind("/"));
@@ -47,6 +49,7 @@ namespace blib
 			int end = indices.size();
 
 			Mesh* newMesh = new Mesh();
+			newMesh->jsonData = mesh;
 			newMesh->material.alpha = mesh["material"]["alpha"];
 			newMesh->material.diffuse = glm::vec3(mesh["material"]["diffuse"][0], mesh["material"]["diffuse"][1], mesh["material"]["diffuse"][2]);
 			newMesh->material.ambient = glm::vec3(mesh["material"]["ambient"][0], mesh["material"]["ambient"][1], mesh["material"]["ambient"][2]);
@@ -91,6 +94,7 @@ namespace blib
 
 	void StaticModel::draw(RenderState& renderState, Renderer* renderer, int materialUniform)
 	{
+		RenderState skeleton = renderState;
 
 		renderState.activeVbo = vbo;
 		renderState.activeVio = vio;
@@ -101,6 +105,13 @@ namespace blib
 			renderState.activeTexture[0] = m->material.texture;
 
 			renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
+
+
+
+			std::vector<VertexP3T2N3> lines;
+			lines.push_back(VertexP3T2N3(glm::vec3(0, 0, 0), glm::vec2(0, 0), glm::vec3(0, 0, 1)));
+			lines.push_back(VertexP3T2N3(glm::vec3(0, 100, 0), glm::vec2(0, 0), glm::vec3(0, 0, 1)));
+			renderer->drawLines(lines, renderState);
 		}
 
 		renderState.activeVio = NULL;

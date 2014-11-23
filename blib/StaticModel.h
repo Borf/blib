@@ -5,6 +5,7 @@
 #include <blib/Shader.h>
 #include <blib/gl/Vertex.h>
 #include <blib/math/Triangle.h>
+#include <blib/json.h>
 
 namespace blib
 {
@@ -55,6 +56,7 @@ namespace blib
 			Material material;
 			int begin;
 			int count;
+			blib::json::Value jsonData;
 		};
 
 
@@ -69,10 +71,11 @@ namespace blib
 
 		std::vector<blib::VertexP3T2N3> vertices;
 
+
+		blib::json::Value jsonData;
+
 	public:
 		StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer);
-
-
 		void draw(RenderState& renderState, Renderer* renderer, int materialUniform);
 	};
 

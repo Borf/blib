@@ -33,7 +33,8 @@ namespace blib
 				std::vector<Value>*				arrayValue;
 				std::map<std::string, Value>*	objectValue;
 			} value;
-			static Value null;
+
+			static Value null;
 
 			Value();
 			Value(Type type);

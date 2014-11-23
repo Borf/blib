@@ -512,6 +512,8 @@ namespace blib
 			case Type::floatValue:
 				assert(!isnan(value.floatValue));
 				//assert(isnormal(value.floatValue));
+				if (value.floatValue >= 0)
+					stream << " ";
 				stream << value.floatValue;
 				break;
 			case Type::boolValue:
@@ -522,7 +524,7 @@ namespace blib
 				break;
 			case Type::arrayValue:
 			{
-				stream << "[\n";
+				stream << "[";
 				int wrap = 99999;
 				if (value.arrayValue->size() > 10)
 					wrap = 1;
@@ -540,7 +542,12 @@ namespace blib
 
 
 				int index = 0;
-				indent(stream, level + 1);
+
+				if (size() > wrap)
+				{
+					stream << "\n";
+					indent(stream, level + 1);
+				}
 				for (auto v : *this)
 				{
 					if (index > 0)
@@ -555,8 +562,11 @@ namespace blib
 					v.prettyPrint(stream, printConfig.isNull() ? blib::json::Value::null : printConfig["elements"], level + 1);
 					index++;
 				}
-				stream << "\n";
-				indent(stream, level);
+				if (size() > wrap)
+				{
+					stream << "\n";
+					indent(stream, level);
+				}
 				stream << "]";
 				break;
 			}
@@ -593,7 +603,7 @@ namespace blib
 						}
 					}
 					stream << "\"" << v.first << "\" : ";
-					if (v.second.isArray() || v.second.isObject())
+					if ((v.second.isArray() || v.second.isObject()) && (printConfig.isNull() || (printConfig.isMember(v.first) && printConfig[v.first].isMember("wrap") && printConfig[v.first]["wrap"].asInt() < v.second.size())))
 					{
 						stream << "\n";
 						indent(stream, level + 1);
