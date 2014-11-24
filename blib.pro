@@ -48,6 +48,7 @@ SOURCES += \
     blib/Util.cpp \
     blib/Window.cpp \
 	blib/json.cpp \
+	blib/StaticModel.cpp \
 	blib/util/ListAllocator.cpp \
     blib/gl/FBO.cpp \
     blib/gl/GlResizeRegister.cpp \
