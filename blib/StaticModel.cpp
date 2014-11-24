@@ -10,6 +10,8 @@
 #include <blib/Renderer.h>
 #include <blib/Texture.h>
 
+#include <map>
+
 namespace blib
 {
 	StaticModel::StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer)
@@ -64,7 +66,15 @@ namespace blib
 				newMesh->material.texture->setTextureRepeat(true);
 			}
 
-			
+			if (mesh.isMember("bones"))
+			{
+				std::map<std::string, Mesh::Bone*> bones;
+				for (const blib::json::Value& b : mesh["bones"])
+				{
+					
+				}
+			}
+
 			newMesh->begin = start;
 			newMesh->count = end - start;
 			meshes.push_back(newMesh);
@@ -94,8 +104,6 @@ namespace blib
 
 	void StaticModel::draw(RenderState& renderState, Renderer* renderer, int materialUniform)
 	{
-		RenderState skeleton = renderState;
-
 		renderState.activeVbo = vbo;
 		renderState.activeVio = vio;
 		
@@ -103,15 +111,7 @@ namespace blib
 		{
 			renderState.activeShader->setUniformStruct(materialUniform, m->material);
 			renderState.activeTexture[0] = m->material.texture;
-
 			renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
-
-
-
-			std::vector<VertexP3T2N3> lines;
-			lines.push_back(VertexP3T2N3(glm::vec3(0, 0, 0), glm::vec2(0, 0), glm::vec3(0, 0, 1)));
-			lines.push_back(VertexP3T2N3(glm::vec3(0, 100, 0), glm::vec2(0, 0), glm::vec3(0, 0, 1)));
-			renderer->drawLines(lines, renderState);
 		}
 
 		renderState.activeVio = NULL;

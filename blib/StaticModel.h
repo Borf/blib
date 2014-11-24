@@ -6,6 +6,7 @@
 #include <blib/gl/Vertex.h>
 #include <blib/math/Triangle.h>
 #include <blib/json.h>
+#include <blib/util/Tree.h>
 
 namespace blib
 {
@@ -57,6 +58,14 @@ namespace blib
 			int begin;
 			int count;
 			blib::json::Value jsonData;
+
+			class Bone : public blib::util::DynTree<Bone>
+			{
+			public:
+				std::string name;
+				glm::mat4 matrix;
+				Bone* parent;
+			};
 		};
 
 
