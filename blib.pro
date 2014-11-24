@@ -6,8 +6,8 @@ CONFIG -= app_bundle
 CONFIG -= qt
 CONFIG -= warn_on
 CONFIG -= unicode
-unix
-{
+
+unix {
     CONFIG += object_with_source
     CONFIG += object_parallel_to_source
 }
@@ -17,13 +17,12 @@ DEFINES -= UNICODE
 INCLUDEPATH += .
 INCLUDEPATH += externals
 INCLUDEPATH += externals/box2d
-windows
-{
+windows {
     INCLUDEPATH += externals/glew/include
 }
 
 #QMAKE_EXT_CPP += .c
-QMAKE_CXXFLAGS += -Wall -Wno-unused-variable -fpermissive
+QMAKE_CXXFLAGS += -Wall -std=c++11
 CONFIG += object_with_source
 CONFIG += object_parallel_to_source
 
@@ -48,6 +47,8 @@ SOURCES += \
     blib/SpriteSheet.cpp \
     blib/Util.cpp \
     blib/Window.cpp \
+	blib/json.cpp \
+	blib/util/ListAllocator.cpp \
     blib/gl/FBO.cpp \
     blib/gl/GlResizeRegister.cpp \
     blib/gl/Renderer.cpp \
