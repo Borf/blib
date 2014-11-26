@@ -59,15 +59,20 @@ namespace blib
 			int count;
 			blib::json::Value jsonData;
 
-			class Bone : public blib::util::DynTree<Bone>
-			{
-			public:
-				std::string name;
-				glm::mat4 matrix;
-				Bone* parent;
-			};
+		};
+	public:
+		class Bone : public blib::util::DynTree < Bone >
+		{
+		public:
+			std::string name;
+			glm::mat4 matrix;
+//			glm::mat4 origin;
+			Bone* parent;
+
+			bool isBone;
 		};
 
+		Bone* rootBone;
 
 		std::vector<blib::math::Triangle3> triangles;
 	public:

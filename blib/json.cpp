@@ -598,6 +598,7 @@ namespace blib
                             (printConfig.isNull() ||
                              (
                                  printConfig.isMember(v.first) &&
+								 printConfig[v.first].isObject() &&
                                  printConfig[v.first].isMember("wrap") &&
                                  printConfig[v.first]["wrap"].asInt() < (int)v.second.size())
                              )

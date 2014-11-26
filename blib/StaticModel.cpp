@@ -14,6 +14,34 @@
 
 namespace blib
 {
+	static glm::mat4 jsonToMatrix(const blib::json::Value &v)
+	{
+		glm::mat4 mat;
+
+		for (int y = 0; y < 4; y++)
+			for (int x = 0; x < 4; x++)
+				mat[y][x] = v[y][x];
+		return mat;
+	}
+
+	static void loadChildren(blib::StaticModel::Bone* bone, const blib::json::Value &json)
+	{
+		bone->name = json["name"];
+		bone->matrix = jsonToMatrix(json["matrix"]);
+		if (!json.isMember("children"))
+			return;
+
+		for (const blib::json::Value& b : json["children"])
+		{
+			blib::StaticModel::Bone* newBone = new blib::StaticModel::Bone();
+			bone->children.push_back(newBone);
+			loadChildren(newBone, b);
+			
+		}
+	}
+
+
+
 	StaticModel::StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer)
 	{
 		json::Value modelData = blib::util::FileSystem::getJson(fileName);
@@ -68,11 +96,8 @@ namespace blib
 
 			if (mesh.isMember("bones"))
 			{
-				std::map<std::string, Mesh::Bone*> bones;
-				for (const blib::json::Value& b : mesh["bones"])
-				{
-					
-				}
+				rootBone = new Bone();
+				loadChildren(rootBone, mesh["bones"]);
 			}
 
 			newMesh->begin = start;
