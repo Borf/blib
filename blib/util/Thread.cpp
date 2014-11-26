@@ -108,7 +108,15 @@ namespace blib
 		{
 #ifdef WIN32
 #elif defined(BLIB_ANDROID) || defined(BLIB_LINUX)
-			prctl(PR_SET_NAME, (unsigned long)((Thread*)lpParam)->name.substr(0, std::min(16, (int)((Thread*)lpParam)->name.size())).c_str());
+            prctl(
+                        PR_SET_NAME,
+                        (unsigned long)((Thread*)lpParam)->name.substr(
+                            0,
+                            std::min(
+                                16,
+                                (int)((Thread*)lpParam)->name.size())
+                          ).c_str()
+                  );
 #endif
 			pthread_exit((void*)((Thread*)lpParam)->run());
 		}

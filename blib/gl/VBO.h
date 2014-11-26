@@ -52,7 +52,6 @@ namespace blib
 				assert(elementSize);
 				this->length = length;
 				bind();
-				int size = elementSize() * length;
 				glBufferData(GL_ARRAY_BUFFER, elementSize() * length, data, GL_STATIC_DRAW);
 			}
 

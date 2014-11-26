@@ -314,7 +314,7 @@ namespace blib
 		else
 		{
 			static Texture* gear = resourceManager->getResource<Texture>("assets/textures/gear.png");
-			static Texture* white = resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
+			//static Texture* white = resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
 			static Font* font = resourceManager->getResource<Font>("tahoma");
 
 			runRunners();
@@ -389,8 +389,11 @@ namespace blib
 		while(app->running)
 		{
 			semaphore->wait();
-			if(!app->running)
+			if(!app->running) {
+				Log::out<<"I stopped running, Why?"<<Log::newline;
+				
 				break;
+			}
 			double frameStart = util::Profiler::getAppTime();
 			app->window->tick();
 			if(app->joystickDriver)
@@ -406,8 +409,12 @@ namespace blib
 			app->time += elapsedTime;
 			app->runRunners();
 			app->update(elapsedTime);
-			if(!app->running)
+			if(!app->running) {
+					
+				Log::out<<"I stopped running, Why?"<<Log::newline;
 				break;
+			}
+
 			app->draw();
 
 			if(app->showProfiler)

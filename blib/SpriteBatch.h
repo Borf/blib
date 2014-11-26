@@ -53,7 +53,7 @@ namespace blib
 		glm::mat4 matrix;
 		FBO* fbo;
 
-		int cacheStart;
+        size_t cacheStart;
 		VBO* vbo;
 
 

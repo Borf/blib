@@ -24,7 +24,7 @@ namespace blib
 
 			glm::vec2 v = end - begin;
 			glm::vec2 n1 = glm::vec2(support.y, -support.x);
-			glm::vec2 midpoint = begin + v * 0.5f;
+            //glm::vec2 midpoint = begin + v * 0.5f;
 			float curvature = 2 * glm::dot(v, n1) / (v.x*v.x + v.y*v.y);
 
 			radius = 1 / curvature;

@@ -17,7 +17,8 @@ namespace blib
 	{
 		class VIO : public blib::VIO, public blib::util::NotCopyable
 		{
-		private:
+        private:
+            // Leuke 'bug'. GLuinit is een simple usinged int. Vergelijken met een -1 why? en ook als contruct?
 			GLuint vio;
 			int length;
 		public:

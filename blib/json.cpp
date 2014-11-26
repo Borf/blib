@@ -101,16 +101,6 @@ namespace blib
 				this->value = other.value;
 		}
 
-
-
-
-
-
-
-
-
-
-
 		Value::~Value()
 		{
 			if (type == Type::stringValue)
@@ -543,7 +533,7 @@ namespace blib
 
 				int index = 0;
 
-				if (size() > wrap)
+                if ((long)size() > wrap)
 				{
 					stream << "\n";
 					indent(stream, level + 1);
@@ -562,7 +552,7 @@ namespace blib
 					v.prettyPrint(stream, printConfig.isNull() ? blib::json::Value::null : printConfig["elements"], level + 1);
 					index++;
 				}
-				if (size() > wrap)
+                if ((long)size() > wrap)
 				{
 					stream << "\n";
 					indent(stream, level);
@@ -603,7 +593,15 @@ namespace blib
 						}
 					}
 					stream << "\"" << v.first << "\" : ";
-					if ((v.second.isArray() || v.second.isObject()) && (printConfig.isNull() || (printConfig.isMember(v.first) && printConfig[v.first].isMember("wrap") && printConfig[v.first]["wrap"].asInt() < v.second.size())))
+                    if (
+                            (v.second.isArray() || v.second.isObject()) &&
+                            (printConfig.isNull() ||
+                             (
+                                 printConfig.isMember(v.first) &&
+                                 printConfig[v.first].isMember("wrap") &&
+                                 printConfig[v.first]["wrap"].asInt() < (int)v.second.size())
+                             )
+                            )
 					{
 						stream << "\n";
 						indent(stream, level + 1);

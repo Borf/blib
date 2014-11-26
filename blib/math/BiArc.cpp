@@ -132,7 +132,7 @@ namespace blib
 			float len1 = p1.length();
 			float len2 = p2.length();
 			float totalLen = len1 + len2;
-			float pos = f * totalLen;
+            //float pos = f * totalLen;
 
 			float midPoint = len1 / totalLen;
 

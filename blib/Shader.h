@@ -150,16 +150,32 @@ namespace blib
 		template<class T>
 		void setUniformName(T value, const std::string& name, UniformType type)
 		{
-			Uniform* uniform = NULL;
-			switch (type)
-			{
-			case Float:				uniform = new Uniform(name,	sizeof(float), type);			break;
-			case Int:				uniform = new Uniform(name, sizeof(int), type);				break;
-			case Vec2:				uniform = new Uniform(name, sizeof(float)* 2, type);		break;
-			case Vec3:				uniform = new Uniform(name, sizeof(float)* 3, type);		break;
-			case Vec4:				uniform = new Uniform(name, sizeof(float)* 4, type);		break;
-			case Mat3:				uniform = new Uniform(name, sizeof(float)* 3 * 3, type);	break;
-			case Mat4:				uniform = new Uniform(name, sizeof(float)* 4 * 4, type);	break;
+            Uniform* uniform = NULL;
+            switch (type)
+            {
+                case Float:
+                    uniform = new Uniform(name,	sizeof(float), type);
+                    break;
+                case Int:
+                    uniform = new Uniform(name, sizeof(int), type);
+                    break;
+                case Vec2:
+                    uniform = new Uniform(name, sizeof(float)* 2, type);
+                    break;
+                case Vec3:
+                    uniform = new Uniform(name, sizeof(float)* 3, type);
+                    break;
+                case Vec4:
+                    uniform = new Uniform(name, sizeof(float)* 4, type);
+                    break;
+                case Mat3:
+                    uniform = new Uniform(name, sizeof(float)* 3 * 3, type);
+                    break;
+                case Mat4:
+                    uniform = new Uniform(name, sizeof(float)* 4 * 4, type);
+                    break;
+                default:
+                    break;
 			}
 			assert(uniform);
 

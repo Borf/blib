@@ -153,19 +153,21 @@ namespace blib
 					r->renderState.activeShader->setState(r->shaderState);
 
 
-					if (!lastRenderState || lastRenderState->depthTest != r->renderState.depthTest)
+                    if (!lastRenderState || lastRenderState->depthTest != r->renderState.depthTest) {
 						if(r->renderState.depthTest)
 							glEnable(GL_DEPTH_TEST);
 						else
-							glDisable(GL_DEPTH_TEST);
+                            glDisable(GL_DEPTH_TEST);
+                    }
 
-					if (!lastRenderState || lastRenderState->activeFbo != r->renderState.activeFbo)
+                    if (!lastRenderState || lastRenderState->activeFbo != r->renderState.activeFbo) {
 						if(r->renderState.activeFbo == NULL)
 							glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 						else
-							r->renderState.activeFbo->bind();
+                            r->renderState.activeFbo->bind();
+                    }
 
-					if (!lastRenderState || lastRenderState->stencilTestEnabled != r->renderState.stencilTestEnabled || lastRenderState->stencilWrite != r->renderState.stencilWrite)
+                    if (!lastRenderState || lastRenderState->stencilTestEnabled != r->renderState.stencilTestEnabled || lastRenderState->stencilWrite != r->renderState.stencilWrite) {
 						if(r->renderState.stencilTestEnabled)
 						{
 							glEnable(GL_STENCIL_TEST);
@@ -187,7 +189,9 @@ namespace blib
 						{
 							glDisable(GL_STENCIL_TEST);
 							glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
-						}
+                        }
+                    }
+
 #if !defined(BLIB_IOS) && !defined(BLIB_ANDROID) && !defined(BLIB_EMSCRIPTEN)
 					if (!lastRenderState || r->renderState.renderStyle != lastRenderState->renderStyle)
 						glPolygonMode(GL_FRONT_AND_BACK, r->renderState.renderStyle == RenderState::WIREFRAME ? GL_LINE : GL_FILL);
@@ -215,9 +219,9 @@ namespace blib
 					if (!lastRenderState || 
 						r->renderState.blendEnabled != lastRenderState->blendEnabled ||
 						r->renderState.srcBlendColor != lastRenderState->srcBlendColor ||
-						r->renderState.srcBlendAlpha != lastRenderState->srcBlendAlpha ||
-						r->renderState.dstBlendColor != lastRenderState->dstBlendColor ||
-						r->renderState.dstBlendAlpha != lastRenderState->dstBlendAlpha)
+                        r->renderState.srcBlendAlpha != lastRenderState->srcBlendAlpha ||
+                        r->renderState.dstBlendColor != lastRenderState->dstBlendColor ||
+                        r->renderState.dstBlendAlpha != lastRenderState->dstBlendAlpha) {
 						if(r->renderState.blendEnabled)
 						{
 							glEnable(GL_BLEND);
@@ -229,39 +233,46 @@ namespace blib
 							glBlendFuncSeparate(srcBlendColor, dstBlendColor, srcBlendAlpha, dstBlendAlpha);
 							//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
 						}
-						else
-							glDisable(GL_BLEND);
+                        else {
+                            glDisable(GL_BLEND);
+                        }
+
+                    }
 
 					if (!lastRenderState ||
 						r->renderState.scissor != lastRenderState->scissor ||
-						memcmp(r->renderState.scissorArea, lastRenderState->scissorArea, sizeof(int)*4) != 0)
+                        memcmp(r->renderState.scissorArea, lastRenderState->scissorArea, sizeof(int)*4) != 0) {
 						if (r->renderState.scissor)
 						{
 							glEnable(GL_SCISSOR_TEST);
 							glScissor(r->renderState.scissorArea[0], height - r->renderState.scissorArea[1] - r->renderState.scissorArea[3], r->renderState.scissorArea[2], r->renderState.scissorArea[3]);
 						}
-						else
-							glDisable(GL_SCISSOR_TEST);
+                        else {
+                            glDisable(GL_SCISSOR_TEST);
+                        }
+                    }
 
-					if (!lastRenderState || lastRenderState->activeVbo != r->renderState.activeVbo)
-						if(r->renderState.activeVbo)
+                    if (!lastRenderState || lastRenderState->activeVbo != r->renderState.activeVbo) {
+                        if(r->renderState.activeVbo) {
 							r->renderState.activeVbo->bind();
-						else
-							glBindBuffer(GL_ARRAY_BUFFER, 0);
+                        } else {
+                            glBindBuffer(GL_ARRAY_BUFFER, 0);
+                        }
+                    }
 
-					if (!lastRenderState || lastRenderState->activeVio != r->renderState.activeVio)
+                    if (!lastRenderState || lastRenderState->activeVio != r->renderState.activeVio) {
 						if (r->renderState.activeVio)
 							r->renderState.activeVio->bind();
 						else
-							glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+                            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+                    }
 
 
 					if (!lastRenderState || lastRenderState->cullFaces != r->renderState.cullFaces)
 					{
-						if (r->renderState.cullFaces == RenderState::CullFaces::NONE)
+                        if (r->renderState.cullFaces == RenderState::CullFaces::NONE) {
 							glDisable(GL_CULL_FACE);
-						else
-						{
+                        } else {
 							glEnable(GL_CULL_FACE);
 							if (r->renderState.cullFaces == RenderState::CullFaces::CCW)
 								glCullFace(GL_BACK);

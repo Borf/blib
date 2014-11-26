@@ -163,7 +163,8 @@ namespace blib
 					memcpy((char*)&sin.sin_addr.s_addr, host->h_addr_list[0], host->h_length);
 
 					s = socket(AF_INET, SOCK_STREAM, 0);
-					int rc = ::connect(s, (struct sockaddr*) &sin, sizeof(sockaddr_in));
+                    //int rc = ::connect(s, (struct sockaddr*) &sin, sizeof(sockaddr_in));
+                    ::connect(s, (struct sockaddr*) &sin, sizeof(sockaddr_in));
 
 					callback();
 

@@ -3,8 +3,8 @@
 using blib::util::Log;
 
 
-				Window					win;
-				Window					root;
+Window					win;
+Window					root;
 
 
 namespace blib
@@ -83,9 +83,10 @@ namespace blib
 			
 			void Window::tick()
 			{
-//				Log::out<<"WindowTick!"<<Log::newline;
+				Log::out<<"WindowTick - Top!"<<Log::newline;
 				while(XPending(dpy) > 0)
 				{
+					Log::out<<"WindowTick while XPending!"<<Log::newline;
 					XNextEvent(dpy, &xev);
 		
 					if(xev.type == Expose)
@@ -94,7 +95,7 @@ namespace blib
 					}
 					if(xev.type == KeyPress)
 					{
-						exit(0);
+						//exit(0);
 					}
 				}
 			}
