@@ -44,6 +44,8 @@ namespace blib
 			{
 				mouseButtons = 0;
 				this->app = app;
+				x = CW_USEDEFAULT;
+				y = CW_USEDEFAULT;
 			}
 			Window::~Window()
 			{
@@ -79,15 +81,15 @@ namespace blib
 				windowClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 				windowClass.hbrBackground = NULL;
 				windowClass.lpszMenuName = NULL;
-				windowClass.lpszClassName = "asdasdasd";
+				windowClass.lpszClassName = "blib_blib";
 
 				_SetConsoleIcon(LoadIcon(hInstance, MAKEINTRESOURCE(icon))); //scary shit yo
 				if (!RegisterClass(&windowClass)) {
 					Log::out<<"Error loading window class"<<Log::newline;
 					return;
 				}
-				hWnd = CreateWindowEx(dwExStyle, "asdasdasd", title.c_str(), WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | dwStyle,
-					CW_USEDEFAULT, CW_USEDEFAULT, width, height, NULL, NULL, hInstance, this);
+				hWnd = CreateWindowEx(dwExStyle, "blib_blib", title.c_str(), WS_VISIBLE | WS_CLIPCHILDREN | WS_CLIPSIBLINGS | dwStyle,
+					x, y, width, height, NULL, NULL, hInstance, this);
 				if(!hWnd)
 				{
 					Log::out<<"Unable to create window...wtf?"<<Log::newline;

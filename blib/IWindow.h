@@ -34,6 +34,7 @@ namespace blib
 
 		virtual void setTitle(std::string title);
 		virtual void setSize(int width, int height);
+		virtual void moveTo(int x, int y);
 		virtual void setResizable(bool resizable);
 		virtual void setBorder(bool border);
 		virtual bool isOpened();

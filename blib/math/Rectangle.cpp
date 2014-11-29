@@ -126,5 +126,10 @@ namespace blib
 			return o.x * o.y;
 		}
 
+		void Rectangle::moveBy(const glm::vec2 &offset)
+		{
+			topleft += offset;
+			bottomright += offset;
+		}
 	}
 }

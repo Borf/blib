@@ -8,6 +8,7 @@
 #include <blib/JoyState.h>
 #include <blib/util/Thread.h>
 #include <blib/util/Mutex.h>
+#include <blib/math/Rectangle.h>
 
 #include <string.h> //memset
 
@@ -81,8 +82,8 @@ namespace blib
 	// the settings that are needed to set up the app. Changing these during runtime won't do a thing
 	struct AppSetup
 	{
-		//size of the window
-		int width, height;
+		//size and position of the window
+		blib::math::Rectangle window;
 		//should the window have a border
 		bool border;
 		//vsync enabled/disabled
@@ -113,10 +114,8 @@ namespace blib
 		} joystickDriver;
 
 
-		AppSetup()
+		AppSetup() : window(0,0,1280,720)
 		{
-			width = 1280;
-			height = 720;
 			border = false;
 			vsync = false;
 			icon = 0;

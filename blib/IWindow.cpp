@@ -69,6 +69,12 @@ namespace blib
 		return active;
 	}
 
+	void IWindow::moveTo(int x, int y)
+	{
+		this->x = x;
+		this->y = y;
+	}
+
 
 }
 

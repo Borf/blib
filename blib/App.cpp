@@ -218,13 +218,14 @@ namespace blib
 	{
 		Log::out<<"App::createWindow"<<Log::newline;
 		window = new blib::gl::Window(this);
-		window->setSize(appSetup.width, appSetup.height);
+		window->setSize((int)appSetup.window.width(), (int)appSetup.window.height());
+		window->moveTo(appSetup.window.topleft.x, appSetup.window.topleft.y);
 		window->setBorder(appSetup.border);
 		Log::out<<"App::createWindow::Creating window"<<Log::newline;
 		window->create(appSetup.icon, appSetup.title);
 
-		appSetup.width = window->getWidth();
-		appSetup.height = window->getHeight();
+		appSetup.window.bottomright.x = appSetup.window.topleft.x + window->getWidth();
+		appSetup.window.bottomright.y = appSetup.window.topleft.y + window->getHeight();
 
 
 		Log::out<<"App::createWindow::Created window"<<Log::newline;

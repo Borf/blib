@@ -56,6 +56,9 @@ namespace blib
 			void buildLines();
 			ClipperLib::Polygon toClipperPolygon() const;
 			std::vector<p2t::Point*> toP2TPolygon() const;
+			void moveBy(const glm::vec2 &offset);
+			inline void setWidth(float width) {				bottomright.x = topleft.x + width;	};
+			inline void setHeight(float height) {			bottomright.y = topleft.y + height; };
 		};
 	}
 }
