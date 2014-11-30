@@ -59,6 +59,7 @@ namespace blib
 			void moveBy(const glm::vec2 &offset);
 			inline void setWidth(float width) {				bottomright.x = topleft.x + width;	};
 			inline void setHeight(float height) {			bottomright.y = topleft.y + height; };
+			inline void setSize(const glm::vec2 &size) {	bottomright = topleft + size;		};
 		};
 	}
 }
