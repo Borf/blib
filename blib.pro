@@ -9,7 +9,7 @@ CONFIG -= unicode
 
 unix {
     CONFIG += object_with_source
-    CONFIG += object_parallel_to_source
+ #   CONFIG += object_parallel_to_source
 }
 
 DEFINES -= UNICODE
@@ -24,7 +24,7 @@ windows {
 #QMAKE_EXT_CPP += .c
 QMAKE_CXXFLAGS += -Wall -std=c++11
 CONFIG += object_with_source
-CONFIG += object_parallel_to_source
+#CONFIG += object_parallel_to_source
 
 SOURCES += \
     blib/Animation.cpp \
@@ -307,6 +307,6 @@ unix {
 }
 
 windows {
-    SOURCES += blib/platform/win32/window.cpp
-    SOURCES += blib/platform/win32/Registry.cpp
+    SOURCES +=
+    SOURCES +=
 }

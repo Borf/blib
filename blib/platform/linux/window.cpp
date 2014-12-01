@@ -83,10 +83,8 @@ namespace blib
 			
 			void Window::tick()
 			{
-				Log::out<<"WindowTick - Top!"<<Log::newline;
 				while(XPending(dpy) > 0)
 				{
-					Log::out<<"WindowTick while XPending!"<<Log::newline;
 					XNextEvent(dpy, &xev);
 		
 					if(xev.type == Expose)
@@ -95,7 +93,7 @@ namespace blib
 					}
 					if(xev.type == KeyPress)
 					{
-						//exit(0);
+                        exit(0);
 					}
 				}
 			}

@@ -26,7 +26,7 @@ namespace blib
 
 	static void loadChildren(blib::StaticModel::Bone* bone, const blib::json::Value &json)
 	{
-		bone->name = json["name"];
+        bone->name = json["name"].asString();
 		bone->matrix = jsonToMatrix(json["matrix"]);
 		if (!json.isMember("children"))
 			return;
