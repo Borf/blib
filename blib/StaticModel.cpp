@@ -47,6 +47,7 @@ namespace blib
 		json::Value modelData = blib::util::FileSystem::getJson(fileName);
 
 		jsonData = modelData;
+        rootBone = NULL;
 
 		std::string directory = "";
 		if (fileName.find("/") != std::string::npos)
