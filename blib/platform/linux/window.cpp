@@ -1,4 +1,6 @@
 #include "window.h"
+#include <unistd.h>
+
 #include <blib/util/Log.h>
 using blib::util::Log;
 
@@ -48,17 +50,13 @@ namespace blib
 				
 				swa.colormap = cmap;
 				swa.event_mask = ExposureMask | KeyPressMask;
-				
+                Log::out<<"Creating window of " <<width <<" x " <<height<<Log::newline;
 				win = XCreateWindow(dpy, root, 0, 0, width, height, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
-				XMapWindow(dpy, win);
-				XStoreName(dpy, win, title.c_str());
-	
-	
-	
-				glc = glXCreateContext(dpy, vi, NULL, GL_TRUE);
-				glXMakeCurrent(dpy, win, glc);
-				
-				
+                XMapWindow(dpy, win);
+                XStoreName(dpy, win, title.c_str());
+                glc = glXCreateContext(dpy, vi, NULL, GL_FALSE);
+                //makes the screen turn black
+                glXMakeCurrent(dpy, win, glc);
 				glewInit();
 
 				int glVersion[2] = {-1, -1}; // Set some default values for the version
