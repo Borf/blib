@@ -123,6 +123,9 @@ namespace blib
 				));
 		}
 
+		if (modelData.isMember("animations"))
+			animationData = modelData["animations"][0];
+
 
 	}
 

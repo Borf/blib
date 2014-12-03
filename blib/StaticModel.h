@@ -88,6 +88,8 @@ namespace blib
 
 		blib::json::Value jsonData;
 
+		blib::json::Value animationData;
+
 	public:
 		StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer);
 		void draw(RenderState& renderState, Renderer* renderer, int materialUniform);
