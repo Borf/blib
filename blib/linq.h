@@ -197,6 +197,8 @@ namespace blib
 				{
 					delete *it;
 					it = data.erase(it);
+					if (it == data.end())
+						break;
 				}
 			}
 		}
