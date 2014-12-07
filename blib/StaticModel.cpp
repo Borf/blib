@@ -28,6 +28,8 @@ namespace blib
 	{
         bone->name = json["name"].asString();
 		bone->matrix = jsonToMatrix(json["matrix"]);
+		if (json.isMember("offset"))
+			bone->offsetMatrix = jsonToMatrix(json["offset"]);
 		if (!json.isMember("children"))
 			return;
 
