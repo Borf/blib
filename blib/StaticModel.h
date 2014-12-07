@@ -66,6 +66,8 @@ namespace blib
 		public:
 			std::string name;
 			glm::mat4 matrix;
+			glm::mat4 animMatrix;
+
 //			glm::mat4 origin;
 			Bone* parent;
 

@@ -80,6 +80,20 @@ namespace blib
 				return ret;
 			}
 
+			template<class F>
+			child* get(F func)
+			{
+				if (func((child*)this))
+					return (child*)this;
+				for (typename std::list<child*>::iterator it = children.begin(); it != children.end(); it++)
+				{
+					child* ret = (*it)->get(func);
+					if (ret)
+						return ret;
+				}
+				return NULL;
+			}
+
 		};
 	}
 }
