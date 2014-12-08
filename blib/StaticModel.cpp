@@ -61,18 +61,29 @@ namespace blib
 			directory = fileName.substr(0, fileName.rfind("/"));
 
 
-		
+#if 0
 		blib::VertexP3T2N3 vertex;
 		float* current = &vertex.position.x;
 		float* end = (&vertex.normal.z) + 1;
+#else
+		blib::VertexP3T2N3B4B4 vertex;
+		float* current = &vertex.position.x;
+		float* end = (&vertex.boneWeights.w) + 1;
+#endif
 
 		//std::vector<blib::VertexP3T2N3> vertices;
+		int i = 0;
 		for (float f : modelData["vertices"])
 		{
-			*current = f;
+			if (i >= 8 && i < 8 + 4)
+				*((int*)current) = f;
+			else
+				*current = f;
 			current++;
+			i++;
 			if (current == end)
 			{
+				i = 0;
 				vertices.push_back(vertex);
 				current = &vertex.position.x;
 			}
@@ -123,7 +134,8 @@ namespace blib
 			meshes.push_back(newMesh);
 		}
 		vbo = resourceManager->getResource<blib::VBO>();
-		vbo->setVertexFormat<blib::VertexP3T2N3>();
+		//vbo->setVertexFormat<blib::VertexP3T2N3>();
+		vbo->setVertexFormat<blib::VertexP3T2N3B4B4>();
 		renderer->setVbo(vbo, vertices);
 
 		vio = resourceManager->getResource<blib::VIO>();
@@ -157,7 +169,9 @@ namespace blib
 		{
 			renderState.activeShader->setUniformStruct(materialUniform, m->material);
 			renderState.activeTexture[0] = m->material.texture;
-			renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
+			//renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
+			renderer->drawIndexedTriangles<VertexP3T2N3B4B4>(m->begin, m->count, renderState);
+
 		}
 
 		renderState.activeVio = NULL;

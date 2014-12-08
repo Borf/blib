@@ -58,6 +58,35 @@ namespace blib
 	int className::size() { return base::size() + count*sizeof(GL_FLOAT); }\
 
 
+#define VertexDefi(className, memberName, memberType, count, base)	\
+	void className::setAttribPointers(bool enabledVertexAttributes[10], void* offset, int *index, int totalSize) \
+{\
+	int tmpIndex = 0;\
+	if(!index)\
+	index = &tmpIndex;\
+	base::setAttribPointers(enabledVertexAttributes, offset, index, totalSize);\
+	if(!enabledVertexAttributes[*index]/* && glEnableVertexAttribArray*/)\
+	glEnableVertexAttribArray(*index);\
+	enabledVertexAttributes[*index] = true;\
+/*	if(glVertexAttribPointer)*/\
+	glVertexAttribIPointer((*index)++, count, GL_INT, totalSize, (void*)((char*)offset + base::size()));\
+	if(index == &tmpIndex)\
+{\
+	for(int i = *index; i < 10; i++)\
+	if(enabledVertexAttributes[i])\
+{\
+	enabledVertexAttributes[i] = false;\
+/*	if(glDisableVertexAttribArray)*/\
+	glDisableVertexAttribArray(i);\
+}\
+}\
+}\
+	int className::size() { return base::size() + count*sizeof(GL_INT); }\
+
+
+
+
+
 
 VertexDefBegin(VertexP3,								position,	glm::vec3, 3, Vertex)
 	VertexP3(glm::vec3 position) : position(position) {};
@@ -158,6 +187,17 @@ VertexDefEnd();
 VertexDefBegin(VertexP2T2C4,								color,		glm::vec4, 4, VertexP2T2)
 	VertexP2T2C4(glm::vec2 position, glm::vec2 texCoord, glm::vec4 color) : VertexP2T2(position, texCoord), color(color) {};
 VertexDefEnd();
+
+
+
+VertexDefBegin(VertexP3T2N3B4, boneIds, glm::ivec4, 4, VertexP3T2N3)
+	VertexP3T2N3B4(glm::vec3 position, glm::vec2 texCoord, glm::vec3 normal, glm::ivec4 boneIds) : VertexP3T2N3(position, texCoord, normal), boneIds(boneIds) {};
+VertexDefEnd();
+
+VertexDefBegin(VertexP3T2N3B4B4, boneWeights, glm::vec4, 4, VertexP3T2N3B4)
+	VertexP3T2N3B4B4(glm::vec3 position, glm::vec2 texCoord, glm::vec3 normal, glm::ivec4 boneIds, glm::vec4 boneWeights) : VertexP3T2N3B4(position, texCoord, normal, boneIds), boneWeights(boneWeights) {};
+VertexDefEnd();
+
 
 
 }

@@ -89,7 +89,8 @@ namespace blib
 		VIO* vio;
 		std::vector<Mesh*> meshes;
 
-		std::vector<blib::VertexP3T2N3> vertices;
+		//std::vector<blib::VertexP3T2N3> vertices;
+		std::vector<blib::VertexP3T2N3B4B4> vertices;
 
 
 		blib::json::Value jsonData;
