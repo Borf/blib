@@ -30,6 +30,11 @@ namespace blib
 		bone->matrix = jsonToMatrix(json["matrix"]);
 		if (json.isMember("offset"))
 			bone->offsetMatrix = jsonToMatrix(json["offset"]);
+		if (json.isMember("boneid"))
+			bone->boneId = json["boneid"];
+		else
+			bone->boneId = -1;
+
 		if (!json.isMember("children"))
 			return;
 
@@ -91,7 +96,7 @@ namespace blib
 
 			if (mesh["material"]["texture"].asString() == "")
 				newMesh->material.texture = NULL;
-			else if (mesh["material"]["texture"].asString() != "level1/armour_table_top.jpg")
+			else //if (mesh["material"]["texture"].asString() != "level1/armour_table_top.jpg")
 			{
 				newMesh->material.texture = resourceManager->getResource<blib::Texture>(directory + "/" + mesh["material"]["texture"].asString());
 				newMesh->material.texture->setTextureRepeat(true);
@@ -102,6 +107,16 @@ namespace blib
 				rootBone = new Bone();
 				loadChildren(rootBone, mesh["bones"]);
 			}
+
+			if (rootBone)
+				rootBone->foreach([this](blib::StaticModel::Bone* bone) {
+					if (bone->boneId == -1)
+						return;
+					if (bone->boneId >= bones.size())
+						bones.resize(bone->boneId+1, NULL);
+					bones[bone->boneId] = bone;
+				});
+
 
 			newMesh->begin = start;
 			newMesh->count = end - start;

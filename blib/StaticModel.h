@@ -74,9 +74,10 @@ namespace blib
 //			glm::mat4 origin;
 			Bone* parent;
 
-			bool isBone;
+			int boneId;
 		};
 
+		std::vector<Bone*> bones;
 		Bone* rootBone;
 
 		std::vector<blib::math::Triangle3> triangles;
