@@ -37,6 +37,7 @@ namespace blib
 			font		= std::bind(&ResourceManager::getFont, this, std::placeholders::_1);
 		}
 
+
 		blib::Renderer* ResourceManager::getRenderer()
 		{
 			return new blib::gl::Renderer();

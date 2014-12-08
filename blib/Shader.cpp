@@ -112,11 +112,22 @@ namespace blib
 			uniforms[i] = NULL;
 	}
 
+	Shader::~Shader()
+	{
+		if (uniformData)
+			delete[] uniformData;
+		if (activeUniformData)
+			delete[] activeUniformData;
+		for (int i = 0; i < 16; i++)
+			delete uniforms[i];
+	}
+
+
 	void Shader::finishUniformSetup()
 	{
 		uniformData = new char[uniformSize];
 		activeUniformData = new char[uniformSize];
-		memset(activeUniformData, 0, uniformSize);
+		memset(uniformData, 0, uniformSize);
 		memset(activeUniformData, 0, uniformSize);
 	}
 

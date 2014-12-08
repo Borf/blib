@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include "Resource.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -11,7 +11,7 @@
 
 namespace blib
 {
-	class Shader
+	class Shader : public Resource
 	{
 	public:
 		std::map<std::string, int> attributes;
@@ -145,6 +145,7 @@ namespace blib
 		int uniformSize;
 		Uniform* uniforms[32];
 		Shader();
+		~Shader();
 
 
 		template<class T>

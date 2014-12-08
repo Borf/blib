@@ -29,7 +29,11 @@ namespace blib
 	class Renderer
 	{
 	public:
-		virtual ~Renderer(){};
+		virtual ~Renderer()
+		{
+			delete[] vertices[0];
+			delete[] vertices[1];
+		};
 	protected:
 		bool enabledVertexAttributes[10];
 

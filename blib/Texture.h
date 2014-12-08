@@ -1,12 +1,13 @@
 #pragma once
 
+#include "Resource.h"
 #include <glm/glm.hpp>
 #include <map>
 #include <string>
 
 namespace blib
 {
-	class Texture
+	class Texture : public Resource
 	{
 	public:
 		enum LoadOptions

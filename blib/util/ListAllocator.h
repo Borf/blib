@@ -13,6 +13,7 @@ namespace blib
 		{
 		public:
 			ListNodeBase* next;
+			virtual ~ListNodeBase() {};
 		};
 
 		template<class T>
@@ -20,6 +21,7 @@ namespace blib
 		{
 		public:
 			T* data;
+			virtual ~ListNode() { delete data; }
 		};
 
 
@@ -30,6 +32,22 @@ namespace blib
 
 			std::vector<ListNodeBase*> data;
 			std::vector<ListNodeBase*> first;
+
+			~ListAllocator()
+			{
+				for (auto a : first)
+				{
+					ListNodeBase* b = a;
+					while (b)
+					{
+						ListNodeBase* c = b->next;
+						delete b;
+						b = c;
+					}
+				}
+				first.clear();
+				data.clear();
+			}
 
 
 			template<class T> 

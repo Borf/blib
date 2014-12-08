@@ -1,6 +1,7 @@
 #include "Window.h"
 
 
+#include <blib/linq.h>
 #include <blib/KeyListener.h>
 #include <blib/MouseListener.h>
 #include <blib/util/Log.h>
@@ -61,6 +62,8 @@ namespace blib
 
 	IWindow::~IWindow()
 	{
+		blib::linq::deleteall(mouseListeners);
+		blib::linq::deleteall(keyListeners);
 		Log::out<<"Window Destroyed"<<Log::newline;
 	}
 

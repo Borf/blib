@@ -2,7 +2,16 @@
 
 #include <functional>
 #include <string>
+#include <map>
 #include <blib/VBO.h>
+
+#include <blib/Texture.h>
+#include <blib/SpriteSheet.h>
+#include <blib/Shader.h>
+#include <blib/VIO.h>
+#include <blib/VBO.h>
+#include <blib/FBO.h>
+#include <blib/Font.h>
 
 namespace blib
 {
@@ -20,11 +29,13 @@ namespace blib
 	class ResourceManager
 	{
 	public:
-		ResourceManager()
-		{
-//			renderer = NULL;
-//			texture = NULL;
-		}
+		std::map<Resource*, int> resources;
+		virtual Resource* regResource(Resource* resource);
+		virtual void dispose(Resource* resource);
+
+		ResourceManager();
+		virtual ~ResourceManager();
+
 		template<class T>
 		inline T* getResource(const std::string &name)
 		{
@@ -73,60 +84,60 @@ namespace blib
 	template<>
 	inline Texture* ResourceManager::getResource<Texture>(int loadOptions, const std::string &name)
 	{
-		return texture(name, loadOptions);
+		return (Texture*)regResource(texture(name, loadOptions));
 	}
 	template<>
 	inline Texture* ResourceManager::getResource<Texture>(const std::string &name)
 	{
-		return texture(name, 0);
+		return (Texture*)regResource(texture(name, 0));
 	}
 	template<>
 	inline Texture* ResourceManager::getResource<Texture>(int width, int height)
 	{
-		return emptyTexture(width, height);
+		return (Texture*)regResource(emptyTexture(width, height));
 	}
 	template<>
 	inline SpriteSheet* ResourceManager::getResource<SpriteSheet>(const std::string &name)
 	{
-		return spritesheet(name);
+		return (SpriteSheet*)regResource(spritesheet(name));
 	}
 	template<>
 	inline TextureMap* ResourceManager::getResource<TextureMap>()
 	{
-		return texturemap();
+		return (TextureMap*)regResource(texturemap());
 	}
 	template<>
 	inline Shader* ResourceManager::getResource<Shader>(const std::string &name)
 	{
-		return shader(name);
+		return (Shader*)regResource(shader(name));
 	}	
 
 	template<>
 	inline Font* ResourceManager::getResource<Font>(const std::string &name)
 	{
-		return font(name);
+		return (Font*)regResource(font(name));
 	}
 
 	template<>
 	inline Shader* ResourceManager::getResource<Shader>()
 	{
-		return emptyshader();
+		return (Shader*)regResource(emptyshader());
 	}
 
 	template<>
 	inline VBO* ResourceManager::getResource<VBO>()
 	{
-		return vbo();
+		return (VBO*)regResource(vbo());
 	}
 	template<>
 	inline VIO* ResourceManager::getResource<VIO>()
 	{
-		return vio();
+		return (VIO*)regResource(vio());
 	}
 	template<>
 	inline FBO* ResourceManager::getResource<FBO>()
 	{
-		return fbo();
+		return (FBO*)regResource(fbo());
 	}
 
 

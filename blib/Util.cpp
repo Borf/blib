@@ -180,6 +180,7 @@ namespace blib
 		{
 #ifdef BLIB_WIN
             TCHAR szPath[MAX_PATH];
+			ZeroMemory(szPath, MAX_PATH);
             SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, szPath);
 
 #ifdef UNICODE

@@ -1,8 +1,10 @@
 #pragma once
 
+#include <blib/Resource.h>
+
 namespace blib
 {
-	class VBO
+	class VBO : public Resource
 	{
 	protected:
 		int (*elementSize)();

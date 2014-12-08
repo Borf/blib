@@ -46,6 +46,7 @@ namespace blib
 				this->app = app;
 				x = CW_USEDEFAULT;
 				y = CW_USEDEFAULT;
+				lastButton = -1;
 			}
 			Window::~Window()
 			{

@@ -112,7 +112,7 @@ namespace blib
 				rootBone->foreach([this](blib::StaticModel::Bone* bone) {
 					if (bone->boneId == -1)
 						return;
-					if (bone->boneId >= bones.size())
+					if (bone->boneId >= (int)bones.size())
 						bones.resize(bone->boneId+1, NULL);
 					bones[bone->boneId] = bone;
 				});

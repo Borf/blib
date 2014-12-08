@@ -1,9 +1,10 @@
 #pragma once
 
+#include <blib/Resource.h>
 
 namespace blib
 {
-	class VIO
+	class VIO : public Resource
 	{
 	protected:
 		int elementSize;

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <map>
+#include <blib/Resource.h>
 
 namespace blib
 {
@@ -16,7 +17,7 @@ namespace blib
 	};
 
 
-	class Font
+	class Font : public Resource
 	{
 		static std::map<std::string, Font*> fonts;
 		static Font* getFontInstance(std::string name, ResourceManager* resourceManager);

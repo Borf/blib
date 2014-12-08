@@ -1,6 +1,7 @@
 #include "FileSystem.h"
 #include <blib/util/Log.h>
 #include <blib/json.h>
+#include <blib/linq.h>
 #include <fstream>
 #include <iostream>
 
@@ -257,6 +258,11 @@ namespace blib
 			if (file)
 				delete file;
 			return e;
+		}
+
+		void FileSystem::dispose()
+		{
+			blib::linq::deleteall(handlers);
 		}
 
 

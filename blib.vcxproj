@@ -68,6 +68,7 @@
     <ClInclude Include="blib\platform\win32\window.h" />
     <ClInclude Include="blib\Renderer.h" />
     <ClInclude Include="blib\RenderState.h" />
+    <ClInclude Include="blib\Resource.h" />
     <ClInclude Include="blib\ResourceManager.h" />
     <ClInclude Include="blib\Shader.h" />
     <ClInclude Include="blib\Shapes.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="blib\platform\win32\window.cpp" />
     <ClCompile Include="blib\Renderer.cpp" />
     <ClCompile Include="blib\RenderState.cpp" />
+    <ClCompile Include="blib\ResourceManager.cpp" />
     <ClCompile Include="blib\Shader.cpp" />
     <ClCompile Include="blib\Shapes.cpp" />
     <ClCompile Include="blib\SpriteBatch.cpp" />

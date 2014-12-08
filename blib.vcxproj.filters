@@ -520,6 +520,7 @@
     <ClInclude Include="blib\util\net.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="blib\Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -876,6 +877,7 @@
     <ClCompile Include="blib\util\net.cpp">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="blib\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">
