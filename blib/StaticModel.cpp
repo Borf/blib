@@ -35,12 +35,19 @@ namespace blib
 		else
 			bone->boneId = -1;
 
+		if (bone->parent)
+			bone->worldMatrix = bone->parent->worldMatrix * bone->matrix;
+		else
+			bone->worldMatrix = bone->matrix;
+
+
 		if (!json.isMember("children"))
 			return;
 
 		for (const blib::json::Value& b : json["children"])
 		{
 			blib::StaticModel::Bone* newBone = new blib::StaticModel::Bone();
+			newBone->parent = bone;
 			bone->children.push_back(newBone);
 			loadChildren(newBone, b);
 			
@@ -116,6 +123,7 @@ namespace blib
 			if (mesh.isMember("bones"))
 			{
 				rootBone = new Bone();
+				rootBone->parent = NULL;
 				loadChildren(rootBone, mesh["bones"]);
 			}
 
@@ -155,6 +163,7 @@ namespace blib
 		if (modelData.isMember("animations"))
 			animationData = modelData["animations"][0];
 
+		
 
 	}
 

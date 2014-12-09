@@ -66,6 +66,8 @@ namespace blib
 		public:
 			std::string name;
 			glm::mat4 matrix;
+			glm::mat4 worldMatrix; //matrix * parent->matrix....
+
 			glm::mat4 offsetMatrix;
 			glm::mat4 animMatrix;
 			glm::mat4 FinalTransformation;
