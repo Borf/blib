@@ -305,6 +305,7 @@ namespace blib
 						glEnable(GL_POINT_SPRITE);
 						glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
 #endif
+						glPointSize(10);
 						glDrawArrays(GL_POINTS, start, r->vertexCount());
 					}
 					else if (r->command == Render::DrawIndexedTriangles)
