@@ -27,6 +27,7 @@ namespace blib
 			Mat3,
 			Mat4,
 			Struct,
+			Array,
 		};
 		
 		class Uniform
@@ -68,6 +69,14 @@ namespace blib
 			std::vector<Uniform*> members;
 		};
 
+
+		class ArrayUniform : public Uniform
+		{
+		public:
+			ArrayUniform(const std::string &name) : Uniform(name, 0, Array) {};
+
+			std::vector<Uniform*> members;
+		};
 
 
 		
@@ -148,38 +157,43 @@ namespace blib
 		~Shader();
 
 
+		Uniform* buildUniform(const std::string &name, UniformType type)
+		{
+			Uniform* uniform = NULL;
+			switch (type)
+			{
+			case Float:
+				uniform = new Uniform(name, sizeof(float), type);
+				break;
+			case Int:
+				uniform = new Uniform(name, sizeof(int), type);
+				break;
+			case Vec2:
+				uniform = new Uniform(name, sizeof(float)* 2, type);
+				break;
+			case Vec3:
+				uniform = new Uniform(name, sizeof(float)* 3, type);
+				break;
+			case Vec4:
+				uniform = new Uniform(name, sizeof(float)* 4, type);
+				break;
+			case Mat3:
+				uniform = new Uniform(name, sizeof(float)* 3 * 3, type);
+				break;
+			case Mat4:
+				uniform = new Uniform(name, sizeof(float)* 4 * 4, type);
+				break;
+			default:
+				break;
+			}
+			assert(uniform);
+			return uniform;
+		}
+
 		template<class T>
 		void setUniformName(T value, const std::string& name, UniformType type)
 		{
-            Uniform* uniform = NULL;
-            switch (type)
-            {
-                case Float:
-                    uniform = new Uniform(name,	sizeof(float), type);
-                    break;
-                case Int:
-                    uniform = new Uniform(name, sizeof(int), type);
-                    break;
-                case Vec2:
-                    uniform = new Uniform(name, sizeof(float)* 2, type);
-                    break;
-                case Vec3:
-                    uniform = new Uniform(name, sizeof(float)* 3, type);
-                    break;
-                case Vec4:
-                    uniform = new Uniform(name, sizeof(float)* 4, type);
-                    break;
-                case Mat3:
-                    uniform = new Uniform(name, sizeof(float)* 3 * 3, type);
-                    break;
-                case Mat4:
-                    uniform = new Uniform(name, sizeof(float)* 4 * 4, type);
-                    break;
-                default:
-                    break;
-			}
-			assert(uniform);
-
+			Uniform* uniform = buildUniform(name, type);
 			uniforms[(int)value] = uniform;
 			uniformCount = glm::max(uniformCount, (int)value + 1);
 			uniform->index = uniformSize+1;
@@ -213,6 +227,23 @@ namespace blib
 			}*/
 		}
 
+		template<class T>
+		void setUniformArray(T value, const std::string &name, int size, UniformType type)
+		{
+			ArrayUniform* u = new ArrayUniform(name);
+			uniforms[(int)value] = u;
+			uniformCount = glm::max(uniformCount, (int)value + 1);
+
+			for (int i = 0; i < size; i++)
+			{
+				Uniform* uniform = buildUniform(name + "[" + blib::util::toString(i) + "]", type);
+				u->members.push_back(uniform);
+				uniformCount = glm::max(uniformCount, (int)value + 1);
+				uniform->index = uniformSize + 1;
+				uniformSize += uniform->size + 1;
+			}
+		}
+
 
 		template <class Enum>
 		inline void setUniformStruct(Enum name,		const UniformStructBase& value)
@@ -241,6 +272,15 @@ namespace blib
 		{
 			assert(uniformData);
 			return uniforms[(int)name]->get<T>(uniformData);
+		}
+
+
+		template <class T, class Enum>
+		inline void setUniform(Enum name, int index, const T& value)
+		{
+			assert(uniformData);
+			assert(uniforms[(int)name]->type == Array);
+			return ((ArrayUniform*)uniforms[(int)name])->members[index]->set(uniformData, value);
 		}
 
 		virtual void use() = 0;

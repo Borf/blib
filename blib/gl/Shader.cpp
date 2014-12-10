@@ -98,6 +98,18 @@ namespace blib
 									Log::out << "Error: uniform " << uniformStruct->members[ii]->name << " not found in shader" << Log::newline;
 							}
 						}
+						else if (uniforms[i]->type == Array)
+						{//todo: add more recursive way of doing this
+							ArrayUniform* uniformStruct = (ArrayUniform*)uniforms[i];
+
+							for (size_t ii = 0; ii < uniformStruct->members.size(); ii++)
+							{
+								uniformStruct->members[ii]->id = glGetUniformLocation(programId, uniformStruct->members[ii]->name.c_str());
+								if (uniformStruct->members[ii]->id == -1)
+									Log::out << "Error: uniform " << uniformStruct->members[ii]->name << " not found in shader" << Log::newline;
+							}
+
+						}
 						else
 						{
 							uniforms[i]->id = glGetUniformLocation(programId, uniforms[i]->name.c_str());

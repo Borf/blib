@@ -63,8 +63,16 @@ namespace blib
 			break;
 		case Shader::Struct:
 		{
-
 			Shader::StructUniform* uniformStruct = (Shader::StructUniform*)uniform;
+			for (size_t i = 0; i < uniformStruct->members.size(); i++)
+			{
+				setUniform_(uniformStruct->members[i], state, activeUniformData);
+			}
+		}
+			break;
+		case Shader::Array:
+		{
+			Shader::ArrayUniform* uniformStruct = (Shader::ArrayUniform*)uniform;
 			for (size_t i = 0; i < uniformStruct->members.size(); i++)
 			{
 				setUniform_(uniformStruct->members[i], state, activeUniformData);

@@ -59,7 +59,7 @@ namespace blib
 			}
 			virtual ~Render() {};
 			RenderState renderState;
-			char shaderState[1024];
+			char shaderState[1024*8];
 
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex) = 0;
 			virtual int vertexCount() = 0;
