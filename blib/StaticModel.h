@@ -58,7 +58,6 @@ namespace blib
 			int begin;
 			int count;
 			blib::json::Value jsonData;
-
 		};
 	public:
 		class Bone : public blib::util::DynTree < Bone >
