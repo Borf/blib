@@ -521,7 +521,7 @@
       <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="blib\Resource.h" />
-    <ClInclude Include="blib\SkelAnimatedMesh.h" />
+    <ClInclude Include="blib\SkelAnimatedModel.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -879,7 +879,7 @@
       <Filter>util</Filter>
     </ClCompile>
     <ClCompile Include="blib\ResourceManager.cpp" />
-    <ClCompile Include="blib\SkelAnimatedMesh.cpp" />
+    <ClCompile Include="blib\SkelAnimatedModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">
