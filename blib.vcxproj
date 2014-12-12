@@ -47,6 +47,7 @@
     <ClInclude Include="blib\KeyListener.h" />
     <ClInclude Include="blib\LineBatch.h" />
     <ClInclude Include="blib\linq.h" />
+    <ClInclude Include="blib\Material.h" />
     <ClInclude Include="blib\Math.h" />
     <ClInclude Include="blib\math\AABB.h" />
     <ClInclude Include="blib\math\ArcPath.h" />

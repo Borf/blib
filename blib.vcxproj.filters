@@ -522,6 +522,7 @@
     </ClInclude>
     <ClInclude Include="blib\Resource.h" />
     <ClInclude Include="blib\SkelAnimatedModel.h" />
+    <ClInclude Include="blib\Material.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
