@@ -672,6 +672,11 @@ namespace blib
 			window->y = (screenSize.y - window->height) / 2;
 		}
 
+		bool WM::inWindow(const glm::ivec2 &pos)
+		{
+			return inWindow(pos.x, pos.y);
+		}
+
 		bool WM::inWindow(int x, int y)
 		{
 			if (radialMenu)

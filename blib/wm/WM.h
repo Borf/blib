@@ -88,6 +88,7 @@ namespace blib
 
 
 			bool inWindow(int x, int y);
+			bool inWindow(const glm::ivec2 &pos);
 			json::Value skin;
 			Texture* skinTexture;
 			Font* font;
