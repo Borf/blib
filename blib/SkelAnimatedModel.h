@@ -4,8 +4,8 @@
 #include <vector>
 #include <map>
 #include <blib/gl/Vertex.h>
-#include <blib/Shader.h>
 #include <blib/Material.h>
+#include <blib/util/Tree.h>
 #include <glm/gtc/quaternion.hpp>
 
 namespace blib
@@ -15,16 +15,24 @@ namespace blib
 	class RenderState;
 	class Renderer;
 	class Texture;
+	class ResourceManager;
 
+	namespace json { class Value;  };
 
 
 
 	class SkelAnimatedModel
 	{
-		class Bone
+		class Bone : public blib::util::DynTree<Bone>
 		{
 		public:
+			Bone(const json::Value& value);
+			Bone* parent;
+			std::string name;
+			glm::mat4 matrix;
+
 			int index;
+			glm::mat4* offset;
 		};
 
 		class Animation
@@ -63,7 +71,7 @@ namespace blib
 		class State
 		{
 		public:
-			SkelAnimatedModel* mesh;
+			SkelAnimatedModel* model;
 			double time;
 			std::vector<glm::mat4> boneMatrices;
 			Animation* currentAnimation;
@@ -81,16 +89,20 @@ namespace blib
 
 		blib::VBO* vbo;
 		blib::VIO* vio;
+		std::vector<Mesh*> meshes;
 
 		Bone* rootBone;
+		std::vector<Bone*> bones;
 		std::map<std::string, Animation*> animations;
-
-
-
 		std::vector<State*> states;
+
+		void loadModel(const std::string & modelFile, blib::ResourceManager* resourceManager, blib::Renderer* renderer);
+		void loadSkeleton(const std::string & boneFile);
+
+
 	public:
-		SkelAnimatedModel(const std::string &meshFile, const std::string &boneFile);
-		void loadAnimation(const std::string fileName);
+		SkelAnimatedModel(const std::string &meshFile, const std::string &boneFile, blib::ResourceManager* resourceManager, blib::Renderer* renderer);
+		void loadAnimation(const std::string &fileName);
 
 		State* getNewState();
 		void disposeState(State* state); // the state could just be deleted or copied too...
