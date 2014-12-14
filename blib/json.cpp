@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cmath>
 #include <cfloat>
+#include <set>
 
 namespace blib
 {
@@ -491,7 +492,7 @@ namespace blib
 			return stream;
 		}
 
-		std::ostream& Value::prettyPrint(std::ostream& stream, blib::json::Value& printConfig, int level)
+		std::ostream& Value::prettyPrint(std::ostream& stream, blib::json::Value& printConfig, int level) const
 		{
 			stream << std::fixed << std::setprecision(6);
 			switch (type)
@@ -549,7 +550,17 @@ namespace blib
 							indent(stream, level + 1);
 						}
 					}
-					v.prettyPrint(stream, printConfig.isNull() ? blib::json::Value::null : printConfig["elements"], level + 1);
+
+					blib::json::Value childPrintConfig = blib::json::Value::null;
+					if (!printConfig.isNull())
+					{
+						if (printConfig.isMember("elements"))
+							childPrintConfig = printConfig["elements"];
+						else if (printConfig.isMember("recursive") && printConfig["recursive"].asBool() == true)
+							childPrintConfig = printConfig;
+					}
+
+					v.prettyPrint(stream, childPrintConfig, level + 1);
 					index++;
 				}
                 if ((long)size() > wrap)
@@ -581,7 +592,11 @@ namespace blib
 
 				int index = 0;
 				indent(stream, level + 1);
-				for (auto v : *value.objectValue)
+
+
+
+				//for (auto v : *value.objectValue)
+				auto printEl = [&](const std::pair<const std::string&, const Value&> v)
 				{
 					if (index > 0)
 					{
@@ -607,9 +622,42 @@ namespace blib
 						stream << "\n";
 						indent(stream, level + 1);
 					}
-					v.second.prettyPrint(stream, printConfig.isNull() ? blib::json::Value::null : printConfig[v.first], level + 1);;
+
+					blib::json::Value childPrintConfig = blib::json::Value::null;
+					if (!printConfig.isNull())
+					{
+						if (printConfig.isMember(v.first))
+							childPrintConfig = printConfig[v.first];
+						else if (printConfig.isMember("recursive") && printConfig["recursive"].asBool() == true)
+							childPrintConfig = printConfig;
+					}
+
+					v.second.prettyPrint(stream, childPrintConfig, level + 1);;
 					index++;
+				};
+
+
+
+				std::set<std::string> printed;
+				if (!printConfig.isNull())
+				{
+					if (printConfig.isMember("sort"))
+					{
+						for (std::string el : printConfig["sort"])
+						{
+							if (isMember(el))
+							{
+								printEl(std::pair<const std::string&, const Value&>(el, (*value.objectValue)[el]));
+								printed.insert(el);
+							}
+						}
+					}
 				}
+
+				for (auto v : *value.objectValue)
+					if (printed.find(v.first) == printed.end())
+						printEl(v);
+
 				stream << "\n";
 				indent(stream, level);
 				stream << "}";

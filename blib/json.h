@@ -85,7 +85,7 @@ namespace blib
 			virtual Value& operator [] (const char* key) const;
 
 
-			std::ostream& prettyPrint(std::ostream& stream, blib::json::Value& printConfig = null, int level = 0);
+			std::ostream& prettyPrint(std::ostream& stream, blib::json::Value& printConfig = null, int level = 0) const;
 
 		private:
 			class Iterator
