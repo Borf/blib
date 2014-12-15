@@ -152,7 +152,7 @@ namespace blib
 					onResize(width, height);
 					break;
 				case WM_DESTROY:
-					PostQuitMessage(0);
+					//PostQuitMessage(0);
 					app->running = false;
 					break;
 				case WM_SYSKEYDOWN:

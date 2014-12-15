@@ -85,25 +85,24 @@ namespace blib
 		if (appSetup.threaded)
 		{
 			renderThread->semaphore->signal();
-			updateThread->semaphore->signal();
-			updateThread->waitForTermination();
 			renderThread->waitForTermination();
+			window->makeCurrent();
 		}
-
 		if (joystickDriver)
 			delete joystickDriver;
 		joystickDriver = NULL;
 
-		delete window;
-
 		delete resourceManager;
-
 		delete spriteBatch;
 		delete lineBatch;
 		delete renderer;
+		delete window;
 
 		if (appSetup.threaded)
 		{
+			updateThread->semaphore->signal();
+			updateThread->waitForTermination();
+
 			delete semaphore;
 			delete renderThread;
 			delete updateThread;
@@ -187,6 +186,7 @@ namespace blib
 		blib::util::Profiler::startFrame();
 		if (looping)
 			run();
+
 	}
 
 	void App::run()
@@ -375,6 +375,7 @@ namespace blib
 			app->semaphore->signal();
 		}
 		app->semaphore->signal();
+		app->window->unmakeCurrent();
 		return 0;
 	}
 
@@ -412,7 +413,7 @@ namespace blib
 			app->update(elapsedTime);
 			if(!app->running) {
 					
-				Log::out<<"I stopped running, Why?"<<Log::newline;
+				Log::out<<"I stopped running2, Why?"<<Log::newline;
 				break;
 			}
 
