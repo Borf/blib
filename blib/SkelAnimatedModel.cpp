@@ -4,6 +4,9 @@
 #include <blib/ResourceManager.h>
 #include <blib/Renderer.h>
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+
 namespace blib
 {
 	static glm::mat4 jsonToMatrix(const blib::json::Value &v)
@@ -94,6 +97,15 @@ namespace blib
 	{
 		const blib::json::Value boneData = blib::util::FileSystem::getJson(boneFile);
 		rootBone = new Bone(boneData);
+		
+		rootBone->foreach([this](Bone* b)
+		{
+			if (b->index < 0)
+				return;
+			if (b->index > (int)bones.size())
+				bones.resize(b->index + 1);
+			bones[b->index] = b;
+		});
 	}
 
 
@@ -111,6 +123,14 @@ namespace blib
 		totalTime = data["length"];
 		for (auto c : data["streams"])
 			streams.push_back(Stream(c, rootBone));
+	}
+
+	SkelAnimatedModel::Animation::Stream* SkelAnimatedModel::Animation::getStream(const SkelAnimatedModel::Bone* bone)
+	{
+		for (size_t i = 0; i < streams.size(); i++)
+			if (streams[i].bone == bone)
+				return &streams[i];
+		return NULL;
 	}
 
 	SkelAnimatedModel::Animation::Stream::Stream(const json::Value &data, Bone* rootBone)
@@ -172,9 +192,9 @@ namespace blib
 			currentAnimation = this->model->animations.begin()->second;
 		time += elapsedTime;
 		time = fmod(time, this->currentAnimation->totalTime);
-
-
-		//rootBone->update()
+		
+		
+		model->rootBone->update(this->boneMatrices, (float)time, currentAnimation);
 
 	}
 
@@ -219,6 +239,75 @@ namespace blib
 				child->parent = this;
 				children.push_back(child);
 			}
+
+	}
+
+	void SkelAnimatedModel::Bone::update(std::vector<glm::mat4> &boneMatrices, float time, Animation* animation, const glm::mat4& parentMatrix) const
+	{
+		glm::mat4 globalMatrix;
+		if (index >= 0)
+		{
+			Animation::Stream* s = animation->getStream(this);
+			assert(s);
+			glm::vec3 pos;
+			glm::vec3 scale;
+			glm::quat rot;
+
+			{
+				unsigned int rotFrameIndex = 0;
+				while (rotFrameIndex < s->rotations.size() - 1 && time > s->rotations[rotFrameIndex + 1].time)
+					rotFrameIndex++;
+				int next = (rotFrameIndex + 1) % s->rotations.size();
+				float timeDiff = s->rotations[next].time - s->rotations[rotFrameIndex].time;
+				float offset = time - s->rotations[rotFrameIndex].time;
+				float fac = offset / timeDiff;
+				if (timeDiff == 0)
+					fac = 0;
+				assert(fac >= 0 && fac <= 1);
+				rot = glm::slerp(s->rotations[rotFrameIndex].value, s->rotations[next].value, fac);
+			}
+
+			{
+				unsigned int posFrameIndex = 0;
+				while (posFrameIndex < s->positions.size() - 1 && time > s->positions[posFrameIndex + 1].time)
+					posFrameIndex++;
+				int next = (posFrameIndex + 1) % s->positions.size();
+				float timeDiff = s->positions[next].time - s->positions[posFrameIndex].time;
+				float offset = time - s->positions[posFrameIndex].time;
+				float fac = offset / timeDiff;
+				if (timeDiff == 0)
+					fac = 0;
+				assert(fac >= 0 && fac <= 1);
+				pos = glm::mix(s->positions[posFrameIndex].value, s->positions[next].value, fac);
+			}
+
+			{
+				unsigned int scaleFrameIndex = 0;
+				while (scaleFrameIndex < s->scales.size() - 1 && time > s->scales[scaleFrameIndex + 1].time)
+					scaleFrameIndex++;
+				int next = (scaleFrameIndex + 1) % s->scales.size();
+				float timeDiff = s->scales[next].time - s->scales[scaleFrameIndex].time;
+				float offset = time - s->scales[scaleFrameIndex].time;
+				float fac = offset / timeDiff;
+				if (timeDiff == 0)
+					fac = 0;
+				assert(fac >= 0 && fac <= 1);
+				scale = glm::mix(s->scales[scaleFrameIndex].value, s->scales[next].value, fac);
+			}
+
+			glm::mat4 animMatrix;
+			animMatrix = glm::translate(animMatrix, pos);
+			animMatrix = animMatrix * glm::toMat4(rot);
+			animMatrix = glm::scale(animMatrix, scale);
+
+			globalMatrix = parentMatrix * animMatrix;
+			boneMatrices[index] = globalMatrix * (*offset);
+		}
+		else
+			globalMatrix = parentMatrix * matrix;
+
+		for (auto c : children)
+			c->update(boneMatrices, time, animation, globalMatrix);
 
 	}
 

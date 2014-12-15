@@ -23,10 +23,12 @@ namespace blib
 
 	class SkelAnimatedModel
 	{
+		class Animation;
 		class Bone : public blib::util::DynTree<Bone>
 		{
 		public:
 			Bone(const json::Value& value);
+			void update(std::vector<glm::mat4> &boneMatrices, float time, Animation* animation, const glm::mat4& parentMatrix = glm::mat4()) const;
 			Bone* parent;
 			std::string name;
 			glm::mat4 matrix;
@@ -58,7 +60,7 @@ namespace blib
 			};
 
 			Animation(const json::Value& data, Bone* rootBone);
-
+			Animation::Stream* getStream(const SkelAnimatedModel::Bone* bone);
 			std::vector<Stream> streams;
 			float totalTime;
 			std::string name;

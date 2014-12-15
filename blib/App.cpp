@@ -374,8 +374,8 @@ namespace blib
 			frameTime = util::Profiler::getAppTime() - frameStart;
 			app->semaphore->signal();
 		}
-		app->semaphore->signal();
 		app->window->unmakeCurrent();
+		app->semaphore->signal();
 		return 0;
 	}
 
