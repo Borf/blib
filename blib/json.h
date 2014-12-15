@@ -84,6 +84,10 @@ namespace blib
 			virtual Value& operator [] (const std::string &key) const;
 			virtual Value& operator [] (const char* key) const;
 
+			virtual bool operator == (const std::string &other) { return asString() == other; }
+			virtual bool operator == (const int other) { return asInt() == other; }
+			virtual bool operator == (const float other) { return asFloat() == other; }
+
 
 			std::ostream& prettyPrint(std::ostream& stream, blib::json::Value& printConfig = null, int level = 0) const;
 

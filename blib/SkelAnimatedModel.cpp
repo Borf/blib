@@ -97,6 +97,55 @@ namespace blib
 	}
 
 
+	void SkelAnimatedModel::loadAnimation(const std::string &fileName)
+	{
+		const blib::json::Value animData = blib::util::FileSystem::getJson(fileName);
+		Animation* animation = new Animation(animData, rootBone);
+		animations[animation->name] = animation;
+	}
+
+
+	SkelAnimatedModel::Animation::Animation(const json::Value& data, Bone* rootBone)
+	{
+		name = data["name"];
+		totalTime = data["length"];
+		for (auto c : data["streams"])
+			streams.push_back(Stream(c, rootBone));
+	}
+
+	SkelAnimatedModel::Animation::Stream::Stream(const json::Value &data, Bone* rootBone)
+	{
+		this->bone = rootBone->get([&data](Bone* b){ return data["node"] == b->name; });
+		for (auto v : data["positions"])
+		{
+			Frame<glm::vec3> pos;
+			pos.time = v["time"];
+			pos.value.x = v["pos"][0];
+			pos.value.y = v["pos"][1];
+			pos.value.z = v["pos"][2];
+			this->positions.push_back(pos);
+		}
+		for (auto v : data["scales"])
+		{
+			Frame<glm::vec3> scale;
+			scale.time = v["time"];
+			scale.value.x = v["scale"][0];
+			scale.value.y = v["scale"][1];
+			scale.value.z = v["scale"][2];
+			this->scales.push_back(scale);
+		}
+		for (auto v : data["rotations"])
+		{
+			Frame<glm::quat> rot;
+			rot.time = v["time"];
+			rot.value.x = v["rot"][0];
+			rot.value.y = v["rot"][1];
+			rot.value.z = v["rot"][2];
+			rot.value.w = v["rot"][3];
+			this->rotations.push_back(rot);
+		}
+	}
+
 	
 	
 	
@@ -119,7 +168,14 @@ namespace blib
 
 	void SkelAnimatedModel::State::update(float elapsedTime)
 	{
+		if (!currentAnimation)
+			currentAnimation = this->model->animations.begin()->second;
 		time += elapsedTime;
+		time = fmod(time, this->currentAnimation->totalTime);
+
+
+		//rootBone->update()
+
 	}
 
 	void SkelAnimatedModel::State::draw(RenderState& renderState, Renderer* renderer, int materialUniform, int boneUniform)

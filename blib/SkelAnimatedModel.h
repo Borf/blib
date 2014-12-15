@@ -44,9 +44,12 @@ namespace blib
 				template<class T>
 				class Frame
 				{
+				public:
 					float time;
 					T value;
 				};
+
+				Stream(const json::Value &data, Bone* rootBone);
 
 				Bone* bone;
 				std::vector<Frame<glm::vec3> >		positions;
@@ -54,8 +57,11 @@ namespace blib
 				std::vector< Frame<glm::quat> >		rotations;
 			};
 
+			Animation(const json::Value& data, Bone* rootBone);
 
 			std::vector<Stream> streams;
+			float totalTime;
+			std::string name;
 		};
 
 		class Mesh
