@@ -35,6 +35,8 @@ namespace blib
 
 			int index;
 			glm::mat4* offset;
+
+			glm::mat4 getMatrix(Animation* animation, float time) const;
 		};
 
 		class Animation
@@ -88,6 +90,7 @@ namespace blib
 			void setAnimation(const std::string& animation);
 			void update(float elapsedTime);
 			void draw(RenderState& renderState, Renderer* renderer, int materialUniform, int boneUniform);
+			void drawSkeleton(blib::RenderState renderState, Renderer* renderer);
 		};
 	private:
 
