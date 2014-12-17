@@ -81,13 +81,34 @@ namespace blib
 		class State
 		{
 		public:
+			class AnimationState
+			{
+			public:
+				double time;
+				Animation* animation;
+				float blendFactor;
+				int playCount;
+			};
+			class Fader
+			{
+			public:
+				AnimationState* animationState;
+				float begin;
+				float end;
+				float time;
+				float elapsedTime;
+				bool stopWhenDone;
+			};
+
+
 			SkelAnimatedModel* model;
-			double time;
 			std::vector<glm::mat4> boneMatrices;
-			Animation* currentAnimation;
+			std::vector<AnimationState*> animations;
+			std::vector<Fader*> faders;
 
 
-			void setAnimation(const std::string& animation);
+			void playAnimation(const std::string& animation, float fadeInTime = 0);
+			void stopAnimation(const std::string& animation, float fadeOutTime = 0);
 			void update(float elapsedTime);
 			void draw(RenderState& renderState, Renderer* renderer, int materialUniform, int boneUniform);
 			void drawSkeleton(blib::RenderState renderState, Renderer* renderer);

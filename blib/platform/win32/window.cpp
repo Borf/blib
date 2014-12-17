@@ -229,7 +229,7 @@ namespace blib
 
 			void Window::makeCurrent()
 			{
-				if(!wglMakeCurrent(hdc, ((blib::gl::Window*)this)->hrc))
+				if (!wglMakeCurrent(hdc, ((blib::gl::Window*)this)->hrc))
 				{
 					Log::out<<"ERROR MAKING CURRENT"<<Log::newline;
 					char* lpMsgBuf;

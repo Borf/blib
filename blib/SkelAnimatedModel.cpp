@@ -2,6 +2,7 @@
 #include <blib/util/FileSystem.h>
 #include <blib/json.h>
 #include <blib/ResourceManager.h>
+#include <blib/linq.h>
 #include <blib/Renderer.h>
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -176,8 +177,6 @@ namespace blib
 	{
 		State* newState = new State();
 		newState->model = this;
-		newState->time = 0;
-		newState->currentAnimation = NULL;
 		newState->boneMatrices.resize(bones.size());
 		states.push_back(newState);
 		return newState;
@@ -188,13 +187,54 @@ namespace blib
 
 	void SkelAnimatedModel::State::update(float elapsedTime)
 	{
-		if (!currentAnimation)
-			currentAnimation = this->model->animations.begin()->second;
-		time += elapsedTime;
-		time = fmod(time, this->currentAnimation->totalTime);
+		if (animations.empty())
+		{
+			model->rootBone->update(this->boneMatrices, 0, NULL);
+		}
+
+		for (auto a : animations)
+		{
+			a->time += elapsedTime;
+			a->time = fmod(a->time, a->animation->totalTime);
+		}		
+
+
+		for (int i = 0; i < (int)faders.size(); i++)
+		{
+			faders[i]->elapsedTime += elapsedTime;
+			float fac = glm::min(1.0f, faders[i]->elapsedTime / faders[i]->time);
+			faders[i]->animationState->blendFactor = faders[i]->begin + fac * (faders[i]->end - faders[i]->begin);
+			if (faders[i]->elapsedTime > faders[i]->time)
+			{
+				if (faders[i]->stopWhenDone)
+				{
+					for (size_t ii = 0; ii < animations.size(); ii++)
+						if (animations[ii] == faders[i]->animationState)
+							animations.erase(animations.begin() + ii);
+					delete faders[i]->animationState;
+				}
+				delete faders[i];
+				faders.erase(faders.begin() + i);
+				i--;
+			}
+		}
+
+
+		model->rootBone->update(this->boneMatrices, 0, NULL);
+		float totalFac = blib::linq::sum<float>(animations, [](AnimationState* s) { return s->blendFactor; });
+		for (size_t ii = 0; ii < boneMatrices.size(); ii++)
+			boneMatrices[ii] = boneMatrices[ii] * (1 - totalFac);
+		std::vector<glm::mat4> tmpMatrices = boneMatrices;
+		for (size_t i = 0; i < animations.size(); i++)
+		{
+			model->rootBone->update(tmpMatrices, animations[i]->time, animations[i]->animation);
+			for (size_t ii = 0; ii < boneMatrices.size(); ii++)
+			{
+				boneMatrices[ii] += tmpMatrices[ii] * animations[i]->blendFactor;
+			}
+		}
+
 		
-		
-		model->rootBone->update(this->boneMatrices, (float)time, currentAnimation);
 	}
 
 	void SkelAnimatedModel::State::draw(RenderState& renderState, Renderer* renderer, int materialUniform, int boneUniform)
@@ -215,7 +255,7 @@ namespace blib
 
 	void SkelAnimatedModel::State::drawSkeleton(blib::RenderState renderState, Renderer* renderer)
 	{
-		std::vector<blib::VertexP3> verts;
+		/*std::vector<blib::VertexP3> verts;
 
 		std::function<void(Bone*, glm::mat4)> drawFunc;
 		drawFunc = [&verts, &drawFunc, this](Bone* bone, glm::mat4 matrix)
@@ -232,10 +272,61 @@ namespace blib
 
 		drawFunc(model->rootBone, glm::mat4());
 
+		renderer->drawLines(verts, renderState);*/
 
+	}
 
-		renderer->drawLines(verts, renderState);
+	void SkelAnimatedModel::State::playAnimation(const std::string& animation, float fadeInTime)
+	{
+		for (size_t i = 0; i < animations.size(); i++)
+			if (animations[i]->animation->name == animation)
+				return;
+		if (model->animations.find(animation) == model->animations.end())
+			return;
 
+		AnimationState* anim = new AnimationState();
+		anim->animation = model->animations[animation];
+		anim->blendFactor = fadeInTime == 0 ? 1 : 0;
+		anim->playCount = 0;
+		anim->time = 0;
+		animations.push_back(anim);
+
+		if (fadeInTime > 0)
+		{
+			Fader* fader = new Fader();
+			fader->animationState = anim;
+			fader->begin = 0;
+			fader->end = 1;
+			fader->time = fadeInTime;
+			fader->elapsedTime = 0;
+			fader->stopWhenDone = false;
+			faders.push_back(fader);
+		}
+	}
+
+	void SkelAnimatedModel::State::stopAnimation(const std::string& animation, float fadeOutTime)
+	{
+		for (size_t i = 0; i < animations.size(); i++)
+		{
+			if (animations[i]->animation->name == animation)
+			{
+				if (fadeOutTime > 0)
+				{
+					Fader* fader = new Fader();
+					fader->animationState = animations[i];
+					fader->begin = 1;
+					fader->end = 0;
+					fader->time = fadeOutTime;
+					fader->elapsedTime = 0;
+					fader->stopWhenDone = true;
+					faders.push_back(fader);
+					return;
+				}
+		//		delete animations[i];
+				animations.erase(animations.begin() + i);
+				return;
+			}
+		}
 	}
 
 
@@ -279,6 +370,8 @@ namespace blib
 
 	glm::mat4 SkelAnimatedModel::Bone::getMatrix(Animation* animation, float time) const
 	{
+		if (!animation)
+			return matrix;
 		Animation::Stream* s = animation->getStream(this); //TODO: cache this?
 		if (!s)
 			return matrix;

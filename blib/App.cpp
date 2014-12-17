@@ -84,8 +84,9 @@ namespace blib
 	{
 		if (appSetup.threaded)
 		{
-			renderThread->semaphore->signal();
-			renderThread->waitForTermination();
+		//	renderThread->semaphore->signal();
+		//	updateThread->semaphore->signal();
+			Sleep(40);
 			window->makeCurrent();
 		}
 		if (joystickDriver)
@@ -96,10 +97,13 @@ namespace blib
 		delete spriteBatch;
 		delete lineBatch;
 		delete renderer;
-		delete window;
 
 		if (appSetup.threaded)
 		{
+			renderThread->semaphore->signal();
+			renderThread->semaphore->signal();
+			renderThread->waitForTermination();
+			updateThread->semaphore->signal();
 			updateThread->semaphore->signal();
 			updateThread->waitForTermination();
 
@@ -109,6 +113,7 @@ namespace blib
 		}
 		if (appSetup.threaded || appSetup.backgroundTasks)
 			delete runnerMutex;
+		delete window;
 
 	}
 
@@ -381,6 +386,7 @@ namespace blib
 		}
 		app->window->unmakeCurrent();
 		app->semaphore->signal();
+		semaphore->wait();
 		return 0;
 	}
 
@@ -480,6 +486,7 @@ namespace blib
 			frameTime = util::Profiler::getAppTime() - frameStart;
 			app->semaphore->signal();
 		}
+		semaphore->wait();
 		app->semaphore->signal();
 		return 0;
 	}
