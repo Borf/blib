@@ -279,10 +279,9 @@ namespace blib
 
 	glm::mat4 SkelAnimatedModel::Bone::getMatrix(Animation* animation, float time) const
 	{
-		if (this->index == -1)
-			return matrix;
 		Animation::Stream* s = animation->getStream(this); //TODO: cache this?
-		assert(s);
+		if (!s)
+			return matrix;
 
 		glm::vec3 pos;
 		glm::vec3 scale;

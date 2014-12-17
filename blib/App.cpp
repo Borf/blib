@@ -126,6 +126,11 @@ namespace blib
 		Log::out<<"App::start"<<Log::newline;
 		util::Profiler();
 
+#ifdef BLIB_LINUX
+		appSetup.threaded = false;
+#endif
+
+
 		if(appSetup.renderer == AppSetup::NullRenderer)
 			resourceManager = new NullResource();
 #ifdef BLIB_OPENGL
