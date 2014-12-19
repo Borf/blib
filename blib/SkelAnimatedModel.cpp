@@ -306,6 +306,20 @@ namespace blib
 
 	void SkelAnimatedModel::State::stopAnimation(const std::string& animation, float fadeOutTime)
 	{
+		for (int i = 0; i < (int)faders.size(); i++)
+		{
+			if (faders[i]->animationState->animation->name == animation && faders[i]->end == 0)
+				return;
+			if (faders[i]->animationState->animation->name == animation)
+			{
+				delete faders[i];
+				faders.erase(faders.begin() + i);
+				i--;
+				continue;
+			}
+
+		}
+
 		for (size_t i = 0; i < animations.size(); i++)
 		{
 			if (animations[i]->animation->name == animation)
