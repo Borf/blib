@@ -28,30 +28,8 @@ namespace blib
 			Material material;
 			int begin;
 			int count;
-			blib::json::Value jsonData;
 		};
 	public:
-		class Bone : public blib::util::DynTree < Bone >
-		{
-		public:
-			std::string name;
-			glm::mat4 matrix;
-			glm::mat4 worldMatrix; //matrix * parent->matrix....
-
-			glm::mat4 offsetMatrix;
-			glm::mat4 animMatrix;
-			glm::mat4 FinalTransformation;
-			bool anim;
-
-//			glm::mat4 origin;
-			Bone* parent;
-
-			int boneId;
-		};
-
-		std::vector<Bone*> bones;
-		Bone* rootBone;
-
 		std::vector<blib::math::Triangle3> triangles;
 	public:
 		const std::vector<blib::math::Triangle3>& getTriangles() const { return triangles; }
@@ -61,14 +39,7 @@ namespace blib
 		VIO* vio;
 		std::vector<Mesh*> meshes;
 
-		//std::vector<blib::VertexP3T2N3> vertices;
-		std::vector<blib::VertexP3T2N3B4B4> vertices;
-
-
-		blib::json::Value jsonData;
-
-		blib::json::Value animationData;
-
+		std::vector<blib::VertexP3T2N3> vertices;
 	public:
 		StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer);
 		void draw(RenderState& renderState, Renderer* renderer, int materialUniform);

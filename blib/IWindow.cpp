@@ -62,8 +62,8 @@ namespace blib
 
 	IWindow::~IWindow()
 	{
-		blib::linq::deleteall(mouseListeners);
-		blib::linq::deleteall(keyListeners);
+//		blib::linq::deleteall(mouseListeners);
+//		blib::linq::deleteall(keyListeners);
 		Log::out<<"Window Destroyed"<<Log::newline;
 	}
 

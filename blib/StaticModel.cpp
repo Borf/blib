@@ -24,51 +24,18 @@ namespace blib
 		return mat;
 	}
 
-	static void loadChildren(blib::StaticModel::Bone* bone, const blib::json::Value &json)
-	{
-        bone->name = json["name"].asString();
-		bone->matrix = jsonToMatrix(json["matrix"]);
-		if (json.isMember("offset"))
-			bone->offsetMatrix = jsonToMatrix(json["offset"]);
-		if (json.isMember("boneid"))
-			bone->boneId = json["boneid"];
-		else
-			bone->boneId = -1;
-
-		if (bone->parent)
-			bone->worldMatrix = bone->parent->worldMatrix * bone->matrix;
-		else
-			bone->worldMatrix = bone->matrix;
-
-
-		if (!json.isMember("children"))
-			return;
-
-		for (const blib::json::Value& b : json["children"])
-		{
-			blib::StaticModel::Bone* newBone = new blib::StaticModel::Bone();
-			newBone->parent = bone;
-			bone->children.push_back(newBone);
-			loadChildren(newBone, b);
-			
-		}
-	}
-
 
 
 	StaticModel::StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer)
 	{
 		json::Value modelData = blib::util::FileSystem::getJson(fileName);
 
-		jsonData = modelData;
-        rootBone = NULL;
-
 		std::string directory = "";
 		if (fileName.find("/") != std::string::npos)
 			directory = fileName.substr(0, fileName.rfind("/"));
 
 
-#if 0
+#if 1
 		blib::VertexP3T2N3 vertex;
 		float* current = &vertex.position.x;
 		float* end = (&vertex.normal.z) + 1;
@@ -105,7 +72,6 @@ namespace blib
 			int end = indices.size();
 
 			Mesh* newMesh = new Mesh();
-			newMesh->jsonData = mesh;
 			newMesh->material.alpha = mesh["material"]["alpha"];
 			newMesh->material.diffuse = glm::vec3(mesh["material"]["diffuse"][0], mesh["material"]["diffuse"][1], mesh["material"]["diffuse"][2]);
 			newMesh->material.ambient = glm::vec3(mesh["material"]["ambient"][0], mesh["material"]["ambient"][1], mesh["material"]["ambient"][2]);
@@ -120,30 +86,12 @@ namespace blib
 				newMesh->material.texture->setTextureRepeat(true);
 			}
 
-			if (mesh.isMember("bones"))
-			{
-				rootBone = new Bone();
-				rootBone->parent = NULL;
-				loadChildren(rootBone, mesh["bones"]);
-			}
-
-			if (rootBone)
-				rootBone->foreach([this](blib::StaticModel::Bone* bone) {
-					if (bone->boneId == -1)
-						return;
-					if (bone->boneId >= (int)bones.size())
-						bones.resize(bone->boneId+1, NULL);
-					bones[bone->boneId] = bone;
-				});
-
-
 			newMesh->begin = start;
 			newMesh->count = end - start;
 			meshes.push_back(newMesh);
 		}
 		vbo = resourceManager->getResource<blib::VBO>();
-		//vbo->setVertexFormat<blib::VertexP3T2N3>();
-		vbo->setVertexFormat<blib::VertexP3T2N3B4B4>();
+		vbo->setVertexFormat<blib::VertexP3T2N3>();
 		renderer->setVbo(vbo, vertices);
 
 		vio = resourceManager->getResource<blib::VIO>();
@@ -160,11 +108,6 @@ namespace blib
 				));
 		}
 
-		if (modelData.isMember("animations"))
-			animationData = modelData["animations"][0];
-
-		
-
 	}
 
 
@@ -178,9 +121,7 @@ namespace blib
 		{
 			renderState.activeShader->setUniformStruct(materialUniform, m->material);
 			renderState.activeTexture[0] = m->material.texture;
-			//renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
-			renderer->drawIndexedTriangles<VertexP3T2N3B4B4>(m->begin, m->count, renderState);
-
+			renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
 		}
 
 		renderState.activeVio = NULL;
