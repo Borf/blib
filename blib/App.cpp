@@ -87,7 +87,8 @@ namespace blib
 		//	renderThread->semaphore->signal();
 		//	updateThread->semaphore->signal();
 			Sleep(40);
-			window->makeCurrent();
+			if (!window->makeCurrent())
+				return;
 		}
 		if (joystickDriver)
 			delete joystickDriver;
@@ -245,7 +246,7 @@ namespace blib
 			public:
 				AppKeyListener(App* app)			{			this->app = app;							}
 				bool onKeyDown( blib::Key key )		{			app->keyState.setPressed(key, true);	
-					if(key == blib::Key::P)
+					if(key == blib::Key::P && app->keyState.isPressed(blib::Key::CONTROL))
 						app->showProfiler = !app->showProfiler;
 					return false;
 				}
@@ -435,7 +436,7 @@ namespace blib
 				int frame = ((int)(blib::util::Profiler::getAppTime()*50)) % (12*12);
 
 				app->spriteBatch->begin();
-				app->spriteBatch->draw(white, glm::scale(glm::translate(glm::mat4(), glm::vec3(20,20,0)), glm::vec3(200.0f,100.0f,1.0f)), glm::vec2(0,0), blib::math::Rectangle(0,0,1,1), glm::vec4(0,0,0,1));
+				app->spriteBatch->draw(white, glm::scale(glm::translate(glm::mat4(), glm::vec3(20,20,0)), glm::vec3(200.0f,100.0f,1.0f)), glm::vec2(0,0), blib::math::Rectangle(0,0,1,1), glm::vec4(0,0,0,0.6f));
 
 				app->spriteBatch->draw(gear, glm::translate(glm::mat4(), glm::vec3(app->window->getWidth()-80, app->window->getHeight()-80,0)), glm::vec2(0,0), blib::math::Rectangle(1/12.0f * (frame%12),1/12.0f * (frame/12),1/12.0f,1/12.0f));
 				app->spriteBatch->draw(font, "FPS: " + util::toString(util::Profiler::fps), glm::translate(glm::mat4(), glm::vec3(1,1,0)), glm::vec4(0,0,0,1));

@@ -15,7 +15,7 @@ namespace blib
 			std::string name;
 			std::string description;
 			Key key;
-
+			bool enabled;
 			MenuItem(std::string name);
 			virtual ~MenuItem() {}
 		};

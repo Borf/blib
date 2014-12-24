@@ -86,9 +86,8 @@ namespace blib
 
 			virtual void resizeGl(int width, int height);
 
-
+			bool inWindow(const glm::ivec2 &pos) { return inWindow(pos.x, pos.y);  }
 			bool inWindow(int x, int y);
-			bool inWindow(const glm::ivec2 &pos);
 			json::Value skin;
 			Texture* skinTexture;
 			Font* font;

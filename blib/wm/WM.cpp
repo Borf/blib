@@ -112,29 +112,28 @@ namespace blib
 				for (int i = 0; i < 8; i++)
 					spriteBatch.draw(skinTexture, blib::math::easyMatrix(radialMenuPosition, 22.5f + i * 45), glm::vec2(126, 90), blib::math::Rectangle(glm::vec2(89.0f / skinTexture->originalWidth, 0), 126.0f / skinTexture->originalWidth, 90.0f / skinTexture->originalHeight), i == id ? glm::vec4(0.9f, 0.5f, 0.5f, 1.0f): (i % 2 == 0 ? glm::vec4(0.9f, 0.9f, 0.9f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
 
-				for (size_t i = 0; i < 8; i++)
+				int index = 0;
+				for (size_t i = 0; i < radialMenu->menuItems.size(); i++)
 				{
-					
-					if (i < radialMenu->menuItems.size())
+					if (!radialMenu->menuItems[i]->enabled)
+						continue;
+					glm::mat4 matrix;
+					matrix = glm::translate(matrix, glm::vec3(radialMenuPosition, 0));
+					matrix = glm::rotate(matrix, index * 45.0f, glm::vec3(0, 0, 1));
+					matrix = glm::translate(matrix, glm::vec3(-120, 0, 0));
+					matrix = glm::scale(matrix, glm::vec3(0.75f, 0.75f, 1.0f));
+					matrix = glm::translate(matrix, glm::vec3(0, -16, 0));
+
+
+					ToggleMenuItem* toggle = dynamic_cast<ToggleMenuItem*>(radialMenu->menuItems[i]);
+					if (toggle)
 					{
-						glm::mat4 matrix;
-						matrix = glm::translate(matrix, glm::vec3(radialMenuPosition, 0));
-						matrix = glm::rotate(matrix, i * 45.0f, glm::vec3(0, 0, 1));
-						matrix = glm::translate(matrix, glm::vec3(-120, 0, 0));
-						matrix = glm::scale(matrix, glm::vec3(0.75f, 0.75f, 1.0f));
-						matrix = glm::translate(matrix, glm::vec3(0, -16, 0));
-
-
-						ToggleMenuItem* toggle = dynamic_cast<ToggleMenuItem*>(radialMenu->menuItems[i]);
-						if (toggle)
-						{
-							spriteBatch.draw(radialmenufont, (toggle->getValue() ? "[x]  " : "[  ]  ") + radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
-						}
-						else
-							spriteBatch.draw(radialmenufont, radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
-
-
+						spriteBatch.draw(radialmenufont, (toggle->getValue() ? "[x]  " : "[  ]  ") + radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
 					}
+					else
+						spriteBatch.draw(radialmenufont, radialMenu->menuItems[i]->name, matrix, glm::vec4(0, 0, 0, 1));
+					index++;
+
 				}
 			}
 
@@ -147,13 +146,14 @@ namespace blib
 				for (size_t i = 0; i < menuBar->menuItems.size(); i++)
 				{
 					SubMenuMenuItem* item = dynamic_cast<SubMenuMenuItem*>(menuBar->menuItems[i]);
-
+					if (!item->enabled)
+						continue;
 					float len = font->textlen(menuBar->menuItems[i]->name);
 
 					if (item && item->opened)
 						spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(posX-2, posY)), skin["list"], glm::vec2(len + 40, 16), glm::vec4(0.9f, 0.9f, 1.0f, 1.0f));
 
-					if (mouseState.position.x > posX && mouseState.position.x < posX + len + 40 && mouseState.position.y > posY && mouseState.position.y < posY+16)
+					if (mouseState.position.x > posX && mouseState.position.x <= posX + len + 40 && mouseState.position.y > posY && mouseState.position.y < posY+16)
 						spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(posX - 2, posY)), skin["list"], glm::vec2(len + 40, 16), glm::vec4(0.5f, 0.5f, 0.9f, 1.0f));
 
 					spriteBatch.draw(font, menuBar->menuItems[i]->name, blib::math::easyMatrix(glm::vec2(posX, posY)), glm::vec4(0, 0, 0, 1));
@@ -164,14 +164,18 @@ namespace blib
 				{
 					std::pair<glm::vec2, Menu*> &item = popupMenus[i];
 					
-					spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(item.first), skin["list"], glm::vec2(200, 16 * item.second->menuItems.size()));
-					for (size_t i = 0; i < item.second->menuItems.size(); i++)
+					spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(item.first), skin["list"], glm::vec2(200, 16 * item.second->menuItems.size())); //TODO: calculate enaebledCount
+					int iii = 0;
+					for (size_t ii = 0; ii < item.second->menuItems.size(); ii++)
 					{
-						if (mouseState.position.x > item.first.x && mouseState.position.x < item.first.x + 200 && mouseState.position.y > item.first.y + 16*i && mouseState.position.y < item.first.y + 16 + 16*i)
-							spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(item.first.x - 2, item.first.y + 16*i)), skin["list"], glm::vec2(200, 16), glm::vec4(0.5f, 0.5f, 0.9f, 1.0f));
+						if (!item.second->menuItems[ii]->enabled)
+							continue;
+						if (mouseState.position.x > item.first.x && mouseState.position.x < item.first.x + 200 && mouseState.position.y > item.first.y + 16 * iii && mouseState.position.y < item.first.y + 16 + 16 * iii)
+							spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(item.first.x - 2, item.first.y + 16*iii)), skin["list"], glm::vec2(200, 16), glm::vec4(0.5f, 0.5f, 0.9f, 1.0f));
 
 
-						spriteBatch.draw(font, item.second->menuItems[i]->name, blib::math::easyMatrix(glm::vec2(item.first.x + 2, item.first.y + 2 + 16 * i)), glm::vec4(0, 0, 0, 1));
+						spriteBatch.draw(font, item.second->menuItems[iii]->name, blib::math::easyMatrix(glm::vec2(item.first.x + 2, item.first.y + 2 + 16 * iii)), glm::vec4(0, 0, 0, 1));
+						iii++;
 					}
 
 
@@ -250,6 +254,9 @@ namespace blib
                 int id = (int)glm::round(((angle + 2 * blib::math::pif) / (2 * blib::math::pif)) * 8) % 8;
 				if (id < (int)radialMenu->menuItems.size())
 				{
+					for (int i = 0; i <= id; i++)
+						if (!radialMenu->menuItems[i]->enabled)
+							id++;
 					SubMenuMenuItem* submenuitem = dynamic_cast<SubMenuMenuItem*>(radialMenu->menuItems[id]);
 					if (submenuitem)
 					{
@@ -290,8 +297,10 @@ namespace blib
 						for (size_t i = 0; i < menuBar->menuItems.size(); i++)
 						{
 							SubMenuMenuItem* item = dynamic_cast<SubMenuMenuItem*>(menuBar->menuItems[i]);
+							if (!item->enabled)
+								continue;
 							float len = font->textlen(menuBar->menuItems[i]->name);
-							if (mouseState.position.x > posX && mouseState.position.x < posX + len + 40 && mouseState.position.y > 0 && mouseState.position.y < 0 + 16)
+							if (mouseState.position.x > posX && mouseState.position.x <= posX + len + 40 && mouseState.position.y > 0 && mouseState.position.y < 0 + 16)
 								popupMenus.push_back(std::pair<glm::vec2, Menu*>(glm::vec2(posX - 10, 18), ((SubMenuMenuItem*)menuBar->menuItems[i])->menu));
 							posX += len + 40;
 						}
@@ -412,8 +421,10 @@ namespace blib
 					for (size_t i = 0; i < menuBar->menuItems.size(); i++)
 					{
 						SubMenuMenuItem* item = dynamic_cast<SubMenuMenuItem*>(menuBar->menuItems[i]);
+						if (!item->enabled)
+							continue;
 						float len = font->textlen(menuBar->menuItems[i]->name);
-						if (mouseState.position.x > posX && mouseState.position.x < posX + len + 40 && mouseState.position.y > 0 && mouseState.position.y < 0 + 16)
+						if (mouseState.position.x > posX && mouseState.position.x <= posX + len + 40 && mouseState.position.y > 0 && mouseState.position.y < 0 + 16)
 							popupMenus.push_back(std::pair<glm::vec2, Menu*>(glm::vec2(posX-10, 18), ((SubMenuMenuItem*)menuBar->menuItems[i])->menu));
 						posX += len + 40;
 					}
@@ -670,11 +681,6 @@ namespace blib
 		{
 			window->x = (screenSize.x - window->width) / 2;
 			window->y = (screenSize.y - window->height) / 2;
-		}
-
-		bool WM::inWindow(const glm::ivec2 &pos)
-		{
-			return inWindow(pos.x, pos.y);
 		}
 
 		bool WM::inWindow(int x, int y)

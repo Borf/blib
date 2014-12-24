@@ -227,7 +227,7 @@ namespace blib
 				return DefWindowProc(hWnd, message, wParam, lParam);
 			}
 
-			void Window::makeCurrent()
+			bool Window::makeCurrent()
 			{
 				if (!wglMakeCurrent(hdc, ((blib::gl::Window*)this)->hrc))
 				{
@@ -235,7 +235,9 @@ namespace blib
 					char* lpMsgBuf;
 					FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |FORMAT_MESSAGE_IGNORE_INSERTS, NULL,	GetLastError(),	MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),(LPTSTR) &lpMsgBuf,0, NULL );
 					Log::out<<"Error: "<<lpMsgBuf<<Log::newline;
+					return false;
 				}
+				return true;
 			}
 			void Window::unmakeCurrent()
 			{

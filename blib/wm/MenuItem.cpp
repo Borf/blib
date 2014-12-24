@@ -10,6 +10,7 @@ namespace blib
 		{
 			this->name = name;
 			this->key = Key::NONE;
+			this->enabled = true;
 		}
 
 
