@@ -137,6 +137,7 @@ namespace blib
 			App* app;
 		public:
 			RenderThread(App* app);
+			~RenderThread();
 			int run();
 			util::Semaphore* semaphore;
 			double frameTime;
@@ -149,6 +150,7 @@ namespace blib
 			App* app;
 		public:
 			UpdateThread(App* app);
+			~UpdateThread();
 			int run();
 
 			util::Semaphore* semaphore;

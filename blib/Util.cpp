@@ -296,7 +296,7 @@ return "~/";
 				sprintf(buf, "%i: %s - 0x%0X\n", frames - i - 1, symbol->Name, symbol->Address);
 				ret += buf;
 			}
-
+			SymCleanup(process);
 			free(symbol);
 
 			return ret;

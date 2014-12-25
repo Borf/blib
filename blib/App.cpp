@@ -306,6 +306,15 @@ namespace blib
 		this->app = app;
 		semaphore = new blib::util::Semaphore(0,1);
 	}
+	App::UpdateThread::~UpdateThread()
+	{
+		delete semaphore;
+	}
+	App::RenderThread::~RenderThread()
+	{
+		delete semaphore;
+	}
+
 
 
 	void App::step()

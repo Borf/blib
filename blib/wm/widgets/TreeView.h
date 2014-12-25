@@ -23,6 +23,8 @@ namespace blib
 					TreeNode()
 					{
 						parent = NULL;
+						opened = false;
+						text = "";
 					}
 					virtual ~TreeNode()
 					{
