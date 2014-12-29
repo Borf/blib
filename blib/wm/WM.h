@@ -45,8 +45,11 @@ namespace blib
 			blib::wm::Menu* radialMenu;
 			glm::vec2		radialMenuPosition;
 
+
+
 			blib::wm::Menu* menuBar;
 			bool menuBarOpen;
+			glm::vec2		popupMenuPosition;
 
 			std::vector<std::pair<glm::vec2, blib::wm::Menu*> > popupMenus;
 
@@ -55,6 +58,9 @@ namespace blib
 
 
 		public:
+			blib::wm::Menu* popupMenu;
+			void setPopupMenuPosition(const glm::vec2 &pos);
+
 			WM();
 			~WM();
 

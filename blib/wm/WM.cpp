@@ -39,6 +39,7 @@ namespace blib
 			currentCursor = ARROW;
 
 			radialMenuRoot = NULL;
+			popupMenu = NULL;
 			radialMenu = NULL;
 			menuBar = NULL;
 			menuBarOpen = false;
@@ -177,10 +178,23 @@ namespace blib
 						spriteBatch.draw(font, item.second->menuItems[iii]->name, blib::math::easyMatrix(glm::vec2(item.first.x + 2, item.first.y + 2 + 16 * iii)), glm::vec4(0, 0, 0, 1));
 						iii++;
 					}
-
-
 				}
+			}
+			if (popupMenu)
+			{
+				spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(popupMenuPosition), skin["list"], glm::vec2(200, 16 * popupMenu->menuItems.size())); //TODO: calculate enaebledCount
+				int iii = 0;
+				for (size_t ii = 0; ii < popupMenu->menuItems.size(); ii++)
+				{
+					if (!popupMenu->menuItems[ii]->enabled)
+						continue;
+					if (mouseState.position.x > popupMenuPosition.x && mouseState.position.x < popupMenuPosition.x + 200 && mouseState.position.y > popupMenuPosition.y + 16 * iii && mouseState.position.y < popupMenuPosition.y + 16 + 16 * iii)
+						spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(popupMenuPosition.x - 2, popupMenuPosition.y + 16 * iii)), skin["list"], glm::vec2(200, 16), glm::vec4(0.5f, 0.5f, 0.9f, 1.0f));
 
+
+					spriteBatch.draw(font, popupMenu->menuItems[iii]->name, blib::math::easyMatrix(glm::vec2(popupMenuPosition.x + 2, popupMenuPosition.y + 2 + 16 * iii)), glm::vec4(0, 0, 0, 1));
+					iii++;
+				}
 			}
 
 			prevMouseState = mouseState; // TODO: move this to an update method?
@@ -329,6 +343,31 @@ namespace blib
 						popupMenus.clear();
 						if (actionMenu->callback)
 							actionMenu->callback();
+						return true;
+					}
+
+				}
+			}
+			if (popupMenu)
+			{
+				if (x > popupMenuPosition.x && x < popupMenuPosition.x + 200 &&
+					y > popupMenuPosition.y && y < popupMenuPosition.y + 16 * popupMenu->menuItems.size())
+				{
+					int selected = (int)glm::floor(y - popupMenuPosition.y) / 16;
+					SubMenuMenuItem* subMenu = dynamic_cast<SubMenuMenuItem*>(popupMenu->menuItems[selected]);
+					if (subMenu)
+					{
+						popupMenus.push_back(std::pair<glm::vec2, Menu*>(glm::vec2(popupMenuPosition.x + 200, popupMenuPosition.y + 12 * selected), subMenu->menu));
+					}
+					ActionMenuItem* actionMenu = dynamic_cast<ActionMenuItem*>(popupMenu->menuItems[selected]);
+					if (actionMenu)
+					{
+						menuBarOpen = false;
+						popupMenus.clear();
+						if (actionMenu->callback)
+							actionMenu->callback();
+						delete popupMenu;
+						popupMenu = NULL;
 						return true;
 					}
 
@@ -711,6 +750,13 @@ namespace blib
 		void WM::setMenuBar(blib::wm::Menu* menu)
 		{
 			menuBar = menu;
+		}
+
+		void WM::setPopupMenuPosition(const glm::vec2 &pos)
+		{
+			this->popupMenuPosition = pos;
+			if (popupMenuPosition.x + 200 > screenSize.x)
+				popupMenuPosition.x = screenSize.x - 200;
 		}
 
 
