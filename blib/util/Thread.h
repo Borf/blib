@@ -18,7 +18,7 @@ namespace blib
 		class Thread
 		{
 		private:
-#ifdef WIN32
+#ifdef BLIB_WIN
 			HANDLE	threadHandle;
 			static DWORD WINAPI threadStarter( LPVOID lpParam );
 			static std::map<int, std::string> threadNames;
@@ -46,6 +46,7 @@ namespace blib
 			static void setThreadName(const std::string &name);
 #ifdef WIN32
 			unsigned long threadId;
+			friend void SetThreadName(DWORD dwThreadID, const char* threadName);
 #endif
 		};
 

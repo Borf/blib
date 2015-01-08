@@ -21,6 +21,8 @@ inline void closesocket(SOCKET s)
 #include <assert.h>
 #include <thread>
 #include <blib/util/Log.h>
+#include <blib/util/Thread.h>
+
 
 
 
@@ -51,6 +53,7 @@ namespace blib
 				netRunning = true;
 				netThread = std::thread([]()
 				{
+					blib::util::Thread::setThreadName("Socketthread");
 					SOCKET highsock = 0;
 					fd_set socks;
 					timeval timeout;
@@ -62,21 +65,29 @@ namespace blib
 						netMutex.lock();
 						FD_ZERO(&socks);
 						highsock = 0;
-						for (NetTask& task : tasks)
+						for (NetTask* task : tasks)
 						{
-							FD_SET(task.s, &socks);
-							highsock = max(highsock, task.s);
+							FD_SET(task->s, &socks);
+							highsock = max(highsock, task->s);
 						}
 						select(highsock + 1, &socks, (fd_set*)0, (fd_set*)0, &timeout);
 
-						for (NetTask& task : tasks)
+						std::set<NetTask*> toRemove;
+
+						for (NetTask* task : tasks)
 						{
-							if (FD_ISSET(task.s, &socks))
+							if (FD_ISSET(task->s, &socks))
 							{
-								task.callback();
+								task->callback();
+								toRemove.insert(task);
 							}
 						}
-						tasks.clear();
+						if (!toRemove.empty())
+						{
+							for (NetTask* task : toRemove)
+								tasks.erase(task);
+							toRemove.clear();
+						}
 						netMutex.unLock();
 						//update tasks
 					}
@@ -133,7 +144,7 @@ namespace blib
 				struct sockaddr_in client;
 				socklen_t size = sizeof(client);
 				SOCKET newSocket = ::accept(s, (struct sockaddr*)&client, &size);
-				if (newSocket <= 0)
+				if ((int)newSocket <= 0)
 					return NULL;
 				return new TcpClient(newSocket, inet_ntoa(client.sin_addr));
 
@@ -169,6 +180,8 @@ namespace blib
 			TcpClient::~TcpClient()
 			{
 				closesocket(s);
+				if (asyncData != NULL)
+					delete asyncData;
 			}
 
 			void TcpClient::recvAsync(int len, const std::function<void(char* data, int len)> &callback)
@@ -185,7 +198,7 @@ namespace blib
 				recving = true;
 
 				netMutex.lock();
-				tasks.push_back(NetTask(s, [this, callback]()
+				tasks.insert(new NetTask(s, [this, callback]()
 				{
 					int rc = ::recv(s, asyncData, asyncDataLen, 0);
 					recving = false;

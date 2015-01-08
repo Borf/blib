@@ -3,13 +3,15 @@
 #include <functional>
 #include <list>
 #include <streambuf>
+#include <set>
+#include <thread>
 
 #ifdef WIN32
 #include <winsock2.h>
 #else
 typedef int SOCKET;
 #endif
-#include <thread>
+
 #include <blib/util/Signal.h>
 #include <blib/util/Mutex.h>
 
@@ -31,7 +33,7 @@ namespace blib
 				}
 			};
 
-			static std::list<NetTask> tasks;
+			static std::set<NetTask*> tasks;
 			static blib::util::Signal netSignal;
 			static blib::util::Mutex netMutex;
 			void init();

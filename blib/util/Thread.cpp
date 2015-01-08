@@ -32,8 +32,12 @@ namespace blib
 		} THREADNAME_INFO;
 #pragma pack(pop)
 
+#ifdef BLIB_WIN
+		std::map<int, std::string> Thread::threadNames;
+#endif
 		void SetThreadName( DWORD dwThreadID, const char* threadName)
 		{
+			Thread::threadNames[dwThreadID] = threadName;
 #ifdef _MSC_VER
 			THREADNAME_INFO info;
 			info.dwType = 0x1000;
@@ -143,9 +147,6 @@ namespace blib
 #endif
 		}
 
-#ifdef WIN32
-		std::map<int, std::string> Thread::threadNames;
-#endif
 		std::string Thread::getCurrentThreadName()
 		{
 #ifdef WIN32
