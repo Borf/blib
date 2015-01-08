@@ -9,6 +9,9 @@
 #else
 typedef int SOCKET;
 #endif
+#include <thread>
+#include <blib/util/Signal.h>
+#include <blib/util/Mutex.h>
 
 namespace blib
 {
@@ -16,7 +19,26 @@ namespace blib
 	{
 		namespace net
 		{
+			class NetTask
+			{
+			public:
+				SOCKET s;
+				const std::function<void()> callback;
+
+				NetTask(SOCKET s, const std::function<void()>& callback) : s(s), callback(callback)
+				{
+
+				}
+			};
+
+			static std::list<NetTask> tasks;
+			static blib::util::Signal netSignal;
+			static blib::util::Mutex netMutex;
 			void init();
+			void dispose();
+			static std::thread netThread;
+			static bool netRunning;
+
 			class TcpClient;
 
 			class TcpListener
@@ -42,6 +64,7 @@ namespace blib
 
 				char* asyncData;
 				int asyncDataLen;
+				bool recving;
 
 			public:
 				TcpClient(SOCKET s, std::string ip);

@@ -149,7 +149,10 @@ namespace blib
 		std::string Thread::getCurrentThreadName()
 		{
 #ifdef WIN32
-			return threadNames[GetCurrentThreadId()];
+			int id = GetCurrentThreadId();
+			if (threadNames.find(id) != threadNames.end())
+				return threadNames[id];
+			return "error";
 #else
 			return "";
 #endif

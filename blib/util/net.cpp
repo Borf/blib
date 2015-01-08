@@ -18,7 +18,7 @@ inline void closesocket(SOCKET s)
 }
 #endif
 
-
+#include <assert.h>
 #include <thread>
 #include <blib/util/Log.h>
 
@@ -47,6 +47,49 @@ namespace blib
 					printf("WSAStartup failed with error: %d\n", err);
 				}
 #endif
+
+				netRunning = true;
+				netThread = std::thread([]()
+				{
+					SOCKET highsock = 0;
+					fd_set socks;
+					timeval timeout;
+					timeout.tv_sec = 1000;
+					timeout.tv_usec = 0;
+
+					while (netRunning)
+					{
+						netMutex.lock();
+						FD_ZERO(&socks);
+						highsock = 0;
+						for (NetTask& task : tasks)
+						{
+							FD_SET(task.s, &socks);
+							highsock = max(highsock, task.s);
+						}
+						select(highsock + 1, &socks, (fd_set*)0, (fd_set*)0, &timeout);
+
+						for (NetTask& task : tasks)
+						{
+							if (FD_ISSET(task.s, &socks))
+							{
+								task.callback();
+							}
+						}
+						tasks.clear();
+						netMutex.unLock();
+						//update tasks
+					}
+				});
+
+			
+			}
+
+
+			void dispose()
+			{
+				netRunning = false;
+				netThread.join();
 			}
 
 			TcpListener::TcpListener(int port)
@@ -90,7 +133,8 @@ namespace blib
 				struct sockaddr_in client;
 				socklen_t size = sizeof(client);
 				SOCKET newSocket = ::accept(s, (struct sockaddr*)&client, &size);
-
+				if (newSocket <= 0)
+					return NULL;
 				return new TcpClient(newSocket, inet_ntoa(client.sin_addr));
 
 			}
@@ -110,6 +154,7 @@ namespace blib
 				this->ip = ip;
 				this->asyncData = NULL;
 				this->asyncDataLen = 0;
+				this->recving = false;
 			}
 
 			TcpClient::TcpClient()
@@ -118,6 +163,7 @@ namespace blib
 				this->ip = "";
 				this->asyncData = NULL;
 				this->asyncDataLen = 0;
+				this->recving = false;
 			}
 
 			TcpClient::~TcpClient()
@@ -127,6 +173,8 @@ namespace blib
 
 			void TcpClient::recvAsync(int len, const std::function<void(char* data, int len)> &callback)
 			{
+				assert(!recving);
+
 				if (asyncDataLen != len || asyncData == NULL)
 				{
 					if (asyncData != NULL)
@@ -134,12 +182,16 @@ namespace blib
 					asyncData = new char[len];
 					asyncDataLen = len;
 				}
-				//TODO: don't start a new thread every time !
-				std::thread([this, callback](int)
+				recving = true;
+
+				netMutex.lock();
+				tasks.push_back(NetTask(s, [this, callback]()
 				{
 					int rc = ::recv(s, asyncData, asyncDataLen, 0);
+					recving = false;
 					callback(asyncData, rc);
-				}, 0).detach();
+				}));
+				netMutex.unLock();
 				
 
 			}
