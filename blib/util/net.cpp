@@ -181,7 +181,8 @@ namespace blib
 			{
 				closesocket(s);
 				if (asyncData != NULL)
-					delete asyncData;
+					delete[] asyncData;
+				asyncData = NULL;
 			}
 
 			void TcpClient::recvAsync(int len, const std::function<void(char* data, int len)> &callback)
@@ -240,7 +241,9 @@ namespace blib
 
 			void TcpClient::send(std::string data)
 			{
+				sendMutex.lock();
 				::send(s, data.c_str(), data.length(), 0);
+				sendMutex.unLock();
 			}
 
 			void TcpClient::disconnect()

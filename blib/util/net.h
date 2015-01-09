@@ -60,7 +60,7 @@ namespace blib
 			{
 				TcpClient(const TcpClient &);
 				TcpClient &operator= (const TcpClient &);
-
+				blib::util::Mutex sendMutex;
 				TcpListener* listener;
 				SOCKET s;
 
