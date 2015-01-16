@@ -20,8 +20,8 @@ namespace blib
 
 			virtual void buildLines() override
 			{
-				double inc = blib::math::pi / 5;
-				for (double d = 0; d < 2 * blib::math::pi; d += inc)
+				float inc = blib::math::pif / 5;
+				for (float d = 0; d < 2 * blib::math::pi; d += inc)
 					lines.push_back(blib::IDrawableLine::LinePart(center + radius * blib::util::fromAngle(d), center + radius * blib::util::fromAngle(d+inc)));
 			}
 
