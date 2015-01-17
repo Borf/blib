@@ -1,3 +1,6 @@
+precision mediump float;
+
+
 varying vec4 color;
 void main()
 {
