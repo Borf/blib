@@ -60,7 +60,7 @@ namespace blib
 #if defined(BLIB_GL_FULL)
 			return new Shader(blib::util::FileSystem::getData("assets/shaders/gl/" + name + ".vert"), blib::util::FileSystem::getData("assets/shaders/gl/" + name + ".frag"));
 #elif defined(BLIB_GL_ES)
-			return new Shader(blib::util::FileSystem::getData("assets/shaders/gl/es" + name + ".vert"), blib::util::FileSystem::getData("assets/shaders/gles" + name + ".frag"));
+			return new Shader(blib::util::FileSystem::getData("assets/shaders/gles/" + name + ".vert"), blib::util::FileSystem::getData("assets/shaders/gles/" + name + ".frag"));
 #else
 #error	You need to define a GL version...
 #endif

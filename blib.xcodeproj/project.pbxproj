@@ -58,9 +58,6 @@
 		069DD72F19465EDD00583161 /* b2Rope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD33B19465ED900583161 /* b2Rope.cpp */; };
 		069DD76F19465EDE00583161 /* clipper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD5D119465EDC00583161 /* clipper.cpp */; };
 		069DD77419465EDE00583161 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD60119465EDC00583161 /* dummy.cpp */; };
-		069DD77519465EDE00583161 /* json_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD6EA19465EDD00583161 /* json_reader.cpp */; };
-		069DD77619465EDE00583161 /* json_value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD6EC19465EDD00583161 /* json_value.cpp */; };
-		069DD77719465EDE00583161 /* json_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD6EE19465EDD00583161 /* json_writer.cpp */; };
 		069DD77819465EDE00583161 /* shapes.cc in Sources */ = {isa = PBXBuildFile; fileRef = 069DD6F619465EDD00583161 /* shapes.cc */; };
 		069DD77919465EDE00583161 /* advancing_front.cc in Sources */ = {isa = PBXBuildFile; fileRef = 069DD6FB19465EDD00583161 /* advancing_front.cc */; };
 		069DD77A19465EDE00583161 /* cdt.cc in Sources */ = {isa = PBXBuildFile; fileRef = 069DD6FD19465EDD00583161 /* cdt.cc */; };
@@ -130,6 +127,8 @@
 		069E9A1E1944A850001C0AF2 /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069E99D41944A850001C0AF2 /* Widget.cpp */; };
 		069E9A1F1944A850001C0AF2 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069E99D61944A850001C0AF2 /* Window.cpp */; };
 		069E9A201944A850001C0AF2 /* WM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069E99D81944A850001C0AF2 /* WM.cpp */; };
+		06B324051A6AF13800422B84 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06B324041A6AF13800422B84 /* ResourceManager.cpp */; };
+		06DD1C9E1A69F03500DE4147 /* json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06DD1C9C1A69F03500DE4147 /* json.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -473,25 +472,6 @@
 		069DD6DB19465EDD00583161 /* wrap.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = wrap.hpp; sourceTree = "<group>"; };
 		069DD6DC19465EDD00583161 /* wrap.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wrap.inl; sourceTree = "<group>"; };
 		069DD6DE19465EDD00583161 /* xstream.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = xstream.hpp; sourceTree = "<group>"; };
-		069DD6E019465EDD00583161 /* Android.mk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Android.mk; sourceTree = "<group>"; };
-		069DD6E119465EDD00583161 /* assertions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = assertions.h; sourceTree = "<group>"; };
-		069DD6E219465EDD00583161 /* autolink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = autolink.h; sourceTree = "<group>"; };
-		069DD6E319465EDD00583161 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
-		069DD6E419465EDD00583161 /* features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = features.h; sourceTree = "<group>"; };
-		069DD6E519465EDD00583161 /* forwards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forwards.h; sourceTree = "<group>"; };
-		069DD6E619465EDD00583161 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
-		069DD6E719465EDD00583161 /* json_batchallocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json_batchallocator.h; sourceTree = "<group>"; };
-		069DD6E819465EDD00583161 /* json_internalarray.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = json_internalarray.inl; sourceTree = "<group>"; };
-		069DD6E919465EDD00583161 /* json_internalmap.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = json_internalmap.inl; sourceTree = "<group>"; };
-		069DD6EA19465EDD00583161 /* json_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json_reader.cpp; sourceTree = "<group>"; };
-		069DD6EB19465EDD00583161 /* json_tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json_tool.h; sourceTree = "<group>"; };
-		069DD6EC19465EDD00583161 /* json_value.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json_value.cpp; sourceTree = "<group>"; };
-		069DD6ED19465EDD00583161 /* json_valueiterator.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = json_valueiterator.inl; sourceTree = "<group>"; };
-		069DD6EE19465EDD00583161 /* json_writer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json_writer.cpp; sourceTree = "<group>"; };
-		069DD6EF19465EDD00583161 /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reader.h; sourceTree = "<group>"; };
-		069DD6F019465EDD00583161 /* value.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = value.h; sourceTree = "<group>"; };
-		069DD6F119465EDD00583161 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
-		069DD6F219465EDD00583161 /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = writer.h; sourceTree = "<group>"; };
 		069DD6F619465EDD00583161 /* shapes.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = shapes.cc; sourceTree = "<group>"; };
 		069DD6F719465EDD00583161 /* shapes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shapes.h; sourceTree = "<group>"; };
 		069DD6F819465EDD00583161 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
@@ -669,6 +649,9 @@
 		069E99D71944A850001C0AF2 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		069E99D81944A850001C0AF2 /* WM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WM.cpp; sourceTree = "<group>"; };
 		069E99D91944A850001C0AF2 /* WM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WM.h; sourceTree = "<group>"; };
+		06B324041A6AF13800422B84 /* ResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
+		06DD1C9C1A69F03500DE4147 /* json.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json.cpp; sourceTree = "<group>"; };
+		06DD1C9D1A69F03500DE4147 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -689,7 +672,6 @@
 				069DD2D619465ED800583161 /* box2d */,
 				069DD5CF19465EDC00583161 /* clipper */,
 				069DD5F919465EDC00583161 /* glm */,
-				069DD6DF19465EDD00583161 /* json */,
 				069DD6F319465EDD00583161 /* poly2tri */,
 			);
 			path = externals;
@@ -1133,32 +1115,6 @@
 			path = virtrev;
 			sourceTree = "<group>";
 		};
-		069DD6DF19465EDD00583161 /* json */ = {
-			isa = PBXGroup;
-			children = (
-				069DD6E019465EDD00583161 /* Android.mk */,
-				069DD6E119465EDD00583161 /* assertions.h */,
-				069DD6E219465EDD00583161 /* autolink.h */,
-				069DD6E319465EDD00583161 /* config.h */,
-				069DD6E419465EDD00583161 /* features.h */,
-				069DD6E519465EDD00583161 /* forwards.h */,
-				069DD6E619465EDD00583161 /* json.h */,
-				069DD6E719465EDD00583161 /* json_batchallocator.h */,
-				069DD6E819465EDD00583161 /* json_internalarray.inl */,
-				069DD6E919465EDD00583161 /* json_internalmap.inl */,
-				069DD6EA19465EDD00583161 /* json_reader.cpp */,
-				069DD6EB19465EDD00583161 /* json_tool.h */,
-				069DD6EC19465EDD00583161 /* json_value.cpp */,
-				069DD6ED19465EDD00583161 /* json_valueiterator.inl */,
-				069DD6EE19465EDD00583161 /* json_writer.cpp */,
-				069DD6EF19465EDD00583161 /* reader.h */,
-				069DD6F019465EDD00583161 /* value.h */,
-				069DD6F119465EDD00583161 /* version.h */,
-				069DD6F219465EDD00583161 /* writer.h */,
-			);
-			path = json;
-			sourceTree = "<group>";
-		};
 		069DD6F319465EDD00583161 /* poly2tri */ = {
 			isa = PBXGroup;
 			children = (
@@ -1224,6 +1180,9 @@
 		069E99151944A850001C0AF2 /* blib */ = {
 			isa = PBXGroup;
 			children = (
+				06B324041A6AF13800422B84 /* ResourceManager.cpp */,
+				06DD1C9C1A69F03500DE4147 /* json.cpp */,
+				06DD1C9D1A69F03500DE4147 /* json.h */,
 				06213CBC197E92F10070C415 /* AnimatableSprite.cpp */,
 				06213CBD197E92F10070C415 /* AnimatableSprite.h */,
 				069E99161944A850001C0AF2 /* Android.mk */,
@@ -1591,7 +1550,6 @@
 				069DD72319465EDD00583161 /* b2PolygonContact.cpp in Sources */,
 				069DD70419465EDD00583161 /* b2CollideCircle.cpp in Sources */,
 				069E99FC1944A850001C0AF2 /* window.cpp in Sources */,
-				069DD77519465EDE00583161 /* json_reader.cpp in Sources */,
 				069DD70319465EDD00583161 /* b2BroadPhase.cpp in Sources */,
 				069DD77A19465EDE00583161 /* cdt.cc in Sources */,
 				069E99EE1944A850001C0AF2 /* KeyListener.cpp in Sources */,
@@ -1612,12 +1570,12 @@
 				069DD70B19465EDD00583161 /* b2ChainShape.cpp in Sources */,
 				069E9A1E1944A850001C0AF2 /* Widget.cpp in Sources */,
 				069E9A161944A850001C0AF2 /* button.cpp in Sources */,
+				06DD1C9E1A69F03500DE4147 /* json.cpp in Sources */,
 				069DD70C19465EDD00583161 /* b2CircleShape.cpp in Sources */,
 				069E9A131944A850001C0AF2 /* Menu.cpp in Sources */,
 				069DD72F19465EDD00583161 /* b2Rope.cpp in Sources */,
 				069DD71A19465EDD00583161 /* b2WorldCallbacks.cpp in Sources */,
 				069E99DA1944A850001C0AF2 /* Animation.cpp in Sources */,
-				069DD77619465EDE00583161 /* json_value.cpp in Sources */,
 				069DD70819465EDD00583161 /* b2Distance.cpp in Sources */,
 				069DD71F19465EDD00583161 /* b2ContactSolver.cpp in Sources */,
 				069DD72919465EDD00583161 /* b2PrismaticJoint.cpp in Sources */,
@@ -1625,7 +1583,6 @@
 				069E9A141944A850001C0AF2 /* MenuItem.cpp in Sources */,
 				069DD70E19465EDD00583161 /* b2PolygonShape.cpp in Sources */,
 				069E99F71944A850001C0AF2 /* Rectangle.cpp in Sources */,
-				069DD77719465EDE00583161 /* json_writer.cpp in Sources */,
 				069DD71419465EDD00583161 /* b2Timer.cpp in Sources */,
 				069E9A1D1944A850001C0AF2 /* textbox.cpp in Sources */,
 				069E99E91944A850001C0AF2 /* Texture.cpp in Sources */,
@@ -1634,6 +1591,7 @@
 				069E9A041944A850001C0AF2 /* SpriteBatch.cpp in Sources */,
 				069E99F21944A850001C0AF2 /* BiArc.cpp in Sources */,
 				069DD71D19465EDD00583161 /* b2CircleContact.cpp in Sources */,
+				06B324051A6AF13800422B84 /* ResourceManager.cpp in Sources */,
 				069E99DB1944A850001C0AF2 /* App.cpp in Sources */,
 				069DD71E19465EDD00583161 /* b2Contact.cpp in Sources */,
 				069E99E51944A850001C0AF2 /* GlResizeRegister.cpp in Sources */,

@@ -1,7 +1,5 @@
 #include "textbox.h"
 
-#include <GL/glew.h>
-
 #include <blib/wm/WM.h>
 #include <blib/Texture.h>
 #include <blib/Shader.h>

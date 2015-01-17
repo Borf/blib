@@ -26,7 +26,7 @@ namespace blib
 
 				virtual void swapBuffers();
 				virtual void create(int icon, std::string title);
-				virtual void makeCurrent();
+				virtual bool makeCurrent();
 				virtual void unmakeCurrent();
                 virtual void tick() { }
                 

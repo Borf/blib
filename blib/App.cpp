@@ -86,7 +86,7 @@ namespace blib
 		{
 		//	renderThread->semaphore->signal();
 		//	updateThread->semaphore->signal();
-			Sleep(40);
+	//		Sleep(40);
 			if (!window->makeCurrent())
 				return;
 		}

@@ -29,8 +29,9 @@ namespace blib
 			{
 			}
 
-			void Window::makeCurrent()
+			bool Window::makeCurrent()
 			{
+                return true;
 			}
 			void Window::unmakeCurrent()
 			{

@@ -20,7 +20,7 @@ namespace blib
 			nullValue
 		};
 
-		class Value
+        class Value
 		{
 		public:
 			Type type;
@@ -92,30 +92,31 @@ namespace blib
 			std::ostream& prettyPrint(std::ostream& stream, blib::json::Value& printConfig = null, int level = 0) const;
 
 		private:
-			class Iterator
-			{
-			private:
-				Type type;
-				std::map<std::string, Value>::iterator objectIterator;
-				std::vector<Value>::iterator arrayIterator;
-			public:
-				Iterator(const std::map<std::string, Value>::iterator& objectIterator);
-				Iterator(const std::vector<Value>::iterator& arrayIterator);
-
-				void operator ++();
-				void operator ++(int);
-				bool operator != (const Iterator &other);
-				Value operator*();
-
-				std::string key();
-				Value& value();
-
-			};
+            class Iterator;
 		public:
 			Iterator begin() const;
 			Iterator end() const;
 		};
 
+        class Value::Iterator
+        {
+        private:
+            Type type;
+            std::map<std::string, Value>::iterator objectIterator;
+            std::vector<Value>::iterator arrayIterator;
+        public:
+            Iterator(const std::map<std::string, Value>::iterator& objectIterator);
+            Iterator(const std::vector<Value>::iterator& arrayIterator);
+            
+            void operator ++();
+            void operator ++(int);
+            bool operator != (const Iterator &other);
+            Value operator*();
+            
+            std::string key();
+            Value& value();
+            
+        };
 
 
 

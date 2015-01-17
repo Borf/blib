@@ -44,9 +44,10 @@ VertexDef(VertexP2C4T2,							tex1,		glm::vec2, 2, VertexP2C4)
 VertexDef(VertexP2C4T2T2,						tex2,		glm::vec2, 2, VertexP2C4T2)
 VertexDef(VertexP2C4T2T2F1,						_size,		float, 1, VertexP2C4T2T2)
 
+#ifndef BLIB_IOS
 VertexDefi(VertexP3T2N3B4,						boneIds,	glm::ivec4,4, VertexP3T2N3)
 VertexDef(VertexP3T2N3B4B4,						boneWeights,glm::vec4,4, VertexP3T2N3B4)
-
+#endif
 
 
 	void VertexP2::setAttribPointers(bool enabledVertexAttributes[10], void* offset, int *index, int totalSize) \

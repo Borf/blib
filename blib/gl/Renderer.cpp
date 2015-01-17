@@ -304,8 +304,8 @@ namespace blib
 #if !defined(BLIB_ANDROID) && !defined(BLIB_IOS)
 						glEnable(GL_POINT_SPRITE);
 						glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+                        glPointSize(10);
 #endif
-						glPointSize(10);
 						glDrawArrays(GL_POINTS, start, r->vertexCount());
 					}
 					else if (r->command == Render::DrawIndexedTriangles)

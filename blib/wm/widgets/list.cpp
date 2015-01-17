@@ -1,3 +1,4 @@
+#include <blib/json.h>
 #include "list.h"
 
 #include <blib/wm/WM.h>

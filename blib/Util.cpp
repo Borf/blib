@@ -10,6 +10,7 @@
 #include <DbgHelp.h>
 #pragma comment(lib,"dbghelp.lib")
 #else
+#include <execinfo.h>
 #include <sys/time.h>
 #endif
 
@@ -300,6 +301,17 @@ return "~/";
 			free(symbol);
 
 			return ret;
+#else
+            std::string ret;
+            void* callstack[128];
+            int frames= backtrace(callstack, 128);
+            char** strs = backtrace_symbols(callstack, frames);
+            for(int i = 0; i < frames; i++)
+            {
+                ret += std::string(strs[i]) + "\n";
+            }
+            free(strs);
+            return ret;
 #endif
 			return "";
 		}
