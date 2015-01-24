@@ -74,7 +74,9 @@ namespace blib
 
 						std::set<NetTask*> toRemove;
 
-						for (NetTask* task : tasks)
+						std::set<NetTask*> tmpTasks = tasks;
+
+						for (NetTask* task : tmpTasks)
 						{
 							if (FD_ISSET(task->s, &socks))
 							{
@@ -91,6 +93,8 @@ namespace blib
 						netMutex.unLock();
 						//update tasks
 					}
+
+					Log::out << "Socketthread terminating..." << Log::newline;
 				});
 
 			
