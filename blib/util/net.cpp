@@ -206,6 +206,14 @@ namespace blib
 				tasks.insert(new NetTask(s, [this, callback]()
 				{
 					int rc = ::recv(s, asyncData, asyncDataLen, 0);
+					printf("RECV:");
+					for (int i = 0; i < min(2, rc); i++)
+						printf("%02x", asyncData[i]);
+					printf("\t");
+					for (int i = 2; i < rc; i++)
+						printf("%c", asyncData[i]);
+					printf("\n\n");
+					printf("\n\n");
 					recving = false;
 					callback(asyncData, rc);
 				}));
@@ -246,6 +254,14 @@ namespace blib
 			void TcpClient::send(std::string data)
 			{
 				sendMutex.lock();
+				printf("SEND:");
+
+				for (int i = 0; i < min(2, data.length()); i++)
+					printf("%02x", data[i]);
+				printf("\t");
+				for (int i = 2; i < data.length(); i++)
+					printf("%c", data[i]);
+				printf("\n\n");
 				::send(s, data.c_str(), data.length(), 0);
 				sendMutex.unLock();
 			}
