@@ -26,7 +26,7 @@ namespace blib
 
 			glm::vec2 normal();
 			void buildLines();
-
+			float length();
 		};
 
 	}

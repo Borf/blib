@@ -91,5 +91,10 @@ namespace blib
 			return ((p2.x - p1.x)*(point.y - p1.y) - (p2.y - p1.y)*(point.x - p1.x)) > 0;
 		}
 
+		float Line::length()
+		{
+			return glm::distance(p1, p2);
+		}
+
 	}
 }
