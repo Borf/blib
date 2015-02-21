@@ -266,7 +266,7 @@ namespace blib
 				glm::vec2 diff = radialMenuPosition - glm::vec2(mouseState.position);
 				float angle = atan2(diff.y, diff.x);
                 int id = (int)glm::round(((angle + 2 * blib::math::pif) / (2 * blib::math::pif)) * 8) % 8;
-				for (int i = 0; i <= id && i < radialMenu->menuItems.size(); i++)
+				for (size_t i = 0; (int)i <= id && i < radialMenu->menuItems.size(); i++)
 					if (!radialMenu->menuItems[i]->enabled)
 						id++;
 
@@ -756,7 +756,7 @@ namespace blib
 		{
 			this->popupMenuPosition = pos;
 			if (popupMenuPosition.x + 200 > screenSize.x)
-				popupMenuPosition.x = screenSize.x - 200;
+				popupMenuPosition.x = (float)(screenSize.x - 200);
 		}
 
 

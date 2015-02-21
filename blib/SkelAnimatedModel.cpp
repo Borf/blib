@@ -227,7 +227,7 @@ namespace blib
 		std::vector<glm::mat4> tmpMatrices = boneMatrices;
 		for (size_t i = 0; i < animations.size(); i++)
 		{
-			model->rootBone->update(tmpMatrices, animations[i]->time, animations[i]->animation);
+			model->rootBone->update(tmpMatrices, (float)animations[i]->time, animations[i]->animation);
 			for (size_t ii = 0; ii < boneMatrices.size(); ii++)
 			{
 				boneMatrices[ii] += tmpMatrices[ii] * animations[i]->blendFactor;
@@ -286,7 +286,7 @@ namespace blib
 
 		AnimationState* anim = new AnimationState();
 		anim->animation = model->animations[animation];
-		anim->blendFactor = fadeInTime == 0 ? 1 : 0;
+		anim->blendFactor = fadeInTime == 0 ? 1.0f : 0.0f;
 		anim->playCount = 0;
 		anim->time = 0;
 		animations.push_back(anim);

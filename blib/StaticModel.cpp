@@ -50,7 +50,7 @@ namespace blib
 		for (float f : modelData["vertices"])
 		{
 			if (i >= 8 && i < 8 + 4)
-				*((int*)current) = f;
+				*((int*)current) = (int)f;
 			else
 				*current = f;
 			current++;

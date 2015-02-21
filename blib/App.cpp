@@ -230,7 +230,7 @@ namespace blib
 		Log::out<<"App::createWindow"<<Log::newline;
 		window = new blib::gl::Window(this);
 		window->setSize((int)appSetup.window.width(), (int)appSetup.window.height());
-		window->moveTo(appSetup.window.topleft.x, appSetup.window.topleft.y);
+		window->moveTo((int)appSetup.window.topleft.x, (int)appSetup.window.topleft.y);
 		window->setBorder(appSetup.border);
 		Log::out<<"App::createWindow::Creating window"<<Log::newline;
 		window->create(appSetup.icon, appSetup.title);

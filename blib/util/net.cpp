@@ -256,10 +256,10 @@ namespace blib
 				sendMutex.lock();
 				printf("SEND:");
 
-				for (int i = 0; i < min(2, data.length()); i++)
+				for (size_t i = 0; i < min(2, data.length()); i++)
 					printf("%02x", data[i]);
 				printf("\t");
-				for (int i = 2; i < data.length(); i++)
+				for (size_t i = 2; i < data.length(); i++)
 					printf("%c", data[i]);
 				printf("\n\n");
 				::send(s, data.c_str(), data.length(), 0);
