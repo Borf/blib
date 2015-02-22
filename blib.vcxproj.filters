@@ -228,33 +228,6 @@
     <ClInclude Include="externals\glew\include\GL\wglew.h">
       <Filter>external</Filter>
     </ClInclude>
-    <ClInclude Include="externals\json\assertions.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="externals\json\autolink.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="externals\json\config.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="externals\json\features.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="externals\json\forwards.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="externals\json\reader.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="externals\json\value.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="externals\json\version.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="externals\json\writer.h">
-      <Filter>external</Filter>
-    </ClInclude>
     <ClInclude Include="externals\poly2tri\common\shapes.h">
       <Filter>external</Filter>
     </ClInclude>

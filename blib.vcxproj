@@ -176,15 +176,6 @@
     <ClInclude Include="externals\glew\include\GL\glew.h" />
     <ClInclude Include="externals\glew\include\GL\glxew.h" />
     <ClInclude Include="externals\glew\include\GL\wglew.h" />
-    <ClInclude Include="externals\json\assertions.h" />
-    <ClInclude Include="externals\json\autolink.h" />
-    <ClInclude Include="externals\json\config.h" />
-    <ClInclude Include="externals\json\features.h" />
-    <ClInclude Include="externals\json\forwards.h" />
-    <ClInclude Include="externals\json\reader.h" />
-    <ClInclude Include="externals\json\value.h" />
-    <ClInclude Include="externals\json\version.h" />
-    <ClInclude Include="externals\json\writer.h" />
     <ClInclude Include="externals\poly2tri\common\shapes.h" />
     <ClInclude Include="externals\poly2tri\common\utils.h" />
     <ClInclude Include="externals\poly2tri\poly2tri.h" />
