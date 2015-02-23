@@ -203,9 +203,11 @@ namespace blib
 		void WM::setSkin( std::string skinFile, ResourceManager* resourceManager )
 		{
 			skin = util::FileSystem::getJson(skinFile);
-			skinTexture = resourceManager->getResource<Texture>(skin["texture"].asString());
+			if (skin.isMember("texture"))
+				skinTexture = resourceManager->getResource<Texture>(skin["texture"].asString());
 			font = resourceManager->getResource<Font>("tahoma");
-			radialmenufont = resourceManager->getResource<Font>(skin["radialfont"].asString());
+			if (skin.isMember("radialfont"))
+				radialmenufont = resourceManager->getResource<Font>(skin["radialfont"].asString());
 		}
 
 		void WM::setFont( Font* font )
