@@ -119,7 +119,8 @@ namespace blib
 		
 		for (auto m : meshes)
 		{
-			renderState.activeShader->setUniformStruct(materialUniform, m->material);
+			if (materialUniform != -1)
+				renderState.activeShader->setUniformStruct(materialUniform, m->material);
 			renderState.activeTexture[0] = m->material.texture;
 			renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
 		}
