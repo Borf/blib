@@ -22,6 +22,7 @@ namespace blib
 		};
 
 
+		virtual const unsigned char* getData() const { return NULL; };
 		virtual void use() = 0;
 		virtual void save(std::string filename) {};
 		virtual TexInfo* addTexture(std::string filename) = 0;

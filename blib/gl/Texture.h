@@ -39,6 +39,7 @@ namespace blib
 		public:
 
 			unsigned char* data;
+			virtual const unsigned char* getData() const { return data; };
 
 			GLuint texid;
 			Texture(unsigned char* data, int width, int height);
@@ -57,6 +58,7 @@ namespace blib
 			int maxCount;
 			int count;
 			int width, height;
+			virtual const unsigned char* getData() const { return NULL; };
 
 			class TexInfo
 			{

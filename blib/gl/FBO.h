@@ -34,6 +34,7 @@ namespace blib
 			FBO();
 			~FBO();
 
+			virtual const unsigned char* getData() const { return NULL; };
 			virtual void setSize(int width, int height);
 
 			void bind();

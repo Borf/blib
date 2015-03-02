@@ -221,8 +221,8 @@ namespace blib
 		{
 			activeLayer = 0;
 #ifdef _DEBUG
-			vertices[0] = new float[1024*1024*25]; // 50M floats
-			vertices[1] = new float[1024*1024*25]; // 50M floats
+			vertices[0] = new float[1024*1024*50]; // 50M floats
+			vertices[1] = new float[1024*1024*50]; // 50M floats
 #else
 			vertices[0] = new float[1024 * 1024 * 50]; // 50M floats
 			vertices[1] = new float[1024 * 1024 * 50]; // 50M floats

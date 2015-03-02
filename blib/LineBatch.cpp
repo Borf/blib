@@ -27,7 +27,7 @@ namespace blib
 		vbo = resourceManager->getResource<blib::VBO>();
 		vbo->setVertexFormat<vertexDef>();
 		renderState.activeVbo = vbo;
-		verts.reserve(10000);
+		verts.reserve(1000000);
 	}
 
 

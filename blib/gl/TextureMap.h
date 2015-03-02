@@ -41,6 +41,7 @@ namespace blib
 			std::map<std::string, TexInfo*> info;
 
 			std::list<TexInfo*> toLoad;
+			virtual const unsigned char* getData() const { return NULL; };
 
 
 			bool* taken;
