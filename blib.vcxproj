@@ -839,8 +839,8 @@
       <AdditionalLibraryDirectories>$(ProjectDir)\externals\glew\lib</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
-      <Command>xcopy /q /y /c "c:\Program Files\TortoiseSVN\bin\svnversion.exe" "$(ProjectDir)\svnversion.exe"
-"$(ProjectDir)\svnversion.exe" "$(ProjectPath)" &gt; "$(MSBuildProjectDirectory)\version.h"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
