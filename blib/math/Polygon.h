@@ -20,6 +20,8 @@ namespace blib
 		public:
 			Polygon() { }
 			Polygon(const ClipperLib::Polygon &p);
+			Polygon(const std::vector<glm::vec2> &l);
+			Polygon(const std::initializer_list<glm::vec2> &s);
 			ClipperLib::Polygon toClipperPolygon() const;
 			Polygon(p2t::Triangle *t);
 

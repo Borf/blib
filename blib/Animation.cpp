@@ -48,6 +48,8 @@ namespace blib
 
 	void Animation::setState(std::string newState)
 	{
+		if (currentState == states[newState])
+			return;
 		time = 0;
 		currentState = states[newState];
 		currentKeyFrame = 0;

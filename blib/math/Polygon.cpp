@@ -95,6 +95,16 @@ namespace blib
 				push_back(glm::vec2(t->GetPoint(i)->x, t->GetPoint(i)->y));
 		}
 
+		Polygon::Polygon(const std::vector<glm::vec2> &l) : std::vector<glm::vec2>(l)
+		{
+			
+		}
+
+		Polygon::Polygon(const std::initializer_list<glm::vec2> &s) : std::vector<glm::vec2>(s)
+		{
+
+		}
+
 
 		std::vector<p2t::Point*> Polygon::toP2TPolygon() const
 		{
