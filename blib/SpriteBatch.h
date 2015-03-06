@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include <blib/Texture.h>
 #include <blib/gl/GlResizeRegister.h>
-#include <blib/gl/Shader.h>
 #include <blib/math/Rectangle.h>
 #include <blib/TextureMap.h>
 #include <blib/RenderState.h>
