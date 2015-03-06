@@ -12,6 +12,13 @@ namespace blib
 	LineBatch::LineBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState)
 	{
 		renderState = baseRenderState;
+		renderState.depthTest = false;
+		renderState.blendEnabled = true;
+		renderState.srcBlendColor = blib::RenderState::SRC_ALPHA;
+		renderState.srcBlendAlpha = blib::RenderState::SRC_ALPHA;
+		renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
+		renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
+
 		active = false;
 		this->renderer = renderer;
 		shader = resourceManager->getResource<Shader>("LineBatch");
