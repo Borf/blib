@@ -20,7 +20,7 @@ namespace blib
 			programId = 0;
 			this->vertexShader = vertex;
 			this->fragmentShader = fragment;
-			this->createcallstack = blib::util::callstack();
+//			this->createcallstack = blib::util::callstack();
             if(vertexShader == "" || fragmentShader == "")
             {
                 Log::out<<"a shader is still empty"<<Log::newline;
