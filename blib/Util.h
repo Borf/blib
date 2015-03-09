@@ -74,5 +74,8 @@ namespace blib
 		glm::vec3 hsv2rgb(glm::vec3 hsv);
 		glm::vec3 rgb2hsv(glm::vec3 rgb);
 
+
+		bool isMainModule();
+
 	}
 }

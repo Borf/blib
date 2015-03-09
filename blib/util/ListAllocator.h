@@ -12,6 +12,7 @@ namespace blib
 		class ListNodeBase
 		{
 		public:
+			bool isMain;
 			ListNodeBase* next;
 			virtual ~ListNodeBase() {};
 		};
@@ -21,7 +22,7 @@ namespace blib
 		{
 		public:
 			T* data;
-			virtual ~ListNode() { delete data; }
+			virtual ~ListNode() { if (isMain) { delete data; } }
 		};
 
 
@@ -53,6 +54,7 @@ namespace blib
 			template<class T> 
 			T* get()
 			{
+				static bool isMain = blib::util::isMainModule();
 				static int typeId = -1;
 				if (typeId == -1)
 					typeId = typeCount++;
@@ -80,6 +82,7 @@ namespace blib
 
 				ListNode<T>* newNode = new ListNode<T>();
 				newNode->data = new T();
+				newNode->isMain = isMain;
 				newNode->next = nullptr;
 				data[typeId]->next = newNode;
 				data[typeId] = newNode;

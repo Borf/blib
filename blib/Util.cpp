@@ -9,6 +9,7 @@
 #include <shlobj.h>
 #include <DbgHelp.h>
 #pragma comment(lib,"dbghelp.lib")
+#include <winbase.h>
 #else
 #include <execinfo.h>
 #include <sys/time.h>
@@ -327,6 +328,20 @@ return "~/";
 
 			return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 #endif
+		}
+
+		bool isMainModule()
+		{
+			static int ret = -1;
+			if (ret == -1)
+			{
+				HMODULE hModule = NULL;
+				GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCTSTR)isMainModule, &hModule);
+				FARPROC proc = GetProcAddress(hModule, "main");
+
+				ret = proc != NULL ? 1 : 0;
+			}
+			return ret == 1;
 		}
 
 	}
