@@ -89,7 +89,9 @@ namespace blib
 			unsigned char* tmpData = stbi_load_from_memory((stbi_uc*)fileData, length, &_originalWidth, &_originalHeight, &depth, 0);
 			if (!tmpData)
 			{
+				const char* err = stbi_failure_reason();
 				Log::out << "Error loading file " << fileName << Log::newline;
+				Log::out << err << Log::newline;
 				return;
 			}
 			delete[] fileData;
