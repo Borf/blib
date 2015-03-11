@@ -3,13 +3,12 @@
 #include <glm/glm.hpp>
 #include <blib/gl/Vertex.h>
 #include <blib/gl/GlResizeRegister.h>
-#include <blib/gl/Shader.h>
 #include <blib/RenderState.h>
 #include <queue>
 
 namespace blib
 {
-	namespace gl { class Shader; }
+	class Shader;
 	class Renderer;
 	class IDrawableLine;
 	class ResourceManager;
