@@ -45,7 +45,7 @@ namespace blib
 			bool contains(const glm::vec2 &point) const;
 			bool intersect(const blib::math::Rectangle &other) const;
 			bool intersect(const blib::math::Circle &other) const;
-			bool intersect(const blib::math::Line &other) const;
+			bool intersect(blib::math::Line other) const;
 			bool intersect(const blib::math::Ray &other) const;
 			bool intersect(const blib::math::Triangle &other) const;
 
@@ -60,6 +60,8 @@ namespace blib
 			inline void setWidth(float width) {				bottomright.x = topleft.x + width;	};
 			inline void setHeight(float height) {			bottomright.y = topleft.y + height; };
 			inline void setSize(const glm::vec2 &size) {	bottomright = topleft + size;		};
+		private:
+			int computeOutCode(const glm::vec2 &p) const;
 		};
 	}
 }
