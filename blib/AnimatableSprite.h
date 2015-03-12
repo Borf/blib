@@ -12,74 +12,76 @@ namespace blib
 	class SpriteBatch;
 	class AnimatableSprite;
 
-	class Animation
-	{
-	public:
-		float duration;
-		float elapsedTime;
-		std::function<void()> onDone;
 
-		Animation()
-		{
-			onDone = nullptr;
-			duration = 1;
-			elapsedTime = 0;
-		}
-		virtual ~Animation() {}
-
-		virtual void apply(AnimatableSprite* sprite) = 0;
-		virtual void finish(AnimatableSprite* sprite) {};
-	};
-
-
-	class MoveToAnimation : public Animation
-	{
-		blib::math::Rectangle src;
-		blib::math::Rectangle dest;
-	public:
-		MoveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest);
-		virtual void apply(AnimatableSprite* sprite);
-	};
-	class CurveToAnimation : public Animation
-	{
-		blib::math::Rectangle src;
-		blib::math::Rectangle dest;
-		blib::math::BiArc path;
-	public:
-		CurveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest, float srcdirection, float dstdirection);
-		virtual void apply(AnimatableSprite* sprite);
-	};
-
-	class ShakeAnimation : public Animation
-	{
-		blib::math::Rectangle original;
-		bool done;
-	public:
-		ShakeAnimation(const blib::math::Rectangle& original);
-		virtual void apply(AnimatableSprite* sprite);
-		void finish(AnimatableSprite* sprite);;
-	};
-
-	class AlphaAnimation : public Animation
-	{
-		float src;
-		float dest;
-	public:
-		AlphaAnimation(const float src, const float dest);
-		virtual void apply(AnimatableSprite* sprite);
-	};
-	class RotateAnimation : public Animation
-	{
-		float src;
-		float dest;
-	public:
-		RotateAnimation(const float src, const float dest);
-		virtual void apply(AnimatableSprite* sprite);
-	};
 
 
 	class AnimatableSprite
 	{
+		class Animation
+		{
+		public:
+			float duration;
+			float elapsedTime;
+			std::function<void()> onDone;
+
+			Animation()
+			{
+				onDone = nullptr;
+				duration = 1;
+				elapsedTime = 0;
+			}
+			virtual ~Animation() {}
+
+			virtual void apply(AnimatableSprite* sprite) = 0;
+			virtual void finish(AnimatableSprite* sprite) {};
+		};
+
+
+		class MoveToAnimation : public Animation
+		{
+			blib::math::Rectangle src;
+			blib::math::Rectangle dest;
+		public:
+			MoveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest);
+			virtual void apply(AnimatableSprite* sprite);
+		};
+		class CurveToAnimation : public Animation
+		{
+			blib::math::Rectangle src;
+			blib::math::Rectangle dest;
+			blib::math::BiArc path;
+		public:
+			CurveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest, float srcdirection, float dstdirection);
+			virtual void apply(AnimatableSprite* sprite);
+		};
+
+		class ShakeAnimation : public Animation
+		{
+			blib::math::Rectangle original;
+			bool done;
+		public:
+			ShakeAnimation(const blib::math::Rectangle& original);
+			virtual void apply(AnimatableSprite* sprite);
+			void finish(AnimatableSprite* sprite);;
+		};
+
+		class AlphaAnimation : public Animation
+		{
+			float src;
+			float dest;
+		public:
+			AlphaAnimation(const float src, const float dest);
+			virtual void apply(AnimatableSprite* sprite);
+		};
+		class RotateAnimation : public Animation
+		{
+			float src;
+			float dest;
+		public:
+			RotateAnimation(const float src, const float dest);
+			virtual void apply(AnimatableSprite* sprite);
+		};
+
 	public:
 		blib::math::Rectangle rect;
 		glm::vec4 color;

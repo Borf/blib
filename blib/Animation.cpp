@@ -80,9 +80,9 @@ namespace blib
 
 	}
 
-	void Animation::draw(SpriteBatch &spriteBatch, glm::mat4 transform)
+	void Animation::draw(SpriteBatch &spriteBatch, glm::mat4 transform, const glm::vec4& color)
 	{
-		rootBone->draw(*this, spriteBatch, transform);
+		rootBone->draw(*this, spriteBatch, transform, color);
 	}
 
 
@@ -94,9 +94,9 @@ namespace blib
 	}
 
 
-	void Animation::Bone::draw(const Animation& animation, SpriteBatch &spritebatch, glm::mat4 transform )
+	void Animation::Bone::draw(const Animation& animation, SpriteBatch &spritebatch, glm::mat4 transform, const glm::vec4& color)
 	{
-		spritebatch.draw(animation.texture, transform, animation.frames[frame].size() * glm::vec2(animation.texture->originalWidth, animation.texture->originalHeight) * 0.5f, animation.frames[frame]);
+		spritebatch.draw(animation.texture, transform, animation.frames[frame].size() * glm::vec2(animation.texture->originalWidth, animation.texture->originalHeight) * 0.5f, animation.frames[frame], color);
 	}
 
 	/////////////////////////state

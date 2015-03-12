@@ -1,5 +1,7 @@
 #ifndef WIN32
 #pragma GCC diagnostic ignored "-Wmissing-braces"
+#else
+#include <gl/glew.h> // for vsync
 #endif
 
 #include "App.h"

@@ -24,7 +24,7 @@ namespace blib
 			int frame;
 
 			Bone(json::Value &config);
-			void draw(const Animation& animation, SpriteBatch &spritebatch, glm::mat4 transform);
+			void draw(const Animation& animation, SpriteBatch &spritebatch, glm::mat4 transform, const glm::vec4& color = glm::vec4(1,1,1,1));
 		};
 		class State
 		{
@@ -65,7 +65,7 @@ namespace blib
 	public:
 		Animation(std::string filename, ResourceManager* resourceManager);
 
-		void draw(SpriteBatch &spritebatch, glm::mat4 transform);
+		void draw(SpriteBatch &spritebatch, glm::mat4 transform, const glm::vec4& color = glm::vec4(1,1,1,1));
 		void update(double elapsedTime);
 		void setState(std::string newState);
 		std::string getState();

@@ -68,6 +68,14 @@ namespace blib
 		animation->duration = time;
 		animations.push_back(animation);
 	}
+	void AnimatableSprite::resizeTo(const glm::vec2 &targetSize, float time, const std::function<void()> &onDone /* = nullptr */)
+	{
+		MoveToAnimation* animation = new MoveToAnimation(rect, blib::math::Rectangle(rect.center() - rect.size() * targetSize * 0.5f, rect.width()*targetSize.x, rect.height()*targetSize.y));
+		animation->onDone = onDone;
+		animation->duration = time;
+		animations.push_back(animation);
+	}
+
 
 	void AnimatableSprite::alphaTo(const float target, float time, const std::function<void()> &onDone /* = nullptr */)
 	{
@@ -121,33 +129,33 @@ namespace blib
 
 
 
-	MoveToAnimation::MoveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest) : src(src), dest(dest)
+	AnimatableSprite::MoveToAnimation::MoveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest) : src(src), dest(dest)
 	{
 	}
 
 
-	void MoveToAnimation::apply(AnimatableSprite* sprite)
+	void AnimatableSprite::MoveToAnimation::apply(AnimatableSprite* sprite)
 	{
 		float fac = elapsedTime / duration;
 		sprite->rect = blib::math::Rectangle(glm::mix(src.topleft, dest.topleft, fac), glm::mix(src.bottomright, dest.bottomright, fac));
 	}
 
 
-	ShakeAnimation::ShakeAnimation(const blib::math::Rectangle& original) : original(original)
+	AnimatableSprite::ShakeAnimation::ShakeAnimation(const blib::math::Rectangle& original) : original(original)
 	{
 		duration = 999999;
 		done = false;
 		this->elapsedTime = rand() / (float)RAND_MAX;
 	}
 
-	void ShakeAnimation::apply(AnimatableSprite* sprite)
+	void AnimatableSprite::ShakeAnimation::apply(AnimatableSprite* sprite)
 	{
 		if (!done)
 			duration = elapsedTime + 100;
 		sprite->rect = original + 2.0f * glm::vec2(glm::sin(30 * elapsedTime), glm::cos(20 * elapsedTime));
 	}
 
-	void ShakeAnimation::finish(AnimatableSprite* sprite)
+	void AnimatableSprite::ShakeAnimation::finish(AnimatableSprite* sprite)
 	{
 		done = true;
 		duration = elapsedTime;
@@ -155,24 +163,24 @@ namespace blib
 	}
 
 
-	AlphaAnimation::AlphaAnimation(const float src, const float dest)
+	AnimatableSprite::AlphaAnimation::AlphaAnimation(const float src, const float dest)
 	{
 		this->src = src;
 		this->dest = dest;
 	}
 
-	void AlphaAnimation::apply(AnimatableSprite* sprite)
+	void AnimatableSprite::AlphaAnimation::apply(AnimatableSprite* sprite)
 	{
 		float fac = elapsedTime / duration;
 		sprite->color.a = glm::mix(src, dest, fac);
 	}
-	RotateAnimation::RotateAnimation(const float src, const float dest)
+	AnimatableSprite::RotateAnimation::RotateAnimation(const float src, const float dest)
 	{
 		this->src = src;
 		this->dest = dest;
 	}
 
-	void RotateAnimation::apply(AnimatableSprite* sprite)
+	void AnimatableSprite::RotateAnimation::apply(AnimatableSprite* sprite)
 	{
 		float fac = elapsedTime / duration;
 		sprite->rotation = glm::mix(src, dest, fac);
@@ -180,12 +188,12 @@ namespace blib
 
 
 
-	CurveToAnimation::CurveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest, float direction, float incomingDirection) : src(src), dest(dest)
+	AnimatableSprite::CurveToAnimation::CurveToAnimation(const blib::math::Rectangle& src, const blib::math::Rectangle& dest, float direction, float incomingDirection) : src(src), dest(dest)
 	{
 		path = math::BiArc(src.center(), blib::util::fromAngle(direction), dest.center(), blib::util::fromAngle(incomingDirection));
 	}
 
-	void CurveToAnimation::apply(AnimatableSprite* sprite)
+	void AnimatableSprite::CurveToAnimation::apply(AnimatableSprite* sprite)
 	{
 		float fac = elapsedTime / duration;
 
