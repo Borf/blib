@@ -62,14 +62,11 @@ namespace blib
 				Render* r = toRender[1-activeLayer][i];
 				if(r->command == Render::Clear)
 				{
-#ifdef WIN32
                     if(r->renderState.activeFbo == NULL)
 						glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 					else
-					{
 						r->renderState.activeFbo->bind();
-                    }
-#endif
+
 					glDisable(GL_SCISSOR_TEST);
 					glClearStencil(0);
 					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -161,14 +158,13 @@ namespace blib
                             glDisable(GL_DEPTH_TEST);
                     }
 
-#ifdef WIN32
                     if (!lastRenderState || lastRenderState->activeFbo != r->renderState.activeFbo) {
 						if(r->renderState.activeFbo == NULL)
 							glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 						else
                             r->renderState.activeFbo->bind();
                     }
-#endif
+
 
                     if (!lastRenderState || lastRenderState->stencilTestEnabled != r->renderState.stencilTestEnabled || lastRenderState->stencilWrite != r->renderState.stencilWrite) {
 						if(r->renderState.stencilTestEnabled)
