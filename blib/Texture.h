@@ -44,11 +44,13 @@ namespace blib
 		static void clearCache();
 
 
+		bool nearest;
+
 		void setTextureRepeat(bool repeat) { textureRepeat = repeat;  }
 		virtual const unsigned char* getData() const = 0;
 
 	protected:
-		Texture() { textureRepeat = false; loaded = false; width = 0; height = 0; originalHeight = 0; originalWidth = 0; }
+		Texture() { textureRepeat = false; loaded = false; width = 0; height = 0; originalHeight = 0; originalWidth = 0; nearest = false; }
 		virtual ~Texture() {};
 		bool textureRepeat;
 
