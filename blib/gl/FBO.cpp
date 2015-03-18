@@ -36,8 +36,8 @@ namespace blib
 			this->width = width;
 			this->height = height;
 
-			this->width = pow(2, ceil(log(this->width) / log(2)));
-			this->height = pow(2, ceil(log(this->height) / log(2)));
+//			this->width = pow(2, ceil(log(this->width) / log(2)));
+//			this->height = pow(2, ceil(log(this->height) / log(2)));
 
 
 			this->originalWidth = width;
