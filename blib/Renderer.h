@@ -72,6 +72,7 @@ namespace blib
 		public:
 			int vertexStart;
 			int count;
+			float lineThickness;
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
 			{
 				if(renderState.activeVbo != NULL)
@@ -441,12 +442,18 @@ namespace blib
 		}
 
 		template<class T>
-		inline void drawLines(const std::vector<T> &vertices)
+		inline void drawLines(const std::vector<T> &vertices, float thickness = 1)
 		{
-			drawLines(vertices, renderState);
+			drawLines(vertices, thickness, renderState);
 		}
 		template<class T>
-		void drawLines(const std::vector<T> &vertices, const RenderState& renderState)
+		inline void drawLines(const std::vector<T> &vertices, const RenderState& renderState)
+		{
+			drawLines(vertices, 1, renderState);
+		}
+
+		template<class T>
+		void drawLines(const std::vector<T> &vertices, float thickness, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 #ifdef CUSTOMMEMALLOCATOR
@@ -456,6 +463,7 @@ namespace blib
 #endif
 			block->command = Render::DrawLines;	//TODO : move to constructor
 			block->renderState = renderState;
+			block->lineThickness = thickness;
 			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
 			block->vertexStart = vertexIndex[activeLayer];
 			block->count = vertices.size();
