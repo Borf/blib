@@ -177,6 +177,8 @@ namespace blib
 		public:
 			int width;
 			int height;
+			int left;
+			int top;
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)			{			}
 			virtual int vertexCount()			{				return 0;			}
 		};
@@ -504,7 +506,7 @@ namespace blib
 			toRender[activeLayer].push_back(command);
 		}*/
 		
-		void setViewPort(int width, int height)
+		void setViewPort(int left, int top, int width, int height)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 #ifdef CUSTOMMEMALLOCATOR
@@ -513,6 +515,8 @@ namespace blib
 			RenderSetViewPort* command = new RenderSetViewPort();
 #endif
 			command->command = Render::SetViewPort;
+			command->left = left;
+			command->top = top;
 			command->width = width;
 			command->height = height;
 			toRender[activeLayer].push_back(command);

@@ -90,7 +90,7 @@ namespace blib
 				}
 				else if (r->command == Render::SetViewPort)
 				{
-					glViewport(0,0,((RenderSetViewPort*)r)->width, ((RenderSetViewPort*)r)->height);
+					glViewport(((RenderSetViewPort*)r)->left, ((RenderSetViewPort*)r)->top, ((RenderSetViewPort*)r)->width, ((RenderSetViewPort*)r)->height);
 					height = ((RenderSetViewPort*)r)->height;
 				}
 				else if(r->command == Render::SetVbo)
