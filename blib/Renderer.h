@@ -405,7 +405,7 @@ namespace blib
 		}
 
 		template<class T>
-		void drawLines(T* first, int count, const RenderState& renderState = renderState)
+		void drawLines(T* first, int count, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 #ifdef CUSTOMMEMALLOCATOR
@@ -441,7 +441,12 @@ namespace blib
 		}
 
 		template<class T>
-		void drawLines(const std::vector<T> &vertices, const RenderState& renderState = renderState)
+		inline void drawLines(const std::vector<T> &vertices)
+		{
+			drawLines(vertices, renderState);
+		}
+		template<class T>
+		void drawLines(const std::vector<T> &vertices, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 #ifdef CUSTOMMEMALLOCATOR
