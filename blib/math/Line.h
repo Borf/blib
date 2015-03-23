@@ -24,9 +24,11 @@ namespace blib
 			glm::vec2 project(const glm::vec2& point) const;
 			float projectFactor(const glm::vec2& point) const;
 
-			glm::vec2 normal();
+			glm::vec2 normal() const;
 			void buildLines();
-			float length();
+			float length() const;
+			float angle() const ;
+			glm::vec2 mix(float f) const;
 		};
 
 	}

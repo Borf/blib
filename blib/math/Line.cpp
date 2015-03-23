@@ -44,7 +44,7 @@ namespace blib
 			return fabs(div) > 0.001;
 		}
 
-		glm::vec2 Line::normal()
+		glm::vec2 Line::normal() const
 		{
 			return glm::normalize(glm::vec2(p2.y - p1.y, -(p2.x - p1.x)));
 		}
@@ -91,9 +91,19 @@ namespace blib
 			return ((p2.x - p1.x)*(point.y - p1.y) - (p2.y - p1.y)*(point.x - p1.x)) > 0;
 		}
 
-		float Line::length()
+		float Line::length() const
 		{
 			return glm::distance(p1, p2);
+		}
+
+		float Line::angle() const
+		{
+			return atan2(p2.y - p1.y, p2.x - p1.x);
+		}
+
+		glm::vec2 Line::mix(float fac) const
+		{
+			return glm::mix(p1, p2, fac);
 		}
 
 	}
