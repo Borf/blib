@@ -72,6 +72,7 @@ namespace blib
 		public:
 			int vertexStart;
 			int count;
+			float lineThickness;
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
 			{
 				if(renderState.activeVbo != NULL)
@@ -177,6 +178,8 @@ namespace blib
 		public:
 			int width;
 			int height;
+			int left;
+			int top;
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)			{			}
 			virtual int vertexCount()			{				return 0;			}
 		};
@@ -439,7 +442,18 @@ namespace blib
 		}
 
 		template<class T>
-		void drawLines(const std::vector<T> &vertices, const RenderState& renderState)
+		inline void drawLines(const std::vector<T> &vertices, float thickness = 1)
+		{
+			drawLines(vertices, thickness, renderState);
+		}
+		template<class T>
+		inline void drawLines(const std::vector<T> &vertices, const RenderState& renderState)
+		{
+			drawLines(vertices, 1, renderState);
+		}
+
+		template<class T>
+		void drawLines(const std::vector<T> &vertices, float thickness, const RenderState& renderState)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 #ifdef CUSTOMMEMALLOCATOR
@@ -449,6 +463,7 @@ namespace blib
 #endif
 			block->command = Render::DrawLines;	//TODO : move to constructor
 			block->renderState = renderState;
+			block->lineThickness = thickness;
 			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
 			block->vertexStart = vertexIndex[activeLayer];
 			block->count = vertices.size();
@@ -504,7 +519,7 @@ namespace blib
 			toRender[activeLayer].push_back(command);
 		}*/
 		
-		void setViewPort(int width, int height)
+		void setViewPort(int left, int top, int width, int height)
 		{
 			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
 #ifdef CUSTOMMEMALLOCATOR
@@ -513,6 +528,8 @@ namespace blib
 			RenderSetViewPort* command = new RenderSetViewPort();
 #endif
 			command->command = Render::SetViewPort;
+			command->left = left;
+			command->top = top;
 			command->width = width;
 			command->height = height;
 			toRender[activeLayer].push_back(command);

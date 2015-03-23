@@ -428,7 +428,7 @@ namespace blib
 					app->joyStates[i] = app->joystickDriver->getJoyState(i);
 			}
 
-			app->renderer->setViewPort(app->window->getWidth(), app->window->getHeight());
+			app->renderer->setViewPort(0,0,app->window->getWidth(), app->window->getHeight());
 			double elapsedTime = blib::util::Profiler::getTime();
 			blib::util::Profiler::startFrame();
 			app->time += elapsedTime;

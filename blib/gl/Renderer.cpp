@@ -62,14 +62,11 @@ namespace blib
 				Render* r = toRender[1-activeLayer][i];
 				if(r->command == Render::Clear)
 				{
-#ifdef WIN32
                     if(r->renderState.activeFbo == NULL)
 						glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 					else
-					{
 						r->renderState.activeFbo->bind();
-                    }
-#endif
+
 					glDisable(GL_SCISSOR_TEST);
 					glClearStencil(0);
 					glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
@@ -93,7 +90,7 @@ namespace blib
 				}
 				else if (r->command == Render::SetViewPort)
 				{
-					glViewport(0,0,((RenderSetViewPort*)r)->width, ((RenderSetViewPort*)r)->height);
+					glViewport(((RenderSetViewPort*)r)->left, ((RenderSetViewPort*)r)->top, ((RenderSetViewPort*)r)->width, ((RenderSetViewPort*)r)->height);
 					height = ((RenderSetViewPort*)r)->height;
 				}
 				else if(r->command == Render::SetVbo)
@@ -161,14 +158,13 @@ namespace blib
                             glDisable(GL_DEPTH_TEST);
                     }
 
-#ifdef WIN32
                     if (!lastRenderState || lastRenderState->activeFbo != r->renderState.activeFbo) {
 						if(r->renderState.activeFbo == NULL)
 							glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 						else
                             r->renderState.activeFbo->bind();
                     }
-#endif
+
 
                     if (!lastRenderState || lastRenderState->stencilTestEnabled != r->renderState.stencilTestEnabled || lastRenderState->stencilWrite != r->renderState.stencilWrite) {
 						if(r->renderState.stencilTestEnabled)
@@ -297,6 +293,10 @@ namespace blib
 						glDrawArrays(GL_TRIANGLES, start, r->vertexCount());
 					else if (r->command == Render::DrawLines)
 					{
+						float w = ((RenderBlock<blib::Vertex>*)r)->lineThickness;
+						if (w < 0)
+							w = 0.1f;
+						glLineWidth(w);
 						glDrawArrays(GL_LINES, start, r->vertexCount());
 					}
 					else if(r->command == Render::DrawPoints)
