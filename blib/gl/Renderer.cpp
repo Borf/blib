@@ -170,18 +170,19 @@ namespace blib
 						if(r->renderState.stencilTestEnabled)
 						{
 							glEnable(GL_STENCIL_TEST);
-							glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
 							glStencilMask(0xFF);
 
 							if(r->renderState.stencilWrite)
 							{
 								glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 								glStencilFunc(GL_NEVER, 1, 0xFF);
+								glStencilOp(GL_REPLACE, GL_KEEP, GL_KEEP);
 							}
 							else
 							{
 								glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 								glStencilFunc(GL_EQUAL, 0, 0xFF);
+								glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 							}
 						}
 						else
