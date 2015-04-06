@@ -265,7 +265,8 @@ namespace blib
 		inline void setUniform(Enum name,			const T& value)
 		{
 			assert(uniformData);
-			uniforms[(int)name]->set(uniformData, value);
+			if (uniforms[(int)name])
+				uniforms[(int)name]->set(uniformData, value);
 		}
 		template <class T, class Enum>
 		inline T getUniform(Enum name)
