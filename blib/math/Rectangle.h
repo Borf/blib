@@ -60,6 +60,7 @@ namespace blib
 			inline void setWidth(float width) {				bottomright.x = topleft.x + width;	};
 			inline void setHeight(float height) {			bottomright.y = topleft.y + height; };
 			inline void setSize(const glm::vec2 &size) {	bottomright = topleft + size;		};
+			glm::vec2 projectClosest(const glm::vec2 &position) const;
 		private:
 			int computeOutCode(const glm::vec2 &p) const;
 		};
