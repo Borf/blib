@@ -191,11 +191,26 @@ namespace blib
 		template<class Storage, class Func>
 		void deletewhere(Storage& data, Func func)
 		{
-			for(typename Storage::iterator it = data.begin(); it != data.end(); it++)
+			for (typename Storage::iterator it = data.begin(); it != data.end(); it++)
 			{
-				if(func(*it))
+				if (func(*it))
 				{
 					delete *it;
+					it = data.erase(it);
+					if (it == data.end())
+						break;
+				}
+			}
+		}
+
+
+		template<class Storage, class Func>
+		void removewhere(Storage& data, Func func)
+		{
+			for (typename Storage::iterator it = data.begin(); it != data.end(); it++)
+			{
+				if (func(*it))
+				{
 					it = data.erase(it);
 					if (it == data.end())
 						break;
