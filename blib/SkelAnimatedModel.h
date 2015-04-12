@@ -110,7 +110,7 @@ namespace blib
 			void playAnimation(const std::string& animation, float fadeInTime = 0);
 			void stopAnimation(const std::string& animation, float fadeOutTime = 0);
 			void update(float elapsedTime);
-			void draw(RenderState& renderState, Renderer* renderer, int materialUniform, int boneUniform);
+			void draw(RenderState renderState, Renderer* renderer, int materialUniform, int boneUniform) const;
 			void drawSkeleton(blib::RenderState renderState, Renderer* renderer);
 		};
 	private:
@@ -121,7 +121,6 @@ namespace blib
 
 		blib::VBO* vbo;
 		blib::VIO* vio;
-		std::vector<Mesh*> meshes;
 
 		Bone* rootBone;
 		std::vector<Bone*> bones;
@@ -133,6 +132,9 @@ namespace blib
 
 
 	public:
+		std::vector<Mesh*> meshes;
+
+
 		SkelAnimatedModel(const std::string &meshFile, const std::string &boneFile, blib::ResourceManager* resourceManager, blib::Renderer* renderer);
 		void loadAnimation(const std::string &fileName);
 
