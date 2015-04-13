@@ -201,6 +201,9 @@ VertexDefBegin(VertexP3T2N3B4B4, boneWeights, glm::vec4, 4, VertexP3T2N3B4)
 VertexDefEnd();
 
 
+VertexDefBegin(VertexP3N3C4, color, glm::vec4, 4, VertexP3N3)
+VertexP3N3C4(glm::vec3 position, glm::vec3 normal, glm::vec4 color) : VertexP3N3(position, normal), color(color) {};
+VertexDefEnd();
 
 }
 #endif

@@ -9,6 +9,7 @@
 #endif
 
 #include <blib/math/Line.h>
+#include <blib/linq.h>
 
 namespace blib
 {
@@ -213,5 +214,22 @@ namespace blib
 			topleft += offset;
 			bottomright += offset;
 		}
+
+		glm::vec2 Rectangle::projectClosest(const glm::vec2 &position) const
+		{
+			std::vector<glm::vec2> points(4);
+			points[0] = blib::math::Line(topleft, glm::vec2(topleft.x, bottomright.y)).project(position);
+			points[1] = blib::math::Line(glm::vec2(topleft.x, bottomright.y), bottomright).project(position);
+			points[2] = blib::math::Line(bottomright, glm::vec2(bottomright.x, topleft.y)).project(position);
+			points[3] = blib::math::Line(glm::vec2(bottomright.x, topleft.y), topleft).project(position);
+
+			return blib::linq::min<float, glm::vec2>(points, [position](glm::vec2 p){ return glm::distance(position, p);  }, [](glm::vec2 p){ return p; });
+
+
+
+
+
+		}
+
 	}
 }

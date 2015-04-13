@@ -11,6 +11,7 @@ namespace blib
 		bool freed;
 
 		bool depth;
+		bool depthTexture;
 		bool stencil;
 		int textureCount;
 
@@ -18,6 +19,7 @@ namespace blib
 		{
 			freed = false;
 			stencil = false;
+			depthTexture = false;
 			textureCount = 1;
 		}
 

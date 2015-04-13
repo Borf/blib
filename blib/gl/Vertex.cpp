@@ -43,6 +43,7 @@ VertexDef(VertexP2T2C4,							color,		glm::vec4, 4, VertexP2T2)
 VertexDef(VertexP2C4T2,							tex1,		glm::vec2, 2, VertexP2C4)
 VertexDef(VertexP2C4T2T2,						tex2,		glm::vec2, 2, VertexP2C4T2)
 VertexDef(VertexP2C4T2T2F1,						_size,		float, 1, VertexP2C4T2T2)
+VertexDef(VertexP3N3C4,							color,		glm::vec4, 4, VertexP3N3)
 
 #ifndef BLIB_IOS
 VertexDefi(VertexP3T2N3B4,						boneIds,	glm::ivec4,4, VertexP3T2N3)

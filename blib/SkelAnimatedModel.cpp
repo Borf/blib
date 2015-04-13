@@ -103,7 +103,7 @@ namespace blib
 		{
 			if (b->index < 0)
 				return;
-			if (b->index > (int)bones.size())
+			if (b->index >= (int)bones.size())
 				bones.resize(b->index + 1);
 			bones[b->index] = b;
 		});
@@ -237,17 +237,19 @@ namespace blib
 		
 	}
 
-	void SkelAnimatedModel::State::draw(RenderState& renderState, Renderer* renderer, int materialUniform, int boneUniform)
+	void SkelAnimatedModel::State::draw(RenderState renderState, Renderer* renderer, int materialUniform, int boneUniform) const
 	{
 		renderState.activeVbo = model->vbo;
 		renderState.activeVio = model->vio;
 
-		for (size_t i = 0; i < boneMatrices.size(); i++)
-			renderState.activeShader->setUniform(boneUniform, i, boneMatrices[i]);
+		if (boneUniform > -1)
+			for (size_t i = 0; i < boneMatrices.size(); i++)
+				renderState.activeShader->setUniform(boneUniform, i, boneMatrices[i]);
 
 		for (auto m : model->meshes)
 		{
-			renderState.activeShader->setUniformStruct(materialUniform, m->material);
+			if (materialUniform > -1)
+				renderState.activeShader->setUniformStruct(materialUniform, m->material);
 			renderState.activeTexture[0] = m->material.texture;
 			renderer->drawIndexedTriangles<VertexP3T2N3B4B4>(m->begin, m->count, renderState);
 		}

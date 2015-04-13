@@ -67,6 +67,7 @@ namespace blib
 		
 		glm::ivec2 position;
 		int clickcount;
+		int scrollPosition;
 
 		MouseState()
 		{
@@ -76,6 +77,7 @@ namespace blib
 			position.x = -1;
 			position.y = -1;
 			clickcount = 0;
+			scrollPosition = 0;
 		}
 	};
 
