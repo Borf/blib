@@ -269,6 +269,19 @@ namespace blib
 			addMouseListener(new AppMouseListener(this));
 		}
 
+
+		class Resizer : public blib::gl::GlResizeRegister
+		{
+			App* app;
+		public:
+			Resizer(App* app) { this->app = app; }
+			void resizeGl(int width, int height)
+			{
+				app->renderer->setViewPort(0, 0, width, height);
+			}
+		};
+		new Resizer(this);
+
 		mouseState.leftButton = false;
 		mouseState.rightButton = false;
 		mouseState.middleButton = false;
