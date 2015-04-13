@@ -18,10 +18,10 @@ namespace blib
 		Shader::Shader(std::string vertex, std::string fragment)
 		{
 			programId = 0;
-			this->vertexShader = vertex;
-			this->fragmentShader = fragment;
+			this->vertexShaders.push_back(vertex);
+			this->fragmentShaders.push_back(fragment);
 //			this->createcallstack = blib::util::callstack();
-            if(vertexShader == "" || fragmentShader == "")
+            if(vertexShaders.empty() || fragmentShaders.empty())
             {
                 Log::out<<"a shader is still empty"<<Log::newline;
             }
@@ -47,7 +47,7 @@ namespace blib
 		{
 			if(programId == 0)
 			{
-				if(vertexShader == "" || fragmentShader == "")
+				if(vertexShaders.empty() || fragmentShaders.empty())
 				{
 					Log::out<<"a shader is still empty"<<Log::newline;
 				}
@@ -56,8 +56,10 @@ namespace blib
 				if(programId == 0)
 					return;
 
-				shaders.push_back(SubShader::fromData(vertexShader.c_str(), SubShader::Vertex));
-				shaders.push_back(SubShader::fromData(fragmentShader.c_str(), SubShader::Fragment));
+				for (const std::string &vertexShader : vertexShaders)
+					shaders.push_back(SubShader::fromData(vertexShader.c_str(), SubShader::Vertex));
+				for (const std::string &fragmentShader : fragmentShaders)
+					shaders.push_back(SubShader::fromData(fragmentShader.c_str(), SubShader::Fragment));
 
 				for (std::list<SubShader*>::iterator it = shaders.begin(); it != shaders.end(); it++)
 					if (*it == NULL)

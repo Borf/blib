@@ -5,6 +5,7 @@ using blib::util::Log;
 
 
 #include <blib/config.h>
+#include <blib/util/FileSystem.h>
 
 #if defined(BLIB_IOS)
 #include <OpenGLES/ES2/gl.h>
@@ -106,9 +107,21 @@ namespace blib
 
 	void Shader::initFromData( std::string vertexShader, std::string fragmentShader )
 	{
-		this->vertexShader = vertexShader;
-		this->fragmentShader = fragmentShader;
+		this->vertexShaders.push_back(vertexShader);
+		this->fragmentShaders.push_back(fragmentShader);
 	}
+
+	void Shader::addVertexShader(const std::string &fileName)
+	{
+#if defined(BLIB_GL_FULL)
+		vertexShaders.push_back(blib::util::FileSystem::getData("assets/shaders/gl/" + fileName + ".vert"));
+#elif defined(BLIB_GL_ES)
+		vertexShaders.push_back(blib::util::FileSystem::getData("assets/shaders/gl/es" + fileName + ".vert"));
+#else
+#error	You need to define a GL version...
+#endif
+	}
+
 
 	Shader::Shader()
 	{
