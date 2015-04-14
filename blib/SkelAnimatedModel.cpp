@@ -195,8 +195,12 @@ namespace blib
 		for (auto a : animations)
 		{
 			a->time += elapsedTime;
+			if (a->playCount != 0)
+				if (a->time > a->animation->totalTime)
+					a->playCount--;
 			a->time = fmod(a->time, a->animation->totalTime);
 		}		
+		blib::linq::deletewhere(animations, [](AnimationState* a) { return a->playCount == 0; });
 
 
 		for (int i = 0; i < (int)faders.size(); i++)
@@ -278,7 +282,7 @@ namespace blib
 
 	}
 
-	void SkelAnimatedModel::State::playAnimation(const std::string& animation, float fadeInTime)
+	void SkelAnimatedModel::State::playAnimation(const std::string& animation, float fadeInTime, bool playOnce)
 	{
 		for (size_t i = 0; i < animations.size(); i++)
 			if (animations[i]->animation->name == animation)
@@ -289,7 +293,7 @@ namespace blib
 		AnimationState* anim = new AnimationState();
 		anim->animation = model->animations[animation];
 		anim->blendFactor = fadeInTime == 0 ? 1.0f : 0.0f;
-		anim->playCount = 0;
+		anim->playCount = playOnce ? 1 : -1;
 		anim->time = 0;
 		animations.push_back(anim);
 
@@ -304,6 +308,8 @@ namespace blib
 			fader->stopWhenDone = false;
 			faders.push_back(fader);
 		}
+
+
 	}
 
 	void SkelAnimatedModel::State::stopAnimation(const std::string& animation, float fadeOutTime)

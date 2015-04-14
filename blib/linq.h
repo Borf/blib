@@ -188,6 +188,21 @@ namespace blib
 			data.clear();
 		}
 
+		template<class Storage, class Element>
+		int indexOf(const Storage& data, const Element& el)
+		{
+			int i = 0;
+			for (typename Storage::const_iterator it = data.begin(); it != data.end(); it++)
+			{
+				if (*it == el)
+					return i;
+				i++;
+			}
+
+			return -1;
+		}
+
+
 		template<class Storage, class Func>
 		void deletewhere(Storage& data, Func func)
 		{

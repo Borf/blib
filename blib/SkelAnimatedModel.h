@@ -107,7 +107,7 @@ namespace blib
 			std::vector<Fader*> faders;
 
 
-			void playAnimation(const std::string& animation, float fadeInTime = 0);
+			void playAnimation(const std::string& animation, float fadeInTime = 0, bool playOnce = false);
 			void stopAnimation(const std::string& animation, float fadeOutTime = 0);
 			void update(float elapsedTime);
 			void draw(RenderState renderState, Renderer* renderer, int materialUniform, int boneUniform) const;
