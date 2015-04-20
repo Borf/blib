@@ -138,5 +138,24 @@ namespace blib
 			return c != 0;
 		}
 
+		glm::vec2 Polygon::projectClosest(const glm::vec2 &position) const
+		{
+			float minDist = 9999;
+			glm::vec2 closestPoint;
+
+			for (int i = 0; i < size(); i++)
+			{
+				blib::math::Line line(at(i), at((i + 1) % size()));
+				glm::vec2 p = line.project(position);
+				float dist = glm::distance(p, position);
+				if (dist < minDist)
+				{
+					minDist = dist;
+					closestPoint = p;
+				}
+			}
+			return closestPoint;
+		}
+
 	}
 }

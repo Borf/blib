@@ -36,6 +36,7 @@ namespace blib
 
 			blib::math::Rectangle getBoundingBox() const;
 
+			glm::vec2 projectClosest(const glm::vec2 &position) const;
 			void buildLines();
 
 			void push_back(const value_type& _Val)
