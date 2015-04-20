@@ -128,6 +128,8 @@
 		069E9A1F1944A850001C0AF2 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069E99D61944A850001C0AF2 /* Window.cpp */; };
 		069E9A201944A850001C0AF2 /* WM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069E99D81944A850001C0AF2 /* WM.cpp */; };
 		06B324051A6AF13800422B84 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06B324041A6AF13800422B84 /* ResourceManager.cpp */; };
+		06B3D9551AE54DDD0036CC72 /* AudioManagerOpenAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06B3D9511AE54DDD0036CC72 /* AudioManagerOpenAL.cpp */; };
+		06B3D9561AE54DDD0036CC72 /* CWaves.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06B3D9531AE54DDD0036CC72 /* CWaves.cpp */; };
 		06DD1C9E1A69F03500DE4147 /* json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06DD1C9C1A69F03500DE4147 /* json.cpp */; };
 /* End PBXBuildFile section */
 
@@ -650,6 +652,10 @@
 		069E99D81944A850001C0AF2 /* WM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WM.cpp; sourceTree = "<group>"; };
 		069E99D91944A850001C0AF2 /* WM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WM.h; sourceTree = "<group>"; };
 		06B324041A6AF13800422B84 /* ResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
+		06B3D9511AE54DDD0036CC72 /* AudioManagerOpenAL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioManagerOpenAL.cpp; sourceTree = "<group>"; };
+		06B3D9521AE54DDD0036CC72 /* AudioManagerOpenAL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManagerOpenAL.h; sourceTree = "<group>"; };
+		06B3D9531AE54DDD0036CC72 /* CWaves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWaves.cpp; sourceTree = "<group>"; };
+		06B3D9541AE54DDD0036CC72 /* CWaves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWaves.h; sourceTree = "<group>"; };
 		06DD1C9C1A69F03500DE4147 /* json.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json.cpp; sourceTree = "<group>"; };
 		06DD1C9D1A69F03500DE4147 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1252,6 +1258,10 @@
 		069E991B1944A850001C0AF2 /* audio */ = {
 			isa = PBXGroup;
 			children = (
+				06B3D9511AE54DDD0036CC72 /* AudioManagerOpenAL.cpp */,
+				06B3D9521AE54DDD0036CC72 /* AudioManagerOpenAL.h */,
+				06B3D9531AE54DDD0036CC72 /* CWaves.cpp */,
+				06B3D9541AE54DDD0036CC72 /* CWaves.h */,
 				069E991C1944A850001C0AF2 /* AudioManager.h */,
 			);
 			path = audio;
@@ -1516,6 +1526,7 @@
 				069E99EC1944A850001C0AF2 /* Window.cpp in Sources */,
 				069DD70719465EDD00583161 /* b2Collision.cpp in Sources */,
 				069DD2D2194655DB00583161 /* IOSFileSystemHandler.mm in Sources */,
+				06B3D9551AE54DDD0036CC72 /* AudioManagerOpenAL.cpp in Sources */,
 				069DD77B19465EDE00583161 /* sweep.cc in Sources */,
 				069DD71919465EDD00583161 /* b2World.cpp in Sources */,
 				069E9A031944A850001C0AF2 /* Shapes.cpp in Sources */,
@@ -1596,6 +1607,7 @@
 				069DD71E19465EDD00583161 /* b2Contact.cpp in Sources */,
 				069E99E51944A850001C0AF2 /* GlResizeRegister.cpp in Sources */,
 				069E99F81944A850001C0AF2 /* Triangle.cpp in Sources */,
+				06B3D9561AE54DDD0036CC72 /* CWaves.cpp in Sources */,
 				069E99F31944A850001C0AF2 /* HermiteCurve.cpp in Sources */,
 				069DD72119465EDD00583161 /* b2EdgeAndPolygonContact.cpp in Sources */,
 				069DD71819465EDD00583161 /* b2Island.cpp in Sources */,

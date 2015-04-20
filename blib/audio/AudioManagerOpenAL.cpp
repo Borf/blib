@@ -2,15 +2,31 @@
 
 
 #include <blib/util/Log.h>
-#include <al/al.h>
+#ifdef BLIB_IOS
+#include <OpenAL/alc.h>
+
+#define SUCCEEDED(hr) (((int)(hr)) >= 0)
+
+#else
 #include <al/alc.h>
+#endif
 #include "CWaves.h"
-#include <direct.h>
+
+
+
 
 using blib::util::Log;
 
 namespace blib
 {
+    void checkError()
+    {
+        int error = alGetError();
+        if(error != AL_NO_ERROR)
+            Log::out << " Error: " << error << Log::newline;
+
+    }
+    
 	static void list_audio_devices(const ALCchar *devices)
 	{
 		const ALCchar *device = devices, *next = devices + 1;
@@ -41,26 +57,32 @@ namespace blib
 		if (!device)
 			Log::out << "Error initializing OpenAL" << Log::newline;
 		ALboolean enumeration;
-
+        checkError();
 		enumeration = alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT");
 		if (enumeration == AL_FALSE)
 			Log::out << "Enumeration not supported" << Log::newline;
 		else
 			Log::out << "Enumeration supported" << Log::newline;
+        checkError();
 		list_audio_devices(alcGetString(NULL, ALC_DEVICE_SPECIFIER));
+        checkError();
 
 
 		ALCcontext *context;
 
+        checkError();
 		context = alcCreateContext(device, NULL);
+        checkError();
 		if (!alcMakeContextCurrent(context))
 			Log::out << "Unable to create audio context" << Log::newline;
+        checkError();
 
 		ALfloat listenerOri[] = { 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f };
 
 		alListener3f(AL_POSITION, 0, 0, 1.0f);
 		alListener3f(AL_VELOCITY, 0, 0, 0);
 		alListenerfv(AL_ORIENTATION, listenerOri);
+        checkError();
 
 	}
 
@@ -105,17 +127,20 @@ namespace blib
 
 	AudioSample* AudioManagerOpenAL::loadSample(const std::string &filename)
 	{
+        checkError();
 		ALuint source;
 		alGenSources((ALuint)1, &source);
-		alSourcef(source, AL_PITCH, 1);
-		alSourcef(source, AL_GAIN, 1);
+		alSourcef(source, AL_PITCH, 1.0f);
+		alSourcef(source, AL_GAIN, 1.0f);
 		alSource3f(source, AL_POSITION, 0, 0, 0);
 		alSource3f(source, AL_VELOCITY, 0, 0, 0);
 		alSourcei(source, AL_LOOPING, AL_FALSE);
+        checkError();
 
 
 		ALuint buffer;
 		alGenBuffers((ALuint)1, &buffer);
+        checkError();
 
 		CWaves w;
 
@@ -133,7 +158,9 @@ namespace blib
 			(SUCCEEDED(w.GetWaveALBufferFormat(WaveID, &alGetEnumValue, (unsigned long*)&eBufferFormat))))
 		{
 
+            checkError();
 			alBufferData(buffer, eBufferFormat, pData, iDataSize, iFrequency);
+            checkError();
 			if (alGetError() == AL_NO_ERROR)
 				bReturn = AL_TRUE;
 
@@ -141,11 +168,20 @@ namespace blib
 
 		}
 
+        checkError();
 		//assign the buffer to this source
 		alSourcei(source, AL_BUFFER, buffer);
+        checkError();
 
 		OpenALAudioSample* newSample = new OpenALAudioSample();
 		newSample->source = source;
+        alSourcePlay(source);
+        checkError();
+        
+        int error = alGetError();
+        if(error != AL_NO_ERROR)
+            Log::out << " Error: " << error << Log::newline;
+        
 		return newSample;
 	}
 

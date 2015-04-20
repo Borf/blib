@@ -23,10 +23,57 @@
  */
 #define _INC_MMSYSTEM
 #include "CWaves.h"
+#include <blib/config.h>
+
+#ifdef BLIB_WIN
 #include <ks.h>
 #include <ksmedia.h>
 #include <errno.h>
 #include <mmeapi.h>
+#else
+#define SUCCEEDED(hr) (((int)(hr)) >= 0)
+
+#define WAVE_FORMAT_PCM 1
+typedef struct waveformat_tag {
+    
+    WORD    wFormatTag;        /* format type */
+    WORD    nChannels;         /* number of channels i.e. mono, stereo, etc. */
+    DWORD nSamplesPerSec;
+    DWORD nAvgBytesPerSec;
+    WORD nBlockAlign;
+} WAVEFORMAT;
+typedef struct pcmwaveformat_tag {
+    
+    WAVEFORMAT  wf;
+    WORD        wBitsPerSample;
+} PCMWAVEFORMAT;
+
+#define WAVE_FORMAT_EXTENSIBLE  65534
+
+
+// Speaker Positions:
+#define SPEAKER_FRONT_LEFT              0x1
+#define SPEAKER_FRONT_RIGHT             0x2
+#define SPEAKER_FRONT_CENTER            0x4
+#define SPEAKER_LOW_FREQUENCY           0x8
+#define SPEAKER_BACK_LEFT               0x10
+#define SPEAKER_BACK_RIGHT              0x20
+#define SPEAKER_FRONT_LEFT_OF_CENTER    0x40
+#define SPEAKER_FRONT_RIGHT_OF_CENTER   0x80
+#define SPEAKER_BACK_CENTER             0x100
+#define SPEAKER_SIDE_LEFT               0x200
+#define SPEAKER_SIDE_RIGHT              0x400
+#define SPEAKER_TOP_CENTER              0x800
+#define SPEAKER_TOP_FRONT_LEFT          0x1000
+#define SPEAKER_TOP_FRONT_CENTER        0x2000
+#define SPEAKER_TOP_FRONT_RIGHT         0x4000
+#define SPEAKER_TOP_BACK_LEFT           0x8000
+#define SPEAKER_TOP_BACK_CENTER         0x10000
+#define SPEAKER_TOP_BACK_RIGHT          0x20000
+
+
+#define _strnicmp strncasecmp
+#endif
 
 #include <blib/util/FileSystem.h>
 
@@ -35,14 +82,14 @@
 typedef struct
 {
 	char			szRIFF[4];
-	unsigned long	ulRIFFSize;
+	int	ulRIFFSize;
 	char			szWAVE[4];
 } WAVEFILEHEADER;
 
 typedef struct
 {
 	char			szChunkName[4];
-	unsigned long	ulChunkSize;
+	unsigned int	ulChunkSize;
 } RIFFCHUNK;
 
 typedef struct
@@ -304,7 +351,7 @@ WAVERESULT CWaves::ParseFile(const char *szFilename, LPWAVEFILEINFO pWaveInfo)
 	{
 		// Read Wave file header
 		pWaveInfo->pFile->read((char*)&waveFileHeader, sizeof(WAVEFILEHEADER));
-		if (!_strnicmp(waveFileHeader.szRIFF, "RIFF", 4) && !_strnicmp(waveFileHeader.szWAVE, "WAVE", 4))
+		if (memcmp(waveFileHeader.szRIFF, "RIFF", 4)  == 0 && memcmp(waveFileHeader.szWAVE, "WAVE", 4) == 0)
 		{
 			while (pWaveInfo->pFile->read((char*)&riffChunk, sizeof(RIFFCHUNK)) == sizeof(RIFFCHUNK))
 			{

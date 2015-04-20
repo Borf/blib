@@ -1,7 +1,14 @@
 #pragma once
 
+#include <blib/config.h>
 #include "AudioManager.h"
+
+#ifdef BLIB_IOS
+#include <OpenAL/al.h>
+#else
 #include <al/al.h>
+#endif
+
 namespace blib
 {
 	class OpenALAudioSample : public AudioSample

@@ -35,8 +35,6 @@ namespace blib
 #define VertexDef(className, memberName, memberType, count, base)	\
 	void className::setAttribPointers(bool enabledVertexAttributes[10], void* offset, int *index, int totalSize) \
 {\
-	if (!glEnableVertexAttribArray)\
-		glewInit();\
 	int tmpIndex = 0; \
 	if(!index)\
 	index = &tmpIndex;\

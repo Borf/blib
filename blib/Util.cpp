@@ -332,6 +332,7 @@ return "~/";
 
 		bool isMainModule()
 		{
+#ifdef BLIB_WIN
 			static int ret = -1;
 			if (ret == -1)
 			{
@@ -342,6 +343,9 @@ return "~/";
 				ret = proc != NULL ? 1 : 0;
 			}
 			return ret == 1;
+#else
+            return true;
+#endif
 		}
 
 	}

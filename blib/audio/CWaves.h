@@ -5,8 +5,20 @@
 #ifndef _CWAVES_H_
 #define _CWAVES_H_
 
-
+#ifdef BLIB_WIN
 #include <windows.h>
+#else
+typedef unsigned short WORD;
+typedef unsigned int DWORD;
+typedef unsigned char BYTE;
+typedef struct _GUID {
+    DWORD Data1;
+    WORD  Data2;
+    WORD  Data3;
+    BYTE  Data4[8];
+} GUID;
+
+#endif
 #include <stdio.h>
 #include <blib/util/FileSystem.h>
 
