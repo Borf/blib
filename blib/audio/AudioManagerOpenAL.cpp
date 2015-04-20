@@ -125,7 +125,7 @@ namespace blib
 		ALchar			*pData;
 		ALboolean		bReturn;
 
-		w.LoadWaveFile("gunshot.wav", &WaveID);
+		w.LoadWaveFile(filename.c_str(), &WaveID);
 
 		if ((SUCCEEDED(w.GetWaveSize(WaveID, (unsigned long*)&iDataSize))) &&
 			(SUCCEEDED(w.GetWaveData(WaveID, (void**)&pData))) &&

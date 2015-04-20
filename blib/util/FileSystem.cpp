@@ -139,12 +139,14 @@ namespace blib
 
 		void PhysicalFileSystemHandler::StreamInFilePhysical::seek(int offset, StreamOffset offsetTo)
 		{
+			stream->clear();
 			if (offsetTo == StreamSeekable::BEGIN)
 				stream->seekg(offset, std::ios_base::beg);
 			else if (offsetTo == StreamSeekable::CURRENT)
 				stream->seekg(offset, std::ios_base::cur);
 			else if (offsetTo == StreamSeekable::END)
 				stream->seekg(offset, std::ios_base::end);
+			stream->clear();
 		}
 
 		unsigned int PhysicalFileSystemHandler::StreamInFilePhysical::tell()

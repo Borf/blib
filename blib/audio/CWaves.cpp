@@ -28,6 +28,8 @@
 #include <errno.h>
 #include <mmeapi.h>
 
+#include <blib/util/FileSystem.h>
+
 #pragma pack(push, 4)
 
 typedef struct
@@ -99,7 +101,7 @@ CWaves::~CWaves()
 				delete m_WaveIDs[lLoop]->pData;
 
 			if (m_WaveIDs[lLoop]->pFile)
-				fclose(m_WaveIDs[lLoop]->pFile);
+				delete (m_WaveIDs[lLoop]->pFile);
 
 			delete m_WaveIDs[lLoop];
 			m_WaveIDs[lLoop] = 0;
@@ -123,10 +125,12 @@ WAVERESULT CWaves::LoadWaveFile(const char *szFilename, WAVEID *pWaveID)
 			if (pWaveInfo->pData)
 			{
 				// Seek to start of audio data
-				fseek(pWaveInfo->pFile, pWaveInfo->ulDataOffset, SEEK_SET);
+//				fseek(pWaveInfo->pFile, pWaveInfo->ulDataOffset, SEEK_SET);
+				pWaveInfo->pFile->seek(pWaveInfo->ulDataOffset, blib::util::StreamSeekable::BEGIN);
 
 				// Read Sample Data
-				if (fread(pWaveInfo->pData, 1, pWaveInfo->ulDataSize, pWaveInfo->pFile) == pWaveInfo->ulDataSize)
+				int r = pWaveInfo->pFile->read(pWaveInfo->pData, pWaveInfo->ulDataSize);
+				if (r == pWaveInfo->ulDataSize)
 				{
 					long lLoop = 0;
 					for (lLoop = 0; lLoop < MAX_NUM_WAVEID; lLoop++)
@@ -157,7 +161,7 @@ WAVERESULT CWaves::LoadWaveFile(const char *szFilename, WAVEID *pWaveID)
 				wr = WR_OUTOFMEMORY;
 			}
 
-			fclose(pWaveInfo->pFile);
+			delete pWaveInfo->pFile;
 			pWaveInfo->pFile = 0;
 		}
 
@@ -215,12 +219,12 @@ WAVERESULT CWaves::ReadWaveData(WAVEID WaveID, void *pData, unsigned long ulData
 		pWaveInfo = m_WaveIDs[WaveID];
 		if (pWaveInfo->pFile)
 		{
-			unsigned long ulOffset = ftell(pWaveInfo->pFile);
+			unsigned long ulOffset = pWaveInfo->pFile->tell();
 
 			if ((ulOffset - pWaveInfo->ulDataOffset + ulDataSize) > pWaveInfo->ulDataSize)
 				ulDataSize = pWaveInfo->ulDataSize - (ulOffset - pWaveInfo->ulDataOffset);
 
-			*pulBytesWritten = (unsigned long)fread(pData, 1, ulDataSize, pWaveInfo->pFile);
+			*pulBytesWritten = pWaveInfo->pFile->read((char*)pData, ulDataSize);// (unsigned long)fread(pData, 1, ulDataSize, pWaveInfo->pFile);
 
 			wr = WR_OK;
 		}
@@ -244,7 +248,8 @@ WAVERESULT CWaves::SetWaveDataOffset(WAVEID WaveID, unsigned long ulOffset)
 		if (pWaveInfo->pFile)
 		{
 			// Seek into audio data
-			fseek(pWaveInfo->pFile, pWaveInfo->ulDataOffset + ulOffset, SEEK_SET);
+			//fseek(pWaveInfo->pFile, pWaveInfo->ulDataOffset + ulOffset, SEEK_SET);
+			pWaveInfo->pFile->seek(pWaveInfo->ulDataOffset + ulOffset, blib::util::StreamSeekable::BEGIN);
 			wr = WR_OK;
 		}
 	}
@@ -267,7 +272,7 @@ WAVERESULT CWaves::GetWaveDataOffset(WAVEID WaveID, unsigned long *pulOffset)
 		if ((pWaveInfo->pFile) && (pulOffset))
 		{
 			// Get current position
-			*pulOffset = ftell(pWaveInfo->pFile);
+			*pulOffset = pWaveInfo->pFile->tell();
 			*pulOffset -= pWaveInfo->ulDataOffset;
 			wr = WR_OK;
 		}
@@ -292,21 +297,23 @@ WAVERESULT CWaves::ParseFile(const char *szFilename, LPWAVEFILEINFO pWaveInfo)
 
 	memset(pWaveInfo, 0, sizeof(WAVEFILEINFO));
 
+	pWaveInfo->pFile = new blib::util::StreamInFile(szFilename);
+
 	// Open the wave file for reading
-	fopen_s(&pWaveInfo->pFile, szFilename, "rb");
-	if (pWaveInfo->pFile)
+	if (pWaveInfo->pFile->opened())
 	{
 		// Read Wave file header
-		fread(&waveFileHeader, 1, sizeof(WAVEFILEHEADER), pWaveInfo->pFile);
+		pWaveInfo->pFile->read((char*)&waveFileHeader, sizeof(WAVEFILEHEADER));
 		if (!_strnicmp(waveFileHeader.szRIFF, "RIFF", 4) && !_strnicmp(waveFileHeader.szWAVE, "WAVE", 4))
 		{
-			while (fread(&riffChunk, 1, sizeof(RIFFCHUNK), pWaveInfo->pFile) == sizeof(RIFFCHUNK))
+			while (pWaveInfo->pFile->read((char*)&riffChunk, sizeof(RIFFCHUNK)) == sizeof(RIFFCHUNK))
 			{
 				if (!_strnicmp(riffChunk.szChunkName, "fmt ", 4))
 				{
 					if (riffChunk.ulChunkSize <= sizeof(WAVEFMT))
 					{
-						fread(&waveFmt, 1, riffChunk.ulChunkSize, pWaveInfo->pFile);
+						pWaveInfo->pFile->read((char*)&waveFmt, riffChunk.ulChunkSize);
+						//fread(&waveFmt, 1, riffChunk.ulChunkSize, pWaveInfo->pFile);
 					
 						// Determine if this is a WAVEFORMATEX or WAVEFORMATEXTENSIBLE wave file
 						if (waveFmt.usFormatTag == WAVE_FORMAT_PCM)
@@ -322,29 +329,33 @@ WAVERESULT CWaves::ParseFile(const char *szFilename, LPWAVEFILEINFO pWaveInfo)
 					}
 					else
 					{
-						fseek(pWaveInfo->pFile, riffChunk.ulChunkSize, SEEK_CUR);
+						pWaveInfo->pFile->seek(riffChunk.ulChunkSize, blib::util::StreamSeekable::CURRENT);
+					//	fseek(pWaveInfo->pFile, riffChunk.ulChunkSize, SEEK_CUR);
 					}
 				}
 				else if (!_strnicmp(riffChunk.szChunkName, "data", 4))
 				{
 					pWaveInfo->ulDataSize = riffChunk.ulChunkSize;
-					pWaveInfo->ulDataOffset = ftell(pWaveInfo->pFile);
-					fseek(pWaveInfo->pFile, riffChunk.ulChunkSize, SEEK_CUR);
+					pWaveInfo->ulDataOffset = pWaveInfo->pFile->tell();
+//					fseek(pWaveInfo->pFile, riffChunk.ulChunkSize, SEEK_CUR);
+					pWaveInfo->pFile->seek(riffChunk.ulChunkSize, blib::util::StreamSeekable::CURRENT);
 				}
 				else
 				{
-					fseek(pWaveInfo->pFile, riffChunk.ulChunkSize, SEEK_CUR);
+//					fseek(pWaveInfo->pFile, riffChunk.ulChunkSize, SEEK_CUR);
+					pWaveInfo->pFile->seek(riffChunk.ulChunkSize, blib::util::StreamSeekable::CURRENT);
 				}
 
 				// Ensure that we are correctly aligned for next chunk
 				if (riffChunk.ulChunkSize & 1)
-					fseek(pWaveInfo->pFile, 1, SEEK_CUR);
+					pWaveInfo->pFile->seek(1, blib::util::StreamSeekable::CURRENT);
+				//fseek(pWaveInfo->pFile, 1, SEEK_CUR);
 			}
 
 			if (pWaveInfo->ulDataSize && pWaveInfo->ulDataOffset && ((pWaveInfo->wfType == WF_EX) || (pWaveInfo->wfType == WF_EXT)))
 				wr = WR_OK;
 			else
-				fclose(pWaveInfo->pFile);
+				delete pWaveInfo->pFile;
 		}
 	}
 	else
@@ -366,7 +377,7 @@ WAVERESULT CWaves::DeleteWaveFile(WAVEID WaveID)
 			delete m_WaveIDs[WaveID]->pData;
 
 		if (m_WaveIDs[WaveID]->pFile)
-			fclose(m_WaveIDs[WaveID]->pFile);
+			delete (m_WaveIDs[WaveID]->pFile);
 
 		delete m_WaveIDs[WaveID];
 		m_WaveIDs[WaveID] = 0;

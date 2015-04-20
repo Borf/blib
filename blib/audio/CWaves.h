@@ -5,8 +5,10 @@
 #ifndef _CWAVES_H_
 #define _CWAVES_H_
 
+
 #include <windows.h>
 #include <stdio.h>
+#include <blib/util/FileSystem.h>
 
 #define MAX_NUM_WAVEID			1024
 
@@ -73,7 +75,7 @@ typedef struct
 	WAVEFORMATEXTENSIBLE wfEXT;		// For non-WAVEFORMATEXTENSIBLE wavefiles, the header is stored in the Format member of wfEXT
 	char			*pData;
 	unsigned long	ulDataSize;
-	FILE			*pFile;
+	blib::util::StreamInFile	*pFile;
 	unsigned long	ulDataOffset;
 } WAVEFILEINFO, *LPWAVEFILEINFO;
 
