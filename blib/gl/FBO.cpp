@@ -88,7 +88,11 @@ namespace blib
 				glGenRenderbuffers(1, &depthBuffer);
 				glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
 #if defined(BLIB_ANDROID) || defined(BLIB_IOS)
-				glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
+				if(stencil)
+					glRenderbufferStorage( GL_RENDERBUFFER, GL_STENCIL_INDEX8, width, height);
+				else if (depth)
+					glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
+
 #else
 				if(depth && !stencil)
 					glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);

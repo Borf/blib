@@ -15,7 +15,9 @@
     <ClInclude Include="blib\Animation.h" />
     <ClInclude Include="blib\App.h" />
     <ClInclude Include="blib\audio\AudioManager.h" />
+    <ClInclude Include="blib\audio\AudioManagerOpenAL.h" />
     <ClInclude Include="blib\audio\AudioManagerWindows.h" />
+    <ClInclude Include="blib\audio\CWaves.h" />
     <ClInclude Include="blib\BackgroundTask.h" />
     <ClInclude Include="blib\blib.h" />
     <ClInclude Include="blib\Box2DDebug.h" />
@@ -464,7 +466,9 @@
     <ClCompile Include="blib\AnimatableSprite.cpp" />
     <ClCompile Include="blib\Animation.cpp" />
     <ClCompile Include="blib\App.cpp" />
+    <ClCompile Include="blib\audio\AudioManagerOpenAL.cpp" />
     <ClCompile Include="blib\audio\AudioManagerWindows.cpp" />
+    <ClCompile Include="blib\audio\CWaves.cpp" />
     <ClCompile Include="blib\BackgroundTask.cpp" />
     <ClCompile Include="blib\Box2DDebug.cpp" />
     <ClCompile Include="blib\Color.cpp" />
@@ -794,7 +798,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
-      <AdditionalIncludeDirectories>.;externals\glew\include;externals;externals\box2d;externals\bullet3\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;externals\glew\include;externals;externals\box2d;externals\bullet3\src;externals\openal\include</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -806,8 +810,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;glew32s.lib;winmm.lib;dinput8.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)\externals\glew\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32s.lib;winmm.lib;dinput8.lib;dxguid.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\externals\glew\lib;$(ProjectDir)\externals\openal\libs</AdditionalLibraryDirectories>
     </Lib>
     <PreBuildEvent>
       <Command>
@@ -824,7 +828,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32_LEAN_AND_MEAN;WIN32;NDEBUG;_LIB;GLEW_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)\%(RelativeDir)\</ObjectFileName>
-      <AdditionalIncludeDirectories>.;externals\glew\include;externals;externals\box2d;externals\bullet3\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;externals\glew\include;externals;externals\box2d;externals\bullet3\src;externals\openal\include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>

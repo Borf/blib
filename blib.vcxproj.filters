@@ -1348,6 +1348,12 @@
     <ClInclude Include="externals\bullet3\src\BulletDynamics\Vehicle\btWheelInfo.h">
       <Filter>external\bullet\BulletDynamics</Filter>
     </ClInclude>
+    <ClInclude Include="blib\audio\AudioManagerOpenAL.h">
+      <Filter>audio</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\audio\CWaves.h">
+      <Filter>audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -2158,6 +2164,12 @@
     </ClCompile>
     <ClCompile Include="externals\bullet3\src\BulletDynamics\Vehicle\btWheelInfo.cpp">
       <Filter>external\bullet\BulletDynamics</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\audio\AudioManagerOpenAL.cpp">
+      <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\audio\CWaves.cpp">
+      <Filter>audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

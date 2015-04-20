@@ -9,12 +9,13 @@
 
 namespace blib
 {
-
+#if 0
 	AudioManager* AudioManager::getInstance()
 	{
 		static AudioManagerWindows* mgr = new AudioManagerWindows();
 		return mgr;
 	}
+#endif
 
 	void AudioManagerWindows::init()
 	{
