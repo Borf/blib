@@ -145,8 +145,9 @@ namespace blib
 		CWaves w;
 
 		WAVEID			WaveID;
-		ALint			iDataSize, iFrequency;
-		ALenum			eBufferFormat;
+        unsigned long			iDataSize;
+        unsigned long   iFrequency;
+		unsigned long			eBufferFormat;
 		ALchar			*pData;
 		ALboolean		bReturn;
 
