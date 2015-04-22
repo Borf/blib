@@ -26,6 +26,7 @@
 #include <blib/config.h>
 
 #ifdef BLIB_WIN
+#include <Windows.h>
 #include <ks.h>
 #include <ksmedia.h>
 #include <errno.h>

@@ -5,6 +5,7 @@
 #ifndef _CWAVES_H_
 #define _CWAVES_H_
 
+#include <blib/config.h>
 #ifdef BLIB_WIN
 #include <windows.h>
 #else
