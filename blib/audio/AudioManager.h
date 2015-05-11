@@ -7,9 +7,8 @@ namespace blib
 	class AudioSample
 	{
 	public:
-		virtual void play() = 0;
+		virtual void play(bool loop = false) = 0;
 		virtual void stop() = 0;
-		virtual void setLoop(bool enabled) = 0;
 	};
 
 	class AudioManager

@@ -64,7 +64,7 @@ namespace blib
 		else
 			Log::out << "Enumeration supported" << Log::newline;
         checkError();
-		list_audio_devices(alcGetString(NULL, ALC_DEVICE_SPECIFIER));
+		//list_audio_devices(alcGetString(NULL, ALC_DEVICE_SPECIFIER));
         checkError();
 
 
@@ -84,60 +84,42 @@ namespace blib
 		alListenerfv(AL_ORIENTATION, listenerOri);
         checkError();
 
+
+		for (int i = 0; i < 32; i++)
+		{
+			Source source;
+			source.lastSample = NULL;
+			source.sourceId = 0;
+			alGenSources((ALuint)1, &source.sourceId);
+			alSourcef(source.sourceId, AL_PITCH, 1.0f);
+			alSourcef(source.sourceId, AL_GAIN, 1.0f);
+			alSource3f(source.sourceId, AL_POSITION, 0, 0, 0);
+			alSource3f(source.sourceId, AL_VELOCITY, 0, 0, 0);
+			alSourcei(source.sourceId, AL_LOOPING, AL_FALSE);
+			sources.push_back(source);
+			checkError();
+		}
+
 	}
 
 	void AudioManagerOpenAL::playMusic(std::string filename)
 	{
-/*		mciSendString("close song1", NULL, 0, 0);
-		mciSendString(("open "+filename+" type mpegvideo alias song1").c_str(), NULL, 0, 0); 
-		mciSendString("play song1 repeat", NULL, 0, 0);*/
+
 	}
 
 	void AudioManagerOpenAL::stopMusic()
 	{
-	//	mciSendString("stop song1", NULL, 0, 0);
+
 	}
 
 	static int i = 2;
 	void AudioManagerOpenAL::playSound(std::string filename)
 	{
-		/*char buf[1024];
-		int r = i;
-		i++;
-		if(i > 10000)
-			i = 2;
-		sprintf(buf, "open %s type mpegvideo alias audio%i", filename.c_str(), r);
-		int ret = mciSendString(buf, NULL, 0, 0); 
-
-		if(ret != 0)
-		{
-			mciGetErrorString(ret, buf, 1024);
-			printf("%s\n", buf);
-		}
-
-		sprintf(buf, "play audio%i", r);
-		ret = mciSendString(buf, NULL, 0, 0);
-
-		if(ret != 0)
-		{
-			mciGetErrorString(ret, buf, 1024);
-			printf("%s\n", buf);
-		}*/
+		
 	}
 
 	AudioSample* AudioManagerOpenAL::loadSample(const std::string &filename)
 	{
-        checkError();
-		ALuint source;
-		alGenSources((ALuint)1, &source);
-		alSourcef(source, AL_PITCH, 1.0f);
-		alSourcef(source, AL_GAIN, 1.0f);
-		alSource3f(source, AL_POSITION, 0, 0, 0);
-		alSource3f(source, AL_VELOCITY, 0, 0, 0);
-		alSourcei(source, AL_LOOPING, AL_FALSE);
-        checkError();
-
-
 		ALuint buffer;
 		alGenBuffers((ALuint)1, &buffer);
         checkError();
@@ -168,37 +150,59 @@ namespace blib
 			w.DeleteWaveFile(WaveID);
 
 		}
-
         checkError();
-		//assign the buffer to this source
-		alSourcei(source, AL_BUFFER, buffer);
-        checkError();
-
 		OpenALAudioSample* newSample = new OpenALAudioSample();
-		newSample->source = source;
-        checkError();
-        
-        int error = alGetError();
-        if(error != AL_NO_ERROR)
-            Log::out << " Error: " << error << Log::newline;
-        
+		newSample->bufferId = buffer;
+		newSample->manager = this;
+        checkError();        
 		return newSample;
 	}
 
-
-	void OpenALAudioSample::play()
+	AudioManagerOpenAL::Source* AudioManagerOpenAL::getFreeSource()
 	{
-		alSourcePlay(source);
+		int i = lastSource;
+		while (((i + 1) % sources.size()) != lastSource)
+		{
+			if (!sources[i].isPlaying())
+				return &sources[i];
+			i = (i + 1) % sources.size();
+		}
+		return NULL;
+	}
+
+
+	void OpenALAudioSample::play(bool loop)
+	{
+		AudioManagerOpenAL::Source& source = manager->sources[0];
+		source.lastSample = this;
+		alSourcei(source.sourceId, AL_BUFFER, 0);
+		alSourcei(source.sourceId, AL_BUFFER, bufferId);
+		alSourcef(source.sourceId, AL_PITCH, 1.0f);
+		alSourcef(source.sourceId, AL_GAIN, 1.0f);
+		alSource3f(source.sourceId, AL_POSITION, 0, 0, 0);
+		alSource3f(source.sourceId, AL_VELOCITY, 0, 0, 0);
+		alSourcei(source.sourceId, AL_LOOPING, loop);
+		alSourcePlay(source.sourceId);
+		checkError();
 	}
 
 	void OpenALAudioSample::stop()
 	{
-		alSourceStop(source);
+		for (AudioManagerOpenAL::Source& source : manager->sources)
+		{
+			if (source.lastSample == this)
+				alSourceStop(source.sourceId);
+		}
+
 	}
 
-	void OpenALAudioSample::setLoop(bool enabled)
+
+
+	bool AudioManagerOpenAL::Source::isPlaying()
 	{
-		alSourcei(source, AL_LOOPING, enabled ? AL_TRUE : AL_FALSE);
+		int sourceState;
+		alGetSourcei(sourceId, AL_SOURCE_STATE, &sourceState);
+		return sourceState == AL_PLAYING;
 	}
 
 }
