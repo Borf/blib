@@ -173,7 +173,7 @@ namespace blib
 
 	void OpenALAudioSample::play(bool loop)
 	{
-		AudioManagerOpenAL::Source& source = manager->sources[0];
+		AudioManagerOpenAL::Source& source = *manager->getFreeSource();
 		source.lastSample = this;
 		alSourcei(source.sourceId, AL_BUFFER, 0);
 		alSourcei(source.sourceId, AL_BUFFER, bufferId);
