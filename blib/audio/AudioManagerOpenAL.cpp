@@ -176,7 +176,6 @@ namespace blib
 
 		OpenALAudioSample* newSample = new OpenALAudioSample();
 		newSample->source = source;
-        alSourcePlay(source);
         checkError();
         
         int error = alGetError();
@@ -194,6 +193,12 @@ namespace blib
 
 	void OpenALAudioSample::stop()
 	{
+		alSourceStop(source);
+	}
+
+	void OpenALAudioSample::setLoop(bool enabled)
+	{
+		alSourcei(source, AL_LOOPING, enabled ? AL_TRUE : AL_FALSE);
 	}
 
 }

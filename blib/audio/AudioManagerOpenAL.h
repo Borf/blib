@@ -18,6 +18,7 @@ namespace blib
 
 		virtual void play() override;
 		virtual void stop() override;
+		virtual void setLoop(bool enabled) override;
 
 	};
 

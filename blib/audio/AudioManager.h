@@ -9,6 +9,7 @@ namespace blib
 	public:
 		virtual void play() = 0;
 		virtual void stop() = 0;
+		virtual void setLoop(bool enabled) = 0;
 	};
 
 	class AudioManager
