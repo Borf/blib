@@ -1354,6 +1354,7 @@
     <ClInclude Include="blib\audio\CWaves.h">
       <Filter>audio</Filter>
     </ClInclude>
+    <ClInclude Include="blib\NavMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -2171,6 +2172,7 @@
     <ClCompile Include="blib\audio\CWaves.cpp">
       <Filter>audio</Filter>
     </ClCompile>
+    <ClCompile Include="blib\NavMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

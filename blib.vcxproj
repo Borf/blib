@@ -65,6 +65,7 @@
     <ClInclude Include="blib\math\Rectangle.h" />
     <ClInclude Include="blib\math\Triangle.h" />
     <ClInclude Include="blib\MouseListener.h" />
+    <ClInclude Include="blib\NavMesh.h" />
     <ClInclude Include="blib\ParticleSystem.h" />
     <ClInclude Include="blib\platform\win32\config.h" />
     <ClInclude Include="blib\platform\win32\Registry.h" />
@@ -503,6 +504,7 @@
     <ClCompile Include="blib\math\Ray.cpp" />
     <ClCompile Include="blib\math\Rectangle.cpp" />
     <ClCompile Include="blib\math\Triangle.cpp" />
+    <ClCompile Include="blib\NavMesh.cpp" />
     <ClCompile Include="blib\ParticleSystem.cpp" />
     <ClCompile Include="blib\platform\win32\Registry.cpp" />
     <ClCompile Include="blib\platform\win32\window.cpp" />
