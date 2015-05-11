@@ -36,7 +36,7 @@ namespace blib
 			bool isConvex();
 
 			void add(const Triangle2 &triangle);
-			void Polygon::intersect(const Polygon& other);
+			void intersect(const Polygon& other);
 				
 				
 			glm::vec2 getCenter() const;
