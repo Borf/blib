@@ -1,6 +1,7 @@
 #pragma once
 
 #include <blib/math/Triangle.h>
+#include <blib/math/Polygon.h>
 
 #include <vector>
 
@@ -10,33 +11,28 @@ namespace blib
 {
 	class LineBatch;
 
-	class NavTriangle : public blib::math::Triangle2
+	class NavPoly : public blib::math::Polygon
 	{
 	public:
-		union 
-		{
-			NavTriangle* sides[3];
-			struct
-			{
-				NavTriangle* t1;
-				NavTriangle* t2;
-				NavTriangle* t3;
-			};
-		};
+		std::vector<NavPoly*> connected;
 
-		NavTriangle(p2t::Triangle* triangle);
-		bool operator == (const NavTriangle& other);
+
+		NavPoly(p2t::Triangle* triangle);
+		bool containsEdge(const blib::math::Line& line) const;
+		blib::math::Line getLine(int index) const;
 	};
 
 
 	class NavMesh
 	{
 	public:
-		std::vector<NavTriangle> triangles;
-
+		std::vector<NavPoly> polygons;
+		
+		std::vector<blib::math::Polygon> concavePolygons;
 
 		NavMesh(const std::vector<p2t::Triangle*> &triangles);
 		void debugDraw(LineBatch& lineBatch);
 		void drawPath(glm::vec2& p1, glm::vec2& p2, LineBatch& lineBatch);
+		bool canWalk(const blib::math::Line& line);
 	};
 }

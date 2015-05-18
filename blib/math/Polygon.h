@@ -14,6 +14,7 @@ namespace blib
 	{
 		class Line;
 		class Rectangle;
+		class Triangle2;
 
 		class Polygon : public std::vector<glm::vec2>, public blib::IDrawableLine
 		{
@@ -31,6 +32,12 @@ namespace blib
 			bool intersects(const Line& line) const;
 			bool intersects(const Line& line, glm::vec2 &point, Line &collidedLine) const;
 			bool intersects( const Line &line, std::vector<std::pair<glm::vec2, Line> >* collisions) const;
+
+			bool isConvex();
+
+			void add(const Triangle2 &triangle);
+			glm::vec2 getCenter() const;
+
 
 			glm::vec2 normal(int index) const;
 
