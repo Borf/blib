@@ -63,7 +63,10 @@ namespace blib
 			if (skinFile != "")
 			{
 				this->setSize(skin["size"][0].asInt(), skin["size"][1].asInt());
-				this->modal = skin["modal"].asBool();
+				if (skin.isMember("modal"))
+					this->modal = skin["modal"].asBool();
+				else
+					this->modal = false;
 				this->resizable = skin["resizable"].asBool();
 			}
 			this->rootPanel = new widgets::Panel();
