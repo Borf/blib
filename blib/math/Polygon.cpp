@@ -206,10 +206,34 @@ namespace blib
 			clear();
 			for (size_t i = 0; i < res[0].size(); i++)
 				push_back(res[0][i]);
-
-			
-
 		}
+
+
+		void Polygon::intersect(const Polygon& other)
+		{//TODO : make this without clipper...
+			ClipperLib::Clipper clipper;
+
+			ClipperLib::Polygon thisPoly;
+			for (size_t i = 0; i < size(); i++)
+				thisPoly.push_back(at(i));
+			clipper.AddPolygon(thisPoly, ClipperLib::ptSubject);
+
+			ClipperLib::Polygon otherPoly;
+			for (size_t i = 0; i < other.size(); i++)
+				otherPoly.push_back(other[i]);
+			clipper.AddPolygon(otherPoly, ClipperLib::ptClip);
+
+			ClipperLib::Polygons res;
+			clipper.Execute(ClipperLib::ctIntersection, res);
+			clear();
+
+			if (res.size() == 1)
+			{
+				for (size_t i = 0; i < res[0].size(); i++)
+					push_back(res[0][i]);
+			}
+		}
+
 
 		glm::vec2 Polygon::getCenter() const
 		{
