@@ -5,7 +5,8 @@
 #include <blib/LineBatch.h>
 #include <blib/util/Log.h>
 #include <blib/Color.h>
-
+#include <blib/linq.h>
+#include <blib/math/Rectangle.h>
 #include <poly2tri/poly2tri.h>
 
 using blib::util::Log;
@@ -110,10 +111,8 @@ namespace blib
 	}
 
 
-	void NavMesh::drawPath(glm::vec2& p1, glm::vec2& p2, LineBatch& lineBatch)
+	std::vector<glm::vec2> NavMesh::getPath(const glm::vec2& p1, const glm::vec2& p2)
 	{
-		lineBatch.draw(p1, p2, blib::Color::pink);
-
 		NavPoly* startPoly = NULL;
 		NavPoly* endPoly = NULL;
 
@@ -125,8 +124,7 @@ namespace blib
 				endPoly = &t;
 		}
 		if (!startPoly || !endPoly)
-			return;
-
+			return std::vector<glm::vec2>();
 
 		std::map<NavPoly*, NavPoly*> prevTriangle;
 		prevTriangle[startPoly] = NULL;
@@ -154,48 +152,29 @@ namespace blib
 		}
 
 
-		NavPoly* t = prevTriangle[endPoly];
-		glm::vec2 point = p2;
-
 		std::vector<glm::vec2> route;
 		route.push_back(p2);
+		NavPoly* t = endPoly;
 
-		while (t)
+		while (prevTriangle[t])
 		{
-			glm::vec2 newPoint = t->projectClosest(point);
-			route.push_back(newPoint);
-			point = newPoint;
-			t = prevTriangle[t];
+			NavPoly* next = prevTriangle[t];
+			glm::vec2 avg;
+			int avgCount = 0;
+			for (glm::vec2 p : *t)
+			{
+				if (blib::linq::containsValue(*next, p))
+				{
+					avg += p;
+					avgCount++;
+				}
+			}
+			route.push_back(avg / (float)avgCount);
+			t = next;
 		}
 		route.push_back(p1);
-
-		for (int i = 0; i < route.size()-2; i++)
-		{
-			if (canWalk(blib::math::Line(route[i], route[i + 2])))
-			{
-				route.erase(route.begin() + i + 1);
-				i--;
-			}
-		}
-
-
-
-		for (int i = 0; i < route.size() - 1; i++)
-		{
-			lineBatch.draw(route[i], route[i + 1], blib::Color::greenBlue);
-		}
-
-
-
-
-
-
-
-
-
-
-
-
+		std::reverse(route.begin(), route.end());
+		return route;
 	}
 
 	bool NavMesh::canWalk(const blib::math::Line& line)
@@ -231,6 +210,41 @@ namespace blib
 				return true;
 		}
 		return false;
+	}
+
+
+
+	Actor::Actor(NavMesh* navMesh, const glm::vec2& position)
+	{
+		this->navMesh = navMesh;
+		this->position = position;
+		index = 0;
+		navMesh = NULL;
+	}
+
+	void Actor::calculateRoute(const glm::vec2 &target)
+	{
+		route = navMesh->getPath(position, target);
+		index = 0;
+	}
+
+	glm::vec2 Actor::update(float elapsedTime)
+	{
+		while (index+1 < route.size())
+		{
+			if (!navMesh->canWalk(blib::math::Line(position, route[index + 1])))
+				break;
+			index++;
+		}
+
+		glm::vec2 target = route[index];
+
+		glm::vec2 diff = glm::normalize(target - position) * elapsedTime * 100.0f;
+
+		position += diff;
+
+
+		return position;
 	}
 
 }
