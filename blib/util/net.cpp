@@ -104,7 +104,11 @@ namespace blib
 			void dispose()
 			{
 				netRunning = false;
+				for (NetTask* task : tasks)
+					closesocket(task->s);
+				Log::out << "Socketthread joining..." << Log::newline;
 				netThread.join();
+				Log::out << "Socketthread done joining..." << Log::newline;
 			}
 
 			TcpListener::TcpListener(int port)
