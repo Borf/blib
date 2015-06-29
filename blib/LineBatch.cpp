@@ -38,10 +38,11 @@ namespace blib
 	}
 
 
-	void LineBatch::begin(glm::mat4 matrix)
+	void LineBatch::begin(const glm::mat4 &matrix, float thickness)
 	{
 		assert(!active);
 		active = true;
+		this->thickness = thickness;
 		this->matrix = matrix;
 		verts.clear();
 	}
@@ -57,7 +58,7 @@ namespace blib
 
 		renderer->setVbo(vbo, verts);
 		renderState.activeShader->setUniform(Uniforms::matrix, matrix);
-		renderer->drawLines<vertexDef>(verts.size(), renderState);
+		renderer->drawLines<vertexDef>(verts.size(), thickness, renderState);
 	}
 
 

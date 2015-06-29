@@ -40,10 +40,11 @@ namespace blib
 		};
 		blib::Shader* shader;
 		glm::mat4 matrix;			//TODO: make private
+		float thickness;
 
 		virtual void resizeGl(int width, int height);
 
-		virtual void begin(glm::mat4 matrix = glm::mat4());
+		virtual void begin(const glm::mat4 &matrix = glm::mat4(), float thickness = 1);
 		virtual void end();
 
 		virtual void draw(glm::vec2 v1, glm::vec2 v2, glm::vec4 color = glm::vec4(1,1,0,1), glm::mat4 transform = glm::mat4());

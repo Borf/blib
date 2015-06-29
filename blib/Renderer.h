@@ -442,6 +442,24 @@ namespace blib
 		}
 
 		template<class T>
+		void drawLines(int count, float thickness, const RenderState& renderState)
+		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
+			RenderBlock<T>* block = allocators[activeLayer].get<RenderBlock<T>>(); //new RenderBlock<T>();
+#else
+			RenderBlock<T>* block = new RenderBlock<T>();
+#endif
+			block->lineThickness = thickness;
+			block->command = Render::DrawLines;	//TODO : move to constructor
+			block->vertexStart = 0;
+			block->count = count;
+			block->renderState = renderState;
+			memcpy(block->shaderState, renderState.activeShader->uniformData, renderState.activeShader->uniformSize);
+			toRender[activeLayer].push_back(block);
+		}
+
+		template<class T>
 		inline void drawLines(const std::vector<T> &vertices, float thickness = 1)
 		{
 			drawLines(vertices, thickness, renderState);
