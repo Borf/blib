@@ -26,10 +26,10 @@ namespace blib
 		{
 			float div = ((other.p2.y - other.p1.y)*(p2.x - p1.x) - (other.p2.x - other.p1.x)*(p2.y - p1.y));
 			float fac1 = ((other.p2.x - other.p1.x)*(p1.y - other.p1.y) - (other.p2.y - other.p1.y)*(p1.x - other.p1.x))/div;
-			if(fac1 < 0 || fac1 > 1)
+			if(fac1 < 0 || fac1 > 1 || std::signbit(fac1) )
 				return false;
 			float fac2 = ((p2.x - p1.x) * (p1.y - other.p1.y) - (p2.y - p1.y) * (p1.x - other.p1.x)) / div;
-			if(fac2 < 0 || fac2 > 1)
+			if (fac2 < 0 || fac2 > 1 || std::signbit(fac2))
 				return false;
 
 			point = p1 + fac1 * (p2 - p1);

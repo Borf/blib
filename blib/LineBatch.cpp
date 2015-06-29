@@ -97,4 +97,42 @@ namespace blib
 	{
 		renderState.activeShader->setUniform(Uniforms::projectionMatrix, glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
 	}
+
+
+	void LineBatch::startCache()
+	{
+		assert(active);
+		assert(!cacheActive);
+		cacheActive = true;
+		cacheStart = verts.size();
+	}
+
+	LineBatch::Cache* LineBatch::getCache()
+	{
+		assert(cacheActive);
+		assert(active);
+		cacheActive = false;
+
+		Cache* cache = new Cache();
+		if (cacheStart == verts.size())
+		{
+			return cache;
+		}
+
+		cache->verts.insert(cache->verts.begin(), verts.begin() + cacheStart, verts.end());
+		return cache;
+	}
+
+
+	void LineBatch::drawCache(Cache* cache)
+	{
+		assert(active);
+		if (cache->verts.empty())
+			return;
+		size_t currentSize = verts.size();
+		verts.insert(verts.end(), cache->verts.begin(), cache->verts.end());
+	}
+
+
+
 }
