@@ -127,58 +127,7 @@ namespace blib
 	}
 
 
-
-	/*
-	void Font::render(std::string text, float scale)
-	{
-		if(text.empty())
-			return;
-
-
-
-
-		int posX = 0;
-
-		std::vector<float> verts;
-		verts.reserve(text.size() * 5 * 6);
-
-		for(size_t i = 0; i < text.size(); i++)
-		{
-			if(charmap.find(text[i]) == charmap.end())
-				continue;
-			Glyph* g = charmap[text[i]];
-
-			float tx = g->x /512.0f;
-			float ty = g->y /512.0f;
-			float tw = g->width /512.0f;
-			float th = g->height /512.0f;
-
-
-			const GLfloat gTopLeftRect[] = {
-					scale*(posX + g->xoffset + 0.0f), 		scale*(0 + g->yoffset + g->height), 	tx, ty+th,
-					scale*(posX + g->xoffset + 0.0f), 		scale*(0 + g->yoffset + 0.0f),			tx, ty,
-					scale*(posX + g->xoffset + g->width), 	scale*(0 + g->yoffset + 0.0f), 			tx+tw, ty,
-
-					scale*(posX + g->xoffset + g->width), 	scale*(0 + g->yoffset + 0.0f), 			tx+tw, ty,
-					scale*(posX + g->xoffset + g->width), 	scale*(0 + g->yoffset + g->height), 	tx+tw, ty+th,
-					scale*(posX + g->xoffset + 0.0f), 		scale*(0 + g->yoffset + g->height), 	tx, ty+th,
-			};
-
-			for(int i = 0; i < 4*6; i++)
-				verts.push_back(gTopLeftRect[i]);
-
-			posX += g->xadvance;
-		}
-		glBindTexture(GL_TEXTURE_2D, texture->texid);
-		//shader->setColor(glm::vec4(1,1,1,1));
-
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GL_FLOAT), &verts[0]);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(GL_FLOAT), &verts[2]);
-		glDrawArrays(GL_TRIANGLES, 0, verts.size()/4);
-
-	}*/
-
-
+	
 	float Font::textlen(std::string text)
 	{
 		float scale = 1;//0.00075f;

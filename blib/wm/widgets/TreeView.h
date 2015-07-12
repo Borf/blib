@@ -19,12 +19,14 @@ namespace blib
 					TreeNode* parent;
 					std::string text;
 					bool opened;
+					int level;
 
 					TreeNode()
 					{
 						parent = NULL;
 						opened = false;
 						text = "";
+						level = 0;
 					}
 					virtual ~TreeNode()
 					{
@@ -47,7 +49,7 @@ namespace blib
 
 					bool allOpened()
 					{
-						return opened && (parent ? parent->allOpened() : true);
+						return (opened && (parent ? parent->allOpened() : true)) || !parent;
 					}
 
 					bool isVisible()

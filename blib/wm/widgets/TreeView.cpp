@@ -2,6 +2,7 @@
 #include <blib/SpriteBatch.h>
 #include <blib/wm/WM.h>
 #include <blib/Math.h>
+#include <blib/Font.h>
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -17,7 +18,7 @@ namespace blib
 				scrollPosition = 0;
 				selectedItem = -1;
 				root = NULL;
-			//	buildList();
+				buildList();
 
 				addClickHandler([this](int x, int y, int clickCount)
 				{
@@ -25,7 +26,9 @@ namespace blib
 					if (x - this->x < width - skin["scroll"]["width"].asInt())
 					{
 						selectedItem = (y - this->y + scrollPosition) / 12;
-						if (clickCount == 2)
+						if (selectedItem >= (int)currentList.size())
+							selectedItem = currentList.size() - 1;
+						if (clickCount == 2 || x - this->x < 10*currentList[selectedItem].second->level+10)
 							if (currentList[selectedItem].second->hasChildren())
 							{
 								currentList[selectedItem].second->opened = !currentList[selectedItem].second->opened;
@@ -40,8 +43,8 @@ namespace blib
 				addScrollHandler([this](int x, int y, int delta)
 				{
 					scrollPosition -= delta / abs(delta)*height / 2;
-					if (scrollPosition > 12 * (int)currentList.size() - 12)
-						scrollPosition = 12 * currentList.size() - 12;
+					if (scrollPosition > (12 * (int)currentList.size() - (height-4)))
+						scrollPosition = 12 * currentList.size() - (height-4);
 					if (scrollPosition < 0)
 						scrollPosition = 0;
 					return true;
@@ -92,6 +95,36 @@ namespace blib
 
 
 
+				float pages = (currentList.size() * 12) / (float)height;
+				float scrollHeight = (height - (skin["scroll"]["buttonup"]["height"].asInt() + skin["scroll"]["buttondown"]["height"].asInt())) / (float)pages;
+				float scrollFac = scrollPosition / (float)((currentList.size() * 12) - height);
+				float scrollHandlePosition = scrollFac * (height - (skin["scroll"]["buttonup"]["height"].asInt() + skin["scroll"]["buttondown"]["height"].asInt() + scrollHeight));
+
+				float margin = (skin["scroll"]["handle"]["height"].asFloat() - skin["scroll"]["handle"]["center"].asFloat()) / 2.0f;
+
+				//handle center
+				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt() + scrollHandlePosition + margin, 0)), glm::vec3(1, (scrollHeight - 2 * margin) / (skin["scroll"]["handle"]["height"].asFloat() - 2 * margin), 1)),
+					glm::vec2(0, 0),
+					blib::math::Rectangle(
+					glm::vec2(skin["scroll"]["handle"]["left"].asInt() / (float)texture->originalWidth, (skin["scroll"]["handle"]["top"].asInt() + margin) / (float)texture->originalHeight),
+					skin["scroll"]["handle"]["width"].asInt() / (float)texture->originalWidth, (skin["scroll"]["handle"]["height"].asInt() - 2 * margin) / (float)texture->originalHeight));
+
+
+				//handle top
+				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt() + scrollHandlePosition, 0)), glm::vec3(1, 1, 1)),
+					glm::vec2(0, 0),
+					blib::math::Rectangle(
+					glm::vec2(skin["scroll"]["handle"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["handle"]["top"].asInt() / (float)texture->originalHeight),
+					skin["scroll"]["handle"]["width"].asFloat() / (float)texture->originalWidth, margin / (float)texture->originalHeight));
+				//handle bottom
+				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt() + scrollHandlePosition + scrollHeight - margin, 0)), glm::vec3(1, 1, 1)),
+					glm::vec2(0, 0),
+					blib::math::Rectangle(
+					glm::vec2(skin["scroll"]["handle"]["left"].asInt() / (float)texture->originalWidth, (skin["scroll"]["handle"]["top"].asInt() + skin["scroll"]["handle"]["height"].asInt() - margin) / (float)texture->originalHeight),
+					skin["scroll"]["handle"]["width"].asFloat() / (float)texture->originalWidth, margin / (float)texture->originalHeight));
+
+
+
 				spriteBatch.end();
 				spriteBatch.renderState.scissor = true;
 				spriteBatch.renderState.scissorArea[0] = (int)matrix[3][0] + x + 2;
@@ -102,14 +135,23 @@ namespace blib
 
 
 
-
+				blib::Font* font = WM::getInstance()->font;
 				for (int i = scrollPosition / 12; i < glm::min((int)currentList.size(), scrollPosition / 12 + (int)ceil(height / 12.0)); i++)
 				{
 					if (i == selectedItem)
-						spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2, y + 4 + 12 * i - scrollPosition, 0)), skin, glm::vec2(width - 4 - skin["scroll"]["width"].asInt(), 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
+						spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 10 + 10*currentList[i].second->level, y + 2 + 12 * i - scrollPosition, 0)), skin, glm::vec2(glm::min(width - 4.0f - skin["scroll"]["width"].asInt(), font->textlen(currentList[i].second->text)), 13), WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
+
+					//draw + or - 
+					if (currentList[i].second->hasChildren())
+					{
+						if (currentList[i].second->opened)
+							spriteBatch.draw(texture, blib::math::easyMatrix(glm::vec2(x - 2 + 10 * currentList[i].second->level, y + 2 + 12 * i - scrollPosition), matrix), glm::vec2(0, 0), blib::math::Rectangle(0.0f, 100.0f / texture->originalHeight, 9.0f / texture->originalWidth, 9.0f / texture->originalHeight));
+						else
+							spriteBatch.draw(texture, blib::math::easyMatrix(glm::vec2(x - 2 + 10 * currentList[i].second->level, y + 2 + 12 * i - scrollPosition), matrix), glm::vec2(0, 0), blib::math::Rectangle(10.0f / texture->originalWidth, 100.0f / texture->originalHeight, 9.0f / texture->originalWidth, 9.0f / texture->originalHeight));
+					}
 
 
-					spriteBatch.draw(WM::getInstance()->font, currentList[i].first,
+					spriteBatch.draw(font, currentList[i].first,
 						blib::math::easyMatrix(glm::vec2(x + 2, y + 12 * i - scrollPosition), matrix),
 						WM::getInstance()->convertHexColor4(i == selectedItem ? skin["selectfontcolor"].asString() : skin["fontcolor"].asString()));
 				}
@@ -138,27 +180,30 @@ namespace blib
 					return std::string(ret);
 				};
 
-				
-				root->foreachLevel([&,this](TreeNode* el, int level){
-					if (level == 0)
-						return;
-					if (!el->isVisible())
-						return;
+				if (root)
+					root->foreachLevel([&,this](TreeNode* el, int level){
+						el->level = level;
+						if (level == 0)
+							return;
+						if (!el->isVisible())
+							return;
 					
-					std::string strVal = "";
-					strVal += str_repeat((level-1) * 3, ' ');
+						std::string strVal = "";
+						strVal += str_repeat((level-1) * 3, ' ');
 
-					if (!el->hasChildren())
-						strVal += " ";
-					else if (el->opened)
-						strVal += "-";
-					else
-						strVal += "+";
+/*						if (!el->hasChildren())
+							strVal += "\t";
+						else if (el->opened)
+							strVal += "-\t";
+						else
+							strVal += "+\t";*/
 
-					strVal += el->text;
+						strVal += "    ";
 
-					currentList.push_back(std::pair<std::string, TreeNode*>(strVal, el));
-				});
+						strVal += el->text;
+
+						currentList.push_back(std::pair<std::string, TreeNode*>(strVal, el));
+					});
 
 
 
