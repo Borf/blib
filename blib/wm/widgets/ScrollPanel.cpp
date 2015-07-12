@@ -101,6 +101,8 @@ namespace blib
 
 
 				float pages = internalHeight / (float)height;
+				if (pages < 1)
+					pages = 1;
 				float scrollHeight = (height - (skin["scroll"]["buttonup"]["height"].asInt() + skin["scroll"]["buttondown"]["height"].asInt())) / (float)pages;
 				float scrollFac = scrollY / (float)(internalHeight - height);
 				float scrollHandlePosition = scrollFac * (height - (skin["scroll"]["buttonup"]["height"].asInt() + skin["scroll"]["buttondown"]["height"].asInt() + scrollHeight));

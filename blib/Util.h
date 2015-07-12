@@ -5,6 +5,9 @@
 #include <string>
 #include <string.h>
 #include <functional>
+#include <algorithm>
+#include <cctype>
+#include <locale>
 
 #ifndef WIN32
 #include <sys/time.h>
@@ -21,6 +24,21 @@ namespace blib
 		std::string toString(int number);
 		std::string toString(float number);
 		std::vector<std::string> split(std::string toSplit, std::string seperator);
+		static inline std::string &ltrim(std::string &s) {
+			s.erase(0, s.find_first_not_of(" \n\r\t"));
+			return s;
+		}
+
+		// trim from end
+		static inline std::string &rtrim(std::string &s) {
+			s.erase(s.find_last_not_of(" \n\r\t") + 1);
+			return s;
+		}
+
+		// trim from both ends
+		static inline std::string &trim(std::string &s) {
+			return ltrim(rtrim(s));
+		}
 
 		std::string replace(std::string orig, const std::string &find, const std::string &replace);
 
