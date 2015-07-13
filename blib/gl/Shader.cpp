@@ -85,7 +85,7 @@ namespace blib
 					glGetActiveUniform(programId, GLuint(i), sizeof(name) - 1,
 						&name_len, &num, &type, name);
 					name[name_len] = 0;
-					Log::out << "Found uniform " << name << Log::newline;
+					//Log::out << "Found uniform " << name << Log::newline;
 				}
 
 				glUseProgram(programId);

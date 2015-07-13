@@ -169,6 +169,10 @@ namespace blib
 		{
 			glm::mat4 matrix = glm::translate(glm::mat4(), glm::vec3(x,y,0));
 			spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, matrix, WM::getInstance()->skin["window"], glm::vec2(width,height));
+
+			if (closable)
+				spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, blib::math::easyMatrix(glm::vec2(width-13, 3), matrix), WM::getInstance()->skin["closebutton"], glm::vec2(10, 10));
+
 			spriteBatch.draw(WM::getInstance()->font, title, glm::translate(glm::mat4(), glm::vec3(x+20, y+1,0)), glm::vec4(0,0,0,1));
 			rootPanel->draw(spriteBatch, glm::translate(matrix, glm::vec3(WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), WM::getInstance()->skin["window"]["offsets"]["top"].asInt(),0)), renderer);
 		}

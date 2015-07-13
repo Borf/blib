@@ -511,6 +511,8 @@ namespace blib
 								newCursor = RESIZE_TL;
 						}
 						handled = true;
+						if (w->closable && dragMode == (2 | 4))
+							newCursor = ARROW;
 						break;
 					}
 				}

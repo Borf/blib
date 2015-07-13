@@ -450,6 +450,7 @@ namespace blib
 			if(!app->running) {
 					
 				Log::out<<"I stopped running2, Why?"<<Log::newline;
+				app->semaphore->signal();
 				break;
 			}
 
