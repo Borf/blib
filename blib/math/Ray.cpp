@@ -42,7 +42,10 @@ namespace blib
 		bool Ray::LineIntersectPolygon(const std::vector<glm::vec3> &vertices, float &t) const
 		{
 			Plane plane;
-			plane.normal = glm::normalize(glm::cross(vertices[1] - vertices[0], vertices[2] - vertices[0]));
+			plane.normal = glm::cross(vertices[1] - vertices[0], vertices[2] - vertices[0]);
+			if (glm::length(plane.normal) < 0.000001f)
+				return false;
+			plane.normal = glm::normalize(plane.normal);
 			plane.D = -glm::dot(plane.normal, vertices[0]);
 			float tt;
 
