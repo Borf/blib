@@ -94,7 +94,16 @@ namespace blib
 
 		std::string replace(std::string orig, const std::string &find, const std::string &replace)
 		{
-			throw "argh";
+			size_t index = 0;
+			while (true)
+			{
+				index = orig.find(find, index);
+				if (index == std::string::npos)
+					break;
+				orig.replace(index, find.length(), replace);
+				++index;
+			}
+			return orig;
 		}
 
 
