@@ -27,6 +27,7 @@
 #include <blib/gl/Vertex.h>
 #include <blib/App.h>
 #include <blib/math/Ray.h>
+#include <fstream>
 
 using blib::util::Log;
 
@@ -142,6 +143,28 @@ namespace blib
 					}
 
 
+				}
+				else if (r->command == Render::SaveFbo)
+				{
+					glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
+					((RenderSaveFbo*)r)->fbo->use();
+					int w, h;
+					glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &w);
+					glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &h);
+					char* data = new char[3*w*h];
+					glGetTexImage(GL_TEXTURE_2D, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+					int xa = w % 256;
+					int xb = (w - xa) / 256; 
+					int ya = h % 256;
+					int yb = (h - ya) / 256;//assemble the header
+					unsigned char header[18] = { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, (char)xa, (char)xb, (char)ya, (char)yb, 24, 0 };
+					// write header and data to file
+					std::fstream File(((RenderSaveFbo*)r)->filename.c_str(), std::ios::out | std::ios::binary);
+					File.write(reinterpret_cast<char *>(header), sizeof(char) * 18);
+					File.write(reinterpret_cast<char *>(data), sizeof(char)*(w*h*3));
+					File.close();
+
+					delete[] data;
 				}
 				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints || r->command == Render::DrawIndexedTriangles)
 				{

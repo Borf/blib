@@ -52,6 +52,7 @@ namespace blib
 				SetSubTexture,
 				SetViewPort,
 				Unproject,
+				SaveFbo,
 			} command;
 			Render()
 			{
@@ -199,6 +200,16 @@ namespace blib
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)			{			}
 			virtual int vertexCount()			{ return 0; }
 
+		};
+
+		class RenderSaveFbo : public Render
+		{
+		public:
+			FBO* fbo;
+			std::string filename;
+
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)			{			}
+			virtual int vertexCount()			{ return 0; }
 		};
 
 
@@ -568,6 +579,21 @@ namespace blib
 			command->modelMatrix = modelMatrix;
 			command->projectionMatrix = projectionMatrix;
 
+			toRender[activeLayer].push_back(command);
+		}
+
+
+		void saveFbo(FBO* fbo, std::string filename)
+		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
+			RenderSaveFbo* command = allocators[activeLayer].get<RenderSaveFbo>();
+#else
+			RenderSaveFbo* command = new RenderSaveFbo();
+#endif
+			command->command = Render::SaveFbo;
+			command->fbo = fbo;
+			command->filename = filename;
 			toRender[activeLayer].push_back(command);
 		}
 
