@@ -122,8 +122,9 @@ namespace blib
 			if(depthBuffer > 0)
 				glBindRenderbuffer(GL_RENDERBUFFER, depthBuffer);
 #if !defined(BLIB_ANDROID) && !defined(BLIB_IOS)
-			GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-			glDrawBuffers(2, buffers);
+			GLenum buffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4};
+			if (textureCount > 0)
+				glDrawBuffers(textureCount, buffers);
 #endif
 
 
