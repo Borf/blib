@@ -108,6 +108,30 @@ namespace blib
 			return ret;
 		}
 
+
+		glm::vec2 fromAngle(float angle)
+		{
+			return glm::vec2(cos(angle), sin(angle));
+		}
+
+		float wrapAngleRad(float angle)
+		{
+			while (angle > glm::radians(180.0f))
+				angle -= glm::radians(360.0f);
+			while (angle < -glm::radians(180.0f))
+				angle += glm::radians(360.0f);
+			return angle;
+		}
+
+		float wrapAngleDeg(float angle)
+		{
+			while (angle > 180.0f)
+				angle -= 360.0f;
+			while (angle < -180.0f)
+				angle += 360.0f;
+			return angle;
+		}
+
 		float round( float number, int digits )
 		{
 			for(int i = 0; i < digits; i++)

@@ -37,6 +37,11 @@ namespace blib
 		glm::mat4 easyMatrix(const TextureMap::TexInfo* texture, const blib::math::Rectangle &rect);
 
 
+		glm::vec2 fromAngle(float angle);
+		float wrapAngleRad(float angle);
+		float wrapAngleDeg(float angle);
+
+
 		template<class T>
 		std::vector<T> permute(const std::vector<T> &values)
 		{
