@@ -112,16 +112,15 @@ namespace blib
 
 
 
-	void StaticModel::draw(RenderState& renderState, Renderer* renderer, int materialUniform)
+	void StaticModel::draw(RenderState& renderState, Renderer* renderer, const std::function<void(const Material& material)> &materialCallback)
 	{
 		renderState.activeVbo = vbo;
 		renderState.activeVio = vio;
 		
 		for (auto m : meshes)
 		{
-			if (materialUniform != -1)
-				renderState.activeShader->setUniformStruct(materialUniform, m->material);
-			renderState.activeTexture[0] = m->material.texture;
+			if (materialCallback)
+				materialCallback(m->material);
 			renderer->drawIndexedTriangles<VertexP3T2N3>(m->begin, m->count, renderState);
 		}
 
