@@ -2,6 +2,8 @@
 
 #include <string>
 #include <vector>
+#include <functional>
+
 #include <blib/Shader.h>
 #include <blib/gl/Vertex.h>
 #include <blib/math/Triangle.h>
@@ -42,7 +44,7 @@ namespace blib
 		std::vector<blib::VertexP3T2N3> vertices;
 	public:
 		StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer);
-		void draw(RenderState& renderState, Renderer* renderer, int materialUniform);
+		void draw(RenderState& renderState, Renderer* renderer, const std::function<void(const Material& material)> &materialCallback = nullptr);
 	};
 
 }
