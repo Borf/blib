@@ -318,10 +318,11 @@ namespace blib
 					else if (r->command == Render::DrawLines)
 					{
 						float w = ((RenderBlock<blib::Vertex>*)r)->lineThickness;
-						if (w < 0)
-							w = 0.1f;
-						glLineWidth(w);
-						glDrawArrays(GL_LINES, start, r->vertexCount());
+						if (w > 0 && r->vertexCount() > 0)
+						{
+							glLineWidth(w);
+							glDrawArrays(GL_LINES, start, r->vertexCount());
+						}
 					}
 					else if(r->command == Render::DrawPoints)
 					{
