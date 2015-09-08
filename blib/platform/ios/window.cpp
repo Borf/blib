@@ -56,7 +56,7 @@ namespace blib
 				for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 					(*it)->onMouseDown(x, y, MouseListener::Left, clickCount);
 
-                for (App::Touch& t : app->touches)
+                for (Touch& t : app->touches)
 				{
 					if (t.id == 0)
 					{
@@ -72,7 +72,7 @@ namespace blib
             {
                 for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
                     (*it)->onMouseUp(x,y,MouseListener::Left, 1);
-                for (App::Touch& t : app->touches)
+                for (Touch& t : app->touches)
 				{
 					if (t.id == id)
 					{
@@ -88,7 +88,7 @@ namespace blib
                 for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
                     (*it)->onMouseMove(x,y,MouseListener::Left);
 			
-                for (App::Touch& t : app->touches)
+                for (Touch& t : app->touches)
 				{
 					if (t.id == id)
 					{

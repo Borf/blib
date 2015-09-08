@@ -167,7 +167,6 @@ namespace blib
 			util::Semaphore* semaphore;
 			double frameTime;
 		};
-		Touch touches[10];
 
 		//basic properties to store the states of things
 		double time;
@@ -203,6 +202,7 @@ namespace blib
 		bool running;
 		//the window interface to access the created window
 		Window* window;
+        Touch touches[10];
 
 		//method to run a method later, but in the updatethread
 		template<class T>
