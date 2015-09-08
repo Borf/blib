@@ -56,13 +56,13 @@ namespace blib
 				for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 					(*it)->onMouseDown(x, y, MouseListener::Left, clickCount);
 
-				for (Touch& t : app->touches)
+                for (App::Touch& t : app->touches)
 				{
-					if (t->id == 0)
+					if (t.id == 0)
 					{
-						t->id = id;
-						t->position.x = x;
-						t->position.y = y;
+						t.id = id;
+						t.position.x = x;
+						t.position.y = y;
 						break;
 					}
 				}
@@ -72,13 +72,13 @@ namespace blib
             {
                 for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
                     (*it)->onMouseUp(x,y,MouseListener::Left, 1);
-				for (Touch& t : app->touches)
+                for (App::Touch& t : app->touches)
 				{
-					if (t->id == id)
+					if (t.id == id)
 					{
-						t->id = 0;
-						t->position.x = 0;
-						t->position.y = 0;
+						t.id = 0;
+						t.position.x = 0;
+						t.position.y = 0;
 						break;
 					}
 				}
@@ -88,12 +88,12 @@ namespace blib
                 for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
                     (*it)->onMouseMove(x,y,MouseListener::Left);
 			
-				for (Touch& t : app->touches)
+                for (App::Touch& t : app->touches)
 				{
-					if (t->id == id)
+					if (t.id == id)
 					{
-						t->position.x = x;
-						t->position.y = y;
+						t.position.x = x;
+						t.position.y = y;
 						break;
 					}
 				}

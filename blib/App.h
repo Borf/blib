@@ -159,13 +159,6 @@ namespace blib
 			util::Semaphore* semaphore;
 			double frameTime;
 		};
-		struct Touch
-		{
-			unsigned long id;
-			glm::ivec2 position;
-			Touch() { id = 0; position.x = 0; position.y = 0; }
-			~Touch() {};
-		} touches[10];
 
 		//basic properties to store the states of things
 		double time;
@@ -185,7 +178,15 @@ namespace blib
 
 
 	public:
-		App();
+        struct Touch
+        {
+            unsigned long id;
+            glm::ivec2 position;
+            Touch() { id = 0; position.x = 0; position.y = 0; }
+            ~Touch() {};
+        } touches[10];
+
+        App();
 		virtual ~App();
 		void start(bool looping = true);
 		void run();
