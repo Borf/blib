@@ -34,9 +34,9 @@ namespace blib
                 void setHeight(int h) { height = h; };
                 
                 
-                void touchDownEvent(int x, int y);
-                void touchUpEvent(int x, int y);
-                void touchMoveEvent(int x, int y);
+                void touchDownEvent(unsigned long id, int x, int y);
+                void touchUpEvent(unsigned long id, int x, int y);
+                void touchMoveEvent(unsigned long id, int x, int y);
 			};
 		}
 	}

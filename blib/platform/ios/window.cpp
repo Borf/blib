@@ -40,7 +40,7 @@ namespace blib
 			{
 			}
             
-            void Window::touchDownEvent(int x, int y)
+            void Window::touchDownEvent(unsigned long id, int x, int y)
             {
 				int clickCount = 1;
 				clicks.push_back(blib::util::tickcount());
@@ -58,12 +58,12 @@ namespace blib
 					(*it)->onMouseDown(x, y, MouseListener::Left, clickCount);
             }
             
-            void Window::touchUpEvent(int x, int y)
+            void Window::touchUpEvent(unsigned long id, int x, int y)
             {
                 for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
                     (*it)->onMouseUp(x,y,MouseListener::Left, 1);
             }
-            void Window::touchMoveEvent(int x, int y)
+            void Window::touchMoveEvent(unsigned long id, int x, int y)
             {
                 for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
                     (*it)->onMouseMove(x,y,MouseListener::Left);
