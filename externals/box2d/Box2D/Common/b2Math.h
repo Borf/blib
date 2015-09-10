@@ -80,8 +80,8 @@ struct b2Vec2
 	void Set(float32 x_, float32 y_) { x = x_; y = y_; }
 	
 //	operator glm::vec2() { return glm::vec2(x,y); }
-	operator glm::vec2() const { return glm::vec2(x,y); }
-
+	operator const glm::vec2() const { return glm::vec2(x,y); }
+	const glm::vec2 vec2() const { return glm::vec2(x, y); }
 	/// Negate this vector.
 	b2Vec2 operator -() const { b2Vec2 v; v.Set(-x, -y); return v; }
 	
