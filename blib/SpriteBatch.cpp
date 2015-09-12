@@ -75,7 +75,7 @@ namespace blib
 
 		renderer->setVbo(vbo, vertices);
 
-		materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
+		materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, (unsigned short)vertices.size()));
 		if (renderState.activeShader == shader)
 			renderState.activeShader->setUniform(Matrix, matrix);
 		int lastIndex = 0;
@@ -101,7 +101,7 @@ namespace blib
 		float fh = (float)src.height();
 
 		if(currentTexture != texture && currentTexture != NULL)
-			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
+			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, (unsigned short)vertices.size()));
 		currentTexture = texture;
 
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,								0,1)),	glm::vec2(src.topleft.x,src.topleft.y), color)); // 1
