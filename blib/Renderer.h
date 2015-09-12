@@ -8,6 +8,7 @@
 #include <blib/Util.h>
 #include <blib/util/ListAllocator.h>
 #include <blib/util/Thread.h>
+#include <blib/gl/VBO.h> // uhoh
 #include <vector>
 
 #include <blib/config.h>
@@ -392,6 +393,7 @@ namespace blib
 				memcpy(this->vertices[activeLayer]+vertexIndex[activeLayer], &vertices[0], sizeof(T) * vertices.size());
 			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * vertices.size();
 			block->vbo = vbo;
+			((blib::gl::VBO*)vbo)->length = vertices.size();
 			toRender[activeLayer].push_back(block);
 		}
 

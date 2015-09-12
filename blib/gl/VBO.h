@@ -28,8 +28,9 @@ namespace blib
 		{
 		private:
 			GLuint vbo;
-			int length;
 		public:
+			int length;
+
 			VBO()
 			{
 				length = 0;
