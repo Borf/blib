@@ -90,6 +90,8 @@ namespace blib
 		F11,
 		F12,
 		DIVIDE,
+        BRACKETLEFT,
+        BRACKETRIGHT,
 
 #endif
 		A = 'A',

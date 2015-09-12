@@ -146,6 +146,7 @@ namespace blib
 				}
 				else if (r->command == Render::SaveFbo)
 				{
+#ifdef BLIB_WIN
 					glBindFramebuffer(GL_FRAMEBUFFER, oldFbo);
 					((RenderSaveFbo*)r)->fbo->use();
 					int w, h;
@@ -165,6 +166,7 @@ namespace blib
 					File.close();
 
 					delete[] data;
+#endif
 				}
 				else if(r->command == Render::DrawTriangles || r->command == Render::DrawLines || r->command == Render::DrawPoints || r->command == Render::DrawIndexedTriangles)
 				{
