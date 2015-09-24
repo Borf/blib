@@ -54,6 +54,7 @@ namespace blib
 	// Contains the state of the mouse on a moment in time
 	struct MouseState
 	{
+		static const unsigned char MaxTouches = 10;
 		union
 		{
 			bool buttons[3];
@@ -158,6 +159,13 @@ namespace blib
 			util::Semaphore* semaphore;
 			double frameTime;
 		};
+		struct Touch
+		{
+			unsigned long id;
+			glm::ivec2 position;
+			Touch() { id = 0; position.x = 0; position.y = 0; }
+			~Touch() {};
+		} touches[10];
 
 		//basic properties to store the states of things
 		double time;
