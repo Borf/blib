@@ -158,7 +158,7 @@ namespace blib
 					int xb = (w - xa) / 256; 
 					int ya = h % 256;
 					int yb = (h - ya) / 256;//assemble the header
-					unsigned char header[18] = { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, (char)xa, (char)xb, (char)ya, (char)yb, 24, 0 };
+					unsigned char header[18] = { 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, (unsigned char)xa, (unsigned char)xb, (unsigned char)ya, (unsigned char)yb, 24, 0 };
 					// write header and data to file
 					std::fstream File(((RenderSaveFbo*)r)->filename.c_str(), std::ios::out | std::ios::binary);
 					File.write(reinterpret_cast<char *>(header), sizeof(char) * 18);

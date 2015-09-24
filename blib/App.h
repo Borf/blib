@@ -81,6 +81,14 @@ namespace blib
 			scrollPosition = 0;
 		}
 	};
+	
+	struct Touch
+	{
+		unsigned long id;
+		glm::ivec2 position;
+		Touch() { id = 0; position.x = 0; position.y = 0; }
+		~Touch() {};
+	};
 
 	// the settings that are needed to set up the app. Changing these during runtime won't do a thing
 	struct AppSetup
@@ -159,13 +167,7 @@ namespace blib
 			util::Semaphore* semaphore;
 			double frameTime;
 		};
-		struct Touch
-		{
-			unsigned long id;
-			glm::ivec2 position;
-			Touch() { id = 0; position.x = 0; position.y = 0; }
-			~Touch() {};
-		} touches[10];
+		Touch touches[10];
 
 		//basic properties to store the states of things
 		double time;

@@ -132,7 +132,7 @@ namespace blib
 		float fh = (float)1;
 
 		if(currentTexture != texture->texMap && currentTexture != NULL)
-			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, vertices.size()));
+			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, (unsigned short)vertices.size()));
 		currentTexture = texture->texMap;
 
 		vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(fw*0 - center.x,						fh*0 - center.y,					0,1)),		glm::vec2(texture->t1.x,texture->t1.y), color)); // 1
@@ -242,11 +242,11 @@ namespace blib
 		}
 
 		cache->verts.insert(cache->verts.begin(), vertices.begin() + cacheStart, vertices.end());
-		std::pair<const Texture*, unsigned short> p(currentTexture, vertices.size());
+		std::pair<const Texture*, unsigned short> p(currentTexture, (unsigned short)vertices.size());
 		cache->materialIndices.push_back(p);
 
 		for(size_t i = 0; i < cache->materialIndices.size(); i++)
-			cache->materialIndices[i].second -= cacheStart;
+			cache->materialIndices[i].second -= (unsigned short)cacheStart;
 		while(!cache->materialIndices.empty() && cache->materialIndices[0].second < 0)
 			cache->materialIndices.erase(cache->materialIndices.begin());
 			
@@ -267,7 +267,7 @@ namespace blib
 
 
 		if(currentTexture != cache->materialIndices[0].first && currentTexture != NULL)
-			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, currentSize));
+			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, (unsigned short)currentSize));
 		currentTexture = cache->materialIndices[0].first;
 
 
@@ -277,7 +277,7 @@ namespace blib
 			if(cache->materialIndices[i].second < 0)
 				throw "argh";
 			materialIndices.push_back(cache->materialIndices[i]);
-			materialIndices[materialIndices.size()-1].second += currentSize;
+			materialIndices[materialIndices.size()-1].second += (unsigned short)currentSize;
 		}
 		currentTexture = cache->materialIndices[cache->materialIndices.size()-1].first;
 
