@@ -31,6 +31,7 @@ namespace blib
 		if (resources.find(resource) == resources.end())
 			resources[resource] = 0;
 		resources[resource]++;
+        Log::out<<"Loading "<<resource->name<<Log::newline;
 		return resource;
 	}
 
@@ -41,6 +42,7 @@ namespace blib
 		resources[resource]--;
 		if (resources[resource] == 0)
 		{
+            Log::out<<"deleting "<<resource->name<<Log::newline;
 			delete resource;
 			resources.erase(resources.find(resource));
 		}

@@ -19,9 +19,9 @@ namespace blib
 
 	class Font : public Resource
 	{
-		static std::map<std::string, Font*> fonts;
-		static Font* getFontInstance(std::string name, ResourceManager* resourceManager);
-		static void clearCache();
+	//	static std::map<std::string, Font*> fonts;
+	//	static Font* getFontInstance(std::string name, ResourceManager* resourceManager);
+	//	static void clearCache();
 	//	void render(std::string text, float scale);
 		std::map<char, Glyph*> charmap;
 		Texture* texture;

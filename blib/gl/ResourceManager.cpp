@@ -45,7 +45,7 @@ namespace blib
 
 		blib::Texture* ResourceManager::getTexture( const std::string &name, int loadOptions )
 		{
-			return Texture<blib::Texture>::loadCached<Texture<blib::Texture> >(name, loadOptions);
+            return new Texture<blib::Texture>(name, loadOptions);
 		}
 		
 		blib::Texture* ResourceManager::getEmptyTexture( int width, int height )
@@ -94,7 +94,7 @@ namespace blib
 
 		blib::Font* ResourceManager::getFont(const std::string &name)
 		{
-			return Font::getFontInstance(name, this);
+            return new Font("assets/fonts/" + name + ".fnt", this);
 		}
 
 		blib::SpriteSheet* ResourceManager::getSpriteSheet(const std::string &name)
@@ -108,7 +108,7 @@ namespace blib
 				directory = directory.substr(0, directory.rfind('\\')+1);
 
 
-			blib::SpriteSheet* spriteSheet = blib::Texture::loadCached<blib::gl::Texture<blib::SpriteSheet> >(directory + v["tex"].asString());
+			blib::SpriteSheet* spriteSheet = new blib::gl::Texture<blib::SpriteSheet>(directory + v["tex"].asString());
 
 			spriteSheet->spriteCountX = v["count"][0].asInt();
 			spriteSheet->spriteCountY = v["count"][1].asInt();

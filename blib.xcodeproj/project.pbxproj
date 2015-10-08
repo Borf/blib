@@ -131,6 +131,10 @@
 		06B3D9551AE54DDD0036CC72 /* AudioManagerOpenAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06B3D9511AE54DDD0036CC72 /* AudioManagerOpenAL.cpp */; };
 		06B3D9561AE54DDD0036CC72 /* CWaves.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06B3D9531AE54DDD0036CC72 /* CWaves.cpp */; };
 		06DD1C9E1A69F03500DE4147 /* json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06DD1C9C1A69F03500DE4147 /* json.cpp */; };
+		06F37BC21BC6919F0063954F /* NavMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BB91BC6919F0063954F /* NavMesh.cpp */; settings = {ASSET_TAGS = (); }; };
+		06F37BC31BC6919F0063954F /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBB1BC6919F0063954F /* Resource.cpp */; settings = {ASSET_TAGS = (); }; };
+		06F37BC41BC6919F0063954F /* SkelAnimatedModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBD1BC6919F0063954F /* SkelAnimatedModel.cpp */; settings = {ASSET_TAGS = (); }; };
+		06F37BC51BC6919F0063954F /* StaticModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBF1BC6919F0063954F /* StaticModel.cpp */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -658,6 +662,16 @@
 		06B3D9541AE54DDD0036CC72 /* CWaves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWaves.h; sourceTree = "<group>"; };
 		06DD1C9C1A69F03500DE4147 /* json.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json.cpp; sourceTree = "<group>"; };
 		06DD1C9D1A69F03500DE4147 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
+		06F37BB81BC6919F0063954F /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
+		06F37BB91BC6919F0063954F /* NavMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NavMesh.cpp; sourceTree = "<group>"; };
+		06F37BBA1BC6919F0063954F /* NavMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavMesh.h; sourceTree = "<group>"; };
+		06F37BBB1BC6919F0063954F /* Resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resource.cpp; sourceTree = "<group>"; };
+		06F37BBC1BC6919F0063954F /* Resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resource.h; sourceTree = "<group>"; };
+		06F37BBD1BC6919F0063954F /* SkelAnimatedModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SkelAnimatedModel.cpp; sourceTree = "<group>"; };
+		06F37BBE1BC6919F0063954F /* SkelAnimatedModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkelAnimatedModel.h; sourceTree = "<group>"; };
+		06F37BBF1BC6919F0063954F /* StaticModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticModel.cpp; sourceTree = "<group>"; };
+		06F37BC01BC6919F0063954F /* StaticModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticModel.h; sourceTree = "<group>"; };
+		06F37BC11BC6919F0063954F /* TouchListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchListener.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1186,6 +1200,16 @@
 		069E99151944A850001C0AF2 /* blib */ = {
 			isa = PBXGroup;
 			children = (
+				06F37BB81BC6919F0063954F /* Material.h */,
+				06F37BB91BC6919F0063954F /* NavMesh.cpp */,
+				06F37BBA1BC6919F0063954F /* NavMesh.h */,
+				06F37BBB1BC6919F0063954F /* Resource.cpp */,
+				06F37BBC1BC6919F0063954F /* Resource.h */,
+				06F37BBD1BC6919F0063954F /* SkelAnimatedModel.cpp */,
+				06F37BBE1BC6919F0063954F /* SkelAnimatedModel.h */,
+				06F37BBF1BC6919F0063954F /* StaticModel.cpp */,
+				06F37BC01BC6919F0063954F /* StaticModel.h */,
+				06F37BC11BC6919F0063954F /* TouchListener.h */,
 				06B324041A6AF13800422B84 /* ResourceManager.cpp */,
 				06DD1C9C1A69F03500DE4147 /* json.cpp */,
 				06DD1C9D1A69F03500DE4147 /* json.h */,
@@ -1499,6 +1523,7 @@
 			files = (
 				069DD71719465EDD00583161 /* b2Fixture.cpp in Sources */,
 				069E99F41944A850001C0AF2 /* Line.cpp in Sources */,
+				06F37BC21BC6919F0063954F /* NavMesh.cpp in Sources */,
 				069E9A021944A850001C0AF2 /* Shader.cpp in Sources */,
 				069E9A0F1944A850001C0AF2 /* StreamInFile.cpp in Sources */,
 				069E9A0C1944A850001C0AF2 /* stb_image.c in Sources */,
@@ -1602,16 +1627,19 @@
 				069E9A041944A850001C0AF2 /* SpriteBatch.cpp in Sources */,
 				069E99F21944A850001C0AF2 /* BiArc.cpp in Sources */,
 				069DD71D19465EDD00583161 /* b2CircleContact.cpp in Sources */,
+				06F37BC31BC6919F0063954F /* Resource.cpp in Sources */,
 				06B324051A6AF13800422B84 /* ResourceManager.cpp in Sources */,
 				069E99DB1944A850001C0AF2 /* App.cpp in Sources */,
 				069DD71E19465EDD00583161 /* b2Contact.cpp in Sources */,
 				069E99E51944A850001C0AF2 /* GlResizeRegister.cpp in Sources */,
+				06F37BC41BC6919F0063954F /* SkelAnimatedModel.cpp in Sources */,
 				069E99F81944A850001C0AF2 /* Triangle.cpp in Sources */,
 				06B3D9561AE54DDD0036CC72 /* CWaves.cpp in Sources */,
 				069E99F31944A850001C0AF2 /* HermiteCurve.cpp in Sources */,
 				069DD72119465EDD00583161 /* b2EdgeAndPolygonContact.cpp in Sources */,
 				069DD71819465EDD00583161 /* b2Island.cpp in Sources */,
 				069E99F11944A850001C0AF2 /* ArcPath.cpp in Sources */,
+				06F37BC51BC6919F0063954F /* StaticModel.cpp in Sources */,
 				069E9A181944A850001C0AF2 /* Image.cpp in Sources */,
 				069DD72E19465EDD00583161 /* b2WheelJoint.cpp in Sources */,
 				06213CC3197E93560070C415 /* Ray.cpp in Sources */,

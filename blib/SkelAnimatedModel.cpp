@@ -120,7 +120,7 @@ namespace blib
 
 	SkelAnimatedModel::Animation::Animation(const json::Value& data, Bone* rootBone)
 	{
-		name = data["name"];
+		name = data["name"].asString();
 		totalTime = data["length"];
 		for (auto c : data["streams"])
 			streams.push_back(Stream(c, rootBone));
@@ -362,7 +362,7 @@ namespace blib
 		offset = NULL;
 		parent = NULL;
 
-		name = value["name"];
+		name = value["name"].asString();
 		matrix = jsonToMatrix(value["matrix"]);
 		if (value.isMember("id"))
 		{

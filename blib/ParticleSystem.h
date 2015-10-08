@@ -121,6 +121,7 @@ namespace blib
 
 	class ParticleSystem : public gl::GlResizeRegister
 	{
+        std::map<std::string, EmitterTemplate*> cache;
 		std::string textureFolder;
 		double lastElapsedTime;
 		Renderer* renderer;

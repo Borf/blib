@@ -11,7 +11,7 @@ using blib::util::Log;
 
 namespace blib
 {
-	std::map<std::string, blib::Texture*> Texture::textureCache;
+	/*std::map<std::string, blib::Texture*> Texture::textureCache;
 	std::map<blib::Texture*, int> Texture::textureUseCount;
 
 
@@ -29,7 +29,7 @@ namespace blib
 	{
 		textureUseCount[this]--;
 		
-	}
+	}*/
 
 
 	namespace gl

@@ -26,7 +26,7 @@ using blib::util::Log;
 
 namespace blib
 {
-	std::map<std::string, Font*> Font::fonts;
+	/*std::map<std::string, Font*> Font::fonts;
 
 	Font* Font::getFontInstance(std::string name, ResourceManager* resourceManager)
 	{
@@ -45,7 +45,7 @@ namespace blib
 		for(std::map<std::string, Font*>::iterator it = fonts.begin(); it != fonts.end(); it++)
 			delete it->second;
 		fonts.clear();
-	}
+	}*/
 
 
 	std::vector<std::string> split(std::string value, std::string seperator)

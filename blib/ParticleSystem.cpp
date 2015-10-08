@@ -206,7 +206,6 @@ void main()\
 
 	Emitter* ParticleSystem::addEmitter( std::string name )
 	{
-		static std::map<std::string, EmitterTemplate*> cache;
 		if(cache.find(name) == cache.end())
 			cache[name] = new EmitterTemplate(name, textureMap, textureFolder);
 		EmitterTemplate* emitterTemplate = cache[name];
