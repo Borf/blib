@@ -325,4 +325,30 @@ namespace blib
 		materialIndices.clear();
 	}
 
+
+
+
+	void SpriteBatch::Cache::initVbo(SpriteBatch& spriteBatch)
+	{
+		if (vbo == NULL)
+		{
+			vbo = blib::ResourceManager::getInstance().getResource<blib::VBO>();
+			vbo->setVertexFormat<vertexDef>();
+		}
+		spriteBatch.renderer->setVbo(vbo, verts);
+	}
+
+	void SpriteBatch::Cache::drawVbo(SpriteBatch& spriteBatch)
+	{
+		blib::RenderState renderState = spriteBatch.renderState;
+		renderState.activeVbo = vbo;
+		int lastIndex = 0;
+		for (size_t i = 0; i < materialIndices.size(); i++)
+		{
+			renderState.activeTexture[0] = const_cast<Texture*>(materialIndices[i].first);
+			spriteBatch.renderer->drawTriangles<vertexDef>(lastIndex, materialIndices[i].second - lastIndex, renderState);
+			lastIndex = materialIndices[i].second;
+		}
+	}
+
 }

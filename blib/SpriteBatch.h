@@ -31,10 +31,14 @@ namespace blib
 	public:
 		class Cache
 		{
+			blib::VBO* vbo = NULL;
 		public:
 			std::vector<std::pair<const Texture*, unsigned short> > materialIndices;
 			std::vector<vertexDef> verts;
 			~Cache();
+
+			void initVbo(SpriteBatch& spriteBatch);
+			void drawVbo(SpriteBatch& spriteBatch);
 		};
 	private:
 
