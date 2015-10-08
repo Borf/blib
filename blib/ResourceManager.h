@@ -31,6 +31,19 @@ namespace blib
 	private:
 		static ResourceManager* manager;
 		ResourceManager(const ResourceManager& other);
+
+		enum class ResType
+		{
+			TEXTURE,
+			SHADER,
+			TEXTUREMAP,
+			VBO,
+			FBO,
+			VIO,
+			FONT,
+			SPRITESHEET
+		};
+
 	public:
 		std::map<Resource*, int> resources;
 		virtual Resource* regResource(Resource* resource);

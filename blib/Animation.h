@@ -64,7 +64,7 @@ namespace blib
 
 	public:
 		Animation(std::string filename, ResourceManager* resourceManager);
-
+		~Animation();
 		void draw(SpriteBatch &spritebatch, glm::mat4 transform, const glm::vec4& color = glm::vec4(1,1,1,1));
 		void update(double elapsedTime);
 		void setState(std::string newState);

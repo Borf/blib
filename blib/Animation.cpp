@@ -45,6 +45,11 @@ namespace blib
 		setState(config["animations"].begin().key());
 	}
 
+	Animation::~Animation()
+	{
+		blib::ResourceManager::getInstance().dispose(texture);
+	}
+
 
 	void Animation::setState(std::string newState)
 	{

@@ -29,7 +29,6 @@
     <ClInclude Include="blib\FBO.h" />
     <ClInclude Include="blib\Font.h" />
     <ClInclude Include="blib\gl\Camera.h" />
-    <ClInclude Include="blib\gl\direct\ResourceManager.h" />
     <ClInclude Include="blib\gl\FBO.h" />
     <ClInclude Include="blib\gl\GlResizeRegister.h" />
     <ClInclude Include="blib\gl\Renderer.h" />
@@ -476,7 +475,6 @@
     <ClCompile Include="blib\drivers\joystick\DirectInput.cpp" />
     <ClCompile Include="blib\drivers\joystick\WinMM.cpp" />
     <ClCompile Include="blib\Font.cpp" />
-    <ClCompile Include="blib\gl\direct\ResourceManager.cpp" />
     <ClCompile Include="blib\gl\FBO.cpp" />
     <ClCompile Include="blib\gl\GlResizeRegister.cpp" />
     <ClCompile Include="blib\gl\Renderer.cpp" />
