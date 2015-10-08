@@ -22,7 +22,7 @@ namespace blib
 	{
 		std::vector<bool> used(in.size(), false);
 
-		for (int i = 0; i < in.size(); i++)
+		for (size_t i = 0; i < in.size(); i++)
 		{
 			if (used[i])
 				continue;
@@ -33,7 +33,7 @@ namespace blib
 			while (changed)
 			{
 				changed = false;
-				for (int ii = 0; ii < in.size(); ii++)
+				for (size_t ii = 0; ii < in.size(); ii++)
 				{
 					if (used[ii])
 						continue;
@@ -202,7 +202,7 @@ namespace blib
 
 	bool NavPoly::containsEdge(const blib::math::Line& line) const
 	{
-		for (int i = 0; i < size(); i++)
+		for (size_t i = 0; i < size(); i++)
 		{
 			int next = (i + 1) % size();
 			if ((line.p1 == at(i) && line.p2 == at(next)) ||
@@ -230,7 +230,7 @@ namespace blib
 
 	glm::vec2 Actor::update(float elapsedTime)
 	{
-		while (index+1 < route.size())
+		while (index+1 < (int)route.size())
 		{
 			if (!navMesh->canWalk(blib::math::Line(position, route[index + 1])))
 				break;

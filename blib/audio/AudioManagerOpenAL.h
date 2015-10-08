@@ -42,6 +42,8 @@ namespace blib
 		int lastSource = 0;
 
 	public:
+
+		virtual ~AudioManagerOpenAL();
 		virtual void init();
 		virtual void playMusic( std::string filename );
 		virtual void stopMusic();

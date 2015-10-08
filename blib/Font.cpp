@@ -66,6 +66,7 @@ namespace blib
 
 	Font::Font(std::string fileName, ResourceManager* resourceManager)
 	{
+		this->name = "Font: " + fileName;
 		blib::util::StreamReader* file = new blib::util::StreamReader(blib::util::FileSystem::openRead(fileName));
 		if(!file)
 			return;

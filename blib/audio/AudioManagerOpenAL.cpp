@@ -50,6 +50,11 @@ namespace blib
 		return mgr;
 	}
 
+	AudioManagerOpenAL::~AudioManagerOpenAL()
+	{
+//TODO		alcDestroyContext(context);
+	}
+
 	void AudioManagerOpenAL::init()
 	{
 		ALCdevice *device;

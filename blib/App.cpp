@@ -96,7 +96,7 @@ namespace blib
 			delete joystickDriver;
 		joystickDriver = NULL;
 
-		delete resourceManager;
+//		delete resourceManager;
 		delete spriteBatch;
 		delete lineBatch;
 		delete renderer;

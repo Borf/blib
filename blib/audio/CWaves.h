@@ -86,7 +86,7 @@ typedef struct
 {
 	WAVEFILETYPE	wfType;
 	WAVEFORMATEXTENSIBLE wfEXT;		// For non-WAVEFORMATEXTENSIBLE wavefiles, the header is stored in the Format member of wfEXT
-	char			*pData;
+	char			*pData = NULL;
 	unsigned long	ulDataSize;
 	blib::util::StreamInFile	*pFile;
 	unsigned long	ulDataOffset;

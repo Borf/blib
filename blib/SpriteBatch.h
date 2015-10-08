@@ -67,6 +67,7 @@ namespace blib
 		};
 
 		SpriteBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState = RenderState());
+		~SpriteBatch();
 
 		virtual void begin(const glm::mat4 &matrix = glm::mat4(), FBO* fbo = NULL);
 		virtual void end();

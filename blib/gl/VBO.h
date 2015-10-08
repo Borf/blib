@@ -33,6 +33,7 @@ namespace blib
 
 			VBO()
 			{
+				name = "VBO";
 				length = 0;
 				vbo = 0;
 			}

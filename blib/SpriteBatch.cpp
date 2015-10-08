@@ -48,6 +48,11 @@ namespace blib
 		vertices.reserve(MAX_SPRITES);
 	}
 
+	SpriteBatch::~SpriteBatch()
+	{
+		blib::ResourceManager::getInstance().dispose(vbo);
+	}
+
 	void SpriteBatch::begin(const glm::mat4 &matrix, FBO* fbo)
 	{
 		//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");

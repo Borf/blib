@@ -510,6 +510,7 @@
     <ClCompile Include="blib\platform\win32\window.cpp" />
     <ClCompile Include="blib\Renderer.cpp" />
     <ClCompile Include="blib\RenderState.cpp" />
+    <ClCompile Include="blib\Resource.cpp" />
     <ClCompile Include="blib\ResourceManager.cpp" />
     <ClCompile Include="blib\Shader.cpp" />
     <ClCompile Include="blib\Shapes.cpp" />

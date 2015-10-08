@@ -2173,6 +2173,7 @@
       <Filter>audio</Filter>
     </ClCompile>
     <ClCompile Include="blib\NavMesh.cpp" />
+    <ClCompile Include="blib\Resource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">
