@@ -284,6 +284,7 @@ return "~/";
 		std::string callstack()
 		{
 #ifdef WIN32
+#ifdef _DEBUG
 			std::string ret;
 			unsigned int   i;
 			void         * stack[100];
@@ -318,6 +319,9 @@ return "~/";
 			free(symbol);
 
 			return ret;
+#else //no debug
+			return "";
+#endif
 #else
             std::string ret;
             void* callstack[128];

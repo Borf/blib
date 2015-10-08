@@ -30,6 +30,7 @@ namespace blib
 		float lifeDec;
 		TextureMap::TexInfo* texture;
 		float rotationSpeed;
+		float rotation;
 
 		VertexP2C4T2T2F1 vertex;
 		Particle()
@@ -106,6 +107,9 @@ namespace blib
 			float rotationMin;
 			float rotationMax;
 
+			float rotationSpeedMin;
+			float rotationSpeedMax;
+
 			float friction;
 			float rotationFriction;
 			float fadeSpeedMin;
@@ -144,11 +148,14 @@ namespace blib
 		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch);
 		~ParticleSystem();
 		void update(double elapsedTime);
+		void ParticleSystem::updateParticles(Particle* particles, int& nParticles, double elapsedTime);
 		void draw(glm::mat4 matrix);
 
 
-		Particle particles[MAX_PARTICLES];
-		int nParticles;
+		Particle alphaParticles[MAX_PARTICLES];
+		int nParticlesAlpha;
+		Particle addParticles[MAX_PARTICLES];
+		int nParticlesAdd;
 
 		void clear();
 		Emitter* addEmitter(std::string name);

@@ -83,7 +83,8 @@ void main()\
 		shader->setUniform(ShaderUniforms::s_texture, 0);
 		renderState.activeShader = shader;
 		renderState.activeTexture[0] = textureMap;
-		nParticles = 0;
+		nParticlesAdd = 0;
+		nParticlesAlpha = 0;
 		lastElapsedTime = 0.1f;
 	}
 
@@ -94,8 +95,10 @@ void main()\
 			Emitter* emitter = *it;
 			for(int i = (int)glm::floor(emitter->counter * emitter->emitterTemplate->particleCountPerSecondMin); i < (int)glm::floor((emitter->counter + elapsedTime) * emitter->emitterTemplate->particleCountPerSecondMin); i++)
 			{
-				emitter->newParticle(particles[nParticles], elapsedTime);
-				nParticles++;
+				if (emitter->emitterTemplate->blendMode == EmitterTemplate::Add)
+					emitter->newParticle(addParticles[nParticlesAdd++], elapsedTime);
+				if (emitter->emitterTemplate->blendMode == EmitterTemplate::Alpha)
+					emitter->newParticle(alphaParticles[nParticlesAlpha++], elapsedTime);
 			}
 			emitter->prevPosition = emitter->position;
 			emitter->counter += elapsedTime;
@@ -114,17 +117,26 @@ void main()\
 		}
 
 
+		updateParticles(addParticles, nParticlesAdd, elapsedTime);
+		updateParticles(alphaParticles, nParticlesAlpha, elapsedTime);
 
 
+
+		lastElapsedTime = elapsedTime;
+	}
+
+
+	void ParticleSystem::updateParticles(Particle* particles, int& nParticles, double elapsedTime)
+	{
 		int oldParticleCount = nParticles;
 		int deadCount = 0;
-		for(int i = 0; i < oldParticleCount; i++)
+		for (int i = 0; i < oldParticleCount; i++)
 		{
 			Particle& p = particles[i];
-			if(p.life <= 0)
+			if (p.life <= 0)
 			{
 				deadCount++;
- 				nParticles--;
+				nParticles--;
 				continue;
 			}
 
@@ -132,76 +144,58 @@ void main()\
 
 			float friction = (float)glm::pow(1.0 - p.emitter->emitterTemplate->particleProps.friction, elapsedTime);
 
-			p.position = pos + friction * (pos - p.prevPosition) * (float)(lastElapsedTime / elapsedTime)+ p.emitter->emitterTemplate->gravity * (float)elapsedTime;
+			p.position = pos + friction * (pos - p.prevPosition) * (float)(lastElapsedTime / elapsedTime) + p.emitter->emitterTemplate->gravity * (float)elapsedTime;
 			p.prevPosition = pos;
 			p.life -= (float)(elapsedTime / particles[i].lifeDec);
 
 			p.vertex.position = p.position;
 
-			if(p.life <= 1 && p.life > 0.00001f)
+			if (p.life <= 1 && p.life > 0.00001f)
 			{
-				if(p.emitter->emitterTemplate->particleProps.colors.size() > 1)
+				if (p.emitter->emitterTemplate->particleProps.colors.size() > 1)
 				{
-					float colorFac = glm::pow(1-p.life, p.emitter->emitterTemplate->particleProps.colorExp) * (p.emitter->emitterTemplate->particleProps.colors.size()-1);
+					float colorFac = glm::pow(1 - p.life, p.emitter->emitterTemplate->particleProps.colorExp) * (p.emitter->emitterTemplate->particleProps.colors.size() - 1);
 					float factor = colorFac - (int)colorFac;
-					p.vertex.color = (1 - factor) * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac] + factor * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac+1];
+					p.vertex.color = (1 - factor) * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac] + factor * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac + 1];
 				}
 
-				if(p.emitter->emitterTemplate->particleProps.size.size() > 1)
+				if (p.emitter->emitterTemplate->particleProps.size.size() > 1)
 				{
-					float sizeFac = glm::pow(1-p.life, p.emitter->emitterTemplate->particleProps.sizeExp) * (p.emitter->emitterTemplate->particleProps.size.size()-1);
+					float sizeFac = glm::pow(1 - p.life, p.emitter->emitterTemplate->particleProps.sizeExp) * (p.emitter->emitterTemplate->particleProps.size.size() - 1);
 					float factor = sizeFac - (int)sizeFac;
-					p.vertex._size = (1 - factor) * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac] + factor * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac+1];
+					p.vertex._size = (1 - factor) * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac] + factor * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac + 1];
 				}
 			}
-//			p.vertex.rotation+= (float)(elapsedTime * p.rotationSpeed);
+			p.rotation += (float)(elapsedTime * p.rotationSpeed);
 
 			//maybe use memcpy for this?
-			if(deadCount > 0)
-				particles[i-deadCount] = p;
+			if (deadCount > 0)
+				particles[i - deadCount] = p;
 		}
-
-		lastElapsedTime = elapsedTime;
 	}
+
+
+
 
 
 	float f = 0.1f;
 
 	void ParticleSystem::draw(glm::mat4 matrix)
 	{
-		if(nParticles > 0)
-		{
-/*
+		for (int i = 0; i < nParticlesAlpha; i++)
+			spriteBatch->draw(alphaParticles[i].texture, blib::math::easyMatrix(alphaParticles[i].vertex.position, alphaParticles[i].rotation, 0.01f * alphaParticles[i].vertex._size), glm::vec2(32, 32), alphaParticles[i].vertex.color);
+		spriteBatch->end();
+		spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE;
+		spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE;
+		spriteBatch->begin(spriteBatch->getMatrix());
 
-			std::vector<VertexP2C4T2T2F1> vertices(nParticles);
-			for(int i = 0; i < nParticles; i++)
-				vertices.push_back(particles[i].vertex);
-			renderState.activeShader->setUniform("matrix", matrix);
-			renderer->drawPoints(vertices, renderState);*/
+		for (int i = 0; i < nParticlesAdd; i++)
+			spriteBatch->draw(addParticles[i].texture, blib::math::easyMatrix(addParticles[i].vertex.position, addParticles[i].rotation, 0.01f * addParticles[i].vertex._size), glm::vec2(32, 32), addParticles[i].vertex.color);
 
-			if (nParticles > 0 && particles[0].emitter->emitterTemplate->blendMode == EmitterTemplate::BlendMode::Add)
-			{
-				spriteBatch->end();
-				spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE;
-				spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE;
-				spriteBatch->begin(spriteBatch->getMatrix());
-			}
-
-			for (int i = 0; i < nParticles; i++)
-			{
-
-				spriteBatch->draw(particles[i].texture, blib::math::easyMatrix(particles[i].vertex.position, 0, 0.01f * particles[i].vertex._size), glm::vec2(32,32), particles[i].vertex.color);
-			}
-
-			if (nParticles > 0 && particles[0].emitter->emitterTemplate->blendMode == EmitterTemplate::BlendMode::Add)
-			{
-				spriteBatch->end();
-				spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
-				spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
-				spriteBatch->begin(spriteBatch->getMatrix());
-			}
-
-		}
+		spriteBatch->end();
+		spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
+		spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
+		spriteBatch->begin(spriteBatch->getMatrix());
 	}
 
 	Emitter* ParticleSystem::addEmitter( std::string name )
@@ -240,7 +234,8 @@ void main()\
 		particle.prevPosition = particle.position - speed * blib::util::fromAngle(glm::radians(direction + blib::math::randomFloat(emitterTemplate->particleProps.directionMin, emitterTemplate->particleProps.directionMax)));
 		particle.lifeDec = blib::math::randomFloat(emitterTemplate->particleProps.fadeSpeedMin, emitterTemplate->particleProps.fadeSpeedMax);
 		particle.texture = emitterTemplate->textureInfos[rand()%emitterTemplate->textureInfos.size()];
-		particle.rotationSpeed = glm::radians(blib::math::randomFloat(emitterTemplate->particleProps.rotationMin, emitterTemplate->particleProps.rotationMax));
+		particle.rotationSpeed = blib::math::randomFloat(emitterTemplate->particleProps.rotationSpeedMin, emitterTemplate->particleProps.rotationSpeedMax);
+		particle.rotation = blib::math::randomFloat(emitterTemplate->particleProps.rotationMin, emitterTemplate->particleProps.rotationMax);
 
 		particle.vertex.position = position;
 		particle.vertex.color = emitterTemplate->particleProps.colors[0];
@@ -252,7 +247,8 @@ void main()\
 
 	void ParticleSystem::clear()
 	{
-		nParticles = 0;
+		nParticlesAdd = 0;
+		nParticlesAlpha = 0;
 		for(std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
 			delete *it;	
 		emitters.clear();
@@ -321,6 +317,9 @@ void main()\
 
 		particleProps.rotationMin = data["particle"]["rotation"][0].asFloat();
 		particleProps.rotationMax = data["particle"]["rotation"][1].asFloat();
+
+		particleProps.rotationSpeedMin = data["particle"]["rotationspeed"][0].asFloat();
+		particleProps.rotationSpeedMax = data["particle"]["rotationspeed"][1].asFloat();
 
 		particleProps.friction = data["particle"]["friction"].asFloat();
 		particleProps.rotationFriction = data["particle"]["rotationfriction"].asFloat();
