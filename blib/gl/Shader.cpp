@@ -32,13 +32,11 @@ namespace blib
 
 		Shader::~Shader(void)
 		{
-			glDeleteProgram(programId);
-	
+			if(programId != 0)
+				glDeleteProgram(programId);
 			for(std::list<SubShader*>::iterator it = shaders.begin(); it != shaders.end(); it++)
 				delete (*it);
 			shaders.clear();
-	
-	
 		}
 		
 

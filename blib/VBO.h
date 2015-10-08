@@ -9,7 +9,7 @@ namespace blib
 	protected:
 		int (*elementSize)();
 	public:
-		VBO()
+		VBO() : Resource("VBO")
 		{
 			elementSize = NULL;
 		}

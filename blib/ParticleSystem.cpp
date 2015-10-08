@@ -345,7 +345,8 @@ void main()\
 
 	ParticleSystem::~ParticleSystem()
 	{
-
+		blib::ResourceManager::getInstance().dispose(textureMap);
+		blib::ResourceManager::getInstance().dispose(shader);
 	}
 
 }

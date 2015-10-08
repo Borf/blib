@@ -9,7 +9,7 @@ namespace blib
 	protected:
 		int elementSize;
 	public:
-		VIO()
+		VIO() : Resource("VIO")
 		{
 			elementSize = 0;
 		}

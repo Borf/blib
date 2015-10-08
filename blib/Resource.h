@@ -15,8 +15,8 @@ namespace blib
 		std::string name;
 #ifdef RESOURCECALLSTACK
 		std::string callstack;
-		Resource();
 #endif
+		Resource(const std::string &name);
 		virtual ~Resource() {};
 	};
 

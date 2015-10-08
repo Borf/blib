@@ -37,6 +37,11 @@ namespace blib
 		verts.reserve(1000000);
 	}
 
+	LineBatch::~LineBatch()
+	{
+		blib::ResourceManager::getInstance().dispose(vbo);
+		blib::ResourceManager::getInstance().dispose(shader);
+	}
 
 	void LineBatch::begin(const glm::mat4 &matrix, float thickness)
 	{

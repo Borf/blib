@@ -289,6 +289,7 @@ return "~/";
 			void         * stack[100];
 			unsigned short frames;
 			SYMBOL_INFO  * symbol;
+			IMAGEHLP_LINE line;
 			HANDLE         process;
 
 			process = GetCurrentProcess();
@@ -296,15 +297,21 @@ return "~/";
 			SymInitialize(process, NULL, TRUE);
 
 			frames = CaptureStackBackTrace(0, 100, stack, NULL);
-			symbol = (SYMBOL_INFO *)calloc(sizeof(SYMBOL_INFO)+256 * sizeof(char), 1);
-			symbol->MaxNameLen = 255;
+			symbol = (SYMBOL_INFO *)calloc(sizeof(SYMBOL_INFO)+32 * sizeof(char), 1);
+			symbol->MaxNameLen = 31;
 			symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+
+			ZeroMemory(&line, sizeof(IMAGEHLP_LINE));
+			line.SizeOfStruct = sizeof(IMAGEHLP_LINE);
+			DWORD dwDisplacement;
 
 			for (i = 0; i < frames; i++)
 			{
 				SymFromAddr(process, (DWORD64)(stack[i]), 0, symbol);
+				SymGetLineFromAddr(process, (DWORD64)(stack[i]), &dwDisplacement, &line);
 				char buf[1024];
-				sprintf(buf, "%i: %s - 0x%0X\n", frames - i - 1, symbol->Name, symbol->Address);
+				sprintf(buf, "%i: (%s:%i)\t%s\n", frames - i - 1, line.FileName, line.LineNumber, symbol->Name);
+				
 				ret += buf;
 			}
 			SymCleanup(process);

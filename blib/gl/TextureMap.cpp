@@ -15,6 +15,7 @@ namespace blib
 
 		TextureMap::TextureMap()
 		{
+			name = "Texturemap";
 			texid = 0;
 			width = 2048;
 			height = 2048;
@@ -33,6 +34,8 @@ namespace blib
 			assert(taken);
 			delete taken;
 			glDeleteTextures(1, &texid);
+			for (auto i : info)
+				delete i.second;
 		}
 
 		bool &TextureMap::isTaken(int x, int y)

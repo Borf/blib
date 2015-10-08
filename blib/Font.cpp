@@ -64,9 +64,8 @@ namespace blib
 
 
 
-	Font::Font(std::string fileName, ResourceManager* resourceManager)
+	Font::Font(std::string fileName, ResourceManager* resourceManager) : Resource("Font: " + fileName)
 	{
-		this->name = "Font: " + fileName;
 		blib::util::StreamReader* file = new blib::util::StreamReader(blib::util::FileSystem::openRead(fileName));
 		if(!file)
 			return;
@@ -122,6 +121,7 @@ namespace blib
 
 	Font::~Font()
 	{
+		blib::ResourceManager::getInstance().dispose(texture);
 		for(std::map<char, Glyph*>::iterator it = charmap.begin(); it != charmap.end(); it++)
 			delete it->second;
 		charmap.clear();

@@ -123,7 +123,7 @@ namespace blib
 	}
 
 
-	Shader::Shader()
+	Shader::Shader() : Resource("Shader")
 	{
 		uniformCount = 0;
 		uniformSize = 0;

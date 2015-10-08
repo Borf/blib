@@ -54,6 +54,10 @@ using blib::util::Log;
 
 namespace blib
 {
+	static Texture* gear = NULL;
+	static Texture* white = NULL;
+	static Font* font = NULL;
+
 	App::App()
 	{
 		time = 0;
@@ -100,6 +104,11 @@ namespace blib
 		delete spriteBatch;
 		delete lineBatch;
 		delete renderer;
+
+		resourceManager->dispose(gear);
+		resourceManager->dispose(font);
+		resourceManager->dispose(white);
+
 
 		if (appSetup.threaded)
 		{
@@ -349,10 +358,12 @@ namespace blib
 		}
 		else
 		{
-			static Texture* gear = resourceManager->getResource<Texture>("assets/textures/gear.png");
-			//static Texture* white = resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
-			static Font* font = resourceManager->getResource<Font>("tahoma");
-
+			if (!gear)
+			{
+				gear = resourceManager->getResource<Texture>("assets/textures/gear.png");
+				//static Texture* white = resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
+				font = resourceManager->getResource<Font>("tahoma");
+			}
 			runRunners();
 
 			renderer->swap();
@@ -418,9 +429,9 @@ namespace blib
 	int App::UpdateThread::run()
 	{
 		app->createWindow();
-		Texture* gear = app->resourceManager->getResource<Texture>("assets/textures/gear.png");
-		Texture* white = app->resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
-		Font* font = app->resourceManager->getResource<Font>("tahoma");
+		gear = app->resourceManager->getResource<Texture>("assets/textures/gear.png");
+		white = app->resourceManager->getResource<Texture>("assets/textures/whitepixel.png");
+		font = app->resourceManager->getResource<Font>("tahoma");
 		app->window->unmakeCurrent();
 		semaphore->signal();
 		blib::util::Profiler::startFrame();

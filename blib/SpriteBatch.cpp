@@ -51,6 +51,7 @@ namespace blib
 	SpriteBatch::~SpriteBatch()
 	{
 		blib::ResourceManager::getInstance().dispose(vbo);
+		blib::ResourceManager::getInstance().dispose(shader);
 	}
 
 	void SpriteBatch::begin(const glm::mat4 &matrix, FBO* fbo)

@@ -36,7 +36,7 @@ namespace blib
 
 	public:
 		LineBatch(Renderer* renderer, ResourceManager* resourceManager, const RenderState &baseRenderState = RenderState());
-
+		~LineBatch();
 		RenderState renderState;
 		class Uniforms
 		{

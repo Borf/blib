@@ -34,6 +34,9 @@ namespace blib
 					data = NULL;
 				}
 				unsigned char* data;
+				friend class TextureMap;
+			private:
+				~TexInfo() {}
 			};
 
 

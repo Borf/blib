@@ -45,6 +45,7 @@ namespace blib
 		template <class T>
 		Texture<T>::Texture(std::string fileName, int loadOptions)
 		{
+			this->name = "Texture: " + fileName;
 			this->texid = 0;
 			this->data = NULL;
 			this->fileName = fileName;
