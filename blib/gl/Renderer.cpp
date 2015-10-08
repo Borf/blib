@@ -52,8 +52,9 @@ namespace blib
 
 		void Renderer::flush()
 		{
-            GLint oldFbo;
-            glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
+            static GLint oldFbo = -1;
+			if(oldFbo == -1)
+				glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFbo);
             
 			int totalVerts = 0;
 			RenderState* lastRenderState = NULL;

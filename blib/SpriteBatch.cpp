@@ -343,6 +343,8 @@ namespace blib
 		blib::RenderState renderState = spriteBatch.renderState;
 		renderState.activeVbo = vbo;
 		int lastIndex = 0;
+		if (renderState.activeShader == spriteBatch.shader)
+			renderState.activeShader->setUniform(Matrix, spriteBatch.matrix);
 		for (size_t i = 0; i < materialIndices.size(); i++)
 		{
 			renderState.activeTexture[0] = const_cast<Texture*>(materialIndices[i].first);
