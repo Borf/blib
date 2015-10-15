@@ -51,6 +51,8 @@ namespace blib
 		double counter;
 		double life;
 
+		bool enabled;
+
 		Emitter(EmitterTemplate* emitterTemplate);
 		void newParticle(Particle& particle, double elapsedTime);
 	};
