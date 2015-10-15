@@ -93,6 +93,8 @@ void main()\
 		for(std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
 		{
 			Emitter* emitter = *it;
+			if (!emitter->enabled)
+				continue;
 			for(int i = (int)glm::floor(emitter->counter * emitter->emitterTemplate->particleCountPerSecondMin); i < (int)glm::floor((emitter->counter + elapsedTime) * emitter->emitterTemplate->particleCountPerSecondMin); i++)
 			{
 				if (emitter->emitterTemplate->blendMode == EmitterTemplate::Add)
@@ -223,6 +225,7 @@ void main()\
 		direction = 0;
 		counter = 0;
 		life = -1;
+		enabled = true;
 	}
 
 	void Emitter::newParticle( Particle& particle, double elapsedTime )
