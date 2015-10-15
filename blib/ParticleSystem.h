@@ -148,7 +148,7 @@ namespace blib
 		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch);
 		~ParticleSystem();
 		void update(double elapsedTime);
-		void ParticleSystem::updateParticles(Particle* particles, int& nParticles, double elapsedTime);
+		void updateParticles(Particle* particles, int& nParticles, double elapsedTime);
 		void draw(glm::mat4 matrix);
 
 
