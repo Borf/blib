@@ -10,6 +10,8 @@
 #include <blib/MouseListener.h>
 #include <blib/gl/Window.h>
 #include <blib/util/Log.h>
+#include <blib/Util.h>
+#include <blib/App.h>
 
 using blib::util::Log;
 
@@ -28,6 +30,7 @@ namespace blib
 		{
 			Window::Window(App* app)
 			{
+				this->app = app;
 			}
 			Window::~Window()
 			{
@@ -85,12 +88,13 @@ namespace blib
 			}
 
 
-			void Window::makeCurrent()
+			bool Window::makeCurrent()
 			{
 				if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
 					Log::out<<"Unable to eglMakeCurrent"<<Log::newline;
-						return;
+						return false;
 				}
+				return true;
 			}
 			void Window::unmakeCurrent()
 			{
@@ -100,17 +104,49 @@ namespace blib
 				}
 			}
 
-
+			int id = 1;
 			void Window::touchDownEvent(int x, int y)
 			{
-				for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-					(*it)->onMouseDown(x,y,MouseListener::Left, 1);
+				int clickCount = 1;
+				clicks.push_back(blib::util::tickcount());
+				int i = clicks.size() - 2;
+				while (i >= 0 && clicks[i] > clicks[i + 1] - 200)
+				{
+					i--;
+					clickCount++;
+				}
+				if (clickCount < clicks.size())
+					clicks.erase(clicks.begin(), clicks.begin() + clicks.size() - clickCount);
+
+				for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+					(*it)->onMouseDown(x, y, MouseListener::Left, clickCount);
+
+				for (Touch& t : app->touches)
+				{
+					if (t.id == 0)
+					{
+						t.id = id;
+						t.position.x = x;
+						t.position.y = y;
+						break;
+					}
+				}
 			}
 
 			void Window::touchUpEvent(int x, int y)
 			{
-				for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-					(*it)->onMouseUp(x, y,MouseListener::Left, 1);
+				for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+					(*it)->onMouseUp(x, y, MouseListener::Left, 1);
+				for (Touch& t : app->touches)
+				{
+					if (t.id == id)
+					{
+						t.id = 0;
+						t.position.x = 0;
+						t.position.y = 0;
+						break;
+					}
+				}
 			}
 
 			void Window::touchMoveEvent(int x, int y)
@@ -121,9 +157,18 @@ namespace blib
 
 			void Window::keyDownEvent(blib::Key key)
 			{
-				for(std::list<KeyListener*>::iterator it = keyListeners.begin(); it != keyListeners.end(); it++)
-					(*it)->onKeyDown(key);
+				for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
+					(*it)->onMouseMove(x, y, MouseListener::Left);
 
+				for (Touch& t : app->touches)
+				{
+					if (t.id == id)
+					{
+						t.position.x = x;
+						t.position.y = y;
+						break;
+					}
+				}
 			}
 
 

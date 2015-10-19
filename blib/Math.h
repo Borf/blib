@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include <blib/TextureMap.h>
 #include <vector>
-
 class b2Body;
 
 namespace blib

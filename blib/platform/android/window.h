@@ -4,6 +4,7 @@
 #include <blib/KeyListener.h>
 
 #include <EGL/egl.h>
+#include <vector>
 
 
 namespace blib
@@ -16,9 +17,11 @@ namespace blib
 			class Window : public blib::IWindow
 			{
 			private:
-			    EGLDisplay display;
+				App* app;
+				EGLDisplay display;
 			    EGLSurface surface;
 			    EGLContext context;
+				std::vector<long> clicks;
 			protected:
 			public:
 				Window(App* app);
@@ -27,7 +30,7 @@ namespace blib
 				void tick() {};
 				virtual void swapBuffers();
 				virtual void create(int icon, std::string title);
-				virtual void makeCurrent();
+				virtual bool makeCurrent();
 				virtual void unmakeCurrent();
 
 				virtual void touchDownEvent(int x, int y);

@@ -1,7 +1,7 @@
 #ifndef __VERTEX_H__
 #define __VERTEX_H__
 
-
+#include <blib/config.h>
 #include <glm/glm.hpp>
 
 namespace blib
@@ -57,7 +57,15 @@ namespace blib
 }\
 	int className::size() { return base::size() + count*sizeof(GL_FLOAT); }\
 
+#ifdef BLIB_ANDROID
+#define VertexDefi(className, memberName, memberType, count, base)	\
+	void className::setAttribPointers(bool enabledVertexAttributes[10], void* offset, int *index, int totalSize) \
+	{\
+\
+	} \
+	int className::size() { return base::size() + count*sizeof(GL_INT); }
 
+#else
 #define VertexDefi(className, memberName, memberType, count, base)	\
 	void className::setAttribPointers(bool enabledVertexAttributes[10], void* offset, int *index, int totalSize) \
 {\
@@ -84,7 +92,7 @@ namespace blib
 	int className::size() { return base::size() + count*sizeof(GL_INT); }\
 
 
-
+#endif
 
 
 

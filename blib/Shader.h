@@ -8,6 +8,7 @@
 
 #include <glm/glm.hpp>
 #include <blib/config.h>
+#include <blib/Util.h>
 
 namespace blib
 {
@@ -236,7 +237,7 @@ namespace blib
 
 			for (int i = 0; i < size; i++)
 			{
-                Uniform* uniform = buildUniform(name + "[" + std::to_string(i) + "]", type);
+                Uniform* uniform = buildUniform(name + "[" + blib::util::toString(i) + "]", type);
 				u->members.push_back(uniform);
 				uniformCount = glm::max(uniformCount, (int)value + 1);
 				uniform->index = uniformSize + 1;

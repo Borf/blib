@@ -5,6 +5,7 @@
 #include <cmath>
 #include <cfloat>
 #include <set>
+#include <cstdlib>
 
 namespace blib
 {

@@ -3,6 +3,7 @@
 #include <map>
 #include <vector>
 #include <typeinfo>
+#include <blib/util.h>
 
 
 namespace blib

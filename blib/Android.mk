@@ -52,6 +52,7 @@ LOCAL_SRC_FILES :=\
 	./gl/TextureMap.cpp\
 	./gl/Vertex.cpp\
 	./gl/Window.cpp\
+	./gl/Texture.cpp\
 	./math/Line.cpp\
 	./math/Polygon.cpp\
 	./math/Random.cpp\
@@ -68,11 +69,16 @@ LOCAL_SRC_FILES :=\
 	./wm/widgets/ScrollPanel.cpp\
 	./wm/widgets/textbox.cpp\
 	./wm/widgets/Widget.cpp\
-	./gl/Texture.cpp\
 	./platform/android/Window.cpp\
 	./App.cpp\
-	./ParticleSystem.cpp
-LOCAL_C_INCLUDES := $(LOCAL_EXPORT_C_INCLUDES) C:/Android/android-ndk-r9/platforms/android-14/arch-arm/usr/include $(LOCAL_PATH)/../ $(LOCAL_PATH)/../externals $(LOCAL_PATH)/../externals/box2d $(NDK_ROOT)/sources/android/native_app_glue
+	./ParticleSystem.cpp\
+	./json.cpp\
+	./Resource.cpp\
+	./ResourceManager.cpp\
+	./util/ListAllocator.cpp\
+	./audio/AudioManagerAndroid.cpp
+#LOCAL_C_INCLUDES := C:/ProgramData/Microsoft/AndroidNDK/android-ndk-r10e/android-16/arch-arm/usr/include $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/../ $(LOCAL_PATH)/../externals $(LOCAL_PATH)/../externals/box2d $(NDK_ROOT)/sources/android/native_app_glue
+LOCAL_C_INCLUDES:= C:/Users/johan_000/AppData/Local/Android/sdk/ndk-bundle/platforms/android-16/arch-arm/usr/include $(LOCAL_EXPORT_C_INCLUDES) $(LOCAL_PATH)/../ $(LOCAL_PATH)/../externals $(LOCAL_PATH)/../../blib/externals/glm $(LOCAL_PATH)/../externals/box2d $(NDK_ROOT)/sources/android/native_app_glue
 
 #include $(BUILD_SHARED_LIBRARY)
 include $(BUILD_STATIC_LIBRARY)
