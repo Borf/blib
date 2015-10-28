@@ -91,9 +91,7 @@ namespace blib
 
 			std::ostream& prettyPrint(std::ostream& stream, blib::json::Value& printConfig = null, int level = 0) const;
 
-		private:
-            class Iterator;
-		public:
+			class Iterator;
 			Iterator begin() const;
 			Iterator end() const;
 		};
