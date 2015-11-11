@@ -1,3 +1,6 @@
 [submodule "externals/bullet3"]
 	path = externals/bullet3
 	url = https://github.com/bulletphysics/bullet3
+[submodule "externals/spine"]
+	path = externals/spine
+	url = https://github.com/EsotericSoftware/spine-runtimes.git
