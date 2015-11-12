@@ -41,7 +41,7 @@ namespace blib
 	{
 		atlas = spAtlas_createFromFile("assets/animations/spineboy.atlas", 0);
 		json = spSkeletonJson_create(atlas);
-		json->scale = 0.5f;
+		json->scale = 0.125f;
 
 		skeletonData = spSkeletonJson_readSkeletonDataFile(json, "assets/animations/spineboy.json");
 		if (!skeletonData) {
@@ -91,7 +91,7 @@ namespace blib
 		spAnimationState_apply(state, skeleton);
 		spSkeleton_updateWorldTransform(skeleton);
 
-		x += elapsedTime * 200;
+		x += elapsedTime * 50;
 		if (x > 1024+100)
 			x -= 1024+200;
 
