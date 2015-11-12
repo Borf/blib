@@ -2,6 +2,8 @@
 
 #include <blib/RenderState.h>
 #include <string>
+#include <vector>
+#include <glm/glm.hpp>
 
 struct spAtlas;
 struct spSkeletonData;
@@ -13,34 +15,38 @@ struct spAnimationStateData;
 namespace blib
 {
 	class Renderer;
+	class SpriteBatch;
+	class SpineModel;
+
+	class SpineModelInstance
+	{
+	public:
+		SpineModel* model;
+		spSkeleton* skeleton;
+		spAnimationState* state;
+
+		void update(double elapsedTime);
+		void draw(const glm::mat4& transform, SpriteBatch& spriteBatch);
+
+		void playAnimation(const std::string &name, bool loop);
+		void stopAnimation(const std::string &name);
+	};
 
 	class SpineModel
 	{
 		spAtlas* atlas;
 		spSkeletonJson* json;
 		spSkeletonData *skeletonData;
-		spSkeleton* skeleton;
-		spAnimationState* state;
 		spAnimationStateData* stateData;
 
-		RenderState renderState;
-		blib::Shader* shader;
-		enum ShaderAttributes
-		{
-			ProjectionMatrix,
-			Matrix,
-			s_texture,
-		};
-
-		float* worldVertices;
-
-		float x = 0;
+		std::vector<SpineModelInstance*> instances;
 
 	public:
 		SpineModel(const std::string &atlastFile, const std::string &skeletonFile);
+		~SpineModel();
 
-		void update(double elapsedTime);
-		void draw(Renderer* renderer);
+		SpineModelInstance* getInstance();
+		void disposeInstance(SpineModelInstance* instance);
 	};
 
 
