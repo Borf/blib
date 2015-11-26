@@ -185,14 +185,14 @@ void main()\
 	void ParticleSystem::draw(glm::mat4 matrix)
 	{
 		for (int i = 0; i < nParticlesAlpha; i++)
-			spriteBatch->draw(alphaParticles[i].texture, blib::math::easyMatrix(alphaParticles[i].vertex.position, alphaParticles[i].rotation, 0.01f * alphaParticles[i].vertex._size), glm::vec2(32, 32), alphaParticles[i].vertex.color);
+			spriteBatch->draw(alphaParticles[i].texture, blib::math::easyMatrix(alphaParticles[i].vertex.position, alphaParticles[i].rotation, 0.01f * alphaParticles[i].vertex._size), alphaParticles[i].texture->center, alphaParticles[i].vertex.color);
 		spriteBatch->end();
 		spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE;
 		spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE;
 		spriteBatch->begin(spriteBatch->getMatrix());
 
 		for (int i = 0; i < nParticlesAdd; i++)
-			spriteBatch->draw(addParticles[i].texture, blib::math::easyMatrix(addParticles[i].vertex.position, addParticles[i].rotation, 0.01f * addParticles[i].vertex._size), glm::vec2(32, 32), addParticles[i].vertex.color);
+			spriteBatch->draw(addParticles[i].texture, blib::math::easyMatrix(addParticles[i].vertex.position, addParticles[i].rotation, 0.01f * addParticles[i].vertex._size), addParticles[i].texture->center, addParticles[i].vertex.color);
 
 		spriteBatch->end();
 		spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
