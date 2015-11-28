@@ -97,6 +97,8 @@ namespace blib
 		int particleCountPerSecondMin;
 		int particleCountPerSecondMax;
 
+		float initialSpreadMin;
+		float initialSpreadMax;
 
 		struct ParticleProps
 		{

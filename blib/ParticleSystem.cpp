@@ -90,6 +90,8 @@ void main()\
 
 	void ParticleSystem::update( double elapsedTime )
 	{
+		if (elapsedTime > 3 * lastElapsedTime)
+			elapsedTime = lastElapsedTime;
 		for(std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
 		{
 			Emitter* emitter = *it;
@@ -233,7 +235,7 @@ void main()\
 		float speed = (float)(blib::math::randomDouble(emitterTemplate->particleProps.speedMin, emitterTemplate->particleProps.speedMax) * elapsedTime);
 
 		particle.life = 1;
-		particle.position = position + blib::math::randomFloat() * (position - prevPosition);
+		particle.position = position + blib::math::randomFloat() * (position - prevPosition) + blib::math::randomFloat(emitterTemplate->initialSpreadMin, emitterTemplate->initialSpreadMax) * blib::math::fromAngle(blib::math::randomFloat(0, blib::math::pif));
 		particle.prevPosition = particle.position - speed * blib::util::fromAngle(glm::radians(direction + blib::math::randomFloat(emitterTemplate->particleProps.directionMin, emitterTemplate->particleProps.directionMax)));
 		particle.lifeDec = blib::math::randomFloat(emitterTemplate->particleProps.fadeSpeedMin, emitterTemplate->particleProps.fadeSpeedMax);
 		particle.texture = emitterTemplate->textureInfos[rand()%emitterTemplate->textureInfos.size()];
@@ -338,6 +340,14 @@ void main()\
 		particleProps.sizeExp = data["particle"]["sizeexp"].asFloat();
 		for(size_t i = 0; i < data["particle"]["colors"].size(); i++)
 			particleProps.colors.push_back(glm::vec4(data["particle"]["colors"][i][0].asFloat(), data["particle"]["colors"][i][1].asFloat(), data["particle"]["colors"][i][2].asFloat(), data["particle"]["colors"][i][3].asFloat()));
+
+		initialSpreadMin = initialSpreadMax = 0;
+		if (data.isMember("initialspread"))
+		{
+			initialSpreadMin = data["initialspread"][0];
+			initialSpreadMax = data["initialspread"][1];
+		}
+
 	}
 	void ParticleSystem::resizeGl( int width, int height )
 	{
