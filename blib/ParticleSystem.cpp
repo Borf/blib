@@ -283,7 +283,7 @@ namespace blib
 			particle.texture = emitterTemplate->textureInfos[lastTextureSelected];
 		}
 		particle.rotationSpeed = blib::math::randomFloat(emitterTemplate->particleProps.rotationSpeedMin, emitterTemplate->particleProps.rotationSpeedMax);
-		particle.rotation = blib::math::randomFloat(emitterTemplate->particleProps.rotationMin, emitterTemplate->particleProps.rotationMax) + direction + 90;
+		particle.rotation = blib::math::randomFloat(emitterTemplate->particleProps.rotationMin, emitterTemplate->particleProps.rotationMax) + direction;
 
 
 		static glm::vec2 offsets[4] = { glm::vec2(-1, -1), glm::vec2(1, -1), glm::vec2(-1, 1), glm::vec2(1, 1) };
