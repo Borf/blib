@@ -54,6 +54,7 @@ namespace blib
 
 		double counter;
 		double life;
+		int lastTextureSelected;
 
 		bool enabled;
 
@@ -81,6 +82,7 @@ namespace blib
 		enum TextureOrder
 		{
 			Random,
+			Ordered,
 		} textureOrder;
 
 		enum BlendMode
@@ -101,8 +103,8 @@ namespace blib
 		int particleCountPerSecondMin;
 		int particleCountPerSecondMax;
 
-		float initialSpreadMin;
-		float initialSpreadMax;
+		glm::vec2 initialSpreadX;
+		glm::vec2 initialSpreadY;
 
 		struct ParticleProps
 		{
@@ -176,6 +178,8 @@ namespace blib
 
 		Attractor* addAttractor();
 		void removeAttractor();
+
+		void preCache(std::string dir);
 
 		inline void setTextureFolder(const std::string &folder) { this->textureFolder = folder; }
 

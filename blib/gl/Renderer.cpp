@@ -95,9 +95,13 @@ namespace blib
 					glViewport(((RenderSetViewPort*)r)->left, ((RenderSetViewPort*)r)->top, ((RenderSetViewPort*)r)->width, ((RenderSetViewPort*)r)->height);
 					height = ((RenderSetViewPort*)r)->height;
 				}
-				else if(r->command == Render::SetVbo)
+				else if (r->command == Render::SetVbo)
 				{
-					r->perform(vertices[1-activeLayer]);
+					r->perform(vertices[1 - activeLayer]);
+				}
+				else if (r->command == Render::SetVboSub)
+				{
+					r->perform(vertices[1 - activeLayer]);
 				}
 				else if(r->command == Render::SetSubTexture)
 				{

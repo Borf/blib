@@ -145,7 +145,7 @@ namespace blib
 
 			float friction = (float)glm::pow(1.0 - p.emitter->emitterTemplate->particleProps.friction, elapsedTime);
 
-			p.position = pos + friction * (pos - p.prevPosition) * (float)(lastElapsedTime / elapsedTime) + p.emitter->emitterTemplate->gravity * (float)elapsedTime;
+			p.position = pos + friction * (pos - p.prevPosition)/* * (float)(lastElapsedTime / elapsedTime)*/ + p.emitter->emitterTemplate->gravity * (float)elapsedTime;
 			p.prevPosition = pos;
 			p.life -= (float)(elapsedTime / particles[i].lifeDec);
 
@@ -158,27 +158,33 @@ namespace blib
 				{
 					float colorFac = glm::pow(1 - p.life, p.emitter->emitterTemplate->particleProps.colorExp) * (p.emitter->emitterTemplate->particleProps.colors.size() - 1);
 					float factor = colorFac - (int)colorFac;
-					for (int i = 0; i < 4; i++)
-						p.vertex[i].color = (1 - factor) * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac] + factor * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac + 1];
+					for (int ii = 0; ii < 4; ii++)
+						p.vertex[ii].color = (1 - factor) * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac] + factor * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac + 1];
 				}
 
 				if (p.emitter->emitterTemplate->particleProps.size.size() > 1)
 				{
 					float sizeFac = glm::pow(1 - p.life, p.emitter->emitterTemplate->particleProps.sizeExp) * (p.emitter->emitterTemplate->particleProps.size.size() - 1);
 					float factor = sizeFac - (int)sizeFac;
-					for (int i = 0; i < 4; i++)
-						p.vertex[i].scale = ((1 - factor) * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac] + factor * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac + 1]) / 4.0f;
+					for (int ii = 0; ii < 4; ii++)
+						p.vertex[ii].scale = ((1 - factor) * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac] + factor * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac + 1]) / 4.0f;
 				}
 			}
-			for (int i = 0; i < 4; i++)
-				p.vertex[i].rotation += (float)(elapsedTime * glm::radians(p.rotationSpeed));
+			for (int ii = 0; ii < 4; ii++)
+				p.vertex[ii].rotation += (float)(elapsedTime * glm::radians(p.rotationSpeed));
 
 			//maybe use memcpy for this?
 			if (deadCount > 0)
 			{
 				VertexDef* old = particles[i - deadCount].vertex;
+				VertexDef tmp[4];
+				memcpy(tmp, old, sizeof(VertexDef) * 4);
+				memcpy(old, p.vertex, sizeof(VertexDef) * 4);
+				memcpy(p.vertex, tmp, sizeof(VertexDef) * 4);
+	
+				particles[i - deadCount].vertex = p.vertex;
+//				p.vertex = old;
 
-				memcpy(particles[i - deadCount].vertex, p.vertex, sizeof(VertexDef) * 4);
 				particles[i - deadCount] = p;
 				particles[i - deadCount].vertex = old;
 			}
@@ -208,8 +214,8 @@ namespace blib
 		spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 		spriteBatch->begin(spriteBatch->getMatrix());*/
 
-		renderer->setVboSub(vbo, 0, particleData, nParticlesAdd);
-		renderer->setVboSub(vbo, MAX_PARTICLES*4, particleData+MAX_PARTICLES*4, nParticlesAlpha);
+		renderer->setVboSub(vbo, 0, particleData, nParticlesAdd*4);
+		renderer->setVboSub(vbo, MAX_PARTICLES*4, particleData+MAX_PARTICLES*4, nParticlesAlpha*4);
 
 		//renderer->setVbo(vbo, particleData, MAX_PARTICLES*4*2);
 
@@ -257,6 +263,7 @@ namespace blib
 		counter = 0;
 		life = -1;
 		enabled = true;
+		lastTextureSelected = 0;
 	}
 
 	void Emitter::newParticle( Particle& particle, double elapsedTime )
@@ -264,12 +271,19 @@ namespace blib
 		float speed = (float)(blib::math::randomDouble(emitterTemplate->particleProps.speedMin, emitterTemplate->particleProps.speedMax) * elapsedTime);
 
 		particle.life = 1;
-		particle.position = position + blib::math::randomFloat() * (position - prevPosition) + blib::math::randomFloat(emitterTemplate->initialSpreadMin, emitterTemplate->initialSpreadMax) * blib::math::fromAngle(blib::math::randomFloat(0, blib::math::pif));
-		particle.prevPosition = particle.position - speed * blib::util::fromAngle(glm::radians(direction + blib::math::randomFloat(emitterTemplate->particleProps.directionMin, emitterTemplate->particleProps.directionMax)));
+		particle.position = position + blib::math::randomFloat() * (position - prevPosition) +
+			glm::vec2(blib::math::randomFloat(emitterTemplate->initialSpreadX.x, emitterTemplate->initialSpreadX.y), blib::math::randomFloat(emitterTemplate->initialSpreadY.x, emitterTemplate->initialSpreadY.y)) * blib::math::fromAngle(blib::math::randomFloat(0, blib::math::pif));
+		particle.prevPosition = particle.position -speed * blib::util::fromAngle(glm::radians(direction + blib::math::randomFloat(emitterTemplate->particleProps.directionMin, emitterTemplate->particleProps.directionMax)));
 		particle.lifeDec = blib::math::randomFloat(emitterTemplate->particleProps.fadeSpeedMin, emitterTemplate->particleProps.fadeSpeedMax);
-		particle.texture = emitterTemplate->textureInfos[rand()%emitterTemplate->textureInfos.size()];
+		if(emitterTemplate->textureOrder == EmitterTemplate::Random)
+			particle.texture = emitterTemplate->textureInfos[rand()%emitterTemplate->textureInfos.size()];
+		else
+		{
+			lastTextureSelected = (lastTextureSelected + 1) % emitterTemplate->textureInfos.size();
+			particle.texture = emitterTemplate->textureInfos[lastTextureSelected];
+		}
 		particle.rotationSpeed = blib::math::randomFloat(emitterTemplate->particleProps.rotationSpeedMin, emitterTemplate->particleProps.rotationSpeedMax);
-		particle.rotation = blib::math::randomFloat(emitterTemplate->particleProps.rotationMin, emitterTemplate->particleProps.rotationMax);
+		particle.rotation = blib::math::randomFloat(emitterTemplate->particleProps.rotationMin, emitterTemplate->particleProps.rotationMax) + direction + 90;
 
 
 		static glm::vec2 offsets[4] = { glm::vec2(-1, -1), glm::vec2(1, -1), glm::vec2(-1, 1), glm::vec2(1, 1) };
@@ -333,7 +347,8 @@ namespace blib
 
 
 		textureOrder = enumFromString<TextureOrder>(data["textureorder"].asString(), util::make_vector<std::pair<TextureOrder, std::string> >() << 
-			std::pair<TextureOrder, std::string>(Random, "random") );
+			std::pair<TextureOrder, std::string>(Random, "random")<<
+			std::pair<TextureOrder, std::string>(Ordered, "order"));
 
 
 		blendMode = enumFromString<BlendMode>(data["blendmode"].asString(), util::make_vector<std::pair<BlendMode, std::string> >() << 
@@ -377,11 +392,20 @@ namespace blib
 		for(size_t i = 0; i < data["particle"]["colors"].size(); i++)
 			particleProps.colors.push_back(glm::vec4(data["particle"]["colors"][i][0].asFloat(), data["particle"]["colors"][i][1].asFloat(), data["particle"]["colors"][i][2].asFloat(), data["particle"]["colors"][i][3].asFloat()));
 
-		initialSpreadMin = initialSpreadMax = 0;
+		initialSpreadX = glm::vec2(0, 0);
+		initialSpreadY = glm::vec2(0, 0);
 		if (data.isMember("initialspread"))
 		{
-			initialSpreadMin = data["initialspread"][0];
-			initialSpreadMax = data["initialspread"][1];
+			if (data["initialspread"][0].isArray())
+			{
+				initialSpreadX = glm::vec2(data["initialspread"][0][0], data["initialspread"][0][1]);
+				initialSpreadY = glm::vec2(data["initialspread"][1][0], data["initialspread"][1][1]);
+			}
+			else
+			{
+				initialSpreadX = glm::vec2(data["initialspread"][0], data["initialspread"][1]);
+				initialSpreadY = glm::vec2(data["initialspread"][0], data["initialspread"][1]);
+			}
 		}
 
 	}
@@ -394,6 +418,21 @@ namespace blib
 	{
 		blib::ResourceManager::getInstance().dispose(textureMap);
 		//blib::ResourceManager::getInstance().dispose(shader);
+	}
+
+	void ParticleSystem::preCache(std::string dir)
+	{
+		if (dir[dir.length() - 1] != '/')
+			dir += "/";
+		std::vector<std::string> files = blib::util::FileSystem::getFileList(dir);
+		for (const std::string &file : files)
+		{
+			if (file[0] == '.')
+				continue;
+			Log::out << "Caching " << file << Log::newline;
+			if (cache.find(dir + file) == cache.end())
+				cache[dir + file] = new EmitterTemplate(dir + file, textureMap, textureFolder);
+		}
 	}
 
 }
