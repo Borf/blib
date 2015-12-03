@@ -17,5 +17,16 @@ namespace blib
 		};
 
 
+		class DynamicSingleton
+		{
+		public:
+			template<class T>
+			static T* getInstance()
+			{
+				static T* t = new T();
+				return t;
+			}
+		};
+
 	}
 }

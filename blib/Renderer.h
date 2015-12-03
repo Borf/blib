@@ -54,6 +54,7 @@ namespace blib
 				SetViewPort,
 				Unproject,
 				SaveFbo,
+				SetVboSub,
 			} command;
 			Render()
 			{
@@ -115,6 +116,7 @@ namespace blib
 			VBO* vbo;
 			int vertexStart;
 			int count;
+			bool empty;
 
 			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
 			{
@@ -127,10 +129,36 @@ namespace blib
 			virtual ~RenderSetVbo() { };
 			virtual void perform(float* firstVertex)
 			{
-				vbo->setData(count, (T*)(firstVertex + vertexStart));
+				if(empty)
+					vbo->setData(count, NULL);
+				else
+					vbo->setData(count, (T*)(firstVertex + vertexStart));
 			}
 		};
 
+		template <class T>
+		class RenderSetVboSub : public Render
+		{
+		public:
+			VBO* vbo;
+			int vertexStart;
+			int count;
+			int position;
+
+			virtual void setVertexAttributes(bool enabledVertices[10], float* firstVertex)
+			{
+			}
+			virtual int vertexCount()
+			{
+				//	return vertices.size();
+				return 0;
+			}
+			virtual ~RenderSetVboSub() { };
+			virtual void perform(float* firstVertex)
+			{
+				vbo->setSubData(position, count, (T*)(firstVertex + vertexStart));
+			}
+		};
 		template <class T>
 		class RenderSetVio : public Render
 		{
@@ -394,6 +422,54 @@ namespace blib
 			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * vertices.size();
 			block->vbo = vbo;
 			((blib::gl::VBO*)vbo)->length = vertices.size();
+			toRender[activeLayer].push_back(block);
+		}
+
+
+
+		template<class T>
+		void setVbo(VBO* vbo, T* vertices, int count)
+		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
+			RenderSetVbo<T>* block = allocators[activeLayer].get<RenderSetVbo<T>>(); //new RenderSetVbo<T>();
+#else
+			RenderSetVbo<T>* block = new RenderSetVbo<T>();
+#endif
+			block->command = Render::SetVbo;	//TODO : move to constructor
+			block->vertexStart = vertexIndex[activeLayer];
+			block->count = count;
+			if (count > 0 && vertices != NULL)
+			{
+				memcpy(this->vertices[activeLayer] + vertexIndex[activeLayer], vertices, sizeof(T) * count);
+				vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * count;
+			}
+			
+			block->empty = vertices == NULL;
+			block->vbo = vbo;
+			((blib::gl::VBO*)vbo)->length = count;
+			toRender[activeLayer].push_back(block);
+		}
+
+
+		template<class T>
+		void setVboSub(VBO* vbo, int position, T* vertices, int count)
+		{
+			//assert(blib::util::Thread::getCurrentThreadName() == "UpdateThread");
+#ifdef CUSTOMMEMALLOCATOR
+			RenderSetVboSub<T>* block = allocators[activeLayer].get<RenderSetVboSub<T>>(); //new RenderSetVbo<T>();
+#else
+			RenderSetVboSub<T>* block = new RenderSetVboSub<T>();
+#endif
+			block->command = Render::SetVboSub;	//TODO : move to constructor
+			block->position = position;
+			block->vertexStart = vertexIndex[activeLayer];
+			block->count = count;
+			if (count > 0)
+				memcpy(this->vertices[activeLayer] + vertexIndex[activeLayer], vertices, sizeof(T) * count);
+			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * count;
+			block->vbo = vbo;
+			((blib::gl::VBO*)vbo)->length = count;
 			toRender[activeLayer].push_back(block);
 		}
 

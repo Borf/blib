@@ -211,5 +211,23 @@ VertexDefBegin(VertexP3N3C4, color, glm::vec4, 4, VertexP3N3)
 VertexP3N3C4(glm::vec3 position, glm::vec3 normal, glm::vec4 color) : VertexP3N3(position, normal), color(color) {};
 VertexDefEnd();
 
+
+
+
+VertexDefBegin(VertexP2T2C4P2, position2, glm::vec2, 2, VertexP2T2C4)
+VertexP2T2C4P2(glm::vec2 position, glm::vec2 texture, glm::vec4 color, glm::vec2 position2) : VertexP2T2C4(position, texture, color), position2(position2) {};
+VertexDefEnd();
+
+VertexDefBegin(VertexP2T2C4P2R1, rotation, float, 1, VertexP2T2C4P2)
+VertexP2T2C4P2R1(glm::vec2 position, glm::vec2 texture, glm::vec4 color, glm::vec2 position2, float rotation) : VertexP2T2C4P2(position, texture, color, position2), rotation(rotation) {};
+VertexDefEnd();
+
+VertexDefBegin(VertexP2T2C4P2R1S1, scale, float, 1, VertexP2T2C4P2R1)
+VertexP2T2C4P2R1S1(glm::vec2 position, glm::vec2 texture, glm::vec4 color, glm::vec2 position2, float rotation, float scale) : VertexP2T2C4P2R1(position, texture, color, position2, rotation), scale(scale) {};
+VertexDefEnd();
+
+
+
+
 }
 #endif

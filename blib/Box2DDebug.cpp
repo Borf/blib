@@ -3,17 +3,19 @@
 #include <blib/LineBatch.h>
 #include <blib/Renderer.h>
 #include <blib/Util.h>
+#include <blib/math/Rectangle.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <blib/Math.h>
 
 namespace blib
 {
-	Box2DDebug::Box2DDebug()
+	Box2DDebug::Box2DDebug() : cullRectangle(glm::vec2(0,0),glm::vec2(0,0))
 	{
 		alpha = 0.5f;
 		lineBatch = NULL;
 		renderer = NULL;
+		cull = false;
 	}
 
 	void Box2DDebug::init( LineBatch* lineBatch, Renderer* renderer )
@@ -28,7 +30,8 @@ namespace blib
 		for(int i = 0; i < vertexCount; i++)
 		{
 			int ii = (i+1)%vertexCount;
-			lineBatch->draw(glm::vec2(vertices[i].x, vertices[i].y), glm::vec2(vertices[ii].x, vertices[ii].y), glm::vec4(color.r, color.g, color.b, 1));
+			if(!cull || cullRectangle.contains(glm::vec2(vertices[i].x, vertices[i].y)) || cullRectangle.contains(glm::vec2(vertices[ii].x, vertices[ii].y)))
+				lineBatch->draw(glm::vec2(vertices[i].x, vertices[i].y), glm::vec2(vertices[ii].x, vertices[ii].y), glm::vec4(color.r, color.g, color.b, 1));
 		}
 	}
 
@@ -55,13 +58,16 @@ namespace blib
 		for (int i = 0; i < vertexCount; i++)
 		{
 			int ii = (i + 1) % vertexCount;
-			lineBatch->draw(glm::vec2(vertices[i].x, vertices[i].y), glm::vec2(vertices[ii].x, vertices[ii].y), glm::vec4(color.r, color.g, color.b, 1));
+			if (!cull || cullRectangle.contains(glm::vec2(vertices[i].x, vertices[i].y)) || cullRectangle.contains(glm::vec2(vertices[ii].x, vertices[ii].y)))
+				lineBatch->draw(glm::vec2(vertices[i].x, vertices[i].y), glm::vec2(vertices[ii].x, vertices[ii].y), glm::vec4(color.r, color.g, color.b, 1));
 		}
 		
 	}
 
 	void Box2DDebug::DrawCircle( const b2Vec2& center, float32 radius, const b2Color& color )
 	{
+		if (cull && !cullRectangle.contains(center))
+			return;
         float inc = blib::math::pif/16;
 		glm::vec2 c =(b2Vec2)center;
         for(float i = 0; i < 2*blib::math::pif; i+=inc)
@@ -86,7 +92,9 @@ namespace blib
 		lineBatch->shader->setUniform(LineBatch::Uniforms::matrix, lineBatch->matrix);
 		renderer->drawTriangles(verts);*/
 
-        float inc = blib::math::pif / 16;
+		if (cull && !cullRectangle.contains(center))
+			return;
+		float inc = blib::math::pif / 16;
 		glm::vec2 c = (b2Vec2)center;
         for (float i = 0; i < 2 * blib::math::pif; i += inc)
 			lineBatch->draw(c + util::fromAngle(i)*radius, c + util::fromAngle(i + inc)*radius, glm::vec4(color.r, color.g, color.b, 1));
@@ -98,7 +106,8 @@ namespace blib
 
 	void Box2DDebug::DrawSegment( const b2Vec2& p1, const b2Vec2& p2, const b2Color& color )
 	{
-		lineBatch->draw((b2Vec2)p1, (b2Vec2)p2, glm::vec4(color.r, color.g, color.b, 1));
+		if (!cull || cullRectangle.contains(glm::vec2(p1.x, p1.y)) || cullRectangle.contains(glm::vec2(p2.x, p2.y)))
+			lineBatch->draw((b2Vec2)p1, (b2Vec2)p2, glm::vec4(color.r, color.g, color.b, 1));
 	}
 
 	void Box2DDebug::DrawTransform( const b2Transform& xf )

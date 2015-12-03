@@ -2,6 +2,7 @@
 
 #include <Box2D/Box2D.h>
 #include <blib/util/Singleton.h>
+#include <blib/math/Rectangle.h>
 
 namespace blib
 {
@@ -14,6 +15,8 @@ namespace blib
 		Renderer* renderer;
 		float alpha;
 	public:
+		bool cull;
+		blib::math::Rectangle cullRectangle;
 
 		Box2DDebug();
 		void init(LineBatch* lineBatch, Renderer* renderer);

@@ -54,7 +54,7 @@ namespace blib
 				assert(elementSize);
 				this->length = length;
 				bind();
-				glBufferData(GL_ARRAY_BUFFER, elementSize() * length, data, GL_STATIC_DRAW);
+				glBufferData(GL_ARRAY_BUFFER, elementSize() * length, data, GL_DYNAMIC_DRAW);
 			}
 
 			void setSubData(int offset, int length, void* data)

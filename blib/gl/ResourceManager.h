@@ -12,7 +12,7 @@ namespace blib
 		public:
 			ResourceManager();
 
-			Renderer* getRenderer();
+			blib::Renderer* getRenderer();
 			SpriteSheet* getSpriteSheet(const std::string &name);
 			Texture* getTexture(const std::string &name, int loadOptions);
 			Texture* getEmptyTexture(int width, int height);

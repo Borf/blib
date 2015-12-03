@@ -7,8 +7,10 @@
 #include <blib/TextureMap.h>
 #include <blib/gl/GlResizeRegister.h>
 #include <blib/gl/Vertex.h>
+#include <blib/VBO.h>
+#include <blib/VIO.h>
 
-#define MAX_PARTICLES 50000
+#define MAX_PARTICLES 10000
 
 namespace blib
 {
@@ -21,6 +23,8 @@ namespace blib
 	class TextureMap;
 
 
+	typedef VertexP2T2C4P2R1S1 VertexDef;
+
 	class Particle
 	{
 	public:
@@ -32,7 +36,7 @@ namespace blib
 		float rotationSpeed;
 		float rotation;
 
-		VertexP2C4T2T2F1 vertex;
+		VertexDef *vertex;
 		Particle()
 		{
 			life = 1;
@@ -142,6 +146,7 @@ namespace blib
 			{
 				s_texture,
 				projectionmatrix,
+				matrix,
 			};
 		};
 
@@ -160,6 +165,10 @@ namespace blib
 		int nParticlesAlpha;
 		Particle addParticles[MAX_PARTICLES];
 		int nParticlesAdd;
+
+		VertexDef* particleData;
+		blib::VBO* vbo;
+		blib::VIO* vio;
 
 		void clear();
 		Emitter* addEmitter(std::string name);

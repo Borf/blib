@@ -34,64 +34,61 @@ namespace blib
 		renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 		renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 		textureFolder = "assets/textures/particles/";
-		shader = resourceManager->getResource<blib::Shader>();
-		shader->initFromData(
-"precision mediump float;\
-attribute vec2 a_position;\
-attribute vec4 a_color;\
-attribute vec2 a_tex1;\
-attribute vec2 a_tex2;\
-attribute float a_size;\
-varying vec4 color;\
-varying vec2 tex1;\
-varying vec2 tex2;\
-varying float size;\
-uniform mat4 matrix;\
-uniform mat4 projectionmatrix;\
-/*TODO: get the resize factor out of the matrix-matrix and apply it to the pointsize, might be smart to calculate this in software instead of glsl*/\
-void main()\
-{\
-	size = a_size;\
-	color = a_color;\
-	/*tex1 = a_tex1;\
-	tex2 = a_tex2*/;\
-	gl_PointSize = a_size;/* * (width / (zoom * 3.0));*/\
-	gl_Position = projectionmatrix * matrix * vec4(a_position,0.0,1.0);\
-}",			
-"precision mediump float;\
-varying vec4 color;\
-varying float size;\
-varying vec2 tex1;\
-varying vec2 tex2;\
-uniform sampler2D s_texture;\
-void main()\
-{\
-/*	if(size < 0.0)\
-		discard;*/\
-	/*vec4 col = texture2D(s_texture, tex1 + gl_PointCoord * (tex2-tex1))*/;\
-	gl_FragColor = color;/* * col;*/\
-}");
-		shader->bindAttributeLocation("a_position", 0);
-		shader->bindAttributeLocation("a_color", 1);
-		shader->bindAttributeLocation("a_tex1", 2);
-		shader->bindAttributeLocation("a_tex2", 3);
-		shader->bindAttributeLocation("a_size", 4);
+		shader = resourceManager->getResource<blib::Shader>("ParticleSystem");
+
+		shader->bindAttributeLocation("a_vposition", 0);
+		shader->bindAttributeLocation("a_texture", 1);
+		shader->bindAttributeLocation("a_color", 2);
+		shader->bindAttributeLocation("a_position", 3);
+		shader->bindAttributeLocation("a_rotation", 4);
+		shader->bindAttributeLocation("a_scale", 5);
 
 		shader->setUniformName(ShaderUniforms::s_texture, "s_texture", Shader::Int);
 		shader->setUniformName(ShaderUniforms::projectionmatrix, "projectionmatrix", Shader::Mat4);
+		shader->setUniformName(ShaderUniforms::matrix, "matrix", Shader::Mat4);
 		shader->finishUniformSetup();
 		shader->setUniform(ShaderUniforms::s_texture, 0);
 		renderState.activeShader = shader;
 		renderState.activeTexture[0] = textureMap;
+		renderState.cullFaces = RenderState::CullFaces::NONE;
 		nParticlesAdd = 0;
 		nParticlesAlpha = 0;
 		lastElapsedTime = 0.1f;
+
+		particleData = new VertexDef[MAX_PARTICLES * 8];
+		for (int i = 0; i < MAX_PARTICLES; i++)
+		{
+			addParticles[i].vertex = particleData + (4 * i);
+			alphaParticles[i].vertex = particleData + 4 * (MAX_PARTICLES + i);
+		}
+
+		vbo = resourceManager->getResource<blib::VBO>();
+		vio = resourceManager->getResource<blib::VIO>();
+		vbo->setVertexFormat<VertexDef>();
+		vio->setElementType<unsigned int>();
+
+		std::vector<unsigned int> indices;
+		for (int i = 0; i < MAX_PARTICLES*2; i++)
+		{
+			indices.push_back(4 * i + 0);
+			indices.push_back(4 * i + 1);
+			indices.push_back(4 * i + 2);
+
+			indices.push_back(4 * i + 1);
+			indices.push_back(4 * i + 3);
+			indices.push_back(4 * i + 2);
+		}
+		renderer->setVio(vio, indices);
+		renderer->setVbo<VertexDef>(vbo, NULL, MAX_PARTICLES*4*2);
+		renderState.activeVbo = vbo;
+		renderState.activeVio = vio;
+
 	}
 
 	void ParticleSystem::update( double elapsedTime )
 	{
-		if (elapsedTime > 3 * lastElapsedTime)
-			elapsedTime = lastElapsedTime;
+	//	if (elapsedTime > 3 * lastElapsedTime)
+	//		elapsedTime = lastElapsedTime;
 		for(std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
 		{
 			Emitter* emitter = *it;
@@ -152,7 +149,8 @@ void main()\
 			p.prevPosition = pos;
 			p.life -= (float)(elapsedTime / particles[i].lifeDec);
 
-			p.vertex.position = p.position;
+			for (int i = 0; i < 4; i++)
+				p.vertex[i].position = p.position;
 
 			if (p.life <= 1 && p.life > 0.00001f)
 			{
@@ -160,21 +158,30 @@ void main()\
 				{
 					float colorFac = glm::pow(1 - p.life, p.emitter->emitterTemplate->particleProps.colorExp) * (p.emitter->emitterTemplate->particleProps.colors.size() - 1);
 					float factor = colorFac - (int)colorFac;
-					p.vertex.color = (1 - factor) * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac] + factor * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac + 1];
+					for (int i = 0; i < 4; i++)
+						p.vertex[i].color = (1 - factor) * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac] + factor * p.emitter->emitterTemplate->particleProps.colors[(int)colorFac + 1];
 				}
 
 				if (p.emitter->emitterTemplate->particleProps.size.size() > 1)
 				{
 					float sizeFac = glm::pow(1 - p.life, p.emitter->emitterTemplate->particleProps.sizeExp) * (p.emitter->emitterTemplate->particleProps.size.size() - 1);
 					float factor = sizeFac - (int)sizeFac;
-					p.vertex._size = (1 - factor) * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac] + factor * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac + 1];
+					for (int i = 0; i < 4; i++)
+						p.vertex[i].scale = ((1 - factor) * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac] + factor * p.emitter->emitterTemplate->particleProps.size[(int)sizeFac + 1]) / 4.0f;
 				}
 			}
-			p.rotation += (float)(elapsedTime * p.rotationSpeed);
+			for (int i = 0; i < 4; i++)
+				p.vertex[i].rotation += (float)(elapsedTime * glm::radians(p.rotationSpeed));
 
 			//maybe use memcpy for this?
 			if (deadCount > 0)
+			{
+				VertexDef* old = particles[i - deadCount].vertex;
+
+				memcpy(particles[i - deadCount].vertex, p.vertex, sizeof(VertexDef) * 4);
 				particles[i - deadCount] = p;
+				particles[i - deadCount].vertex = old;
+			}
 		}
 	}
 
@@ -186,7 +193,7 @@ void main()\
 
 	void ParticleSystem::draw(glm::mat4 matrix)
 	{
-		for (int i = 0; i < nParticlesAlpha; i++)
+		/*for (int i = 0; i < nParticlesAlpha; i++)
 			spriteBatch->draw(alphaParticles[i].texture, blib::math::easyMatrix(alphaParticles[i].vertex.position, alphaParticles[i].rotation, 0.01f * alphaParticles[i].vertex._size), alphaParticles[i].texture->center, alphaParticles[i].vertex.color);
 		spriteBatch->end();
 		spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE;
@@ -199,7 +206,29 @@ void main()\
 		spriteBatch->end();
 		spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 		spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
-		spriteBatch->begin(spriteBatch->getMatrix());
+		spriteBatch->begin(spriteBatch->getMatrix());*/
+
+		renderer->setVboSub(vbo, 0, particleData, nParticlesAdd);
+		renderer->setVboSub(vbo, MAX_PARTICLES*4, particleData+MAX_PARTICLES*4, nParticlesAlpha);
+
+		//renderer->setVbo(vbo, particleData, MAX_PARTICLES*4*2);
+
+
+		renderState.activeShader->setUniform(ShaderUniforms::matrix, matrix);
+
+		if (nParticlesAdd > 0)
+		{
+			renderState.dstBlendColor = blib::RenderState::ONE;
+			renderState.dstBlendAlpha = blib::RenderState::ONE;
+			renderer->drawIndexedTriangles<VertexDef>(0, nParticlesAdd*6, renderState);
+		}
+		if (nParticlesAlpha > 0)
+		{
+			renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
+			renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
+			renderer->drawIndexedTriangles<VertexDef>(MAX_PARTICLES*6, nParticlesAlpha * 6, renderState);
+		}
+
 	}
 
 	Emitter* ParticleSystem::addEmitter( std::string name )
@@ -242,10 +271,17 @@ void main()\
 		particle.rotationSpeed = blib::math::randomFloat(emitterTemplate->particleProps.rotationSpeedMin, emitterTemplate->particleProps.rotationSpeedMax);
 		particle.rotation = blib::math::randomFloat(emitterTemplate->particleProps.rotationMin, emitterTemplate->particleProps.rotationMax);
 
-		particle.vertex.position = position;
-		particle.vertex.color = emitterTemplate->particleProps.colors[0];
-		particle.vertex.tex1 = particle.texture->t1;
-		particle.vertex.tex2 = particle.texture->t2;
+
+		static glm::vec2 offsets[4] = { glm::vec2(-1, -1), glm::vec2(1, -1), glm::vec2(-1, 1), glm::vec2(1, 1) };
+
+		for (int i = 0; i < 4; i++)
+		{
+			particle.vertex[i].position = position;
+			particle.vertex[i].color = emitterTemplate->particleProps.colors[0];
+			particle.vertex[i].texCoord = particle.texture->t1 + ((offsets[i] + glm::vec2(1, 1)) / 2.0f) * (particle.texture->t2 - particle.texture->t1);
+			particle.vertex[i].position2 = offsets[i];
+			particle.vertex[i].rotation = glm::radians(particle.rotation);
+		}
 
 		particle.emitter = this;
 	}
@@ -357,7 +393,7 @@ void main()\
 	ParticleSystem::~ParticleSystem()
 	{
 		blib::ResourceManager::getInstance().dispose(textureMap);
-		blib::ResourceManager::getInstance().dispose(shader);
+		//blib::ResourceManager::getInstance().dispose(shader);
 	}
 
 }

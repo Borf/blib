@@ -340,7 +340,10 @@ namespace blib
 					{
 						//TODO: get the unsigned short from the renderblock
 						//TODO: get rid of these casts here
-						glDrawElements(GL_TRIANGLES, ((RenderBlock<blib::VertexP3T2>*)r)->count, GL_UNSIGNED_SHORT, (void*)(((RenderBlock<blib::VertexP3T2>*)r)->vertexStart * sizeof(unsigned short)));
+						if(r->renderState.activeVio->elementSize == sizeof(unsigned short))
+							glDrawElements(GL_TRIANGLES, ((RenderBlock<blib::VertexP3T2>*)r)->count, GL_UNSIGNED_SHORT, (void*)(((RenderBlock<blib::VertexP3T2>*)r)->vertexStart * sizeof(unsigned short)));
+						else
+							glDrawElements(GL_TRIANGLES, ((RenderBlock<blib::VertexP3T2>*)r)->count, GL_UNSIGNED_INT, (void*)(((RenderBlock<blib::VertexP3T2>*)r)->vertexStart * sizeof(unsigned int)));
 					}
 					lastRenderState = &r->renderState;
 				}

@@ -200,7 +200,7 @@ namespace blib
 
 		Shader::SubShader::~SubShader()
 		{
-			glDeleteShader(shaderId);
+			//glDeleteShader(shaderId);
 		}
 
 		void Shader::SubShader::attach(GLuint programId)

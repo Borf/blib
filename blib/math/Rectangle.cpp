@@ -53,9 +53,14 @@ namespace blib
 			lines.push_back(blib::IDrawableLine::LinePart(glm::vec2(bottomright.x,topleft.y), topleft));
 		}
 
-		bool Rectangle::contains( const glm::vec2 &point ) const
+		bool Rectangle::contains(const glm::vec2 &point) const
 		{
 			return point.x > topleft.x && point.y > topleft.y && point.x < bottomright.x && point.y < bottomright.y;
+		}		
+
+		bool Rectangle::containsX(const glm::vec2 &point) const
+		{
+			return point.x > topleft.x && point.x < bottomright.x;
 		}
 
 #ifdef clipper_hpp

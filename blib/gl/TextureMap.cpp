@@ -32,7 +32,7 @@ namespace blib
 		TextureMap::~TextureMap()
 		{
 			assert(taken);
-			delete taken;
+			delete[] taken;
 			glDeleteTextures(1, &texid);
 			for (auto i : info)
 				delete i.second;

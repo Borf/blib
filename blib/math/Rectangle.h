@@ -43,6 +43,8 @@ namespace blib
 
 
 			bool contains(const glm::vec2 &point) const;
+			bool containsX(const glm::vec2 &point) const;
+			bool containsY(const glm::vec2 &point) const;
 			bool intersect(const blib::math::Rectangle &other) const;
 			bool intersect(const blib::math::Circle &other) const;
 			bool intersect(blib::math::Line other) const;
