@@ -152,10 +152,11 @@ namespace blib
 			};
 		};
 
-		RenderState renderState;
 		std::list<Emitter*> emitters;
 		TextureMap* textureMap;
 	public:
+		RenderState renderState;
+
 		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch);
 		~ParticleSystem();
 		void update(double elapsedTime);
