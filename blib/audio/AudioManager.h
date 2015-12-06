@@ -25,5 +25,7 @@ namespace blib
 		virtual AudioSample* loadSample(const std::string &filename) = 0;
 
 		virtual void playSound(std::string filename) = 0;
+
+		virtual void update() {};
 	};
 }

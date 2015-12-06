@@ -125,15 +125,30 @@ namespace blib
 
 	AudioSample* AudioManagerOpenAL::loadSample(const std::string &filename)
 	{
+		OpenALAudioSample* sample = NULL;
+		if (filename.substr(filename.size() - 4) == ".wav")
+			sample = loadSampleWav(filename);
+		else if (filename.substr(filename.size() - 4) == ".ogg")
+			sample = loadSampleOgg(filename);
+		if (sample != NULL)
+		{
+			samples.push_back(sample);
+		}
+		return sample;
+	}
+
+
+	OpenALAudioSample* AudioManagerOpenAL::loadSampleWav(const std::string &filename)
+	{
 		ALuint buffer;
 		alGenBuffers((ALuint)1, &buffer);
-        checkError();
+		checkError();
 
 		CWaves w;
 
 		WAVEID			WaveID;
-        unsigned long			iDataSize;
-        unsigned long   iFrequency;
+		unsigned long			iDataSize;
+		unsigned long   iFrequency;
 		unsigned long			eBufferFormat;
 		ALchar			*pData;
 		ALboolean		bReturn;
@@ -146,24 +161,91 @@ namespace blib
 			(SUCCEEDED(w.GetWaveALBufferFormat(WaveID, &alGetEnumValue, (unsigned long*)&eBufferFormat))))
 		{
 
-            checkError();
+			checkError();
 			alBufferData(buffer, eBufferFormat, pData, iDataSize, iFrequency);
-            checkError();
+			checkError();
 			if (alGetError() == AL_NO_ERROR)
 				bReturn = AL_TRUE;
 
 			w.DeleteWaveFile(WaveID);
 
 		}
-        checkError();
+		checkError();
 		OpenALAudioSample* newSample = new OpenALAudioSample();
+		newSample->playing = false;
 		newSample->bufferId = buffer;
 		newSample->manager = this;
-        checkError();        
+		checkError();
+		return newSample;
+	}
+	
+
+	OpenALAudioSample* AudioManagerOpenAL::loadSampleOgg(const std::string &filename)
+	{
+
+		char* data;
+		int len = blib::util::FileSystem::getData(filename, data);
+
+		stb_vorbis* stream = stb_vorbis_open_memory(const_cast<const unsigned char*>((unsigned char*)data), len, NULL, NULL); 
+		if (!stream)
+		{
+			Log::out << "AudioManagerOpenAL: Could not open " << filename << Log::newline;
+			return NULL;
+		}
+		stb_vorbis_info info = stb_vorbis_get_info(stream);
+
+
+		checkError();
+		OpenALAudioSample* newSample = new OpenALAudioSample();
+		newSample->bufferId = 0;
+		alGenBuffers((ALuint)2, newSample->buffers);
+		newSample->fileData = data;
+		newSample->manager = this;
+		newSample->info = info;
+		newSample->stream = stream;
+		newSample->playing = false;
+		if (info.channels == 2)
+			newSample->format = AL_FORMAT_STEREO16;
+		else
+			newSample->format = AL_FORMAT_MONO16;
+
+		checkError();
+
+		newSample->buffer(newSample->buffers[0]);
+		newSample->buffer(newSample->buffers[1]);
+
+		newSample->totalSamplesLeft = stb_vorbis_stream_length_in_samples(newSample->stream) * newSample->info.channels;
+
 		return newSample;
 	}
 
-	AudioManagerOpenAL::Source* AudioManagerOpenAL::getFreeSource()
+	bool OpenALAudioSample::buffer(ALuint buffer)
+	{
+		//Uncomment this to avoid VLAs
+		//#define BUFFER_SIZE 4096*32
+#ifndef BUFFER_SIZE//VLAs ftw
+#define BUFFER_SIZE 4096*32
+#endif
+		ALshort pcm[BUFFER_SIZE];
+		int  size = 0;
+		int  result = 0;
+
+		while (size < BUFFER_SIZE) {
+			result = stb_vorbis_get_samples_short_interleaved(stream, info.channels, pcm + size, BUFFER_SIZE - size);
+			if (result > 0) size += result*info.channels;
+			else break;
+		}
+
+		if (size == 0) return false;
+
+		alBufferData(buffer, format, pcm, size*sizeof(ALshort), info.sample_rate);
+		totalSamplesLeft -= size;
+#undef BUFFER_SIZE
+
+		return true;
+	}
+
+	Source* AudioManagerOpenAL::getFreeSource()
 	{
 		int i = lastSource;
 		while (((i + 1) % sources.size()) != lastSource)
@@ -176,38 +258,99 @@ namespace blib
 	}
 
 
+
+
+
+
 	void OpenALAudioSample::play(bool loop)
 	{
-		AudioManagerOpenAL::Source& source = *manager->getFreeSource();
-		source.lastSample = this;
-		alSourcei(source.sourceId, AL_BUFFER, 0);
-		alSourcei(source.sourceId, AL_BUFFER, bufferId);
-		alSourcef(source.sourceId, AL_PITCH, 1.0f);
-		alSourcef(source.sourceId, AL_GAIN, 1.0f);
-		alSource3f(source.sourceId, AL_POSITION, 0, 0, 0);
-		alSource3f(source.sourceId, AL_VELOCITY, 0, 0, 0);
-		alSourcei(source.sourceId, AL_LOOPING, loop);
-		alSourcePlay(source.sourceId);
+		Source& newSource = *manager->getFreeSource();
+		source = &newSource;
+		source->lastSample = this;
+		this->looping = loop;
+		
+		if (bufferId != 0) //wav
+		{
+			alSourcei(source->sourceId, AL_BUFFER, 0);
+			alSourcei(source->sourceId, AL_BUFFER, bufferId);
+			alSourcef(source->sourceId, AL_PITCH, 1.0f);
+			alSourcef(source->sourceId, AL_GAIN, 1.0f);
+			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
+			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
+			alSourcei(source->sourceId, AL_LOOPING, loop);
+			alSourcePlay(source->sourceId);
+		}
+		else //ogg
+		{
+			alSourcef(source->sourceId, AL_PITCH, 1.0f);
+			alSourcef(source->sourceId, AL_GAIN, 1.0f);
+			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
+			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
+			alSourcei(source->sourceId, AL_LOOPING, 0);
+
+			alSourceQueueBuffers(source->sourceId, 2, buffers);
+			alSourcePlay(source->sourceId);
+		}
+		playing = true;
 		checkError();
 	}
 
 	void OpenALAudioSample::stop()
 	{
-		for (AudioManagerOpenAL::Source& source : manager->sources)
-		{
-			if (source.lastSample == this)
-				alSourceStop(source.sourceId);
-		}
+		playing = false;
+		alSourceStop(source->sourceId);
+		if(bufferId == 0)
+			alSourceUnqueueBuffers(source->sourceId, 2, buffers);
+
 
 	}
 
+	bool OpenALAudioSample::update()
+	{
+		if (bufferId == 0 && source && playing)
+		{
+			ALint processed = 0;
+			alGetSourcei(source->sourceId, AL_BUFFERS_PROCESSED, &processed);
+
+			while (processed--) {
+				ALuint buf = 0;
+
+				alSourceUnqueueBuffers(source->sourceId, 1, &buf);
+
+				if (!buffer(buf)) {
+					bool shouldExit = true;
+
+					if (looping) {
+						stb_vorbis_seek_start(stream);
+						totalSamplesLeft = stb_vorbis_stream_length_in_samples(stream) * info.channels;
+						shouldExit = buffer(buf);
+					}
+
+					if (shouldExit) {
+						playing = false;  
+						return false;
+					}
+				}
+				alSourceQueueBuffers(source->sourceId, 1, &buf);
+			}
+
+		}
+		return true;
+	}
 
 
-	bool AudioManagerOpenAL::Source::isPlaying()
+	bool Source::isPlaying()
 	{
 		int sourceState;
 		alGetSourcei(sourceId, AL_SOURCE_STATE, &sourceState);
 		return sourceState == AL_PLAYING;
+	}
+
+	void AudioManagerOpenAL::update()
+	{
+		for (OpenALAudioSample* sample : samples)
+			sample->update();
+
 	}
 
 }

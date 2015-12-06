@@ -287,6 +287,8 @@ return "~/";
 		{
 #ifdef WIN32
 #ifdef _DEBUG
+			if (IsDebuggerPresent())
+				return "";
 			std::string ret;
 			unsigned int   i;
 			void         * stack[100];
@@ -300,8 +302,8 @@ return "~/";
 			SymInitialize(process, NULL, TRUE);
 
 			frames = CaptureStackBackTrace(0, 100, stack, NULL);
-			symbol = (SYMBOL_INFO *)calloc(sizeof(SYMBOL_INFO)+32 * sizeof(char), 1);
-			symbol->MaxNameLen = 31;
+			symbol = (SYMBOL_INFO *)calloc(sizeof(SYMBOL_INFO)+128 * sizeof(char), 1);
+			symbol->MaxNameLen = 127;
 			symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
 
 			ZeroMemory(&line, sizeof(IMAGEHLP_LINE));
@@ -312,7 +314,7 @@ return "~/";
 			{
 				SymFromAddr(process, (DWORD64)(stack[i]), 0, symbol);
 				SymGetLineFromAddr(process, (DWORD64)(stack[i]), &dwDisplacement, &line);
-				char buf[1024];
+				char buf[2048];
 				sprintf(buf, "%i: (%s:%i)\t%s\n", frames - i - 1, line.FileName, line.LineNumber, symbol->Name);
 				
 				ret += buf;

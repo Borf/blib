@@ -1365,6 +1365,9 @@
     <ClInclude Include="blib\util\stb_perlin.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="blib\util\stb_vorbis.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -2261,6 +2264,9 @@
     </ClCompile>
     <ClCompile Include="blib\SpineModel.cpp" />
     <ClCompile Include="blib\util\stb_perlin.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\stb_vorbis.c">
       <Filter>util</Filter>
     </ClCompile>
   </ItemGroup>

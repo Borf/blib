@@ -97,6 +97,7 @@
     <ClInclude Include="blib\util\stb_image.h" />
     <ClInclude Include="blib\util\stb_image_create.h" />
     <ClInclude Include="blib\util\stb_perlin.h" />
+    <ClInclude Include="blib\util\stb_vorbis.h" />
     <ClInclude Include="blib\util\Stream.h" />
     <ClInclude Include="blib\util\StreamIn.h" />
     <ClInclude Include="blib\util\StreamInFile.h" />
@@ -532,6 +533,7 @@
     <ClCompile Include="blib\util\stb_image.c" />
     <ClCompile Include="blib\util\stb_image_create.cpp" />
     <ClCompile Include="blib\util\stb_perlin.cpp" />
+    <ClCompile Include="blib\util\stb_vorbis.c" />
     <ClCompile Include="blib\util\Stream.cpp" />
     <ClCompile Include="blib\util\StreamIn.cpp" />
     <ClCompile Include="blib\util\StreamInFile.cpp" />
