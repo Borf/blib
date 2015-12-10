@@ -30,17 +30,17 @@ namespace blib
 			VIO()
 			{
 				length = 0;
-				vio = -1;
+				vio = 0;
 			}
 			~VIO()
 			{
-				if(vio != -1)
+				if(vio != 0)
 					glDeleteBuffers(1, &vio);
 			}
 
 			void initGl()
 			{
-				if(vio == -1)
+				if(vio == 0)
 					glGenBuffers(1, &vio);
 			}
 
@@ -54,7 +54,7 @@ namespace blib
 
 			void bind()
 			{
-				if(vio == -1)
+				if(vio == 0)
 					initGl();
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
 			}

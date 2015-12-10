@@ -49,18 +49,21 @@ namespace blib
 					glGenBuffers(1, &vbo);
 			}
 
-			void setData(int length, void* data)
+			void setData(int len, void* data)
 			{
 				assert(elementSize);
-				this->length = length;
+				this->length = len;
 				bind();
+				assert(vbo != 0);
 				glBufferData(GL_ARRAY_BUFFER, elementSize() * length, data, GL_DYNAMIC_DRAW);
 			}
 
-			void setSubData(int offset, int length, void* data)
+			void setSubData(int offset, int len, void* data)
 			{
 				bind();
-				glBufferSubData(GL_ARRAY_BUFFER, elementSize() * offset, elementSize() * length, data);
+				assert(vbo != 0);
+				assert(length != 0);
+				glBufferSubData(GL_ARRAY_BUFFER, elementSize() * offset, elementSize() * len, data);
 			}
 
 

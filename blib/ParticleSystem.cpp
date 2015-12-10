@@ -48,6 +48,7 @@ namespace blib
 		shader->setUniformName(ShaderUniforms::matrix, "matrix", Shader::Mat4);
 		shader->finishUniformSetup();
 		shader->setUniform(ShaderUniforms::s_texture, 0);
+		shader->setUniform(ShaderUniforms::projectionmatrix, glm::ortho(0.0f, (float)1024, (float)768, 0.0f, -1000.0f, 1.0f));
 		renderState.activeShader = shader;
 		renderState.activeTexture[0] = textureMap;
 		renderState.cullFaces = RenderState::CullFaces::NONE;
@@ -214,22 +215,20 @@ namespace blib
 		spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 		spriteBatch->begin(spriteBatch->getMatrix());*/
 
-		renderer->setVboSub(vbo, 0, particleData, nParticlesAdd*4);
-		renderer->setVboSub(vbo, MAX_PARTICLES*4, particleData+MAX_PARTICLES*4, nParticlesAlpha*4);
-
-		//renderer->setVbo(vbo, particleData, MAX_PARTICLES*4*2);
-
 
 		renderState.activeShader->setUniform(ShaderUniforms::matrix, matrix);
 
 		if (nParticlesAdd > 0)
 		{
+			renderer->setVboSub(vbo, 0, particleData, nParticlesAdd * 4);
+
 			renderState.dstBlendColor = blib::RenderState::ONE;
 			renderState.dstBlendAlpha = blib::RenderState::ONE;
 			renderer->drawIndexedTriangles<VertexDef>(0, nParticlesAdd*6, renderState);
 		}
 		if (nParticlesAlpha > 0)
 		{
+			renderer->setVboSub(vbo, MAX_PARTICLES * 4, particleData + MAX_PARTICLES * 4, nParticlesAlpha * 4);
 			renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 			renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 			renderer->drawIndexedTriangles<VertexDef>(MAX_PARTICLES*6, nParticlesAlpha * 6, renderState);
