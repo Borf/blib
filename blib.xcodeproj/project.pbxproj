@@ -38,6 +38,7 @@
 		065009161C075016005275C5 /* Slot.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008FC1C075016005275C5 /* Slot.c */; settings = {ASSET_TAGS = (); }; };
 		065009171C075016005275C5 /* SlotData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008FD1C075016005275C5 /* SlotData.c */; settings = {ASSET_TAGS = (); }; };
 		0650091A1C075044005275C5 /* stb_perlin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 065009181C075044005275C5 /* stb_perlin.cpp */; settings = {ASSET_TAGS = (); }; };
+		0650091D1C19E06E005275C5 /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 0650091B1C19E06E005275C5 /* stb_vorbis.c */; settings = {ASSET_TAGS = (); }; };
 		069DD2D2194655DB00583161 /* IOSFileSystemHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 069DD2D1194655DB00583161 /* IOSFileSystemHandler.mm */; };
 		069DD70319465EDD00583161 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD2DD19465ED900583161 /* b2BroadPhase.cpp */; };
 		069DD70419465EDD00583161 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD2DF19465ED900583161 /* b2CollideCircle.cpp */; };
@@ -214,6 +215,8 @@
 		065008FD1C075016005275C5 /* SlotData.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = SlotData.c; path = "spine/spine-c/src/spine/SlotData.c"; sourceTree = "<group>"; };
 		065009181C075044005275C5 /* stb_perlin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stb_perlin.cpp; sourceTree = "<group>"; };
 		065009191C075044005275C5 /* stb_perlin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_perlin.h; sourceTree = "<group>"; };
+		0650091B1C19E06E005275C5 /* stb_vorbis.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = stb_vorbis.c; sourceTree = "<group>"; };
+		0650091C1C19E06E005275C5 /* stb_vorbis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_vorbis.h; sourceTree = "<group>"; };
 		069DD2D0194655DB00583161 /* IOSFileSystemHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSFileSystemHandler.h; sourceTree = "<group>"; };
 		069DD2D1194655DB00583161 /* IOSFileSystemHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IOSFileSystemHandler.mm; sourceTree = "<group>"; };
 		069DD2D919465ED900583161 /* Box2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2D.h; sourceTree = "<group>"; };
@@ -1480,6 +1483,8 @@
 		069E99921944A850001C0AF2 /* util */ = {
 			isa = PBXGroup;
 			children = (
+				0650091B1C19E06E005275C5 /* stb_vorbis.c */,
+				0650091C1C19E06E005275C5 /* stb_vorbis.h */,
 				065009181C075044005275C5 /* stb_perlin.cpp */,
 				065009191C075044005275C5 /* stb_perlin.h */,
 				06213CBF197E93170070C415 /* StreamOut.cpp */,
@@ -1729,6 +1734,7 @@
 				069E99DE1944A850001C0AF2 /* BackgroundTask.cpp in Sources */,
 				065009001C075016005275C5 /* AnimationStateData.c in Sources */,
 				0650090E1C075016005275C5 /* MeshAttachment.c in Sources */,
+				0650091D1C19E06E005275C5 /* stb_vorbis.c in Sources */,
 				069E9A141944A850001C0AF2 /* MenuItem.cpp in Sources */,
 				069DD70E19465EDD00583161 /* b2PolygonShape.cpp in Sources */,
 				069E99F71944A850001C0AF2 /* Rectangle.cpp in Sources */,
