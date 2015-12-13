@@ -447,7 +447,7 @@ namespace blib
 			
 			block->empty = vertices == NULL;
 			block->vbo = vbo;
-			((blib::gl::VBO*)vbo)->length = count;
+		//	((blib::gl::VBO*)vbo)->length = count;
 			toRender[activeLayer].push_back(block);
 		}
 
@@ -469,7 +469,6 @@ namespace blib
 				memcpy(this->vertices[activeLayer] + vertexIndex[activeLayer], vertices, sizeof(T) * count);
 			vertexIndex[activeLayer] += (sizeof(T) / sizeof(float)) * count;
 			block->vbo = vbo;
-			((blib::gl::VBO*)vbo)->length = count;
 			toRender[activeLayer].push_back(block);
 		}
 
