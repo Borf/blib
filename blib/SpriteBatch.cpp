@@ -223,6 +223,15 @@ namespace blib
 			vertices.push_back(vertexDef(coord.first, coord.second, color));
 	}
 
+	void SpriteBatch::draw(const Texture* texture, const glm::mat4 &transform, const std::vector<std::tuple<glm::vec2, glm::vec2, glm::vec4>> &coords)
+	{
+		if (currentTexture != texture && currentTexture != NULL)
+			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, (unsigned short)vertices.size()));
+		currentTexture = texture;
+
+		for (const std::tuple<glm::vec2, glm::vec2, glm::vec4> &coord : coords)
+			vertices.push_back(vertexDef(std::get<0>(coord), std::get<1>(coord), std::get<2>(coord)));
+	}
 	void SpriteBatch::drawStretchyRect( Texture* sprite, const glm::mat4 &transform, const blib::math::Rectangle &src, const blib::math::Rectangle &innerSrc, const glm::vec2 &size, const glm::vec4 &color )
 	{
 
