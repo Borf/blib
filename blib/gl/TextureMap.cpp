@@ -69,6 +69,7 @@ namespace blib
 			if(data == NULL)
 			{
 				Log::err<<"Error loading texture "<<filename<<", invalid texture file"<<Log::newline;
+				Log::err << stbi_failure_reason() << Log::newline;
 				return NULL;
 			}
 
