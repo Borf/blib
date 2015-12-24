@@ -50,6 +50,19 @@ namespace blib
 		return mgr;
 	}
 
+	AudioManagerOpenAL::AudioManagerOpenAL()
+	{
+		running = true;
+		backgroundThread = std::thread([this]()
+		{
+			while (running)
+			{
+				update();
+				Sleep(1);
+			}
+		});
+	}
+
 	AudioManagerOpenAL::~AudioManagerOpenAL()
 	{
 //TODO		alcDestroyContext(context);

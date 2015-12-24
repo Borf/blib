@@ -4,6 +4,7 @@
 #include "AudioManager.h"
 #include <blib/util/stb_vorbis.h>
 #include <vector>
+#include <thread>
 
 #ifdef BLIB_IOS
 #include <OpenAL/al.h>
@@ -63,9 +64,11 @@ namespace blib
 		std::vector<Source> sources;
 		std::vector<OpenALAudioSample*> samples;
 		int lastSource = 0;
-
+		bool running;
 	public:
+		std::thread backgroundThread;
 
+		AudioManagerOpenAL();
 		virtual ~AudioManagerOpenAL();
 		virtual void init();
 		virtual void playMusic( std::string filename );
