@@ -97,8 +97,10 @@ namespace blib
 				continue;
 			for(int i = (int)glm::floor(emitter->counter * emitter->emitterTemplate->particleCountPerSecondMin); i < (int)glm::floor((emitter->counter + elapsedTime) * emitter->emitterTemplate->particleCountPerSecondMin); i++)
 			{
+                if(nParticlesAdd < MAX_PARTICLES-1)
 				if (emitter->emitterTemplate->blendMode == EmitterTemplate::Add)
 					emitter->newParticle(addParticles[nParticlesAdd++], elapsedTime);
+                if(nParticlesAlpha < MAX_PARTICLES-1)
 				if (emitter->emitterTemplate->blendMode == EmitterTemplate::Alpha)
 					emitter->newParticle(alphaParticles[nParticlesAlpha++], elapsedTime);
 			}
