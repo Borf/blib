@@ -58,7 +58,11 @@ namespace blib
 			while (running)
 			{
 				update();
+#ifdef BLIB_WIN
 				Sleep(1);
+#else
+				usleep(1000);
+#endif
 			}
 		});
 	}
