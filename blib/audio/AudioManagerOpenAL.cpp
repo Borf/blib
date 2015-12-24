@@ -58,7 +58,7 @@ namespace blib
 			while (running)
 			{
 				update();
-				Sleep(1);
+				usleep(1000);
 			}
 		});
 	}
@@ -130,8 +130,7 @@ namespace blib
 
 	}
 
-	static int i = 2;
-	void AudioManagerOpenAL::playSound(std::string filename)
+    void AudioManagerOpenAL::playSound(std::string filename)
 	{
 		
 	}
@@ -336,7 +335,7 @@ namespace blib
 					if (looping) {
 						stb_vorbis_seek_start(stream);
 						totalSamplesLeft = stb_vorbis_stream_length_in_samples(stream) * info.channels;
-						shouldExit = buffer(buf);
+						shouldExit = !buffer(buf);
 					}
 
 					if (shouldExit) {
