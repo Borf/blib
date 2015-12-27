@@ -321,6 +321,11 @@ namespace blib
 
 	}
 
+	bool OpenALAudioSample::isPlaying()
+	{
+		return source->isPlaying();
+	}
+
 	bool OpenALAudioSample::update()
 	{
 		if (bufferId == 0 && source && playing)
