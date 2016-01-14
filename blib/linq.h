@@ -97,11 +97,15 @@ namespace blib
 		template<class Storage, class Operator>
 		bool contains(const Storage& data, Operator func)
 		{
-			for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
+			/*for(typename Storage::const_iterator it = std::begin(data); it != std::end(data); it++)
 			{
 				if(func(*it))
 					return true;
-			}
+			}*/
+			for (auto const& i : data)
+				if (func(i))
+					return true;
+
 			return false;
 		}
 
