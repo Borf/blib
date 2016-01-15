@@ -328,7 +328,7 @@ namespace blib
 
 	bool OpenALAudioSample::update()
 	{
-		if (bufferId == 0 && source && playing)
+		if (bufferId == 0 && source && playing) //only for playing audio files
 		{
 			ALint processed = 0;
 			alGetSourcei(source->sourceId, AL_BUFFERS_PROCESSED, &processed);

@@ -7,6 +7,17 @@ namespace blib
 	class Color
 	{
 	public:
+		static inline glm::vec4 mult(const glm::vec4 &c, float fac)
+		{
+			return glm::clamp(c * glm::vec4(fac, fac, fac, 1), 0.0f, 1.0f);
+		}
+		static inline glm::vec4 add(const glm::vec4 &c, float fac)
+		{
+			return glm::clamp(c + glm::vec4(fac, fac, fac, 0), 0.0f, 1.0f);
+		}
+
+
+
 	/*	static const glm::vec4 red;
 		static const glm::vec4 green;
 		static const glm::vec4 blue;
