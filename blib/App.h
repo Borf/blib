@@ -254,13 +254,24 @@ namespace blib
 		{
 			union
 			{
+				double data[10];
 				struct {
 					double updateTime;
 					double drawTime;
 					double fps;//everything should be double!
 				};
-				double data[3];
 			};
+			PerformanceInfo(double d)
+			{
+				for (int i = 0; i < 10; i++)
+					data[i] = d;
+			}
+			PerformanceInfo()
+			{
+				for (int i = 0; i < 10; i++)
+					data[i] = 0;
+			}
+
 		}frameTimes[1000];
 		int frameTimeIndex;
 
@@ -272,7 +283,13 @@ namespace blib
 
 	public:
 
+		void setProfileInfo(double d, int index)
+		{
+			frameTimes[frameTimeIndex].data[3 + index] = d;
+		}
+
 		bool showProfiler;
+		static int profilerCustomProps;
 	};
 
 

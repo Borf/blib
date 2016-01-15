@@ -25,6 +25,7 @@
 #include <blib/Font.h>
 #include <blib/Util.h>
 #include <blib/config.h>
+#include <blib/Color.h>
 #include <blib/ResourceManager.h>
 #include <blib/BackgroundTask.h>
 
@@ -58,6 +59,8 @@ namespace blib
 	static Texture* white = NULL;
 	static Font* font = NULL;
 
+	int App::profilerCustomProps = 0;
+
 	App::App()
 	{
 		time = 0;
@@ -66,6 +69,7 @@ namespace blib
 #else
 		showProfiler = false;
 #endif
+		profilerCustomProps = 0;
 		joystickDriver = NULL;
 		window = NULL;
 		resourceManager = NULL;
@@ -485,11 +489,11 @@ namespace blib
 				app->lineBatch->begin();
 				app->lineBatch->draw(math::Rectangle(glm::vec2(20,20), 200,100), glm::vec4(1,1,1,1));
 
-				PerformanceInfo minValues = { 99999999999,  99999999999,  99999999999 };
-				PerformanceInfo maxValues = { -99999999999, -99999999999, -99999999999 };
+				PerformanceInfo minValues(99999999999);
+				PerformanceInfo maxValues(-99999999999);
 				for(int i = 0; i < 1000; i++)
 				{
-					for(int ii = 0; ii < 3; ii++)
+					for(int ii = 0; ii < 3+ profilerCustomProps; ii++)
 					{
 						minValues.data[ii] = glm::min(minValues.data[ii], app->frameTimes[i].data[ii]);
 						maxValues.data[ii] = glm::max(maxValues.data[ii], app->frameTimes[i].data[ii]);
@@ -497,21 +501,28 @@ namespace blib
 				}
 
 				float timeFactor = 100 / (float)glm::max(maxValues.updateTime, maxValues.drawTime);
-				PerformanceInfo prevAccum = { 0, 0, 0 };
-				PerformanceInfo accum = { 0, 0, 0 };
+				PerformanceInfo prevAccum(0);
+				PerformanceInfo accum(0);
 				for(int i = 0; i < 1000 && timeFactor < 1e20; i++)
 				{
-					for(int ii = 0; ii < 3; ii++)
+					for(int ii = 0; ii < 3+ profilerCustomProps; ii++)
 						accum.data[ii] += app->frameTimes[i].data[ii];
 					if(i%5 == 0 && i > 0)
 					{
-						for(int ii = 0; ii < 3; ii++)
+						for(int ii = 0; ii < 3+ profilerCustomProps; ii++)
 							accum.data[ii] /= 5.0;
 
 						if(i != 5)
 						{
 							app->lineBatch->draw(glm::vec2(19 + i*.2f, 120 - timeFactor*prevAccum.drawTime), glm::vec2(20 + i*.2f, 120 - timeFactor*accum.drawTime), glm::vec4(1,0,0,1));
 							app->lineBatch->draw(glm::vec2(19 + i*.2f, 120 - timeFactor*prevAccum.updateTime), glm::vec2(20 + i*.2f, 120 - timeFactor*accum.updateTime), glm::vec4(0,1,0,1));
+
+							static glm::vec4 colors[] = { blib::Color::blue, blib::Color::magenta, blib::Color::yellow, blib::Color::cyan };
+
+							for (int ii = 3; ii < 3 + profilerCustomProps; ii++)
+								app->lineBatch->draw(glm::vec2(19 + i*.2f, 120 - timeFactor*prevAccum.data[ii]), glm::vec2(20 + i*.2f, 120 - timeFactor*accum.data[ii]), colors[ii-3]);
+
+
 						}
 						prevAccum = accum;
 						memset(&accum, 0, sizeof(PerformanceInfo));
