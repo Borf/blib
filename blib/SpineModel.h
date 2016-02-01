@@ -3,6 +3,7 @@
 #include <blib/RenderState.h>
 #include <string>
 #include <vector>
+#include <functional>
 #include <glm/glm.hpp>
 
 struct spAtlas;
@@ -24,12 +25,15 @@ namespace blib
 		SpineModel* model;
 		spSkeleton* skeleton;
 		spAnimationState* state;
+		std::function<void()> callback = nullptr;
 
 		void update(double elapsedTime);
 		void draw(const glm::mat4& transform, SpriteBatch& spriteBatch);
 
 		void playAnimation(const std::string &name, bool loop);
+		void playAnimation(const std::string &name, const std::function<void()> &callback);
 		void stopAnimation(const std::string &name);
+		bool isPlaying();
 	};
 
 	class SpineModel

@@ -86,17 +86,33 @@ namespace blib
 		spAnimationState_setAnimationByName(state, 0, name.c_str(), loop);
 	}
 
+	void SpineModelInstance::playAnimation(const std::string &name, const std::function<void()> &callback)
+	{
+		spAnimationState_setAnimationByName(state, 0, name.c_str(), false);
+		this->callback = callback;
+	}
+
 	void SpineModelInstance::stopAnimation(const std::string &name)
 	{
 		spAnimationState_clearTrack(state, 0);
 	}
 
+	bool SpineModelInstance::isPlaying()
+	{
+		return spAnimationState_getCurrent(state, 0) != NULL;
+	}
+
 	void SpineModelInstance::update(double elapsedTime)
 	{
+		bool wasPlaying = isPlaying();
 		spSkeleton_update(skeleton, (float)elapsedTime);
 		spAnimationState_update(state, (float)elapsedTime * 1);
 		spAnimationState_apply(state, skeleton);
 		spSkeleton_updateWorldTransform(skeleton);
+		if (!isPlaying() && wasPlaying && callback)
+			callback();
+
+
 	}
 
 
