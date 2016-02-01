@@ -40,7 +40,7 @@ namespace blib
 
 		StreamOut* PhysicalFileSystemHandler::openWrite(const std::string &fileName)
 		{
-			throw "The method or operation is not implemented.";
+			return NULL;
 		}
 
 		void PhysicalFileSystemHandler::getFileList(const std::string &path, std::vector<std::string> &files)
@@ -194,6 +194,20 @@ namespace blib
 			return NULL;
 		}
 
+		StreamOut* FileSystem::openWrite(const std::string &fileName)
+		{
+			printf("Opening %s\n", fileName.c_str());
+			for (std::list<FileSystemHandler*>::iterator it = handlers.begin(); it != handlers.end(); it++)
+			{
+				printf("Filehandler %s\n", (*it)->name.c_str());
+				StreamOut* stream = (*it)->openWrite(fileName);
+				if (stream)
+					return stream;
+			}
+			return NULL;
+		}
+
+
 		void FileSystem::registerHandler(FileSystemHandler* handler)
 		{
 			handlers.push_back(handler);
@@ -333,6 +347,13 @@ namespace blib
 			return true;
 		}
 
+
+
+		PhysicalFileSystemHandler::StreamOutFilePhysical::StreamOutFilePhysical(std::ofstream* stream)
+		{
+			this->stream = stream;
+			this->deleteOnDestruct = true;
+		}
 
 		PhysicalFileSystemHandler::StreamOutFilePhysical::StreamOutFilePhysical(std::string filename)
 		{

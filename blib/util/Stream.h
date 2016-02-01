@@ -9,6 +9,7 @@ namespace blib
 		class Stream : blib::util::NotCopyable
 		{
 		public:
+			virtual ~Stream() {}
 		};
 	}
 }

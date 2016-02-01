@@ -13,6 +13,7 @@ namespace blib
 		class StreamOut : public Stream
 		{
 		public:
+			virtual ~StreamOut() {}
 			virtual void write(char* data, int count) = 0;
 			virtual void put(char);
 
