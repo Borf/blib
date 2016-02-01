@@ -326,6 +326,12 @@ namespace blib
 		return source->isPlaying();
 	}
 
+	void OpenALAudioSample::setVolume(int volume)
+	{
+		if(source)
+			alSourcef(source->sourceId, AL_GAIN, volume/100.0f);
+	}
+
 	bool OpenALAudioSample::update()
 	{
 		if (bufferId == 0 && source && playing) //only for playing audio files

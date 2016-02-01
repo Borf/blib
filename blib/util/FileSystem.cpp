@@ -40,6 +40,16 @@ namespace blib
 
 		StreamOut* PhysicalFileSystemHandler::openWrite(const std::string &fileName)
 		{
+			std::ofstream* stream = NULL;
+			if (directory != "")
+				stream = new std::ofstream((directory + "/" + fileName).c_str(), std::ios_base::binary);
+			else
+				stream = new std::ofstream(fileName.c_str(), std::ios_base::binary);
+			if (stream->is_open())
+			{
+				return new StreamOutFilePhysical(stream);
+			}
+			delete stream;
 			return NULL;
 		}
 
