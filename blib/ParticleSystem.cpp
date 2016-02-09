@@ -94,7 +94,11 @@ namespace blib
 		{
 			Emitter* emitter = *it;
 			if (!emitter->enabled)
+			{
+				emitter->prevPosition = emitter->position;
+				emitter->counter += elapsedTime;
 				continue;
+			}
 			for(int i = (int)glm::floor(emitter->counter * emitter->emitterTemplate->particleCountPerSecondMin); i < (int)glm::floor((emitter->counter + elapsedTime) * emitter->emitterTemplate->particleCountPerSecondMin); i++)
 			{
                 if(nParticlesAdd < MAX_PARTICLES-1)
