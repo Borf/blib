@@ -37,10 +37,11 @@ namespace blib
 
 			void add(const Triangle2 &triangle);
 			void intersect(const Polygon& other);
-				
+			
+			const Polygon expand(float amount) const;
 				
 			glm::vec2 getCenter() const;
-
+			
 
 			glm::vec2 normal(int index) const;
 

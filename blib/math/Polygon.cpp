@@ -134,6 +134,8 @@ namespace blib
 		//TODO: unsure if this works for concave polygons properly. also check http://alienryderflex.com/polygon/
 		bool Polygon::contains(glm::vec2 point) const
 		{
+			if (size() < 3)
+				return false;
 			//http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 			int i, j, c = 0;
 			for (i = 0, j = (int)size() - 1; i < (int)size(); j = i++) {
@@ -149,7 +151,7 @@ namespace blib
 			float minDist = 9999;
 			glm::vec2 closestPoint;
 
-			for (int i = 0; i < size(); i++)
+			for (size_t i = 0; i < size(); i++)
 			{
 				blib::math::Line line(at(i), at((i + 1) % size()));
 				glm::vec2 p = line.project(position);
@@ -242,6 +244,15 @@ namespace blib
 				center += v;
 			center /= (float)size();
 			return center;
+		}
+
+		const Polygon Polygon::expand(float amount) const
+		{
+			glm::vec2 center = getCenter();
+			Polygon ret;
+			for (size_t i = 0; i < size(); i++)
+				ret.push_back(at(i) + amount * glm::normalize(center - at(i)));
+			return ret;
 		}
 
 	}

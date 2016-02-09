@@ -18,6 +18,7 @@ namespace blib
 	class Renderer;
 	class SpriteBatch;
 	class SpineModel;
+	namespace math { class Polygon; }
 
 	class SpineModelInstance
 	{
@@ -34,6 +35,7 @@ namespace blib
 		void playAnimation(const std::string &name, const std::function<void()> &callback);
 		void stopAnimation(const std::string &name);
 		bool isPlaying();
+		blib::math::Polygon getPart(const std::string &name);
 	};
 
 	class SpineModel
