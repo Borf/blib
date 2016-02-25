@@ -77,7 +77,7 @@ namespace blib
 			bool keyboardSpecial(int key);
 			bool hasModalWindow();
 			glm::vec4 convertHexColor4( std::string hexColor );
-			blib::wm::Menu* loadMenu( std::string filename );
+			blib::wm::Menu* loadMenu( std::string filename, const blib::json::Value &translation);
 			void setRadialMenu( blib::wm::Menu* param1 );
 			void setMenuBar(blib::wm::Menu* menu);
 

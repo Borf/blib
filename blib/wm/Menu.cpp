@@ -41,7 +41,7 @@ blib::wm::Menu::Menu(const json::Value &data)
 	}
 }
 
-void blib::wm::Menu::setAction(std::string path, std::function<void() > callback)
+void blib::wm::Menu::setAction(const std::string &path, std::function<void() > callback)
 {
 	std::string firstPart = path;
 	if (firstPart.find("/") != std::string::npos)
@@ -64,7 +64,7 @@ void blib::wm::Menu::setAction(std::string path, std::function<void() > callback
 	}
 }
 
-void blib::wm::Menu::linkToggle(std::string path, bool* linkBool)
+void blib::wm::Menu::linkToggle(const std::string &path, bool* linkBool)
 {
 	std::string firstPart = path;
 	if (firstPart.find("/") != std::string::npos)
@@ -87,7 +87,7 @@ void blib::wm::Menu::linkToggle(std::string path, bool* linkBool)
 	}
 }
 
-void blib::wm::Menu::setToggleValue(std::string path, bool value)
+void blib::wm::Menu::setToggleValue(const std::string &path, bool value)
 {
 	std::string firstPart = path;
 	if (firstPart.find("/") != std::string::npos)
@@ -113,7 +113,7 @@ void blib::wm::Menu::setToggleValue(std::string path, bool value)
 	}
 }
 
-blib::wm::MenuItem* blib::wm::Menu::getItem(std::string path)
+blib::wm::MenuItem* blib::wm::Menu::getItem(const std::string &path)
 {
 	std::string firstPart = path;
 	if (firstPart.find("/") != std::string::npos)
@@ -149,7 +149,7 @@ void blib::wm::Menu::foreach(std::function<void(MenuItem*)> callback)
 	}
 }
 
-void blib::wm::Menu::setMenu(std::string menuLoc, blib::wm::MenuItem* menuItem)
+void blib::wm::Menu::setMenu(const std::string &menuLoc, blib::wm::MenuItem* menuItem)
 {
 	if (menuLoc == "")
 	{

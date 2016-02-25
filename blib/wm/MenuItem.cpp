@@ -9,6 +9,7 @@ namespace blib
 		MenuItem::MenuItem(std::string name)
 		{
 			this->name = name;
+			this->title = name;
 			this->key = Key::NONE;
 			this->enabled = true;
 		}
