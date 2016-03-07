@@ -196,6 +196,9 @@ VertexDefBegin(VertexP2T2C4,								color,		glm::vec4, 4, VertexP2T2)
 	VertexP2T2C4(glm::vec2 position, glm::vec2 texCoord, glm::vec4 color) : VertexP2T2(position, texCoord), color(color) {};
 VertexDefEnd();
 
+VertexDefBegin(VertexP2T2C4C4, colorOverlay, glm::vec4, 4, VertexP2T2C4)
+VertexP2T2C4C4(glm::vec2 position, glm::vec2 texCoord, glm::vec4 color, glm::vec4 colorOverlay) : VertexP2T2C4(position, texCoord, color), colorOverlay(colorOverlay) {};
+VertexDefEnd();
 
 
 VertexDefBegin(VertexP3T2N3B4, boneIds, glm::ivec4, 4, VertexP3T2N3)

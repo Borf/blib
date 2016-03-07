@@ -19,7 +19,7 @@ namespace blib
 	class RenderState;
 
 	class ResourceManager;
-	class VertexP2T2C4;
+	class VertexP2T2C4C4;
 	class VBO;
 
 
@@ -27,7 +27,7 @@ namespace blib
 	{
 	private:
 
-		typedef VertexP2T2C4 vertexDef;
+		typedef VertexP2T2C4C4 vertexDef;
 	public:
 		class Cache
 		{
@@ -81,13 +81,13 @@ namespace blib
 		virtual void drawCache(Cache* cache);
 
 
-		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const glm::vec4 &color = glm::vec4(1,1,1,1));
-		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const glm::vec2 &center,  const glm::vec4 &color = glm::vec4(1,1,1,1));
-		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const glm::vec2 &center, const blib::math::Rectangle &src, const glm::vec4 &color = glm::vec4(1,1,1,1));
+		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const glm::vec4 &color = glm::vec4(1, 1, 1, 1), const glm::vec4 &colorOverlay = glm::vec4(1, 1, 1, 0));
+		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const glm::vec2 &center,  const glm::vec4 &color = glm::vec4(1,1,1,1), const glm::vec4 &colorOverlay = glm::vec4(1, 1, 1, 0));
+		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const glm::vec2 &center, const blib::math::Rectangle &src, const glm::vec4 &color = glm::vec4(1,1,1,1), const glm::vec4 &colorOverlay = glm::vec4(1, 1, 1, 0));
 
-		virtual void draw(const TextureMap::TexInfo* sprite, const glm::mat4 &transform, const glm::vec4 &color = glm::vec4(1,1,1,1));
-		virtual void draw(const TextureMap::TexInfo* sprite, const glm::mat4 &transform, const glm::vec2 &center, const glm::vec4 &color = glm::vec4(1, 1, 1, 1));
-		virtual void draw(const TextureMap::TexInfo* sprite, const glm::mat4 &transform, const glm::vec2 &center, const blib::math::Rectangle &src, const glm::vec4 &color = glm::vec4(1, 1, 1, 1));
+		virtual void draw(const TextureMap::TexInfo* sprite, const glm::mat4 &transform, const glm::vec4 &color = glm::vec4(1,1,1,1), const glm::vec4 &colorOverlay = glm::vec4(1, 1, 1, 0));
+		virtual void draw(const TextureMap::TexInfo* sprite, const glm::mat4 &transform, const glm::vec2 &center, const glm::vec4 &color = glm::vec4(1, 1, 1, 1), const glm::vec4 &colorOverlay = glm::vec4(1, 1, 1, 0));
+		virtual void draw(const TextureMap::TexInfo* sprite, const glm::mat4 &transform, const glm::vec2 &center, const blib::math::Rectangle &src, const glm::vec4 &color = glm::vec4(1, 1, 1, 1), const glm::vec4 &colorOverlay = glm::vec4(1, 1, 1, 0));
 		virtual glm::vec2 draw(const Font* font, const std::string& text, const glm::mat4 &transform, const glm::vec4 &color = glm::vec4(1, 1, 1, 1));
 		virtual glm::vec2 draw(const Font* font, const std::string& text, const glm::mat4 &transform, const glm::vec4 &color, glm::vec2 &cursor, int wrapWidth = -1);
 
@@ -95,7 +95,7 @@ namespace blib
 		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, json::Value skin, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));
 
 
-		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const std::vector<std::pair<glm::vec2, glm::vec2>> &coords, const glm::vec4 &color = glm::vec4(1, 1, 1, 1));
+		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const std::vector<std::pair<glm::vec2, glm::vec2>> &coords, const glm::vec4 &color = glm::vec4(1, 1, 1, 1), const glm::vec4 &colorOverlay = glm::vec4(1,1,1,0));
 		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const std::vector<std::tuple<glm::vec2, glm::vec2, glm::vec4>> &coords);
 
 		virtual void resizeGl( int width, int height );
