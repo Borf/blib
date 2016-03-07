@@ -13,6 +13,7 @@ namespace blib
 		{
 		public:
 			std::string name;
+			std::string title;
 			std::string description;
 			Key key;
 			bool enabled;
