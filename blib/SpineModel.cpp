@@ -113,7 +113,11 @@ namespace blib
 			return ret;
 		}
 		spAttachment* attachment = slot->attachment;
-		static float worldVertices[SPINE_MESH_VERTEX_COUNT_MAX];
+		if (!attachment)
+		{
+			Log::out << "Could not find attachment for slot " << name << " in animation" << Log::newline;
+			return ret;
+		}		static float worldVertices[SPINE_MESH_VERTEX_COUNT_MAX];
 
 
 		if (attachment->type == SP_ATTACHMENT_REGION) {
