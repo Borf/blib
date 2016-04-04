@@ -245,7 +245,7 @@ namespace blib
 			{
 				auto item = root->getItem(it.key());
 				if(item)
-					item->title = it.value();
+					item->title = it.value().asString()	;
 			}
 			
 
