@@ -221,7 +221,7 @@ namespace blib
 		currentTexture = texture;
 
 		for (const std::pair<glm::vec2, glm::vec2> &coord : coords)
-			vertices.push_back(vertexDef(coord.first, coord.second, color, colorOverlay));
+			vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(coord.first,0,1)), coord.second, color, colorOverlay));
 	}
 
 	void SpriteBatch::draw(const Texture* texture, const glm::mat4 &transform, const std::vector<std::tuple<glm::vec2, glm::vec2, glm::vec4>> &coords)
