@@ -284,8 +284,10 @@ namespace blib
 
 	void OpenALAudioSample::play(bool loop)
 	{
-		Source& newSource = *manager->getFreeSource();
-		source = &newSource;
+		Source* newSource = manager->getFreeSource();
+        if(!newSource)
+            return;
+		source = newSource;
 		source->lastSample = this;
 		this->looping = loop;
 		
