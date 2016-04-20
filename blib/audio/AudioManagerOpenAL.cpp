@@ -242,7 +242,7 @@ namespace blib
 #ifndef BUFFER_SIZE//VLAs ftw
 #define BUFFER_SIZE 4096*32*4
 #endif
-		static ALshort* pcm = new ALshort[BUFFER_SIZE];
+		ALshort* pcm = new ALshort[BUFFER_SIZE];
 		int  size = 0;
 		int  result = 0;
 
@@ -254,12 +254,14 @@ namespace blib
 
 		if (size == 0)
 		{
+			delete[] pcm;
 			return false;
 		}
 
 		alBufferData(buffer, format, pcm, size*sizeof(ALshort), info.sample_rate);
 		totalSamplesLeft -= size;
 #undef BUFFER_SIZE
+		delete[] pcm;
 		return true;
 	}
 
