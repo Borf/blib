@@ -38,6 +38,7 @@ namespace blib
 		template <class T>
 		Texture<T>::Texture()
 		{
+            compressed = false;
 			this->texid = 0;
 			this->data = NULL;
 		}
@@ -45,6 +46,7 @@ namespace blib
 		template <class T>
 		Texture<T>::Texture(std::string fileName, int loadOptions)
 		{
+            compressed = false;
 			this->name = "Texture: " + fileName;
 			this->texid = 0;
 			this->data = NULL;
@@ -57,6 +59,7 @@ namespace blib
 		template <class T>
 		Texture<T>::Texture(unsigned char* data, int width, int height)
 		{
+            compressed = false;
 			this->texid = 0;
 			this->data = data;
 			fromData(data, width, height);
@@ -69,7 +72,9 @@ namespace blib
 			T::loaded = false;
 			char* fileData = NULL;
             int length = 0;
+            compressed = false;
             
+#ifdef BLIB_IOS
             if(blib::util::FileSystem::exists(fileName + ".pvrtc"))
             {
                // Log::out<<"Loading texture '"<<fileName<<".pvrtc'"<<Log::newline;
@@ -86,6 +91,7 @@ namespace blib
                 return;
             }
             else
+#endif
             {
                 length = blib::util::FileSystem::getData(fileName, fileData);
             }
@@ -254,7 +260,11 @@ namespace blib
 				glBindTexture(GL_TEXTURE_2D, texid);
                 if(compressed)
                 {
+#ifdef BLIB_IOS
                     glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, T::width, T::height, 0, compressedLength, data);
+#else
+                    throw "oops";
+#endif
                 }
                 else
                 {
