@@ -31,7 +31,7 @@ namespace blib
 		
 	}*/
 
-
+    
 	namespace gl
 	{
 
@@ -63,23 +63,39 @@ namespace blib
 		}
 
 
-
-
-
 		template <class T>
 		void Texture<T>::fromFile(std::string fileName, int loadOptions)
 		{
 			T::loaded = false;
 			char* fileData = NULL;
-			int length = blib::util::FileSystem::getData(fileName, fileData);
-			if(length <= 0)
-			{
-				Log::err<<"Error loading texture '"<<fileName<<"'"<<Log::newline;
-				return;
-			}
-
+            int length = 0;
+            
+            if(blib::util::FileSystem::exists(fileName + ".pvrtc"))
+            {
+               // Log::out<<"Loading texture '"<<fileName<<".pvrtc'"<<Log::newline;
+                compressed = true;
+                compressedLength = blib::util::FileSystem::getData(fileName + ".pvrtc", fileData);
+                data = (unsigned char*)fileData;
+                
+                T::originalWidth = sqrt(compressedLength*2);
+                T::originalHeight = T::originalWidth;
+                T::width = T::originalWidth;
+                T::height = T::originalWidth;
+                //Log::out<<T::originalWidth<<Log::newline;
+                T::loaded = true;
+                return;
+            }
+            else
+            {
+                length = blib::util::FileSystem::getData(fileName, fileData);
+            }
+            if(length <= 0)
+            {
+                Log::err<<"Error loading texture '"<<fileName<<"'"<<Log::newline;
+                return;
+            }
+            
 			int depth;
-
 			int &_originalWidth = T::originalWidth;
 			int &_originalHeight = T::originalHeight;
 
@@ -235,9 +251,15 @@ namespace blib
 					fromFile(T::fileName, 0);
 
 				glGenTextures(1, &texid);
-				glBindTexture(GL_TEXTURE_2D, texid);		
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, T::width, T::height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-
+				glBindTexture(GL_TEXTURE_2D, texid);
+                if(compressed)
+                {
+                    glCompressedTexImage2D(GL_TEXTURE_2D, 0, GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG, T::width, T::height, 0, compressedLength, data);
+                }
+                else
+                {
+                    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, T::width, T::height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+                }
 				if (T::nearest)
 				{
 					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

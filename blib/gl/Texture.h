@@ -37,7 +37,8 @@ namespace blib
 
 			Texture(std::string fileName, int loadOptions = 0);
 		public:
-
+            bool compressed;
+            int compressedLength;
 			unsigned char* data;
 			virtual const unsigned char* getData() const { return data; };
 
