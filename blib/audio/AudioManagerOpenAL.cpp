@@ -240,9 +240,9 @@ namespace blib
 		//Uncomment this to avoid VLAs
 		//#define BUFFER_SIZE 4096*32
 #ifndef BUFFER_SIZE//VLAs ftw
-#define BUFFER_SIZE 4096*32
+#define BUFFER_SIZE 4096*32*4
 #endif
-		ALshort pcm[BUFFER_SIZE];
+		static ALshort* pcm = new ALshort[BUFFER_SIZE];
 		int  size = 0;
 		int  result = 0;
 
@@ -252,12 +252,14 @@ namespace blib
 			else break;
 		}
 
-		if (size == 0) return false;
+		if (size == 0)
+		{
+			return false;
+		}
 
 		alBufferData(buffer, format, pcm, size*sizeof(ALshort), info.sample_rate);
 		totalSamplesLeft -= size;
 #undef BUFFER_SIZE
-
 		return true;
 	}
 
@@ -304,8 +306,11 @@ namespace blib
 			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
 			alSourcei(source->sourceId, AL_LOOPING, 0);
 
+			checkError();
 			alSourceQueueBuffers(source->sourceId, 2, buffers);
+			checkError();
 			alSourcePlay(source->sourceId);
+			checkError();
 		}
 		playing = true;
 		checkError();
