@@ -6,7 +6,7 @@
 #include <OpenAL/alc.h>
 
 #define SUCCEEDED(hr) (((int)(hr)) >= 0)
-
+#include <unistd.h>
 #else
 #include <al/alc.h>
 #endif
