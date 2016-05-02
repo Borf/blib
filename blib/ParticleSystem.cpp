@@ -298,7 +298,7 @@ namespace blib
 			particle.vertex[i].position = position;
 			particle.vertex[i].color = emitterTemplate->particleProps.colors[0];
 			particle.vertex[i].texCoord = particle.texture->t1 + ((offsets[i] + glm::vec2(1, 1)) / 2.0f) * (particle.texture->t2 - particle.texture->t1);
-			particle.vertex[i].position2 = offsets[i];
+			particle.vertex[i].position2 = offsets[i] * glm::vec2(particle.texture->width, particle.texture->width) / 64.0f;
 			particle.vertex[i].rotation = glm::radians(particle.rotation);
 		}
 
