@@ -85,11 +85,13 @@ namespace blib
 	void SpineModelInstance::playAnimation(const std::string &name, bool loop)
 	{
 		spAnimationState_setAnimationByName(state, 0, name.c_str(), loop);
+		update(0);
 	}
 
 	void SpineModelInstance::playAnimation(const std::string &name, const std::function<void()> &callback)
 	{
 		spAnimationState_setAnimationByName(state, 0, name.c_str(), false);
+		update(0);
 		this->callback = callback;
 	}
 
