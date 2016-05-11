@@ -160,6 +160,69 @@ namespace blib
 		return ret;
 	}
 
+
+	std::pair<blib::Texture*, std::vector<std::pair<glm::vec2, glm::vec2> > > SpineModelInstance::getSlot(const std::string &name)
+	{
+		std::pair<blib::Texture*, std::vector<std::pair<glm::vec2, glm::vec2> > > ret;
+		spSlot* slot = spSkeleton_findSlot(skeleton, name.c_str());
+		if (!slot)
+		{
+			Log::out << "Could not find slot " << name << " in animation" << Log::newline;
+			return ret;
+		}
+		spAttachment* attachment = slot->attachment;
+		if (!attachment)
+		{
+			Log::out << "Could not find attachment for slot " << name << " in animation" << Log::newline;
+			return ret;
+		}		static float worldVertices[SPINE_MESH_VERTEX_COUNT_MAX];
+
+
+		if (attachment->type == SP_ATTACHMENT_REGION) {
+			spRegionAttachment* regionAttachment = (spRegionAttachment*)attachment;
+			spRegionAttachment_computeWorldVertices(regionAttachment, slot->bone, worldVertices);
+
+			ret.first = (Texture*)((spAtlasRegion*)regionAttachment->rendererObject)->page->rendererObject;
+
+			static const int indices[] = {
+				SP_VERTEX_X1, SP_VERTEX_Y1,
+				SP_VERTEX_X2, SP_VERTEX_Y2,
+				SP_VERTEX_X3, SP_VERTEX_Y3,
+				SP_VERTEX_X4, SP_VERTEX_Y4
+			};
+
+			for (int ii = 0; ii < 4; ii++)
+			{
+				ret.second.push_back(std::pair<glm::vec2, glm::vec2>(
+					glm::vec2(worldVertices[indices[2 * ii + 0]], worldVertices[indices[2 * ii + 1]]),
+					glm::vec2(regionAttachment->uvs[indices[2 * ii + 0]], regionAttachment->uvs[indices[2 * ii + 1]])));
+			}
+		}
+		else if (attachment->type == SP_ATTACHMENT_MESH) {
+			spMeshAttachment* mesh = (spMeshAttachment*)attachment;
+			spMeshAttachment_computeWorldVertices(mesh, slot, worldVertices);
+			ret.first = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
+
+			for (int i = 0; i < mesh->trianglesCount; ++i) {
+				int index = mesh->triangles[i] << 1;
+				ret.second.push_back(std::pair<glm::vec2, glm::vec2>(glm::vec2(worldVertices[index], worldVertices[index + 1]), glm::vec2(mesh->uvs[index], mesh->uvs[index + 1])));
+			}
+
+		}
+		else if (attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
+			spSkinnedMeshAttachment* mesh = (spSkinnedMeshAttachment*)attachment;
+			spSkinnedMeshAttachment_computeWorldVertices(mesh, slot, worldVertices);
+			ret.first = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
+
+			for (int i = 0; i < mesh->trianglesCount; ++i) {
+				int index = mesh->triangles[i] << 1;
+				ret.second.push_back(std::pair<glm::vec2, glm::vec2>(glm::vec2(worldVertices[index], worldVertices[index + 1]), glm::vec2(mesh->uvs[index], mesh->uvs[index + 1])));
+			}
+		}
+		return ret;
+	}
+
+
 	void SpineModelInstance::update(double elapsedTime)
 	{
 		bool wasPlaying = isPlaying();

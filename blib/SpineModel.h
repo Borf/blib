@@ -36,6 +36,7 @@ namespace blib
 		void stopAnimation(const std::string &name);
 		bool isPlaying();
 		blib::math::Polygon getPart(const std::string &name);
+		std::pair<blib::Texture*, std::vector<std::pair<glm::vec2, glm::vec2> > > getSlot(const std::string &name);
 	};
 
 	class SpineModel
