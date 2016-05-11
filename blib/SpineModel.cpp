@@ -57,6 +57,10 @@ namespace blib
 	SpineModel::~SpineModel()
 	{
 		blib::linq::deleteall(instances);
+		spAnimationStateData_dispose(stateData);
+		spSkeletonData_dispose(skeletonData);
+		spSkeletonJson_dispose(json);
+		spAtlas_dispose(atlas);
 	}
 
 
