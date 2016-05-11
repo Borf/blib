@@ -284,6 +284,8 @@ namespace blib
 
 	void OpenALAudioSample::play(bool loop)
 	{
+		if (canOnlyPlayOnce && playing)
+			return;
 		Source* newSource = manager->getFreeSource();
         if(!newSource)
             return;
