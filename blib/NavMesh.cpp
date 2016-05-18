@@ -204,7 +204,7 @@ namespace blib
 	{
 		for (size_t i = 0; i < size(); i++)
 		{
-			int next = (i + 1) % size();
+			size_t next = (i + 1) % size();
 			if ((line.p1 == at(i) && line.p2 == at(next)) ||
 				(line.p2 == at(i) && line.p1 == at(next)))
 				return true;

@@ -53,7 +53,7 @@ namespace blib
 		std::vector<std::string> ret;
 		while(value.find(seperator) != std::string::npos)
 		{
-			int index = value.find(seperator);
+			size_t index = value.find(seperator);
 			if(index != 0)
 				ret.push_back(value.substr(0, index));
 			value = value.substr(index+seperator.length());

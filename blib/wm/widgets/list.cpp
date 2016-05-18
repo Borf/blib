@@ -48,7 +48,7 @@ namespace blib
 				{
 					scrollPosition -= delta / abs(delta)*height / 2;
 					if (scrollPosition > 12 * (int)items.size() - 12)
-						scrollPosition = 12 * items.size() - 12;
+						scrollPosition = 12 * (int)items.size() - 12;
 					if (scrollPosition < 0)
 						scrollPosition = 0;
 					return true;
