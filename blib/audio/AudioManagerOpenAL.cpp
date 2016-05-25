@@ -43,12 +43,13 @@ namespace blib
 		fprintf(stdout, "----------\n");
 	}
 
-
+#if 0
 	AudioManager* AudioManager::getInstance()
 	{
 		static AudioManager* mgr = new AudioManagerOpenAL();
 		return mgr;
 	}
+#endif
 
 	AudioManagerOpenAL::AudioManagerOpenAL()
 	{
