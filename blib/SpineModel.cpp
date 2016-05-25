@@ -94,6 +94,7 @@ namespace blib
 
 	void SpineModelInstance::playAnimation(const std::string &name, const std::function<void()> &callback)
 	{
+		fixedTime = -1;
 		spAnimationState_setAnimationByName(state, 0, name.c_str(), false);
 		update(0);
 		this->callback = callback;
@@ -108,6 +109,16 @@ namespace blib
 	{
 		return spAnimationState_getCurrent(state, 0) != NULL;
 	}
+
+	void SpineModelInstance::setAnimation(const std::string &name, float time)
+	{
+		spAnimationState_setAnimationByName(state, 0, name.c_str(), false);
+		fixedTime = -1;
+		update(time);
+		fixedTime = time;
+	}
+
+
 
 	blib::math::Polygon SpineModelInstance::getPart(const std::string &name)
 	{
@@ -229,18 +240,20 @@ namespace blib
 
 	void SpineModelInstance::update(double elapsedTime)
 	{
-		bool wasPlaying = isPlaying();
-		spSkeleton_update(skeleton, (float)elapsedTime);
-		spAnimationState_update(state, (float)elapsedTime * 1);
-		spAnimationState_apply(state, skeleton);
-		spSkeleton_updateWorldTransform(skeleton);
-		if (!isPlaying() && wasPlaying && callback)
+		if (fixedTime < 0)
 		{
-			std::function<void()> c = callback;
-			callback = nullptr;
-			c();
+			bool wasPlaying = isPlaying();
+			spSkeleton_update(skeleton, (float)elapsedTime);
+			spAnimationState_update(state, (float)elapsedTime * 1);
+			spAnimationState_apply(state, skeleton);
+			spSkeleton_updateWorldTransform(skeleton);
+			if (!isPlaying() && wasPlaying && callback)
+			{
+				std::function<void()> c = callback;
+				callback = nullptr;
+				c();
+			}
 		}
-
 	}
 
 
