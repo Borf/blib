@@ -32,8 +32,7 @@ public:
 		m_hit = false;
 	}
 
-	float32 ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
-		const b2Vec2& normal, float32 fraction)
+	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32 fraction)
 	{
 		b2Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -42,7 +41,8 @@ public:
 			int32 index = *(int32*)userData;
 			if (index == 0)
 			{
-				// filter
+				// By returning -1, we instruct the calling code to ignore this fixture and
+				// continue the ray-cast to the next fixture.
 				return -1.0f;
 			}
 		}
@@ -50,6 +50,10 @@ public:
 		m_hit = true;
 		m_point = point;
 		m_normal = normal;
+
+		// By returning the current fraction, we instruct the calling code to clip the ray and
+		// continue the ray-cast to the next fixture. WARNING: do not assume that fixtures
+		// are reported in order. However, by clipping, we can always get the closest fixture.
 		return fraction;
 	}
 	
@@ -58,7 +62,8 @@ public:
 	b2Vec2 m_normal;
 };
 
-// This callback finds any hit. Polygon 0 is filtered.
+// This callback finds any hit. Polygon 0 is filtered. For this type of query we are usually
+// just checking for obstruction, so the actual fixture and hit point are irrelevant. 
 class RayCastAnyCallback : public b2RayCastCallback
 {
 public:
@@ -67,8 +72,7 @@ public:
 		m_hit = false;
 	}
 
-	float32 ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
-		const b2Vec2& normal, float32 fraction)
+	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32)
 	{
 		b2Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -77,7 +81,8 @@ public:
 			int32 index = *(int32*)userData;
 			if (index == 0)
 			{
-				// filter
+				// By returning -1, we instruct the calling code to ignore this fixture
+				// and continue the ray-cast to the next fixture.
 				return -1.0f;
 			}
 		}
@@ -85,6 +90,9 @@ public:
 		m_hit = true;
 		m_point = point;
 		m_normal = normal;
+
+		// At this point we have a hit, so we know the ray is obstructed.
+		// By returning 0, we instruct the calling code to terminate the ray-cast.
 		return 0.0f;
 	}
 
@@ -94,6 +102,8 @@ public:
 };
 
 // This ray cast collects multiple hits along the ray. Polygon 0 is filtered.
+// The fixtures are not necessary reported in order, so we might not capture
+// the closest fixture.
 class RayCastMultipleCallback : public b2RayCastCallback
 {
 public:
@@ -107,8 +117,7 @@ public:
 		m_count = 0;
 	}
 
-	float32 ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
-		const b2Vec2& normal, float32 fraction)
+	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point, const b2Vec2& normal, float32)
 	{
 		b2Body* body = fixture->GetBody();
 		void* userData = body->GetUserData();
@@ -117,7 +126,8 @@ public:
 			int32 index = *(int32*)userData;
 			if (index == 0)
 			{
-				// filter
+				// By returning -1, we instruct the calling code to ignore this fixture
+				// and continue the ray-cast to the next fixture.
 				return -1.0f;
 			}
 		}
@@ -130,9 +140,12 @@ public:
 
 		if (m_count == e_maxCount)
 		{
+			// At this point the buffer is full.
+			// By returning 0, we instruct the calling code to terminate the ray-cast.
 			return 0.0f;
 		}
 
+		// By returning 1, we instruct the caller to continue without clipping the ray.
 		return 1.0f;
 	}
 
@@ -212,6 +225,10 @@ public:
 			m_circle.m_radius = 0.5f;
 		}
 
+		{
+			m_edge.Set(b2Vec2(-1.0f, 0.0f), b2Vec2(1.0f, 0.0f));
+		}
+
 		m_bodyIndex = 0;
 		memset(m_bodies, 0, sizeof(m_bodies));
 
@@ -252,10 +269,18 @@ public:
 			fd.friction = 0.3f;
 			m_bodies[m_bodyIndex]->CreateFixture(&fd);
 		}
-		else
+		else if (index < 5)
 		{
 			b2FixtureDef fd;
 			fd.shape = &m_circle;
+			fd.friction = 0.3f;
+
+			m_bodies[m_bodyIndex]->CreateFixture(&fd);
+		}
+		else
+		{
+			b2FixtureDef fd;
+			fd.shape = &m_edge;
 			fd.friction = 0.3f;
 
 			m_bodies[m_bodyIndex]->CreateFixture(&fd);
@@ -277,23 +302,24 @@ public:
 		}
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-			Create(key - '1');
+		case GLFW_KEY_1:
+		case GLFW_KEY_2:
+		case GLFW_KEY_3:
+		case GLFW_KEY_4:
+		case GLFW_KEY_5:
+		case GLFW_KEY_6:
+			Create(key - GLFW_KEY_1);
 			break;
 
-		case 'd':
+		case GLFW_KEY_D:
 			DestroyBody();
 			break;
 
-		case 'm':
+		case GLFW_KEY_M:
 			if (m_mode == e_closest)
 			{
 				m_mode = e_any;
@@ -314,10 +340,24 @@ public:
 		bool advanceRay = settings->pause == 0 || settings->singleStep;
 
 		Test::Step(settings);
-		m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff, m to change the mode");
-		m_textLine += 15;
-		m_debugDraw.DrawString(5, m_textLine, "Mode = %d", m_mode);
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "Press 1-6 to drop stuff, m to change the mode");
+		m_textLine += DRAW_STRING_NEW_LINE;
+		switch (m_mode)
+		{
+		case e_closest:
+			g_debugDraw.DrawString(5, m_textLine, "Ray-cast mode: closest - find closest fixture along the ray");
+			break;
+		
+		case e_any:
+			g_debugDraw.DrawString(5, m_textLine, "Ray-cast mode: any - check for obstruction");
+			break;
+
+		case e_multiple:
+			g_debugDraw.DrawString(5, m_textLine, "Ray-cast mode: multiple - gather multiple fixtures");
+			break;
+		}
+
+		m_textLine += DRAW_STRING_NEW_LINE;
 
 		float32 L = 11.0f;
 		b2Vec2 point1(0.0f, 10.0f);
@@ -331,14 +371,14 @@ public:
 
 			if (callback.m_hit)
 			{
-				m_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
-				m_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
+				g_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
 				b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-				m_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
 			}
 			else
 			{
-				m_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+				g_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
 			}
 		}
 		else if (m_mode == e_any)
@@ -348,30 +388,30 @@ public:
 
 			if (callback.m_hit)
 			{
-				m_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
-				m_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
+				g_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
 				b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-				m_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
 			}
 			else
 			{
-				m_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+				g_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
 			}
 		}
 		else if (m_mode == e_multiple)
 		{
 			RayCastMultipleCallback callback;
 			m_world->RayCast(&callback, point1, point2);
-			m_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+			g_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
 
 			for (int32 i = 0; i < callback.m_count; ++i)
 			{
 				b2Vec2 p = callback.m_points[i];
 				b2Vec2 n = callback.m_normals[i];
-				m_debugDraw.DrawPoint(p, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
-				m_debugDraw.DrawSegment(point1, p, b2Color(0.8f, 0.8f, 0.8f));
+				g_debugDraw.DrawPoint(p, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(point1, p, b2Color(0.8f, 0.8f, 0.8f));
 				b2Vec2 head = p + 0.5f * n;
-				m_debugDraw.DrawSegment(p, head, b2Color(0.9f, 0.9f, 0.4f));
+				g_debugDraw.DrawSegment(p, head, b2Color(0.9f, 0.9f, 0.4f));
 			}
 		}
 
@@ -415,8 +455,8 @@ public:
 				vs[i] = b2Mul(xf, shape.m_vertices[i]);
 			}
 
-			m_debugDraw.DrawPolygon(vs, 4, color);
-			m_debugDraw.DrawSegment(input.p1, input.p2, color);
+			g_debugDraw.DrawPolygon(vs, 4, color);
+			g_debugDraw.DrawSegment(input.p1, input.p2, color);
 		}
 #endif
 	}
@@ -431,6 +471,7 @@ public:
 	int32 m_userData[e_maxBodies];
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;
+	b2EdgeShape m_edge;
 
 	float32 m_angle;
 

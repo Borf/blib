@@ -59,63 +59,63 @@ public:
 		b2DistanceOutput output;
 		b2Distance(&output, &cache, &input);
 
-		m_debugDraw.DrawString(5, m_textLine, "distance = %g", output.distance);
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "distance = %g", output.distance);
+		m_textLine += DRAW_STRING_NEW_LINE;
 
-		m_debugDraw.DrawString(5, m_textLine, "iterations = %d", output.iterations);
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "iterations = %d", output.iterations);
+		m_textLine += DRAW_STRING_NEW_LINE;
 
 		{
 			b2Color color(0.9f, 0.9f, 0.9f);
 			b2Vec2 v[b2_maxPolygonVertices];
-			for (int32 i = 0; i < m_polygonA.m_vertexCount; ++i)
+			for (int32 i = 0; i < m_polygonA.m_count; ++i)
 			{
 				v[i] = b2Mul(m_transformA, m_polygonA.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(v, m_polygonA.m_vertexCount, color);
+			g_debugDraw.DrawPolygon(v, m_polygonA.m_count, color);
 
-			for (int32 i = 0; i < m_polygonB.m_vertexCount; ++i)
+			for (int32 i = 0; i < m_polygonB.m_count; ++i)
 			{
 				v[i] = b2Mul(m_transformB, m_polygonB.m_vertices[i]);
 			}
-			m_debugDraw.DrawPolygon(v, m_polygonB.m_vertexCount, color);
+			g_debugDraw.DrawPolygon(v, m_polygonB.m_count, color);
 		}
 
 		b2Vec2 x1 = output.pointA;
 		b2Vec2 x2 = output.pointB;
 
 		b2Color c1(1.0f, 0.0f, 0.0f);
-		m_debugDraw.DrawPoint(x1, 4.0f, c1);
+		g_debugDraw.DrawPoint(x1, 4.0f, c1);
 
 		b2Color c2(1.0f, 1.0f, 0.0f);
-		m_debugDraw.DrawPoint(x2, 4.0f, c2);
+		g_debugDraw.DrawPoint(x2, 4.0f, c2);
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case 'a':
+		case GLFW_KEY_A:
 			m_positionB.x -= 0.1f;
 			break;
 
-		case 'd':
+		case GLFW_KEY_D:
 			m_positionB.x += 0.1f;
 			break;
 
-		case 's':
+		case GLFW_KEY_S:
 			m_positionB.y -= 0.1f;
 			break;
 
-		case 'w':
+		case GLFW_KEY_W:
 			m_positionB.y += 0.1f;
 			break;
 
-		case 'q':
+		case GLFW_KEY_Q:
 			m_angleB += 0.1f * b2_pi;
 			break;
 
-		case 'e':
+		case GLFW_KEY_E:
 			m_angleB -= 0.1f * b2_pi;
 			break;
 		}

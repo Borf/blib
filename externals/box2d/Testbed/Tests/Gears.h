@@ -34,7 +34,6 @@ public:
 			ground->CreateFixture(&shape, 0.0f);
 		}
 
-		// Gears co
 		{
 			b2CircleShape circle1;
 			circle1.m_radius = 1.0f;
@@ -49,7 +48,7 @@ public:
 			bd1.type = b2_staticBody;
 			bd1.position.Set(10.0f, 9.0f);
 			b2Body* body1 = m_world->CreateBody(&bd1);
-			body1->CreateFixture(&circle1, 0.0f);
+			body1->CreateFixture(&circle1, 5.0f);
 
 			b2BodyDef bd2;
 			bd2.type = b2_dynamicBody;
@@ -146,15 +145,6 @@ public:
 		}
 	}
 
-	void Keyboard(unsigned char key)
-	{
-		switch (key)
-		{
-		case 0:
-			break;
-		}
-	}
-
 	void Step(Settings* settings)
 	{
 		Test::Step(settings);
@@ -163,13 +153,13 @@ public:
 		
 		ratio = m_joint4->GetRatio();
 		value = m_joint1->GetJointAngle() + ratio * m_joint2->GetJointAngle();
-		m_debugDraw.DrawString(5, m_textLine, "theta1 + %4.2f * theta2 = %4.2f", (float) ratio, (float) value);
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "theta1 + %4.2f * theta2 = %4.2f", (float) ratio, (float) value);
+		m_textLine += DRAW_STRING_NEW_LINE;
 
 		ratio = m_joint5->GetRatio();
 		value = m_joint2->GetJointAngle() + ratio * m_joint3->GetJointTranslation();
-		m_debugDraw.DrawString(5, m_textLine, "theta2 + %4.2f * delta = %4.2f", (float) ratio, (float) value);
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "theta2 + %4.2f * delta = %4.2f", (float) ratio, (float) value);
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	static Test* Create()

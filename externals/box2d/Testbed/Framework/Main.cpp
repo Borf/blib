@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2006-2007 Erin Catto http://www.box2d.org
+* Copyright (c) 2006-2016 Erin Catto http://www.box2d.org
 *
 * This software is provided 'as-is', without any express or implied
 * warranty.  In no event will the authors be held liable for any damages
@@ -16,100 +16,325 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-#include "Render.h"
+#if defined(__APPLE__)
+#include <OpenGL/gl3.h>
+#else
+#include <glew/glew.h>
+#endif
+
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_glfw_gl3.h>
+#include "DebugDraw.h"
 #include "Test.h"
-#include "glui/glui.h"
 
-#include <cstdio>
-using namespace std;
+#include <glfw/glfw3.h>
+#include <stdio.h>
 
+#ifdef _MSC_VER
+#define snprintf _snprintf
+#endif
+
+// This include was added to support MinGW
+#ifdef _WIN32
+#include <crtdbg.h>
+#endif
+
+//
+struct UIState
+{
+	bool showMenu;
+};
+
+//
 namespace
 {
+	GLFWwindow* mainWindow = NULL;
+	UIState ui;
+
 	int32 testIndex = 0;
 	int32 testSelection = 0;
 	int32 testCount = 0;
 	TestEntry* entry;
 	Test* test;
 	Settings settings;
-	int32 width = 640;
-	int32 height = 480;
-	int32 framePeriod = 16;
-	int32 mainWindow;
-	float settingsHz = 60.0;
-	GLUI *glui;
-	float32 viewZoom = 1.0f;
-	int tx, ty, tw, th;
-	bool rMouseDown;
+	bool rightMouseDown;
 	b2Vec2 lastp;
 }
 
-static void Resize(int32 w, int32 h)
+//
+static void sCreateUI(GLFWwindow* window)
 {
-	width = w;
-	height = h;
+	ui.showMenu = true;
 
-	GLUI_Master.get_viewport_area(&tx, &ty, &tw, &th);
-	glViewport(tx, ty, tw, th);
+	// Init UI
+	const char* fontPath = "../Data/DroidSans.ttf";
+	ImGui::GetIO().Fonts->AddFontFromFileTTF(fontPath, 15.f);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	float32 ratio = float32(tw) / float32(th);
-
-	b2Vec2 extents(ratio * 25.0f, 25.0f);
-	extents *= viewZoom;
-
-	b2Vec2 lower = settings.viewCenter - extents;
-	b2Vec2 upper = settings.viewCenter + extents;
-
-	// L/R/B/T
-	gluOrtho2D(lower.x, upper.x, lower.y, upper.y);
-}
-
-static b2Vec2 ConvertScreenToWorld(int32 x, int32 y)
-{
-	float32 u = x / float32(tw);
-	float32 v = (th - y) / float32(th);
-
-	float32 ratio = float32(tw) / float32(th);
-	b2Vec2 extents(ratio * 25.0f, 25.0f);
-	extents *= viewZoom;
-
-	b2Vec2 lower = settings.viewCenter - extents;
-	b2Vec2 upper = settings.viewCenter + extents;
-
-	b2Vec2 p;
-	p.x = (1.0f - u) * lower.x + u * upper.x;
-	p.y = (1.0f - v) * lower.y + v * upper.y;
-	return p;
-}
-
-// This is used to control the frame rate (60Hz).
-static void Timer(int)
-{
-	glutSetWindow(mainWindow);
-	glutPostRedisplay();
-	glutTimerFunc(framePeriod, Timer, 0);
-}
-
-static void SimulationLoop()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	test->SetTextLine(30);
-	b2Vec2 oldCenter = settings.viewCenter;
-	settings.hz = settingsHz;
-	test->Step(&settings);
-	if (oldCenter.x != settings.viewCenter.x || oldCenter.y != settings.viewCenter.y)
+	if (ImGui_ImplGlfwGL3_Init(window, false) == false)
 	{
-		Resize(width, height);
+		fprintf(stderr, "Could not init GUI renderer.\n");
+		assert(false);
+		return;
 	}
 
-	test->DrawTitle(5, 15, entry->name);
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.FrameRounding = style.GrabRounding = style.ScrollbarRounding = 2.0f;
+	style.FramePadding = ImVec2(4, 2);
+	style.DisplayWindowPadding = ImVec2(0, 0);
+	style.DisplaySafeAreaPadding = ImVec2(0, 0);
+}
 
-	glutSwapBuffers();
+//
+static void sResizeWindow(GLFWwindow*, int width, int height)
+{
+	g_camera.m_width = width;
+	g_camera.m_height = height;
+}
+
+//
+static void sKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	ImGui_ImplGlfwGL3_KeyCallback(window, key, scancode, action, mods);
+	bool keys_for_ui = ImGui::GetIO().WantCaptureKeyboard;
+	if (keys_for_ui)
+		return;
+
+	if (action == GLFW_PRESS)
+	{
+		switch (key)
+		{
+		case GLFW_KEY_ESCAPE:
+			// Quit
+			glfwSetWindowShouldClose(mainWindow, GL_TRUE);
+			break;
+
+		case GLFW_KEY_LEFT:
+			// Pan left
+			if (mods == GLFW_MOD_CONTROL)
+			{
+				b2Vec2 newOrigin(2.0f, 0.0f);
+				test->ShiftOrigin(newOrigin);
+			}
+			else
+			{
+				g_camera.m_center.x -= 0.5f;
+			}
+			break;
+
+		case GLFW_KEY_RIGHT:
+			// Pan right
+			if (mods == GLFW_MOD_CONTROL)
+			{
+				b2Vec2 newOrigin(-2.0f, 0.0f);
+				test->ShiftOrigin(newOrigin);
+			}
+			else
+			{
+				g_camera.m_center.x += 0.5f;
+			}
+			break;
+
+		case GLFW_KEY_DOWN:
+			// Pan down
+			if (mods == GLFW_MOD_CONTROL)
+			{
+				b2Vec2 newOrigin(0.0f, 2.0f);
+				test->ShiftOrigin(newOrigin);
+			}
+			else
+			{
+				g_camera.m_center.y -= 0.5f;
+			}
+			break;
+
+		case GLFW_KEY_UP:
+			// Pan up
+			if (mods == GLFW_MOD_CONTROL)
+			{
+				b2Vec2 newOrigin(0.0f, -2.0f);
+				test->ShiftOrigin(newOrigin);
+			}
+			else
+			{
+				g_camera.m_center.y += 0.5f;
+			}
+			break;
+
+		case GLFW_KEY_HOME:
+			// Reset view
+			g_camera.m_zoom = 1.0f;
+			g_camera.m_center.Set(0.0f, 20.0f);
+			break;
+
+		case GLFW_KEY_Z:
+			// Zoom out
+			g_camera.m_zoom = b2Min(1.1f * g_camera.m_zoom, 20.0f);
+			break;
+
+		case GLFW_KEY_X:
+			// Zoom in
+			g_camera.m_zoom = b2Max(0.9f * g_camera.m_zoom, 0.02f);
+			break;
+
+		case GLFW_KEY_R:
+			// Reset test
+			delete test;
+			test = entry->createFcn();
+			break;
+
+		case GLFW_KEY_SPACE:
+			// Launch a bomb.
+			if (test)
+			{
+				test->LaunchBomb();
+			}
+			break;
+
+		case GLFW_KEY_P:
+			// Pause
+			settings.pause = !settings.pause;
+			break;
+
+		case GLFW_KEY_LEFT_BRACKET:
+			// Switch to previous test
+			--testSelection;
+			if (testSelection < 0)
+			{
+				testSelection = testCount - 1;
+			}
+			break;
+
+		case GLFW_KEY_RIGHT_BRACKET:
+			// Switch to next test
+			++testSelection;
+			if (testSelection == testCount)
+			{
+				testSelection = 0;
+			}
+			break;
+
+		case GLFW_KEY_TAB:
+			ui.showMenu = !ui.showMenu;
+
+		default:
+			if (test)
+			{
+				test->Keyboard(key);
+			}
+		}
+	}
+	else if (action == GLFW_RELEASE)
+	{
+		test->KeyboardUp(key);
+	}
+	// else GLFW_REPEAT
+}
+
+//
+static void sCharCallback(GLFWwindow* window, unsigned int c)
+{
+	ImGui_ImplGlfwGL3_CharCallback(window, c);
+}
+
+//
+static void sMouseButton(GLFWwindow* window, int32 button, int32 action, int32 mods)
+{
+	ImGui_ImplGlfwGL3_MouseButtonCallback(window, button, action, mods);
+
+	double xd, yd;
+	glfwGetCursorPos(mainWindow, &xd, &yd);
+	b2Vec2 ps((float32)xd, (float32)yd);
+
+	// Use the mouse to move things around.
+	if (button == GLFW_MOUSE_BUTTON_1)
+	{
+        //<##>
+        //ps.Set(0, 0);
+		b2Vec2 pw = g_camera.ConvertScreenToWorld(ps);
+		if (action == GLFW_PRESS)
+		{
+			if (mods == GLFW_MOD_SHIFT)
+			{
+				test->ShiftMouseDown(pw);
+			}
+			else
+			{
+				test->MouseDown(pw);
+			}
+		}
+		
+		if (action == GLFW_RELEASE)
+		{
+			test->MouseUp(pw);
+		}
+	}
+	else if (button == GLFW_MOUSE_BUTTON_2)
+	{
+		if (action == GLFW_PRESS)
+		{	
+			lastp = g_camera.ConvertScreenToWorld(ps);
+			rightMouseDown = true;
+		}
+
+		if (action == GLFW_RELEASE)
+		{
+			rightMouseDown = false;
+		}
+	}
+}
+
+//
+static void sMouseMotion(GLFWwindow*, double xd, double yd)
+{
+	b2Vec2 ps((float)xd, (float)yd);
+
+	b2Vec2 pw = g_camera.ConvertScreenToWorld(ps);
+	test->MouseMove(pw);
+	
+	if (rightMouseDown)
+	{
+		b2Vec2 diff = pw - lastp;
+		g_camera.m_center.x -= diff.x;
+		g_camera.m_center.y -= diff.y;
+		lastp = g_camera.ConvertScreenToWorld(ps);
+	}
+}
+
+//
+static void sScrollCallback(GLFWwindow* window, double dx, double dy)
+{
+	ImGui_ImplGlfwGL3_ScrollCallback(window, dx, dy);
+	bool mouse_for_ui = ImGui::GetIO().WantCaptureMouse;
+
+	if (!mouse_for_ui)
+	{
+		if (dy > 0)
+		{
+			g_camera.m_zoom /= 1.1f;
+		}
+		else
+		{
+			g_camera.m_zoom *= 1.1f;
+		}
+	}
+}
+
+//
+static void sRestart()
+{
+	delete test;
+	entry = g_testEntries + testIndex;
+	test = entry->createFcn();
+}
+
+//
+static void sSimulate()
+{
+	glEnable(GL_DEPTH_TEST);
+	test->Step(&settings);
+
+	test->DrawTitle(entry->name);
+	glDisable(GL_DEPTH_TEST);
 
 	if (testSelection != testIndex)
 	{
@@ -117,331 +342,208 @@ static void SimulationLoop()
 		delete test;
 		entry = g_testEntries + testIndex;
 		test = entry->createFcn();
-		viewZoom = 1.0f;
-		settings.viewCenter.Set(0.0f, 20.0f);
-		Resize(width, height);
+		g_camera.m_zoom = 1.0f;
+		g_camera.m_center.Set(0.0f, 20.0f);
 	}
 }
 
-static void Keyboard(unsigned char key, int x, int y)
+//
+static bool sTestEntriesGetName(void*, int idx, const char** out_name)
 {
-	B2_NOT_USED(x);
-	B2_NOT_USED(y);
+	*out_name = g_testEntries[idx].name;
+	return true;
+}
 
-	switch (key)
+//
+static void sInterface()
+{
+	int menuWidth = 200;
+	if (ui.showMenu)
 	{
-	case 27:
-#ifndef __APPLE__
-		// freeglut specific function
-		glutLeaveMainLoop();
+		ImGui::SetNextWindowPos(ImVec2((float)g_camera.m_width - menuWidth - 10, 10));
+		ImGui::SetNextWindowSize(ImVec2((float)menuWidth, (float)g_camera.m_height - 20));
+		ImGui::Begin("Testbed Controls", &ui.showMenu, ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoResize|ImGuiWindowFlags_NoCollapse);
+		ImGui::PushAllowKeyboardFocus(false); // Disable TAB
+
+		ImGui::PushItemWidth(-1.0f);
+
+		ImGui::Text("Test");
+		if (ImGui::Combo("##Test", &testIndex, sTestEntriesGetName, NULL, testCount, testCount))
+		{
+			delete test;
+			entry = g_testEntries + testIndex;
+			test = entry->createFcn();
+			testSelection = testIndex;
+		}
+		ImGui::Separator();
+
+		ImGui::Text("Vel Iters");
+		ImGui::SliderInt("##Vel Iters", &settings.velocityIterations, 0, 50);
+		ImGui::Text("Pos Iters");
+		ImGui::SliderInt("##Pos Iters", &settings.positionIterations, 0, 50);
+		ImGui::Text("Hertz");
+		ImGui::SliderFloat("##Hertz", &settings.hz, 5.0f, 120.0f, "%.0f hz");
+		ImGui::PopItemWidth();
+
+		ImGui::Checkbox("Sleep", &settings.enableSleep);
+		ImGui::Checkbox("Warm Starting", &settings.enableWarmStarting);
+		ImGui::Checkbox("Time of Impact", &settings.enableContinuous);
+		ImGui::Checkbox("Sub-Stepping", &settings.enableSubStepping);
+
+		ImGui::Separator();
+
+		ImGui::Checkbox("Shapes", &settings.drawShapes);
+		ImGui::Checkbox("Joints", &settings.drawJoints);
+		ImGui::Checkbox("AABBs", &settings.drawAABBs);
+		ImGui::Checkbox("Contact Points", &settings.drawContactPoints);
+		ImGui::Checkbox("Contact Normals", &settings.drawContactNormals);
+		ImGui::Checkbox("Contact Impulses", &settings.drawContactImpulse);
+		ImGui::Checkbox("Friction Impulses", &settings.drawFrictionImpulse);
+		ImGui::Checkbox("Center of Masses", &settings.drawCOMs);
+		ImGui::Checkbox("Statistics", &settings.drawStats);
+		ImGui::Checkbox("Profile", &settings.drawProfile);
+
+		ImVec2 button_sz = ImVec2(-1, 0);
+		if (ImGui::Button("Pause (P)", button_sz))
+			settings.pause = !settings.pause;
+
+		if (ImGui::Button("Single Step", button_sz))
+			settings.singleStep = !settings.singleStep;
+
+		if (ImGui::Button("Restart (R)", button_sz))
+			sRestart();
+
+		if (ImGui::Button("Quit", button_sz))
+			glfwSetWindowShouldClose(mainWindow, GL_TRUE);
+
+		ImGui::PopAllowKeyboardFocus();
+		ImGui::End();
+	}
+
+	//ImGui::ShowTestWindow(NULL);
+}
+
+//
+int main(int, char**)
+{
+#if defined(_WIN32)
+	// Enable memory-leak reports
+	_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG));
 #endif
-		exit(0);
-		break;
 
-		// Press 'z' to zoom out.
-	case 'z':
-		viewZoom = b2Min(1.1f * viewZoom, 20.0f);
-		Resize(width, height);
-		break;
+	g_camera.m_width = 1024;
+	g_camera.m_height = 640;
 
-		// Press 'x' to zoom in.
-	case 'x':
-		viewZoom = b2Max(0.9f * viewZoom, 0.02f);
-		Resize(width, height);
-		break;
-
-		// Press 'r' to reset.
-	case 'r':
-		delete test;
-		test = entry->createFcn();
-		break;
-
-		// Press space to launch a bomb.
-	case ' ':
-		if (test)
-		{
-			test->LaunchBomb();
-		}
-		break;
- 
-	case 'p':
-		settings.pause = !settings.pause;
-		break;
-
-		// Press [ to prev test.
-	case '[':
-		--testSelection;
-		if (testSelection < 0)
-		{
-			testSelection = testCount - 1;
-		}
-		glui->sync_live();
-		break;
-
-		// Press ] to next test.
-	case ']':
-		++testSelection;
-		if (testSelection == testCount)
-		{
-			testSelection = 0;
-		}
-		glui->sync_live();
-		break;
-		
-	default:
-		if (test)
-		{
-			test->Keyboard(key);
-		}
-	}
-}
-
-static void KeyboardSpecial(int key, int x, int y)
-{
-	B2_NOT_USED(x);
-	B2_NOT_USED(y);
-
-	switch (key)
+	if (glfwInit() == 0)
 	{
-	case GLUT_ACTIVE_SHIFT:
-		// Press left to pan left.
-	case GLUT_KEY_LEFT:
-		settings.viewCenter.x -= 0.5f;
-		Resize(width, height);
-		break;
-
-		// Press right to pan right.
-	case GLUT_KEY_RIGHT:
-		settings.viewCenter.x += 0.5f;
-		Resize(width, height);
-		break;
-
-		// Press down to pan down.
-	case GLUT_KEY_DOWN:
-		settings.viewCenter.y -= 0.5f;
-		Resize(width, height);
-		break;
-
-		// Press up to pan up.
-	case GLUT_KEY_UP:
-		settings.viewCenter.y += 0.5f;
-		Resize(width, height);
-		break;
-
-		// Press home to reset the view.
-	case GLUT_KEY_HOME:
-		viewZoom = 1.0f;
-		settings.viewCenter.Set(0.0f, 20.0f);
-		Resize(width, height);
-		break;
+		fprintf(stderr, "Failed to initialize GLFW\n");
+		return -1;
 	}
-}
 
-static void KeyboardUp(unsigned char key, int x, int y)
-{
-	B2_NOT_USED(x);
-	B2_NOT_USED(y);
+	char title[64];
+	sprintf(title, "Box2D Testbed Version %d.%d.%d", b2_version.major, b2_version.minor, b2_version.revision);
 
-	if (test)
-	{
-		test->KeyboardUp(key);
-	}
-}
-
-static void Mouse(int32 button, int32 state, int32 x, int32 y)
-{
-	// Use the mouse to move things around.
-	if (button == GLUT_LEFT_BUTTON)
-	{
-		int mod = glutGetModifiers();
-		b2Vec2 p = ConvertScreenToWorld(x, y);
-		if (state == GLUT_DOWN)
-		{
-			b2Vec2 p = ConvertScreenToWorld(x, y);
-			if (mod == GLUT_ACTIVE_SHIFT)
-			{
-				test->ShiftMouseDown(p);
-			}
-			else
-			{
-				test->MouseDown(p);
-			}
-		}
-		
-		if (state == GLUT_UP)
-		{
-			test->MouseUp(p);
-		}
-	}
-	else if (button == GLUT_RIGHT_BUTTON)
-	{
-		if (state == GLUT_DOWN)
-		{	
-			lastp = ConvertScreenToWorld(x, y);
-			rMouseDown = true;
-		}
-
-		if (state == GLUT_UP)
-		{
-			rMouseDown = false;
-		}
-	}
-}
-
-static void MouseMotion(int32 x, int32 y)
-{
-	b2Vec2 p = ConvertScreenToWorld(x, y);
-	test->MouseMove(p);
-	
-	if (rMouseDown)
-	{
-		b2Vec2 diff = p - lastp;
-		settings.viewCenter.x -= diff.x;
-		settings.viewCenter.y -= diff.y;
-		Resize(width, height);
-		lastp = ConvertScreenToWorld(x, y);
-	}
-}
-
-static void MouseWheel(int wheel, int direction, int x, int y)
-{
-	B2_NOT_USED(wheel);
-	B2_NOT_USED(x);
-	B2_NOT_USED(y);
-	if (direction > 0)
-	{
-		viewZoom /= 1.1f;
-	}
-	else
-	{
-		viewZoom *= 1.1f;
-	}
-	Resize(width, height);
-}
-
-static void Restart(int)
-{
-	delete test;
-	entry = g_testEntries + testIndex;
-	test = entry->createFcn();
-    Resize(width, height);
-}
-
-static void Pause(int)
-{
-	settings.pause = !settings.pause;
-}
-
-static void Exit(int code)
-{
-	// TODO: freeglut is not building on OSX
-#ifdef FREEGLUT
-	glutLeaveMainLoop();
+#if defined(__APPLE__)
+	// Not sure why, but these settings cause glewInit below to crash.
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
-	exit(code);
-}
 
-static void SingleStep(int)
-{
-	settings.pause = 1;
-	settings.singleStep = 1;
-}
+	mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, title, NULL, NULL);
+	if (mainWindow == NULL)
+	{
+		fprintf(stderr, "Failed to open GLFW mainWindow.\n");
+		glfwTerminate();
+		return -1;
+	}
 
-int main(int argc, char** argv)
-{
+	glfwMakeContextCurrent(mainWindow);
+	printf("OpenGL %s, GLSL %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+	glfwSetScrollCallback(mainWindow, sScrollCallback);
+	glfwSetWindowSizeCallback(mainWindow, sResizeWindow);
+	glfwSetKeyCallback(mainWindow, sKeyCallback);
+	glfwSetCharCallback(mainWindow, sCharCallback);
+	glfwSetMouseButtonCallback(mainWindow, sMouseButton);
+	glfwSetCursorPosCallback(mainWindow, sMouseMotion);
+	glfwSetScrollCallback(mainWindow, sScrollCallback);
+
+#if defined(__APPLE__) == FALSE
+	//glewExperimental = GL_TRUE;
+	GLenum err = glewInit();
+	if (GLEW_OK != err)
+	{
+		fprintf(stderr, "Error: %s\n", glewGetErrorString(err));
+		exit(EXIT_FAILURE);
+	}
+#endif
+
+	g_debugDraw.Create();
+
+	sCreateUI(mainWindow);
+
 	testCount = 0;
 	while (g_testEntries[testCount].createFcn != NULL)
 	{
 		++testCount;
 	}
 
-	testIndex = b2Clamp(testIndex, 0, testCount-1);
+	testIndex = b2Clamp(testIndex, 0, testCount - 1);
 	testSelection = testIndex;
 
 	entry = g_testEntries + testIndex;
 	test = entry->createFcn();
 
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
-	glutInitWindowSize(width, height);
-	char title[32];
-	sprintf(title, "Box2D Version %d.%d.%d", b2_version.major, b2_version.minor, b2_version.revision);
-	mainWindow = glutCreateWindow(title);
-	//glutSetOption (GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
+	// Control the frame rate. One draw per monitor refresh.
+	glfwSwapInterval(1);
 
-	glutDisplayFunc(SimulationLoop);
-	GLUI_Master.set_glutReshapeFunc(Resize);  
-	GLUI_Master.set_glutKeyboardFunc(Keyboard);
-	GLUI_Master.set_glutSpecialFunc(KeyboardSpecial);
-	GLUI_Master.set_glutMouseFunc(Mouse);
-#ifdef FREEGLUT
-	glutMouseWheelFunc(MouseWheel);
-#endif
-	glutMotionFunc(MouseMotion);
-
-	glutKeyboardUpFunc(KeyboardUp);
-
-	glui = GLUI_Master.create_glui_subwindow( mainWindow, 
-		GLUI_SUBWINDOW_RIGHT );
-
-	glui->add_statictext("Tests");
-	GLUI_Listbox* testList =
-		glui->add_listbox("", &testSelection);
-
-	glui->add_separator();
-
-	GLUI_Spinner* velocityIterationSpinner =
-		glui->add_spinner("Vel Iters", GLUI_SPINNER_INT, &settings.velocityIterations);
-	velocityIterationSpinner->set_int_limits(1, 500);
-
-	GLUI_Spinner* positionIterationSpinner =
-		glui->add_spinner("Pos Iters", GLUI_SPINNER_INT, &settings.positionIterations);
-	positionIterationSpinner->set_int_limits(0, 100);
-
-	GLUI_Spinner* hertzSpinner =
-		glui->add_spinner("Hertz", GLUI_SPINNER_FLOAT, &settingsHz);
-
-	hertzSpinner->set_float_limits(5.0f, 200.0f);
-
-	glui->add_checkbox("Warm Starting", &settings.enableWarmStarting);
-	glui->add_checkbox("Time of Impact", &settings.enableContinuous);
-	glui->add_checkbox("Sub-Stepping", &settings.enableSubStepping);
-
-	//glui->add_separator();
-
-	GLUI_Panel* drawPanel =	glui->add_panel("Draw");
-	glui->add_checkbox_to_panel(drawPanel, "Shapes", &settings.drawShapes);
-	glui->add_checkbox_to_panel(drawPanel, "Joints", &settings.drawJoints);
-	glui->add_checkbox_to_panel(drawPanel, "AABBs", &settings.drawAABBs);
-	glui->add_checkbox_to_panel(drawPanel, "Pairs", &settings.drawPairs);
-	glui->add_checkbox_to_panel(drawPanel, "Contact Points", &settings.drawContactPoints);
-	glui->add_checkbox_to_panel(drawPanel, "Contact Normals", &settings.drawContactNormals);
-	glui->add_checkbox_to_panel(drawPanel, "Contact Forces", &settings.drawContactForces);
-	glui->add_checkbox_to_panel(drawPanel, "Friction Forces", &settings.drawFrictionForces);
-	glui->add_checkbox_to_panel(drawPanel, "Center of Masses", &settings.drawCOMs);
-	glui->add_checkbox_to_panel(drawPanel, "Statistics", &settings.drawStats);
-	glui->add_checkbox_to_panel(drawPanel, "Profile", &settings.drawProfile);
-
-	int32 testCount = 0;
-	TestEntry* e = g_testEntries;
-	while (e->createFcn)
+	double time1 = glfwGetTime();
+	double frameTime = 0.0;
+   
+	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+	
+	while (!glfwWindowShouldClose(mainWindow))
 	{
-		testList->add_item(testCount, e->name);
-		++testCount;
-		++e;
+		glfwGetWindowSize(mainWindow, &g_camera.m_width, &g_camera.m_height);
+		glViewport(0, 0, g_camera.m_width, g_camera.m_height);
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		ImGui_ImplGlfwGL3_NewFrame();
+		ImGui::SetNextWindowPos(ImVec2(0,0));
+		ImGui::SetNextWindowSize(ImVec2((float)g_camera.m_width, (float)g_camera.m_height));
+		ImGui::Begin("Overlay", NULL, ImVec2(0,0), 0.0f, ImGuiWindowFlags_NoTitleBar|ImGuiWindowFlags_NoInputs|ImGuiWindowFlags_AlwaysAutoResize|ImGuiWindowFlags_NoScrollbar);
+		ImGui::SetCursorPos(ImVec2(5, (float)g_camera.m_height - 20));
+		ImGui::Text("%.1f ms", 1000.0 * frameTime);
+		ImGui::End();
+
+		sSimulate();
+		sInterface();
+
+		// Measure speed
+		double time2 = glfwGetTime();
+		double alpha = 0.9f;
+		frameTime = alpha * frameTime + (1.0 - alpha) * (time2 - time1);
+		time1 = time2;
+
+		ImGui::Render();
+
+		glfwSwapBuffers(mainWindow);
+
+		glfwPollEvents();
 	}
 
-	glui->add_button("Pause", 0, Pause);
-	glui->add_button("Single Step", 0, SingleStep);
-	glui->add_button("Restart", 0, Restart);
+	if (test)
+	{
+		delete test;
+		test = nullptr;
+	}
 
-	glui->add_button("Quit", 0,(GLUI_Update_CB)Exit);
-	glui->set_main_gfx_window( mainWindow );
-
-	// Use a timer to control the frame rate.
-	glutTimerFunc(framePeriod, Timer, 0);
-
-	glutMainLoop();
+	g_debugDraw.Destroy();
+	ImGui_ImplGlfwGL3_Shutdown();
+	glfwTerminate();
 
 	return 0;
 }

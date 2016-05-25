@@ -118,16 +118,16 @@ public:
 		}
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case 'f':
+		case GLFW_KEY_F:
 			m_joint2->EnableMotor(!m_joint2->IsMotorEnabled());
 			m_joint2->GetBodyB()->SetAwake(true);
 			break;
 
-		case 'm':
+		case GLFW_KEY_M:
 			m_joint1->EnableMotor(!m_joint1->IsMotorEnabled());
 			m_joint1->GetBodyB()->SetAwake(true);
 			break;
@@ -137,11 +137,11 @@ public:
 	void Step(Settings* settings)
 	{
 		Test::Step(settings);
-		m_debugDraw.DrawString(5, m_textLine, "Keys: (f) toggle friction, (m) toggle motor");
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "Keys: (f) toggle friction, (m) toggle motor");
+		m_textLine += DRAW_STRING_NEW_LINE;
 		float32 torque = m_joint1->GetMotorTorque(settings->hz);
-		m_debugDraw.DrawString(5, m_textLine, "Motor Torque = %5.0f", (float) torque);
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "Motor Torque = %5.0f", (float) torque);
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	static Test* Create()

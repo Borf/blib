@@ -48,11 +48,11 @@ public:
 		m_sensor = false;
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case 'c':
+		case GLFW_KEY_C:
 			if (m_fixture2 == NULL)
 			{
 				b2CircleShape shape;
@@ -63,7 +63,7 @@ public:
 			}
 			break;
 
-		case 'd':
+		case GLFW_KEY_D:
 			if (m_fixture2 != NULL)
 			{
 				m_body->DestroyFixture(m_fixture2);
@@ -72,7 +72,7 @@ public:
 			}
 			break;
 
-		case 's':
+		case GLFW_KEY_S:
 			if (m_fixture2 != NULL)
 			{
 				m_sensor = !m_sensor;
@@ -85,10 +85,10 @@ public:
 	void Step(Settings* settings)
 	{
 		Test::Step(settings);
-		m_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
-		m_textLine += 15;
-		m_debugDraw.DrawString(5, m_textLine, "sensor = %d", m_sensor);
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "Press: (c) create a shape, (d) destroy a shape.");
+		m_textLine += DRAW_STRING_NEW_LINE;
+		g_debugDraw.DrawString(5, m_textLine, "sensor = %d", m_sensor);
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	static Test* Create()

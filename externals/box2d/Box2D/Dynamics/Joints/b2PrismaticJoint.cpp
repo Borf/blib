@@ -108,7 +108,7 @@ b2PrismaticJoint::b2PrismaticJoint(const b2PrismaticJointDef* def)
 	m_referenceAngle = def->referenceAngle;
 
 	m_impulse.SetZero();
-	m_motorMass = 0.0;
+	m_motorMass = 0.0f;
 	m_motorImpulse = 0.0f;
 
 	m_lowerTranslation = def->lowerTranslation;
@@ -349,17 +349,6 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 
 		vB += mB * P;
 		wB += iB * LB;
-
-		b2Vec2 Cdot10 = Cdot1;
-
-		Cdot1.x = b2Dot(m_perp, vB - vA) + m_s2 * wB - m_s1 * wA;
-		Cdot1.y = wB - wA;
-
-		if (b2Abs(Cdot1.x) > 0.01f || b2Abs(Cdot1.y) > 0.01f)
-		{
-			b2Vec2 test = b2Mul22(m_K, df);
-			Cdot1.x += 0.0f;
-		}
 	}
 
 	data.velocities[m_indexA].v = vA;
@@ -368,6 +357,13 @@ void b2PrismaticJoint::SolveVelocityConstraints(const b2SolverData& data)
 	data.velocities[m_indexB].w = wB;
 }
 
+// A velocity based solver computes reaction forces(impulses) using the velocity constraint solver.Under this context,
+// the position solver is not there to resolve forces.It is only there to cope with integration error.
+//
+// Therefore, the pseudo impulses in the position solver do not have any physical meaning.Thus it is okay if they suck.
+//
+// We could take the active state from the velocity solver.However, the joint might push past the limit when the velocity
+// solver indicates the limit is inactive.
 bool b2PrismaticJoint::SolvePositionConstraints(const b2SolverData& data)
 {
 	b2Vec2 cA = data.positions[m_indexA].c;

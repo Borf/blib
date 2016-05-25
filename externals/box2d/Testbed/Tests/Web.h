@@ -146,11 +146,11 @@ public:
 		}
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case 'b':
+		case GLFW_KEY_B:
 			for (int32 i = 0; i < 4; ++i)
 			{
 				if (m_bodies[i])
@@ -162,7 +162,7 @@ public:
 			}
 			break;
 
-		case 'j':
+		case GLFW_KEY_J:
 			for (int32 i = 0; i < 8; ++i)
 			{
 				if (m_joints[i])
@@ -179,10 +179,10 @@ public:
 	void Step(Settings* settings)
 	{
 		Test::Step(settings);
-		m_debugDraw.DrawString(5, m_textLine, "This demonstrates a soft distance joint.");
-		m_textLine += 15;
-		m_debugDraw.DrawString(5, m_textLine, "Press: (b) to delete a body, (j) to delete a joint");
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "This demonstrates a soft distance joint.");
+		m_textLine += DRAW_STRING_NEW_LINE;
+		g_debugDraw.DrawString(5, m_textLine, "Press: (b) to delete a body, (j) to delete a joint");
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	void JointDestroyed(b2Joint* joint)

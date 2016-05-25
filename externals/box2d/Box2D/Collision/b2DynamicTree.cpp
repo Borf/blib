@@ -17,10 +17,7 @@
 */
 
 #include <Box2D/Collision/b2DynamicTree.h>
-#include <cstring>
-#include <cfloat>
-using namespace std;
-
+#include <string.h>
 
 b2DynamicTree::b2DynamicTree()
 {
@@ -655,6 +652,7 @@ void b2DynamicTree::ValidateMetrics(int32 index) const
 
 void b2DynamicTree::Validate() const
 {
+#if defined(b2DEBUG)
 	ValidateStructure(m_root);
 	ValidateMetrics(m_root);
 
@@ -670,6 +668,7 @@ void b2DynamicTree::Validate() const
 	b2Assert(GetHeight() == ComputeHeight());
 
 	b2Assert(m_nodeCount + freeCount == m_nodeCapacity);
+#endif
 }
 
 int32 b2DynamicTree::GetMaxBalance() const
@@ -768,4 +767,14 @@ void b2DynamicTree::RebuildBottomUp()
 	b2Free(nodes);
 
 	Validate();
+}
+
+void b2DynamicTree::ShiftOrigin(const b2Vec2& newOrigin)
+{
+	// Build array of leaves. Free the rest.
+	for (int32 i = 0; i < m_nodeCapacity; ++i)
+	{
+		m_nodes[i].aabb.lowerBound -= newOrigin;
+		m_nodes[i].aabb.upperBound -= newOrigin;
+	}
 }

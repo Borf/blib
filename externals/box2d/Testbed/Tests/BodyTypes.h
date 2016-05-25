@@ -105,19 +105,19 @@ public:
 		}
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case 'd':
+		case GLFW_KEY_D:
 			m_platform->SetType(b2_dynamicBody);
 			break;
 
-		case 's':
+		case GLFW_KEY_S:
 			m_platform->SetType(b2_staticBody);
 			break;
 
-		case 'k':
+		case GLFW_KEY_K:
 			m_platform->SetType(b2_kinematicBody);
 			m_platform->SetLinearVelocity(b2Vec2(-m_speed, 0.0f));
 			m_platform->SetAngularVelocity(0.0f);
@@ -142,8 +142,8 @@ public:
 		}
 
 		Test::Step(settings);
-		m_debugDraw.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "Keys: (d) dynamic, (s) static, (k) kinematic");
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	static Test* Create()

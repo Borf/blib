@@ -115,5 +115,10 @@ namespace blib
 
 	}
 
+	void Box2DDebug::DrawPoint(const b2Vec2& p, float32 size, const b2Color& color)
+	{
+
+	}
+
 }
 

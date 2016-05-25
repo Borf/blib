@@ -168,7 +168,7 @@ namespace blib
 		bool Polygon::isConvex()
 		{
 			bool result;
-			for (int i = 0; i < size(); i++)
+			for (size_t i = 0; i < size(); i++)
 			{
 				int j = (i + 1) % size();
 				int k = (i + 2) % size();
