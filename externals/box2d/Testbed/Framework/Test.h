@@ -20,9 +20,16 @@
 #define TEST_H
 
 #include <Box2D/Box2D.h>
-#include "Render.h"
+#include "DebugDraw.h"
 
-#include <cstdlib>
+#if defined(__APPLE__)
+#include <OpenGL/gl3.h>
+#else
+#include <glew/glew.h>
+#endif
+#include <glfw/glfw3.h>
+
+#include <stdlib.h>
 
 class Test;
 struct Settings;
@@ -30,11 +37,12 @@ struct Settings;
 typedef Test* TestCreateFcn();
 
 #define	RAND_LIMIT	32767
+#define DRAW_STRING_NEW_LINE 16
 
 /// Random number in range [-1,1]
 inline float32 RandomFloat()
 {
-	float32 r = (float32)(std::rand() & (RAND_LIMIT));
+	float32 r = (float32)(rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = 2.0f * r - 1.0f;
 	return r;
@@ -43,7 +51,7 @@ inline float32 RandomFloat()
 /// Random floating point number in range [lo, hi]
 inline float32 RandomFloat(float32 lo, float32 hi)
 {
-	float32 r = (float32)(std::rand() & (RAND_LIMIT));
+	float32 r = (float32)(rand() & (RAND_LIMIT));
 	r /= RAND_LIMIT;
 	r = (hi - lo) * r + lo;
 	return r;
@@ -52,49 +60,48 @@ inline float32 RandomFloat(float32 lo, float32 hi)
 /// Test settings. Some can be controlled in the GUI.
 struct Settings
 {
-	Settings() :
-		viewCenter(0.0f, 20.0f),
-		hz(60.0f),
-		velocityIterations(8),
-		positionIterations(3),
-		drawShapes(1),
-		drawJoints(1),
-		drawAABBs(0),
-		drawPairs(0),
-		drawContactPoints(0),
-		drawContactNormals(0),
-		drawContactForces(0),
-		drawFrictionForces(0),
-		drawCOMs(0),
-		drawStats(0),
-		drawProfile(0),
-		enableWarmStarting(1),
-		enableContinuous(1),
-		enableSubStepping(0),
-		pause(0),
-		singleStep(0)
-		{}
+	Settings()
+	{
+		hz = 60.0f;
+		velocityIterations = 8;
+		positionIterations = 3;
+		drawShapes = true;
+		drawJoints = true;
+		drawAABBs = false;
+		drawContactPoints = false;
+		drawContactNormals = false;
+		drawContactImpulse = false;
+		drawFrictionImpulse = false;
+		drawCOMs = false;
+		drawStats = false;
+		drawProfile = false;
+		enableWarmStarting = true;
+		enableContinuous = true;
+		enableSubStepping = false;
+		enableSleep = true;
+		pause = false;
+		singleStep = false;
+	}
 
-	b2Vec2 viewCenter;
 	float32 hz;
 	int32 velocityIterations;
 	int32 positionIterations;
-	int32 drawShapes;
-	int32 drawJoints;
-	int32 drawAABBs;
-	int32 drawPairs;
-	int32 drawContactPoints;
-	int32 drawContactNormals;
-	int32 drawContactForces;
-	int32 drawFrictionForces;
-	int32 drawCOMs;
-	int32 drawStats;
-	int32 drawProfile;
-	int32 enableWarmStarting;
-	int32 enableContinuous;
-	int32 enableSubStepping;
-	int32 pause;
-	int32 singleStep;
+	bool drawShapes;
+	bool drawJoints;
+	bool drawAABBs;
+	bool drawContactPoints;
+	bool drawContactNormals;
+	bool drawContactImpulse;
+	bool drawFrictionImpulse;
+	bool drawCOMs;
+	bool drawStats;
+	bool drawProfile;
+	bool enableWarmStarting;
+	bool enableContinuous;
+	bool enableSubStepping;
+	bool enableSleep;
+	bool pause;
+	bool singleStep;
 };
 
 struct TestEntry
@@ -125,6 +132,9 @@ struct ContactPoint
 	b2Vec2 normal;
 	b2Vec2 position;
 	b2PointState state;
+	float32 normalImpulse;
+	float32 tangentImpulse;
+	float32 separation;
 };
 
 class Test : public b2ContactListener
@@ -134,11 +144,10 @@ public:
 	Test();
 	virtual ~Test();
 
-	void SetTextLine(int32 line) { m_textLine = line; }
-    void DrawTitle(int x, int y, const char *string);
+	void DrawTitle(const char *string);
 	virtual void Step(Settings* settings);
-	virtual void Keyboard(unsigned char key) { B2_NOT_USED(key); }
-	virtual void KeyboardUp(unsigned char key) { B2_NOT_USED(key); }
+	virtual void Keyboard(int key) { B2_NOT_USED(key); }
+	virtual void KeyboardUp(int key) { B2_NOT_USED(key); }
 	void ShiftMouseDown(const b2Vec2& p);
 	virtual void MouseDown(const b2Vec2& p);
 	virtual void MouseUp(const b2Vec2& p);
@@ -156,11 +165,13 @@ public:
 	virtual void BeginContact(b2Contact* contact) { B2_NOT_USED(contact); }
 	virtual void EndContact(b2Contact* contact) { B2_NOT_USED(contact); }
 	virtual void PreSolve(b2Contact* contact, const b2Manifold* oldManifold);
-	virtual void PostSolve(const b2Contact* contact, const b2ContactImpulse* impulse)
+	virtual void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse)
 	{
 		B2_NOT_USED(contact);
 		B2_NOT_USED(impulse);
 	}
+
+	void ShiftOrigin(const b2Vec2& newOrigin);
 
 protected:
 	friend class DestructionListener;
@@ -172,7 +183,6 @@ protected:
 	ContactPoint m_points[k_maxContactPoints];
 	int32 m_pointCount;
 	DestructionListener m_destructionListener;
-	DebugDraw m_debugDraw;
 	int32 m_textLine;
 	b2World* m_world;
 	b2Body* m_bomb;

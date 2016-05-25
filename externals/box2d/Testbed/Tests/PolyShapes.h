@@ -22,8 +22,6 @@
 /// This tests stacking. It also shows how to use b2World::Query
 /// and b2TestOverlap.
 
-const int32 k_maxBodies = 256;
-
 /// This callback is called by b2World::QueryAABB. We find all the fixtures
 /// that overlap an AABB. Of those, we use b2TestOverlap to determine which fixtures
 /// overlap a circle. Up to 4 overlapped fixtures will be highlighted with a yellow border.
@@ -55,14 +53,14 @@ public:
 				b2Vec2 center = b2Mul(xf, circle->m_p);
 				float32 radius = circle->m_radius;
 
-				m_debugDraw->DrawCircle(center, radius, color);
+				g_debugDraw->DrawCircle(center, radius, color);
 			}
 			break;
 
 		case b2Shape::e_polygon:
 			{
 				b2PolygonShape* poly = (b2PolygonShape*)fixture->GetShape();
-				int32 vertexCount = poly->m_vertexCount;
+				int32 vertexCount = poly->m_count;
 				b2Assert(vertexCount <= b2_maxPolygonVertices);
 				b2Vec2 vertices[b2_maxPolygonVertices];
 
@@ -71,7 +69,7 @@ public:
 					vertices[i] = b2Mul(xf, poly->m_vertices[i]);
 				}
 
-				m_debugDraw->DrawPolygon(vertices, vertexCount, color);
+				g_debugDraw->DrawPolygon(vertices, vertexCount, color);
 			}
 			break;
 				
@@ -105,13 +103,19 @@ public:
 
 	b2CircleShape m_circle;
 	b2Transform m_transform;
-	b2Draw* m_debugDraw;
+	b2Draw* g_debugDraw;
 	int32 m_count;
 };
 
 class PolyShapes : public Test
 {
 public:
+
+	enum
+	{
+		e_maxBodies = 256
+	};
+
 	PolyShapes()
 	{
 		// Ground body
@@ -210,12 +214,12 @@ public:
 			m_bodies[m_bodyIndex]->CreateFixture(&fd);
 		}
 
-		m_bodyIndex = (m_bodyIndex + 1) % k_maxBodies;
+		m_bodyIndex = (m_bodyIndex + 1) % e_maxBodies;
 	}
 
 	void DestroyBody()
 	{
-		for (int32 i = 0; i < k_maxBodies; ++i)
+		for (int32 i = 0; i < e_maxBodies; ++i)
 		{
 			if (m_bodies[i] != NULL)
 			{
@@ -226,20 +230,20 @@ public:
 		}
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-			Create(key - '1');
+		case GLFW_KEY_1:
+		case GLFW_KEY_2:
+		case GLFW_KEY_3:
+		case GLFW_KEY_4:
+		case GLFW_KEY_5:
+			Create(key - GLFW_KEY_1);
 			break;
 
-		case 'a':
-			for (int32 i = 0; i < k_maxBodies; i += 2)
+		case GLFW_KEY_A:
+			for (int32 i = 0; i < e_maxBodies; i += 2)
 			{
 				if (m_bodies[i])
 				{
@@ -249,7 +253,7 @@ public:
 			}
 			break;
 
-		case 'd':
+		case GLFW_KEY_D:
 			DestroyBody();
 			break;
 		}
@@ -263,7 +267,7 @@ public:
 		callback.m_circle.m_radius = 2.0f;
 		callback.m_circle.m_p.Set(0.0f, 1.1f);
 		callback.m_transform.SetIdentity();
-		callback.m_debugDraw = &m_debugDraw;
+		callback.g_debugDraw = &g_debugDraw;
 
 		b2AABB aabb;
 		callback.m_circle.ComputeAABB(&aabb, callback.m_transform, 0);
@@ -271,14 +275,14 @@ public:
 		m_world->QueryAABB(&callback, aabb);
 
 		b2Color color(0.4f, 0.7f, 0.8f);
-		m_debugDraw.DrawCircle(callback.m_circle.m_p, callback.m_circle.m_radius, color);
+		g_debugDraw.DrawCircle(callback.m_circle.m_p, callback.m_circle.m_radius, color);
 
-		m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
-		m_textLine += 15;
-		m_debugDraw.DrawString(5, m_textLine, "Press 'a' to (de)activate some bodies");
-		m_textLine += 15;
-		m_debugDraw.DrawString(5, m_textLine, "Press 'd' to destroy a body");
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
+		m_textLine += DRAW_STRING_NEW_LINE;
+		g_debugDraw.DrawString(5, m_textLine, "Press 'a' to (de)activate some bodies");
+		m_textLine += DRAW_STRING_NEW_LINE;
+		g_debugDraw.DrawString(5, m_textLine, "Press 'd' to destroy a body");
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	static Test* Create()
@@ -287,7 +291,7 @@ public:
 	}
 
 	int32 m_bodyIndex;
-	b2Body* m_bodies[k_maxBodies];
+	b2Body* m_bodies[e_maxBodies];
 	b2PolygonShape m_polygons[4];
 	b2CircleShape m_circle;
 };

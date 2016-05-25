@@ -99,11 +99,11 @@ public:
 		}
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case 'j':
+		case GLFW_KEY_J:
 			if (m_rope)
 			{
 				m_world->DestroyJoint(m_rope);
@@ -120,17 +120,17 @@ public:
 	void Step(Settings* settings)
 	{
 		Test::Step(settings);
-		m_debugDraw.DrawString(5, m_textLine, "Press (j) to toggle the rope joint.");
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "Press (j) to toggle the rope joint.");
+		m_textLine += DRAW_STRING_NEW_LINE;
 		if (m_rope)
 		{
-			m_debugDraw.DrawString(5, m_textLine, "Rope ON");
+			g_debugDraw.DrawString(5, m_textLine, "Rope ON");
 		}
 		else
 		{
-			m_debugDraw.DrawString(5, m_textLine, "Rope OFF");
+			g_debugDraw.DrawString(5, m_textLine, "Rope OFF");
 		}
-		m_textLine += 15;
+		m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	static Test* Create()

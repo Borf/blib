@@ -128,28 +128,26 @@ public:
 
 		Test::Step(settings);
 
-		m_debugDraw.DrawString(5, m_textLine, "Press 'a' to control the flippers");
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "Press 'a' to control the flippers");
+		m_textLine += DRAW_STRING_NEW_LINE;
 
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case 'a':
-		case 'A':
+		case GLFW_KEY_A:
 			m_button = true;
 			break;
 		}
 	}
 
-	void KeyboardUp(unsigned char key)
+	void KeyboardUp(int key)
 	{
 		switch (key)
 		{
-		case 'a':
-		case 'A':
+		case GLFW_KEY_A:
 			m_button = false;
 			break;
 		}

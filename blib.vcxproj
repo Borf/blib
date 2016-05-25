@@ -595,6 +595,7 @@
     <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2FrictionJoint.cpp" />
     <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2GearJoint.cpp" />
     <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2Joint.cpp" />
+    <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2MotorJoint.cpp" />
     <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2MouseJoint.cpp" />
     <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2PrismaticJoint.cpp" />
     <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2PulleyJoint.cpp" />

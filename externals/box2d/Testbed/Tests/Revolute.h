@@ -124,15 +124,15 @@ public:
 
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case 'l':
+		case GLFW_KEY_L:
 			m_joint->EnableLimit(!m_joint->IsLimitEnabled());
 			break;
 
-		case 'm':
+		case GLFW_KEY_M:
 			m_joint->EnableMotor(!m_joint->IsMotorEnabled());
 			break;
 		}
@@ -141,8 +141,8 @@ public:
 	void Step(Settings* settings)
 	{
 		Test::Step(settings);
-		m_debugDraw.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "Keys: (l) limits, (m) motor");
+		m_textLine += DRAW_STRING_NEW_LINE;
 
 		//if (m_stepCount == 360)
 		//{
@@ -150,8 +150,8 @@ public:
 		//}
 
 		//float32 torque1 = m_joint1->GetMotorTorque();
-		//m_debugDraw.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
-		//m_textLine += 15;
+		//g_debugDraw.DrawString(5, m_textLine, "Motor Torque = %4.0f, %4.0f : Motor Force = %4.0f", (float) torque1, (float) torque2, (float) force3);
+		//m_textLine += DRAW_STRING_NEW_LINE;
 	}
 
 	static Test* Create()

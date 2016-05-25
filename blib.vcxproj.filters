@@ -2269,6 +2269,9 @@
     <ClCompile Include="blib\util\stb_vorbis.c">
       <Filter>util</Filter>
     </ClCompile>
+    <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2MotorJoint.cpp">
+      <Filter>external\box2d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html">

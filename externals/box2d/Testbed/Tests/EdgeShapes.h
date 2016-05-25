@@ -27,8 +27,8 @@ public:
 		m_fixture = NULL;
 	}
 
-	float32 ReportFixture(	b2Fixture* fixture, const b2Vec2& point,
-		const b2Vec2& normal, float32 fraction)
+	float32 ReportFixture(b2Fixture* fixture, const b2Vec2& point,
+						  const b2Vec2& normal, float32 fraction)
 	{
 		m_fixture = fixture;
 		m_point = point;
@@ -75,12 +75,12 @@ public:
 		}
 
 		{
-			b2Vec2 vertices[3];
-			vertices[0].Set(-0.5f, 0.0f);
-			vertices[1].Set(0.5f, 0.0f);
-			vertices[2].Set(0.0f, 1.5f);
-			m_polygons[0].Set(vertices, 3);
-		}
+		b2Vec2 vertices[3];
+		vertices[0].Set(-0.5f, 0.0f);
+		vertices[1].Set(0.5f, 0.0f);
+		vertices[2].Set(0.0f, 1.5f);
+		m_polygons[0].Set(vertices, 3);
+	}
 
 		{
 			b2Vec2 vertices[3];
@@ -178,19 +178,19 @@ public:
 		}
 	}
 
-	void Keyboard(unsigned char key)
+	void Keyboard(int key)
 	{
 		switch (key)
 		{
-		case '1':
-		case '2':
-		case '3':
-		case '4':
-		case '5':
-			Create(key - '1');
+		case GLFW_KEY_1:
+		case GLFW_KEY_2:
+		case GLFW_KEY_3:
+		case GLFW_KEY_4:
+		case GLFW_KEY_5:
+			Create(key - GLFW_KEY_1);
 			break;
 
-		case 'd':
+		case GLFW_KEY_D:
 			DestroyBody();
 			break;
 		}
@@ -201,8 +201,8 @@ public:
 		bool advanceRay = settings->pause == 0 || settings->singleStep;
 
 		Test::Step(settings);
-		m_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
-		m_textLine += 15;
+		g_debugDraw.DrawString(5, m_textLine, "Press 1-5 to drop stuff");
+		m_textLine += DRAW_STRING_NEW_LINE;
 
 		float32 L = 25.0f;
 		b2Vec2 point1(0.0f, 10.0f);
@@ -215,16 +215,16 @@ public:
 
 		if (callback.m_fixture)
 		{
-			m_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
+			g_debugDraw.DrawPoint(callback.m_point, 5.0f, b2Color(0.4f, 0.9f, 0.4f));
 
-			m_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
+			g_debugDraw.DrawSegment(point1, callback.m_point, b2Color(0.8f, 0.8f, 0.8f));
 
 			b2Vec2 head = callback.m_point + 0.5f * callback.m_normal;
-			m_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
+			g_debugDraw.DrawSegment(callback.m_point, head, b2Color(0.9f, 0.9f, 0.4f));
 		}
 		else
 		{
-			m_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
+			g_debugDraw.DrawSegment(point1, point2, b2Color(0.8f, 0.8f, 0.8f));
 		}
 
 		if (advanceRay)

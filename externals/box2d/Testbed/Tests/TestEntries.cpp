@@ -17,19 +17,10 @@
 */
 
 #include "../Framework/Test.h"
-#include "../Framework/Render.h"
-
-#ifdef __APPLE__
-	#include <GLUT/glut.h>
-#else
-	#include "freeglut/freeglut.h"
-#endif
-
-#include <cstring>
-using namespace std;
 
 #include "AddPair.h"
 #include "ApplyForce.h"
+#include "BasicSliderCrank.h"
 #include "BodyTypes.h"
 #include "Breakable.h"
 #include "Bridge.h"
@@ -43,6 +34,8 @@ using namespace std;
 #include "CollisionProcessing.h"
 #include "CompoundShapes.h"
 #include "Confined.h"
+#include "ConvexHull.h"
+#include "ConveyorBelt.h"
 #include "DistanceTest.h"
 #include "Dominos.h"
 #include "DumpShell.h"
@@ -50,6 +43,11 @@ using namespace std;
 #include "EdgeShapes.h"
 #include "EdgeTest.h"
 #include "Gears.h"
+#include "HeavyOnLight.h"
+#include "HeavyOnLightTwo.h"
+#include "Mobile.h"
+#include "MobileBalanced.h"
+#include "MotorJoint.h"
 #include "OneSidedPlatform.h"
 #include "Pinball.h"
 #include "PolyCollision.h"
@@ -59,7 +57,6 @@ using namespace std;
 #include "Pyramid.h"
 #include "RayCast.h"
 #include "Revolute.h"
-//#include "Rope.h"
 #include "RopeJoint.h"
 #include "SensorTest.h"
 #include "ShapeEditing.h"
@@ -76,33 +73,41 @@ using namespace std;
 
 TestEntry g_testEntries[] =
 {
-	{"Tumbler", Tumbler::Create},
-	{"Tiles", Tiles::Create},
-	{"Dump Shell", DumpShell::Create},
-	{"Gears", Gears::Create},
-	{"Cantilever", Cantilever::Create},
-	{"Varying Restitution", VaryingRestitution::Create},
 	{"Character Collision", CharacterCollision::Create},
+	{"Tiles", Tiles::Create},
+	{"Heavy on Light", HeavyOnLight::Create},
+	{"Heavy on Light Two", HeavyOnLightTwo::Create},
+	{"Vertical Stack", VerticalStack::Create},
+	{"Basic Slider Crank", BasicSliderCrank::Create},
+	{"Slider Crank", SliderCrank::Create},
+	{"Sphere Stack", SphereStack::Create},
+	{"Convex Hull", ConvexHull::Create},
+	{"Tumbler", Tumbler::Create},
+	{"Ray-Cast", RayCast::Create},
+	{"Dump Shell", DumpShell::Create},
+	{"Apply Force", ApplyForce::Create},
+	{"Continuous Test", ContinuousTest::Create},
+	{"Time of Impact", TimeOfImpact::Create},
+	{"Motor Joint", MotorJoint::Create},
+	{"One-Sided Platform", OneSidedPlatform::Create},
+	{"Mobile", Mobile::Create},
+	{"MobileBalanced", MobileBalanced::Create},
+	{"Conveyor Belt", ConveyorBelt::Create},
+	{"Gears", Gears::Create},
+	{"Varying Restitution", VaryingRestitution::Create},
+	{"Cantilever", Cantilever::Create},
 	{"Edge Test", EdgeTest::Create},
 	{"Body Types", BodyTypes::Create},
 	{"Shape Editing", ShapeEditing::Create},
 	{"Car", Car::Create},
-	{"Apply Force", ApplyForce::Create},
 	{"Prismatic", Prismatic::Create},
-	{"Vertical Stack", VerticalStack::Create},
-	{"SphereStack", SphereStack::Create},
 	{"Revolute", Revolute::Create},
 	{"Pulleys", Pulleys::Create},
 	{"Polygon Shapes", PolyShapes::Create},
-	//{"Rope", Rope::Create},
 	{"Web", Web::Create},
 	{"RopeJoint", RopeJoint::Create},
-	{"One-Sided Platform", OneSidedPlatform::Create},
 	{"Pinball", Pinball::Create},
 	{"Bullet Test", BulletTest::Create},
-	{"Continuous Test", ContinuousTest::Create},
-	{"Time of Impact", TimeOfImpact::Create},
-	{"Ray-Cast", RayCast::Create},
 	{"Confined", Confined::Create},
 	{"Pyramid", Pyramid::Create},
 	{"Theo Jansen's Walker", TheoJansen::Create},
@@ -118,7 +123,6 @@ TestEntry g_testEntries[] =
 	{"Dominos", Dominos::Create},
 	{"Dynamic Tree", DynamicTreeTest::Create},
 	{"Sensor Test", SensorTest::Create},
-	{"Slider Crank", SliderCrank::Create},
 	{"Varying Friction", VaryingFriction::Create},
 	{"Add Pair Stress Test", AddPair::Create},
 	{NULL, NULL}

@@ -18,8 +18,6 @@
 
 #include <Box2D/Common/b2Math.h>
 
-#include <glm/glm.hpp>
-
 const b2Vec2 b2Vec2_zero(0.0f, 0.0f);
 
 /// Solve A * x = b, where b is a column vector. This is more efficient
