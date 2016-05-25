@@ -23,6 +23,7 @@ namespace blib
 	class SpineModelInstance
 	{
 	public:
+		float fixedTime = -1;
 		SpineModel* model;
 		spSkeleton* skeleton;
 		spAnimationState* state;
@@ -34,6 +35,8 @@ namespace blib
 		void playAnimation(const std::string &name, bool loop);
 		void playAnimation(const std::string &name, const std::function<void()> &callback);
 		void stopAnimation(const std::string &name);
+
+		void setAnimation(const std::string &name, float time);
 		bool isPlaying();
 		blib::math::Polygon getPart(const std::string &name);
 		std::pair<blib::Texture*, std::vector<std::pair<glm::vec2, glm::vec2> > > getSlot(const std::string &name);
