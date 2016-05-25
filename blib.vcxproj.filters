@@ -1368,6 +1368,9 @@
     <ClInclude Include="blib\util\stb_vorbis.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="blib\audio\AudioManagerYSE.h">
+      <Filter>audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -2271,6 +2274,9 @@
     </ClCompile>
     <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2MotorJoint.cpp">
       <Filter>external\box2d</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\audio\AudioManagerYSE.cpp">
+      <Filter>audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
