@@ -31,6 +31,7 @@ namespace blib
 	{
 	public:
 		//ogg stuff
+		std::string fileName;
 		char* fileData;
 		stb_vorbis* stream;
 		stb_vorbis_info info;

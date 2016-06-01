@@ -1,6 +1,6 @@
 #include "AudioManagerOpenAL.h"
 
-
+#include <blib/util/Thread.h>
 #include <blib/util/Log.h>
 #ifdef BLIB_IOS
 #include <OpenAL/alc.h>
@@ -55,6 +55,7 @@ namespace blib
 		running = true;
 		backgroundThread = std::thread([this]()
 		{
+			blib::util::Thread::setThreadName("AudioManager");
 			while (running)
 			{
 				update();
@@ -188,6 +189,7 @@ namespace blib
 		}
 		checkError();
 		OpenALAudioSample* newSample = new OpenALAudioSample();
+		newSample->fileName = filename;
 		newSample->playing = false;
 		newSample->bufferId = buffer;
 		newSample->manager = this;
@@ -213,6 +215,7 @@ namespace blib
 
 		checkError();
 		OpenALAudioSample* newSample = new OpenALAudioSample();
+		newSample->fileName = filename;
 		newSample->bufferId = 0;
 		alGenBuffers((ALuint)2, newSample->buffers);
 		newSample->fileData = data;
@@ -237,6 +240,7 @@ namespace blib
 
 	bool OpenALAudioSample::buffer(ALuint buffer)
 	{
+		Log::out << "AudioManager: buffering sound " << fileName << " to buffer " << buffer << Log::newline;
 		//Uncomment this to avoid VLAs
 		//#define BUFFER_SIZE 4096*32
 #ifndef BUFFER_SIZE//VLAs ftw
