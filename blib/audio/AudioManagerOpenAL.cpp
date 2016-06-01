@@ -60,9 +60,9 @@ namespace blib
 			{
 				update();
 #ifdef BLIB_WIN
-				Sleep(1);
+				Sleep(10);
 #else
-				usleep(1000);
+				usleep(10000);
 #endif
 			}
 		});
@@ -233,8 +233,6 @@ namespace blib
 		newSample->buffer(newSample->buffers[0]);
 		newSample->buffer(newSample->buffers[1]);
 
-		newSample->totalSamplesLeft = stb_vorbis_stream_length_in_samples(newSample->stream) * newSample->info.channels;
-
 		return newSample;
 	}
 
@@ -258,12 +256,12 @@ namespace blib
 
 		if (size == 0)
 		{
+			Log::out<<"AudioManager: no more bytes to read from ogg"<<Log::newline;
 			delete[] pcm;
 			return false;
 		}
 
 		alBufferData(buffer, format, pcm, size*sizeof(ALshort), info.sample_rate);
-		totalSamplesLeft -= size;
 #undef BUFFER_SIZE
 		delete[] pcm;
 		return true;
@@ -358,22 +356,28 @@ namespace blib
 				ALuint buf = 0;
 
 				alSourceUnqueueBuffers(source->sourceId, 1, &buf);
+				if(buf != 0)
+				{
+					if (!buffer(buf)) {
+						bool shouldExit = true;
 
-				if (!buffer(buf)) {
-					bool shouldExit = true;
+						if (looping) {
+							Log::out<<"AudioManager: restarting sound"<<Log::newline;
+							stb_vorbis_seek_start(stream);
+							shouldExit = !buffer(buf);
+							if(shouldExit)
+								Log::out<<"AudioManager: no sound after restarting vorbis stream"<<Log::newline;
+							alSourcePlay(source->sourceId);
+						}
 
-					if (looping) {
-						stb_vorbis_seek_start(stream);
-						totalSamplesLeft = stb_vorbis_stream_length_in_samples(stream) * info.channels;
-						shouldExit = !buffer(buf);
+						if (shouldExit) {
+							Log::out<<"Stopping "<<fileName<<Log::newline;
+							playing = false;
+							return false;
+						}
 					}
-
-					if (shouldExit) {
-						playing = false;  
-						return false;
-					}
+					alSourceQueueBuffers(source->sourceId, 1, &buf);
 				}
-				alSourceQueueBuffers(source->sourceId, 1, &buf);
 			}
 
 		}

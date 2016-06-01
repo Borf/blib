@@ -37,7 +37,6 @@ namespace blib
 		stb_vorbis_info info;
 		ALuint buffers[2];
 		ALenum format;
-		size_t totalSamplesLeft;
 		bool buffer(ALuint buffer);
 
 		//wav stuff

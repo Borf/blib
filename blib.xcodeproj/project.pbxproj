@@ -10,35 +10,35 @@
 		06213CBE197E92F10070C415 /* AnimatableSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06213CBC197E92F10070C415 /* AnimatableSprite.cpp */; };
 		06213CC1197E93170070C415 /* StreamOut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06213CBF197E93170070C415 /* StreamOut.cpp */; };
 		06213CC3197E93560070C415 /* Ray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06213CC2197E93560070C415 /* Ray.cpp */; };
-		065008E11C074F1E005275C5 /* SpineModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 065008DF1C074F1E005275C5 /* SpineModel.cpp */; settings = {ASSET_TAGS = (); }; };
-		065008FE1C075016005275C5 /* Animation.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E31C075016005275C5 /* Animation.c */; settings = {ASSET_TAGS = (); }; };
-		065008FF1C075016005275C5 /* AnimationState.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E41C075016005275C5 /* AnimationState.c */; settings = {ASSET_TAGS = (); }; };
-		065009001C075016005275C5 /* AnimationStateData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E51C075016005275C5 /* AnimationStateData.c */; settings = {ASSET_TAGS = (); }; };
-		065009011C075016005275C5 /* Atlas.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E61C075016005275C5 /* Atlas.c */; settings = {ASSET_TAGS = (); }; };
-		065009021C075016005275C5 /* AtlasAttachmentLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E71C075016005275C5 /* AtlasAttachmentLoader.c */; settings = {ASSET_TAGS = (); }; };
-		065009031C075016005275C5 /* Attachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E81C075016005275C5 /* Attachment.c */; settings = {ASSET_TAGS = (); }; };
-		065009041C075016005275C5 /* AttachmentLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E91C075016005275C5 /* AttachmentLoader.c */; settings = {ASSET_TAGS = (); }; };
-		065009051C075016005275C5 /* Bone.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008EA1C075016005275C5 /* Bone.c */; settings = {ASSET_TAGS = (); }; };
-		065009061C075016005275C5 /* BoneData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008EB1C075016005275C5 /* BoneData.c */; settings = {ASSET_TAGS = (); }; };
-		065009071C075016005275C5 /* BoundingBoxAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008EC1C075016005275C5 /* BoundingBoxAttachment.c */; settings = {ASSET_TAGS = (); }; };
-		065009081C075016005275C5 /* Event.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008ED1C075016005275C5 /* Event.c */; settings = {ASSET_TAGS = (); }; };
-		065009091C075016005275C5 /* EventData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008EE1C075016005275C5 /* EventData.c */; settings = {ASSET_TAGS = (); }; };
-		0650090A1C075016005275C5 /* extension.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008EF1C075016005275C5 /* extension.c */; settings = {ASSET_TAGS = (); }; };
-		0650090B1C075016005275C5 /* IkConstraint.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F01C075016005275C5 /* IkConstraint.c */; settings = {ASSET_TAGS = (); }; };
-		0650090C1C075016005275C5 /* IkConstraintData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F11C075016005275C5 /* IkConstraintData.c */; settings = {ASSET_TAGS = (); }; };
-		0650090D1C075016005275C5 /* Json.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F21C075016005275C5 /* Json.c */; settings = {ASSET_TAGS = (); }; };
-		0650090E1C075016005275C5 /* MeshAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F41C075016005275C5 /* MeshAttachment.c */; settings = {ASSET_TAGS = (); }; };
-		0650090F1C075016005275C5 /* RegionAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F51C075016005275C5 /* RegionAttachment.c */; settings = {ASSET_TAGS = (); }; };
-		065009101C075016005275C5 /* Skeleton.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F61C075016005275C5 /* Skeleton.c */; settings = {ASSET_TAGS = (); }; };
-		065009111C075016005275C5 /* SkeletonBounds.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F71C075016005275C5 /* SkeletonBounds.c */; settings = {ASSET_TAGS = (); }; };
-		065009121C075016005275C5 /* SkeletonData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F81C075016005275C5 /* SkeletonData.c */; settings = {ASSET_TAGS = (); }; };
-		065009131C075016005275C5 /* SkeletonJson.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F91C075016005275C5 /* SkeletonJson.c */; settings = {ASSET_TAGS = (); }; };
-		065009141C075016005275C5 /* Skin.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008FA1C075016005275C5 /* Skin.c */; settings = {ASSET_TAGS = (); }; };
-		065009151C075016005275C5 /* SkinnedMeshAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008FB1C075016005275C5 /* SkinnedMeshAttachment.c */; settings = {ASSET_TAGS = (); }; };
-		065009161C075016005275C5 /* Slot.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008FC1C075016005275C5 /* Slot.c */; settings = {ASSET_TAGS = (); }; };
-		065009171C075016005275C5 /* SlotData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008FD1C075016005275C5 /* SlotData.c */; settings = {ASSET_TAGS = (); }; };
-		0650091A1C075044005275C5 /* stb_perlin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 065009181C075044005275C5 /* stb_perlin.cpp */; settings = {ASSET_TAGS = (); }; };
-		0650091D1C19E06E005275C5 /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 0650091B1C19E06E005275C5 /* stb_vorbis.c */; settings = {ASSET_TAGS = (); }; };
+		065008E11C074F1E005275C5 /* SpineModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 065008DF1C074F1E005275C5 /* SpineModel.cpp */; };
+		065008FE1C075016005275C5 /* Animation.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E31C075016005275C5 /* Animation.c */; };
+		065008FF1C075016005275C5 /* AnimationState.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E41C075016005275C5 /* AnimationState.c */; };
+		065009001C075016005275C5 /* AnimationStateData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E51C075016005275C5 /* AnimationStateData.c */; };
+		065009011C075016005275C5 /* Atlas.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E61C075016005275C5 /* Atlas.c */; };
+		065009021C075016005275C5 /* AtlasAttachmentLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E71C075016005275C5 /* AtlasAttachmentLoader.c */; };
+		065009031C075016005275C5 /* Attachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E81C075016005275C5 /* Attachment.c */; };
+		065009041C075016005275C5 /* AttachmentLoader.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008E91C075016005275C5 /* AttachmentLoader.c */; };
+		065009051C075016005275C5 /* Bone.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008EA1C075016005275C5 /* Bone.c */; };
+		065009061C075016005275C5 /* BoneData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008EB1C075016005275C5 /* BoneData.c */; };
+		065009071C075016005275C5 /* BoundingBoxAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008EC1C075016005275C5 /* BoundingBoxAttachment.c */; };
+		065009081C075016005275C5 /* Event.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008ED1C075016005275C5 /* Event.c */; };
+		065009091C075016005275C5 /* EventData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008EE1C075016005275C5 /* EventData.c */; };
+		0650090A1C075016005275C5 /* extension.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008EF1C075016005275C5 /* extension.c */; };
+		0650090B1C075016005275C5 /* IkConstraint.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F01C075016005275C5 /* IkConstraint.c */; };
+		0650090C1C075016005275C5 /* IkConstraintData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F11C075016005275C5 /* IkConstraintData.c */; };
+		0650090D1C075016005275C5 /* Json.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F21C075016005275C5 /* Json.c */; };
+		0650090E1C075016005275C5 /* MeshAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F41C075016005275C5 /* MeshAttachment.c */; };
+		0650090F1C075016005275C5 /* RegionAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F51C075016005275C5 /* RegionAttachment.c */; };
+		065009101C075016005275C5 /* Skeleton.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F61C075016005275C5 /* Skeleton.c */; };
+		065009111C075016005275C5 /* SkeletonBounds.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F71C075016005275C5 /* SkeletonBounds.c */; };
+		065009121C075016005275C5 /* SkeletonData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F81C075016005275C5 /* SkeletonData.c */; };
+		065009131C075016005275C5 /* SkeletonJson.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008F91C075016005275C5 /* SkeletonJson.c */; };
+		065009141C075016005275C5 /* Skin.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008FA1C075016005275C5 /* Skin.c */; };
+		065009151C075016005275C5 /* SkinnedMeshAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008FB1C075016005275C5 /* SkinnedMeshAttachment.c */; };
+		065009161C075016005275C5 /* Slot.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008FC1C075016005275C5 /* Slot.c */; };
+		065009171C075016005275C5 /* SlotData.c in Sources */ = {isa = PBXBuildFile; fileRef = 065008FD1C075016005275C5 /* SlotData.c */; };
+		0650091A1C075044005275C5 /* stb_perlin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 065009181C075044005275C5 /* stb_perlin.cpp */; };
+		0650091D1C19E06E005275C5 /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 0650091B1C19E06E005275C5 /* stb_vorbis.c */; };
 		069DD2D2194655DB00583161 /* IOSFileSystemHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 069DD2D1194655DB00583161 /* IOSFileSystemHandler.mm */; };
 		069DD70319465EDD00583161 /* b2BroadPhase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD2DD19465ED900583161 /* b2BroadPhase.cpp */; };
 		069DD70419465EDD00583161 /* b2CollideCircle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 069DD2DF19465ED900583161 /* b2CollideCircle.cpp */; };
@@ -160,10 +160,11 @@
 		06B3D9551AE54DDD0036CC72 /* AudioManagerOpenAL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06B3D9511AE54DDD0036CC72 /* AudioManagerOpenAL.cpp */; };
 		06B3D9561AE54DDD0036CC72 /* CWaves.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06B3D9531AE54DDD0036CC72 /* CWaves.cpp */; };
 		06DD1C9E1A69F03500DE4147 /* json.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06DD1C9C1A69F03500DE4147 /* json.cpp */; };
-		06F37BC21BC6919F0063954F /* NavMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BB91BC6919F0063954F /* NavMesh.cpp */; settings = {ASSET_TAGS = (); }; };
-		06F37BC31BC6919F0063954F /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBB1BC6919F0063954F /* Resource.cpp */; settings = {ASSET_TAGS = (); }; };
-		06F37BC41BC6919F0063954F /* SkelAnimatedModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBD1BC6919F0063954F /* SkelAnimatedModel.cpp */; settings = {ASSET_TAGS = (); }; };
-		06F37BC51BC6919F0063954F /* StaticModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBF1BC6919F0063954F /* StaticModel.cpp */; settings = {ASSET_TAGS = (); }; };
+		06F37BC21BC6919F0063954F /* NavMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BB91BC6919F0063954F /* NavMesh.cpp */; };
+		06F37BC31BC6919F0063954F /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBB1BC6919F0063954F /* Resource.cpp */; };
+		06F37BC41BC6919F0063954F /* SkelAnimatedModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBD1BC6919F0063954F /* SkelAnimatedModel.cpp */; };
+		06F37BC51BC6919F0063954F /* StaticModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBF1BC6919F0063954F /* StaticModel.cpp */; };
+		06F99AF61CF5C7990044F0C8 /* b2MotorJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F99AF41CF5C7990044F0C8 /* b2MotorJoint.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -716,7 +717,7 @@
 		069E99D81944A850001C0AF2 /* WM.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WM.cpp; sourceTree = "<group>"; };
 		069E99D91944A850001C0AF2 /* WM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WM.h; sourceTree = "<group>"; };
 		06B324041A6AF13800422B84 /* ResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
-		06B3D9511AE54DDD0036CC72 /* AudioManagerOpenAL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioManagerOpenAL.cpp; sourceTree = "<group>"; };
+		06B3D9511AE54DDD0036CC72 /* AudioManagerOpenAL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioManagerOpenAL.cpp; sourceTree = "<group>"; usesTabs = 1; };
 		06B3D9521AE54DDD0036CC72 /* AudioManagerOpenAL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManagerOpenAL.h; sourceTree = "<group>"; };
 		06B3D9531AE54DDD0036CC72 /* CWaves.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CWaves.cpp; sourceTree = "<group>"; };
 		06B3D9541AE54DDD0036CC72 /* CWaves.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWaves.h; sourceTree = "<group>"; };
@@ -732,6 +733,8 @@
 		06F37BBF1BC6919F0063954F /* StaticModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaticModel.cpp; sourceTree = "<group>"; };
 		06F37BC01BC6919F0063954F /* StaticModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaticModel.h; sourceTree = "<group>"; };
 		06F37BC11BC6919F0063954F /* TouchListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchListener.h; sourceTree = "<group>"; };
+		06F99AF41CF5C7990044F0C8 /* b2MotorJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2MotorJoint.cpp; sourceTree = "<group>"; };
+		06F99AF51CF5C7990044F0C8 /* b2MotorJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2MotorJoint.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -921,6 +924,8 @@
 		069DD32319465ED900583161 /* Joints */ = {
 			isa = PBXGroup;
 			children = (
+				06F99AF41CF5C7990044F0C8 /* b2MotorJoint.cpp */,
+				06F99AF51CF5C7990044F0C8 /* b2MotorJoint.h */,
 				069DD32419465ED900583161 /* b2DistanceJoint.cpp */,
 				069DD32519465ED900583161 /* b2DistanceJoint.h */,
 				069DD32619465ED900583161 /* b2FrictionJoint.cpp */,
@@ -1651,6 +1656,7 @@
 				069DD71319465EDD00583161 /* b2StackAllocator.cpp in Sources */,
 				069E99EC1944A850001C0AF2 /* Window.cpp in Sources */,
 				065009101C075016005275C5 /* Skeleton.c in Sources */,
+				06F99AF61CF5C7990044F0C8 /* b2MotorJoint.cpp in Sources */,
 				069DD70719465EDD00583161 /* b2Collision.cpp in Sources */,
 				069DD2D2194655DB00583161 /* IOSFileSystemHandler.mm in Sources */,
 				06B3D9551AE54DDD0036CC72 /* AudioManagerOpenAL.cpp in Sources */,
