@@ -288,9 +288,13 @@ namespace blib
 	{
 		if (canOnlyPlayOnce && playing)
 			return;
+		manager->mutex.lock();
 		Source* newSource = manager->getFreeSource();
-        if(!newSource)
-            return;
+		if (!newSource)
+		{
+			manager->mutex.unlock();
+			return;
+		}
 		source = newSource;
 		source->lastSample = this;
 		this->looping = loop;
@@ -322,14 +326,17 @@ namespace blib
 		}
 		playing = true;
 		checkError();
+		manager->mutex.unlock();
 	}
 
 	void OpenALAudioSample::stop()
 	{
+		manager->mutex.lock();
 		playing = false;
 		alSourceStop(source->sourceId);
 		if(bufferId == 0)
 			alSourceUnqueueBuffers(source->sourceId, 2, buffers);
+		manager->mutex.unlock();
 
 
 	}
@@ -394,9 +401,10 @@ namespace blib
 
 	void AudioManagerOpenAL::update()
 	{
+		mutex.lock();
 		for (OpenALAudioSample* sample : samples)
 			sample->update();
-
+		mutex.unlock();
 	}
 
 }

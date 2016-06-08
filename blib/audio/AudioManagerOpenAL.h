@@ -5,6 +5,7 @@
 #include <blib/util/stb_vorbis.h>
 #include <vector>
 #include <thread>
+#include <mutex>
 
 #ifdef BLIB_IOS
 #include <OpenAL/al.h>
@@ -62,7 +63,7 @@ namespace blib
 	class AudioManagerOpenAL : public AudioManager
 	{
 	public:
-
+		std::mutex mutex;
 		std::vector<Source> sources;
 		std::vector<OpenALAudioSample*> samples;
 		int lastSource = 0;
