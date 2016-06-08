@@ -157,7 +157,7 @@ namespace blib
 	public:
 		RenderState renderState;
 
-		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch);
+		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch, int textureSize = 1024);
 		~ParticleSystem();
 		void update(double elapsedTime);
 		void updateParticles(Particle* particles, int& nParticles, double elapsedTime);

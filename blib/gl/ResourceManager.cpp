@@ -33,7 +33,7 @@ namespace blib
 
 			spritesheet = std::bind(&ResourceManager::getSpriteSheet, this, std::placeholders::_1);
 
-			texturemap = std::bind(&ResourceManager::getTextureMap, this);
+			texturemap =  std::bind(&ResourceManager::getTextureMap, this, std::placeholders::_1, std::placeholders::_2);
 			font		= std::bind(&ResourceManager::getFont, this, std::placeholders::_1);
 		}
 
@@ -72,9 +72,9 @@ namespace blib
 			return new Shader();
 		}
 
-		blib::TextureMap* ResourceManager::getTextureMap( )
+		blib::TextureMap* ResourceManager::getTextureMap(int width, int height )
 		{
-			return new TextureMap();
+			return new TextureMap(width, height);
 		}
 
 		blib::FBO* ResourceManager::getFBO()

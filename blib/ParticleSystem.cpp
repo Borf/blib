@@ -22,11 +22,11 @@ using blib::util::Log;
 namespace blib
 {
 
-	ParticleSystem::ParticleSystem( Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch )
+	ParticleSystem::ParticleSystem( Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch, int textureSize )
 	{
 		this->spriteBatch = spriteBatch;
 		this->renderer = renderer;
-		textureMap = resourceManager->getResource<TextureMap>();
+		textureMap = resourceManager->getResource<TextureMap>(textureSize, textureSize);
 //		renderState = baseRenderState;
 		renderState.blendEnabled = true;
 		renderState.srcBlendColor = blib::RenderState::SRC_ALPHA;

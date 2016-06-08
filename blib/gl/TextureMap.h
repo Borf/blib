@@ -51,7 +51,7 @@ namespace blib
 			inline bool &isTaken(int x, int y);
 			void save(std::string filename);
 
-			TextureMap();
+			TextureMap(int width, int height);
 			~TextureMap();
 			blib::TextureMap::TexInfo* addTexture(std::string filename);
 			void use();

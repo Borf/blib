@@ -13,12 +13,12 @@ namespace blib
 	{
 
 
-		TextureMap::TextureMap()
+		TextureMap::TextureMap(int w, int h)
 		{
 			name = "Texturemap";
 			texid = 0;
-			width = 2048;
-			height = 2048;
+			width = w;
+			height = h;
 #ifdef BLIB_IOS
 //            width = 1024;
 //            height = 1024;

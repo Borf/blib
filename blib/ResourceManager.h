@@ -92,7 +92,7 @@ namespace blib
 		std::function<VBO*()>											vbo;
 		std::function<VIO*()>											vio;
 		std::function<FBO*()>											fbo;
-		std::function<TextureMap*()>									texturemap;
+		std::function<TextureMap*(int,int)>								texturemap;
 
 	};
 
@@ -122,9 +122,14 @@ namespace blib
 		return (SpriteSheet*)regResource(spritesheet(name));
 	}
 	template<>
+	inline TextureMap* ResourceManager::getResource<TextureMap>(int width, int height)
+	{
+		return (TextureMap*)regResource(texturemap(width, height));
+	}
+	template<>
 	inline TextureMap* ResourceManager::getResource<TextureMap>()
 	{
-		return (TextureMap*)regResource(texturemap());
+		return (TextureMap*)regResource(texturemap(2048, 2048));
 	}
 	template<>
 	inline Shader* ResourceManager::getResource<Shader>(const std::string &name)
