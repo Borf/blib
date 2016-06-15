@@ -86,6 +86,7 @@ namespace blib
                 T::originalHeight = T::originalWidth;
                 T::width = T::originalWidth;
                 T::height = T::originalWidth;
+                T::center = glm::vec2(T::width/2, T::height/2);
                 //Log::out<<T::originalWidth<<Log::newline;
                 T::loaded = true;
                 return;

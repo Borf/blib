@@ -333,8 +333,9 @@ namespace blib
 	{
 		manager->mutex.lock();
 		playing = false;
-		alSourceStop(source->sourceId);
-		if(bufferId == 0)
+		if(source)
+			alSourceStop(source->sourceId);
+		if(bufferId == 0 && source)
 			alSourceUnqueueBuffers(source->sourceId, 2, buffers);
 		manager->mutex.unlock();
 
