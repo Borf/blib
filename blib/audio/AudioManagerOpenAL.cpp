@@ -113,6 +113,7 @@ namespace blib
 			Source source;
 			source.lastSample = NULL;
 			source.sourceId = 0;
+			source.index = i;
 			alGenSources((ALuint)1, &source.sourceId);
 			alSourcef(source.sourceId, AL_PITCH, 1.0f);
 			alSourcef(source.sourceId, AL_GAIN, 1.0f);
@@ -298,6 +299,8 @@ namespace blib
 		source = newSource;
 		source->lastSample = this;
 		this->looping = loop;
+
+		Log::out << "Playing " << this->fileName << " on source " << source->index << Log::newline;
 		
 		if (bufferId != 0) //wav
 		{
@@ -317,6 +320,7 @@ namespace blib
 			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
 			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
 			alSourcei(source->sourceId, AL_LOOPING, 0);
+			alSourcei(source->sourceId, AL_BUFFER, 0);
 
 			checkError();
 			alSourceQueueBuffers(source->sourceId, 2, buffers);
@@ -331,12 +335,15 @@ namespace blib
 
 	void OpenALAudioSample::stop()
 	{
+		if (!playing)
+			return;
 		manager->mutex.lock();
 		playing = false;
 		if(source)
 			alSourceStop(source->sourceId);
 		if(bufferId == 0 && source)
 			alSourceUnqueueBuffers(source->sourceId, 2, buffers);
+
 		manager->mutex.unlock();
 
 

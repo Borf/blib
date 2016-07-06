@@ -24,6 +24,8 @@ namespace blib
 		OpenALAudioSample* lastSample = NULL;
 		ALuint sourceId;
 
+		int index;
+
 		bool isPlaying();
 	};
 
