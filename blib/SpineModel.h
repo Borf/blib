@@ -37,6 +37,9 @@ namespace blib
 		void stopAnimation(const std::string &name);
 
 		void setAnimation(const std::string &name, float time);
+		
+		void setAttachment(const std::string &slot, const std::string &attachment);
+
 		bool isPlaying();
 		blib::math::Polygon getPart(const std::string &name);
 		std::pair<blib::Texture*, std::vector<std::pair<glm::vec2, glm::vec2> > > getSlot(const std::string &name);

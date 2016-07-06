@@ -256,6 +256,12 @@ namespace blib
 		}
 	}
 
+	void SpineModelInstance::setAttachment(const std::string &slot, const std::string &attachment)
+	{
+		if (!spSkeleton_setAttachment(skeleton, slot.c_str(), attachment.c_str()))
+			Log::out << "Error setting attachment '" << attachment << "' to slot " << slot << Log::newline;
+	}
+
 
 
 	void SpineModelInstance::draw(const glm::mat4& transform, SpriteBatch& spriteBatch)
