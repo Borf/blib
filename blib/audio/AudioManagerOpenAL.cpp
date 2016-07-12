@@ -287,7 +287,7 @@ namespace blib
 
 	void OpenALAudioSample::play(bool loop)
 	{
-		if (canOnlyPlayOnce && playing)
+		if (canOnlyPlayOnce && playing && isPlaying())
 			return;
 		manager->mutex.lock();
 		Source* newSource = manager->getFreeSource();
