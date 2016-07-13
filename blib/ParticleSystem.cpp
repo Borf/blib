@@ -430,14 +430,16 @@ namespace blib
 		if (dir[dir.length() - 1] != '/')
 			dir += "/";
 		std::vector<std::string> files = blib::util::FileSystem::getFileList(dir);
+		Log::out << "Caching ";
 		for (const std::string &file : files)
 		{
 			if (file[0] == '.')
 				continue;
-			Log::out << "Caching " << file << Log::newline;
+			Log::out << file << " ";
 			if (cache.find(dir + file) == cache.end())
 				cache[dir + file] = new EmitterTemplate(dir + file, textureMap, textureFolder);
 		}
+		Log::out << Log::newline;
 	}
 
 }

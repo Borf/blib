@@ -274,7 +274,11 @@ namespace blib
 		while (((i + 1) % sources.size()) != lastSource)
 		{
 			if (!sources[i].isPlaying())
+			{
+				if(sources[i].lastSample)
+					sources[i].lastSample->source = nullptr;
 				return &sources[i];
+			}
 			i = (i + 1) % sources.size();
 		}
 		return NULL;
