@@ -355,6 +355,8 @@ namespace blib
 
 	bool OpenALAudioSample::isPlaying()
 	{
+		if (!source)
+			return false;
 		return source->isPlaying();
 	}
 
