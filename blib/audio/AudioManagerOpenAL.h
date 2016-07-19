@@ -72,7 +72,6 @@ namespace blib
 		bool running;
 	public:
 		std::thread backgroundThread;
-
 		AudioManagerOpenAL();
 		virtual ~AudioManagerOpenAL();
 		virtual void init();

@@ -293,6 +293,9 @@ namespace blib
 	{
 		if (canOnlyPlayOnce && playing && isPlaying())
 			return;
+		if (manager->canPlay && !manager->canPlay(this))
+			return;
+
 		manager->mutex.lock();
 		Source* newSource = manager->getFreeSource();
 		if (!newSource)

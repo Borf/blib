@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <functional>
 
 namespace blib
 {
@@ -13,11 +14,15 @@ namespace blib
 		virtual void play(bool loop = false) = 0;
 		virtual void stop() = 0;
 		virtual bool isPlaying() = 0;
+
+		int userData = 0;
 	};
 
 	class AudioManager
 	{
 	public:
+		std::function<bool(AudioSample*)> canPlay = nullptr;
+
 		AudioManager() {};
 		virtual ~AudioManager() {};
 		static AudioManager* getInstance(); // is implemented in AudioManagerWindows.cpp and AudioManagerAndroid.cpp

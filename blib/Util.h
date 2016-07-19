@@ -23,7 +23,7 @@ namespace blib
 
 		std::string toString(int number);
 		std::string toString(float number);
-		std::vector<std::string> split(std::string toSplit, std::string seperator);
+		std::vector<std::string> split(std::string toSplit, const std::string &seperator, bool removeEmpty = true);
 		static inline std::string &ltrim(std::string &s) {
 			s.erase(0, s.find_first_not_of(" \n\r\t"));
 			return s;
