@@ -352,7 +352,7 @@ namespace blib
 			alSourceStop(source->sourceId);
 		if(bufferId == 0 && source)
 			alSourceUnqueueBuffers(source->sourceId, 2, buffers);
-
+		source = nullptr;
 		manager->mutex.unlock();
 
 
