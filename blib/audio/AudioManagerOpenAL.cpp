@@ -339,23 +339,29 @@ namespace blib
 
 	void OpenALAudioSample::stop()
 	{
+		manager->mutex.lock();
 		if (!playing || !isPlaying())
 		{
-			if(playing && source)
+			if (source)
+			{
 				alSourceStop(source->sourceId);
+				source->lastSample = nullptr;
+			}
 			playing = false;
+			source = nullptr;
+			manager->mutex.unlock();
 			return;
 		}
-		manager->mutex.lock();
 		playing = false;
-		if(source)
+		if (source)
+		{
 			alSourceStop(source->sourceId);
+			source->lastSample = nullptr;
+		}
 		if(bufferId == 0 && source)
 			alSourceUnqueueBuffers(source->sourceId, 2, buffers);
 		source = nullptr;
 		manager->mutex.unlock();
-
-
 	}
 
 	bool OpenALAudioSample::isPlaying()
