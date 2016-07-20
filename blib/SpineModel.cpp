@@ -258,7 +258,7 @@ namespace blib
 
 	void SpineModelInstance::setAttachment(const std::string &slot, const std::string &attachment)
 	{
-		if (!spSkeleton_setAttachment(skeleton, slot.c_str(), attachment.c_str()))
+		if (!spSkeleton_setAttachment(skeleton, slot.c_str(), attachment != "" ? attachment.c_str() : NULL))
 			Log::out << "Error setting attachment '" << attachment << "' to slot " << slot << Log::newline;
 	}
 
