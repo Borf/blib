@@ -143,6 +143,7 @@ namespace blib
 
 	AudioSample* AudioManagerOpenAL::loadSample(const std::string &filename)
 	{
+		mutex.lock();
 		OpenALAudioSample* sample = NULL;
 		if (filename.substr(filename.size() - 4) == ".wav")
 			sample = loadSampleWav(filename);
@@ -152,6 +153,7 @@ namespace blib
 		{
 			samples.push_back(sample);
 		}
+		mutex.unlock();
 		return sample;
 	}
 
@@ -432,6 +434,18 @@ namespace blib
 		mutex.lock();
 		for (OpenALAudioSample* sample : samples)
 			sample->update();
+		mutex.unlock();
+	}
+
+	void AudioManagerOpenAL::stopAllSounds()
+	{
+		mutex.lock();
+		for (OpenALAudioSample* sample : samples)
+		{
+			mutex.unlock();
+			sample->stop();
+			mutex.lock();
+		}
 		mutex.unlock();
 	}
 

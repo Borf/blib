@@ -84,6 +84,7 @@ namespace blib
 		virtual OpenALAudioSample* loadSampleOgg(const std::string &filename);
 
 		Source* getFreeSource();
+		virtual void stopAllSounds() override;
 
 		virtual void update(); //TODO: move to background thread
 	};

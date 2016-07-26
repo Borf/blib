@@ -35,6 +35,9 @@ namespace blib
 
 		virtual void playSound(std::string filename) = 0;
 
+
+		virtual void stopAllSounds() {};
+
 		virtual void update() {};
 	};
 }
