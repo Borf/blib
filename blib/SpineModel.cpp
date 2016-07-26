@@ -103,6 +103,8 @@ namespace blib
 	void SpineModelInstance::stopAnimation(const std::string &name)
 	{
 		spAnimationState_clearTrack(state, 0);
+		spSkeleton_setToSetupPose(skeleton);
+		update(0);
 	}
 
 	bool SpineModelInstance::isPlaying()
