@@ -316,7 +316,7 @@ namespace blib
 			alSourcei(source->sourceId, AL_BUFFER, 0);
 			alSourcei(source->sourceId, AL_BUFFER, bufferId);
 			alSourcef(source->sourceId, AL_PITCH, 1.0f);
-			alSourcef(source->sourceId, AL_GAIN, 1.0f);
+			alSourcef(source->sourceId, AL_GAIN, volume/100.0f);
 			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
 			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
 			alSourcei(source->sourceId, AL_LOOPING, loop);
@@ -325,7 +325,7 @@ namespace blib
 		else //ogg
 		{
 			alSourcef(source->sourceId, AL_PITCH, 1.0f);
-			alSourcef(source->sourceId, AL_GAIN, 1.0f);
+			alSourcef(source->sourceId, AL_GAIN, volume/100.0f);
 			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
 			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
 			alSourcei(source->sourceId, AL_LOOPING, 0);
@@ -378,6 +378,7 @@ namespace blib
 
 	void OpenALAudioSample::setVolume(int volume)
 	{
+		this->volume = volume;
 		if(source)
 			alSourcef(source->sourceId, AL_GAIN, volume/100.0f);
 	}

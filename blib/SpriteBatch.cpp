@@ -11,6 +11,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <blib/json.h>
+#include <locale>
+#include <codecvt>
 
 using blib::util::Log;
 
@@ -187,13 +189,18 @@ namespace blib
 	}
 
 
-	glm::vec2 SpriteBatch::draw(const Font* font, const std::string &text, const glm::mat4 &transform, const glm::vec4 &color, glm::vec2 &cursor, int wrapWidth)
+	glm::vec2 SpriteBatch::draw(const Font* font, const std::string &utf8, const glm::mat4 &transform, const glm::vec4 &color, glm::vec2 &cursor, int wrapWidth)
 	{
 		glm::vec2 texFactor(1.0f / font->texture->width, 1.0f / font->texture->height);
 
 		float x = cursor.x;
 		float y = cursor.y;
 		int lineHeight = 12;
+#ifdef BLIB_IOS
+        std::u32string text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
+#else
+         std::string text = utf8;
+#endif
 		for(size_t i = 0; i < text.size(); i++)
 		{
 			if (text[i] == '\n' || (x > wrapWidth && wrapWidth != -1))

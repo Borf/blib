@@ -52,6 +52,7 @@ namespace blib
 
 		bool looping;
 		bool playing;
+        int volume = 100;
 
 		virtual void play(bool loop) override;
 		virtual void stop() override;
