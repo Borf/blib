@@ -44,6 +44,11 @@ namespace blib
 			this->topleft = topleft;
 			this->bottomright = bottomright;
 		}
+		Rectangle::Rectangle(const Rectangle & rectangle)
+		{
+			this->topleft = rectangle.topleft;
+			this->bottomright = rectangle.bottomright;
+		}
 
 		void Rectangle::buildLines()
 		{

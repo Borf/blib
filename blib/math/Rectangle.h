@@ -24,6 +24,7 @@ namespace blib
 			Rectangle(glm::vec2 topleft, float width, float height);
 			Rectangle(glm::vec2 topleft, int width, int height);
 			Rectangle(glm::vec2 topleft, glm::vec2 bottomright);
+			Rectangle(const Rectangle &rectangle);
 
 			glm::vec2 topleft;
 			glm::vec2 bottomright;
