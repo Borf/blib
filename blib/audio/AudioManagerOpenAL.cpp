@@ -241,11 +241,11 @@ namespace blib
 
 	bool OpenALAudioSample::buffer(ALuint buffer)
 	{
-		Log::out << "AudioManager: buffering sound " << fileName << " to buffer " << buffer << Log::newline;
+	//	Log::out << "AudioManager: buffering sound " << fileName << " to buffer " << buffer << Log::newline;
 		//Uncomment this to avoid VLAs
 		//#define BUFFER_SIZE 4096*32
 #ifndef BUFFER_SIZE//VLAs ftw
-#define BUFFER_SIZE 4096*32*4
+#define BUFFER_SIZE 4096*2
 #endif
 		ALshort* pcm = new ALshort[BUFFER_SIZE];
 		int  size = 0;
