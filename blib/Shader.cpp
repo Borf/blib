@@ -56,6 +56,9 @@ namespace blib
 		case Shader::Vec2:
 			glUniform2f(location, (float&)state[uniform->index], (float&)state[uniform->index + 4]);
 			break;
+		case Shader::Bool:
+			glUniform1i(location, (bool&)state[uniform->index] ? 1 : 0);
+			break;
 		case Shader::Vec3:
 			glUniform3f(location, (float&)state[uniform->index], (float&)state[uniform->index + 4], (float&)state[uniform->index + 8]);
 			break;

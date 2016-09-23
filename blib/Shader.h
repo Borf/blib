@@ -27,6 +27,7 @@ namespace blib
 			Vec4,
 			Mat3,
 			Mat4,
+			Bool,
 			Struct,
 			Array,
 		};
@@ -168,6 +169,9 @@ namespace blib
 				break;
 			case Int:
 				uniform = new Uniform(name, sizeof(int), type);
+				break;
+			case Bool:
+				uniform = new Uniform(name, sizeof(bool), type);
 				break;
 			case Vec2:
 				uniform = new Uniform(name, sizeof(float)* 2, type);
