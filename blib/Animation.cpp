@@ -70,8 +70,15 @@ namespace blib
 			nextKeyFrame++;
 			if(nextKeyFrame >= (int)currentState->keyFrames.size())
 			{
-				nextKeyFrame = 0;
-				time -= currentState->length;
+				if (currentState->whenDone != "")
+				{
+					setState(currentState->whenDone);
+				}
+				else
+				{
+					nextKeyFrame = 0;
+					time -= currentState->length;
+				}
 			}
 		}
 
@@ -113,6 +120,8 @@ namespace blib
 		length = config["length"].asFloat();
 		for(size_t i = 0; i < config["keyframes"].size(); i++)
 			keyFrames.push_back(KeyFrame(animation, config["keyframes"][i]));
+		if(config.isMember("whendone"))
+			whenDone = config["whendone"];
 	}
 
 

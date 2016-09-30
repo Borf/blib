@@ -45,6 +45,7 @@ namespace blib
 			};
 			State(const Animation& animation, json::Value &config);
 
+			std::string whenDone;
 
 			float length;
 			std::vector<KeyFrame> keyFrames;
