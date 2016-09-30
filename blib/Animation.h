@@ -58,7 +58,7 @@ namespace blib
 		Texture* texture;
 		Bone* rootBone;
 
-		std::vector<blib::math::Rectangle> frames;
+		std::vector<std::pair<glm::vec2, blib::math::Rectangle> > frames;
 		std::map<std::string, State*> states;
 		std::map<std::string, Bone*> bones;
 

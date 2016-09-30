@@ -23,10 +23,19 @@ namespace blib
 		for(size_t i = 0; i < config["frames"].size(); i++)
 		{
 			blib::json::Value &v = config["frames"][i];
-			frames.push_back(blib::math::Rectangle( v["pos"][0].asFloat() / texture->originalWidth, 
-													v["pos"][1].asFloat() / texture->originalHeight, 
-													v["size"][0].asFloat() / texture->originalWidth, 
-													v["size"][1].asFloat() / texture->originalHeight));
+
+			blib::math::Rectangle rect(v["pos"][0].asFloat() / texture->originalWidth,
+				v["pos"][1].asFloat() / texture->originalHeight,
+				v["size"][0].asFloat() / texture->originalWidth,
+				v["size"][1].asFloat() / texture->originalHeight);
+
+			glm::vec2 center;
+			if (v.isMember("center"))
+				center = glm::vec2(	v["center"][0].asFloat() / texture->originalWidth,
+									v["center"][1].asFloat() / texture->originalHeight);
+			else
+				center = rect.center();
+			frames.push_back(std::pair<glm::vec2, blib::math::Rectangle>(center, rect));
 		}
 			
 		
@@ -108,7 +117,9 @@ namespace blib
 
 	void Animation::Bone::draw(const Animation& animation, SpriteBatch &spritebatch, glm::mat4 transform, const glm::vec4& color)
 	{
-		spritebatch.draw(animation.texture, transform, animation.frames[frame].size() * glm::vec2(animation.texture->originalWidth, animation.texture->originalHeight) * 0.5f, animation.frames[frame], color);
+		spritebatch.draw(animation.texture, transform, 
+			animation.frames[frame].first * glm::vec2(animation.texture->originalWidth, animation.texture->originalHeight), 
+			animation.frames[frame].second, color);
 	}
 
 	/////////////////////////state
