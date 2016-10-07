@@ -38,7 +38,7 @@ namespace blib
 			~Cache();
 
 			void initVbo(SpriteBatch& spriteBatch);
-			void drawVbo(SpriteBatch& spriteBatch);
+			void drawVbo(SpriteBatch& spriteBatch, const glm::mat4 &mat = glm::mat4());
 		};
 	private:
 
