@@ -88,7 +88,7 @@ namespace blib
 					nextKeyFrame = 0;
 					time -= currentState->length;
 				}
-			}
+			}	
 		}
 
 		currentKeyFrame = (nextKeyFrame - 1 + currentState->keyFrames.size()) % currentState->keyFrames.size();
@@ -132,7 +132,7 @@ namespace blib
 		for(size_t i = 0; i < config["keyframes"].size(); i++)
 			keyFrames.push_back(KeyFrame(animation, config["keyframes"][i]));
 		if(config.isMember("whendone"))
-			whenDone = config["whendone"];
+			whenDone = config["whendone"].asString();
 	}
 
 

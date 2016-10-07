@@ -129,15 +129,17 @@ namespace blib
 		void Shader::link()
 		{
 			glLinkProgram(programId);
-			/*
+			
 			int length, charsWritten;
 			glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &length);
-			char* infolog = new char[length+1];
-			memset(infolog, 0, length+1);
-			glGetProgramInfoLog(programId, length, &charsWritten, infolog);
-			logger<<"Error compiling Program :\n"<<infolog<<Log::newline;
-			delete[] infolog;*/
-
+            if(length > 0)
+            {
+                char* infolog = new char[length+1];
+                memset(infolog, 0, length+1);
+                glGetProgramInfoLog(programId, length, &charsWritten, infolog);
+                Log::out<<"Error linking Program :\n"<<infolog<<Log::newline;
+                delete[] infolog;
+            }
 
 		}
 
