@@ -34,7 +34,7 @@ namespace blib
 				center = glm::vec2(	v["center"][0].asFloat() / texture->originalWidth,
 									v["center"][1].asFloat() / texture->originalHeight);
 			else
-				center = rect.center();
+				center = rect.center() / glm::vec2(texture->originalWidth, texture->originalHeight);
 			frames.push_back(std::pair<glm::vec2, blib::math::Rectangle>(center, rect));
 		}
 			
