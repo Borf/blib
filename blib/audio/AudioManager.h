@@ -8,6 +8,7 @@ namespace blib
 	class AudioSample
 	{
 	public:
+		virtual ~AudioSample() {};
 		bool canOnlyPlayOnce = false;
 
 		virtual void setVolume(int volume) = 0;

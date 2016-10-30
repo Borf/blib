@@ -54,6 +54,8 @@ namespace blib
 		bool playing;
         int volume = 100;
 
+
+		~OpenALAudioSample();
 		virtual void play(bool loop) override;
 		virtual void stop() override;
 		virtual bool isPlaying() override;

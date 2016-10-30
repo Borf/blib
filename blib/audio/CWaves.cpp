@@ -422,7 +422,7 @@ WAVERESULT CWaves::DeleteWaveFile(WAVEID WaveID)
 	if (IsWaveID(WaveID))
 	{
 		if (m_WaveIDs[WaveID]->pData)
-			delete m_WaveIDs[WaveID]->pData;
+			delete [] m_WaveIDs[WaveID]->pData;
 
 		if (m_WaveIDs[WaveID]->pFile)
 			delete (m_WaveIDs[WaveID]->pFile);

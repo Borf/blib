@@ -11,7 +11,7 @@
 #include <al/alc.h>
 #endif
 #include "CWaves.h"
-
+#include <algorithm>
 
 
 
@@ -186,10 +186,11 @@ namespace blib
 			checkError();
 			if (alGetError() == AL_NO_ERROR)
 				bReturn = AL_TRUE;
-
 			w.DeleteWaveFile(WaveID);
 
 		}
+		else
+			Log::out << "Error loading wave file: " << filename << Log::newline;
 		checkError();
 		OpenALAudioSample* newSample = new OpenALAudioSample();
 		newSample->fileName = filename;
@@ -291,6 +292,14 @@ namespace blib
 
 
 
+	OpenALAudioSample::~OpenALAudioSample()
+	{
+		if (manager)
+		{
+			manager->samples.erase(std::remove(manager->samples.begin(), manager->samples.end(), this), manager->samples.end());
+		}
+	}
+
 	void OpenALAudioSample::play(bool loop)
 	{
 		if (canOnlyPlayOnce && playing && isPlaying())
@@ -316,7 +325,7 @@ namespace blib
 			alSourcei(source->sourceId, AL_BUFFER, 0);
 			alSourcei(source->sourceId, AL_BUFFER, bufferId);
 			alSourcef(source->sourceId, AL_PITCH, 1.0f);
-			alSourcef(source->sourceId, AL_GAIN, 1.0f);
+			alSourcef(source->sourceId, AL_GAIN, volume / 100.0f);
 			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
 			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
 			alSourcei(source->sourceId, AL_LOOPING, loop);
@@ -325,7 +334,7 @@ namespace blib
 		else //ogg
 		{
 			alSourcef(source->sourceId, AL_PITCH, 1.0f);
-			alSourcef(source->sourceId, AL_GAIN, 1.0f);
+			alSourcef(source->sourceId, AL_GAIN, volume / 100.0f);
 			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
 			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
 			alSourcei(source->sourceId, AL_LOOPING, 0);
@@ -378,6 +387,7 @@ namespace blib
 
 	void OpenALAudioSample::setVolume(int volume)
 	{
+		this->volume = volume;
 		if(source)
 			alSourcef(source->sourceId, AL_GAIN, volume/100.0f);
 	}
