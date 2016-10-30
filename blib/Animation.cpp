@@ -34,7 +34,7 @@ namespace blib
 				center = glm::vec2(	v["center"][0].asFloat() / texture->originalWidth,
 									v["center"][1].asFloat() / texture->originalHeight);
 			else
-				center = rect.center();
+				center = rect.center() / glm::vec2(texture->originalWidth, texture->originalHeight);
 			frames.push_back(std::pair<glm::vec2, blib::math::Rectangle>(center, rect));
 		}
 			
@@ -88,7 +88,7 @@ namespace blib
 					nextKeyFrame = 0;
 					time -= currentState->length;
 				}
-			}
+			}	
 		}
 
 		currentKeyFrame = (nextKeyFrame - 1 + currentState->keyFrames.size()) % currentState->keyFrames.size();
@@ -132,7 +132,7 @@ namespace blib
 		for(size_t i = 0; i < config["keyframes"].size(); i++)
 			keyFrames.push_back(KeyFrame(animation, config["keyframes"][i]));
 		if(config.isMember("whendone"))
-			whenDone = config["whendone"];
+			whenDone = config["whendone"].asString();
 	}
 
 

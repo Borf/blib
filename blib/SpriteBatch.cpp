@@ -365,13 +365,13 @@ namespace blib
 		spriteBatch.renderer->setVbo(vbo, verts);
 	}
 
-	void SpriteBatch::Cache::drawVbo(SpriteBatch& spriteBatch)
+	void SpriteBatch::Cache::drawVbo(SpriteBatch& spriteBatch, const glm::mat4 &mat)
 	{
 		blib::RenderState renderState = spriteBatch.renderState;
 		renderState.activeVbo = vbo;
 		int lastIndex = 0;
 		if (renderState.activeShader == spriteBatch.shader)
-			renderState.activeShader->setUniform(Matrix, spriteBatch.matrix);
+			renderState.activeShader->setUniform(Matrix, spriteBatch.matrix * mat);
 		for (size_t i = 0; i < materialIndices.size(); i++)
 		{
 			renderState.activeTexture[0] = const_cast<Texture*>(materialIndices[i].first);
