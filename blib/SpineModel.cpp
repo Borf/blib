@@ -162,7 +162,7 @@ namespace blib
 			}
 
 		}
-		else if (attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
+		/*else if (attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
 			spSkinnedMeshAttachment* mesh = (spSkinnedMeshAttachment*)attachment;
 			spSkinnedMeshAttachment_computeWorldVertices(mesh, slot, worldVertices);
 
@@ -170,7 +170,7 @@ namespace blib
 				int index = mesh->triangles[i] << 1;
 				ret.push_back(glm::vec2(worldVertices[index], worldVertices[index + 1]));
 			}
-		}
+		}*/
 
 
 
@@ -226,7 +226,7 @@ namespace blib
 			}
 
 		}
-		else if (attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
+/*		else if (attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
 			spSkinnedMeshAttachment* mesh = (spSkinnedMeshAttachment*)attachment;
 			spSkinnedMeshAttachment_computeWorldVertices(mesh, slot, worldVertices);
 			ret.first = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
@@ -235,7 +235,7 @@ namespace blib
 				int index = mesh->triangles[i] << 1;
 				ret.second.push_back(std::pair<glm::vec2, glm::vec2>(glm::vec2(worldVertices[index], worldVertices[index + 1]), glm::vec2(mesh->uvs[index], mesh->uvs[index + 1])));
 			}
-		}
+		}*/
 		return ret;
 	}
 
@@ -326,7 +326,7 @@ namespace blib
 			}
 			else if (attachment->type == SP_ATTACHMENT_MESH) {
 				spMeshAttachment* mesh = (spMeshAttachment*)attachment;
-				if (mesh->verticesCount > SPINE_MESH_VERTEX_COUNT_MAX) continue;
+				if (mesh->trianglesCount*3 > SPINE_MESH_VERTEX_COUNT_MAX) continue;
 				texture = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
 				spMeshAttachment_computeWorldVertices(mesh, slot, worldVertices);
 
@@ -337,7 +337,7 @@ namespace blib
 				}
 
 			}
-			else if (attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
+/*			else if (attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
 				spSkinnedMeshAttachment* mesh = (spSkinnedMeshAttachment*)attachment;
 				if (mesh->uvsCount > SPINE_MESH_VERTEX_COUNT_MAX) continue;
 				texture = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
@@ -349,7 +349,7 @@ namespace blib
 					int index = mesh->triangles[i] << 1;
 					verts.push_back(std::pair<glm::vec2, glm::vec2>(glm::vec2(worldVertices[index], worldVertices[index + 1]), glm::vec2(mesh->uvs[index], mesh->uvs[index + 1])));
 				}
-			}
+			}*/
 
 			spriteBatch.draw(texture, transform, verts, color);
 		}

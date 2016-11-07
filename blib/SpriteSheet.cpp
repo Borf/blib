@@ -34,7 +34,7 @@ namespace blib
 
 		info->t1 = glm::vec2(x * (spriteWidth/(float)width), y*((float)spriteHeight/height));
 		info->t2 = info->t1 + glm::vec2(spriteWidth/(float)width, (float)spriteHeight/height);
-		info->center = spriteCenter / glm::vec2(spriteWidth, spriteHeight);
+		info->center = glm::vec2(spriteWidth / 2.0f, spriteHeight / 2.0f);// info->widthspriteCenter / glm::vec2(spriteWidth, spriteHeight);
 		info->width = spriteWidth;
 		info->height = spriteHeight;
 		info->x = x * spriteWidth;

@@ -1368,6 +1368,9 @@
     <ClInclude Include="blib\util\stb_vorbis.h">
       <Filter>util</Filter>
     </ClInclude>
+    <ClInclude Include="externals\spine\spine-c\src\spine\kvec.h">
+      <Filter>external\spine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -2253,9 +2256,6 @@
     <ClCompile Include="externals\spine\spine-c\src\spine\Skin.c">
       <Filter>external\spine</Filter>
     </ClCompile>
-    <ClCompile Include="externals\spine\spine-c\src\spine\SkinnedMeshAttachment.c">
-      <Filter>external\spine</Filter>
-    </ClCompile>
     <ClCompile Include="externals\spine\spine-c\src\spine\Slot.c">
       <Filter>external\spine</Filter>
     </ClCompile>
@@ -2271,6 +2271,9 @@
     </ClCompile>
     <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2MotorJoint.cpp">
       <Filter>external\box2d</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\spine\spine-c\src\spine\SkinnedMeshAttachment.c">
+      <Filter>external\spine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

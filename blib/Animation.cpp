@@ -82,6 +82,7 @@ namespace blib
 				if (currentState->whenDone != "")
 				{
 					setState(currentState->whenDone);
+					return;
 				}
 				else
 				{
