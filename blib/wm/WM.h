@@ -90,7 +90,7 @@ namespace blib
 			virtual bool onKeyUp(Key key);
 			virtual bool onChar(char character);
 
-			virtual void resizeGl(int width, int height);
+			virtual void resizeGl(int width, int height, int offx, int offy);
 
 			bool inWindow(const glm::ivec2 &pos) { return inWindow(pos.x, pos.y);  }
 			bool inWindow(int x, int y);

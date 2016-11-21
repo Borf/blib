@@ -414,9 +414,9 @@ namespace blib
 		}
 
 	}
-	void ParticleSystem::resizeGl( int width, int height )
+	void ParticleSystem::resizeGl( int width, int height, int offsetX, int offsetY )
 	{
-		renderState.activeShader->setUniform(ShaderUniforms::projectionmatrix, glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
+		renderState.activeShader->setUniform(ShaderUniforms::projectionmatrix, glm::ortho((float)offsetX, (float)width + offsetX, (float)height + offsetY, (float)offsetY, -1000.0f, 1.0f));
 	}
 
 	ParticleSystem::~ParticleSystem()

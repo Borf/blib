@@ -184,7 +184,7 @@ namespace blib
 
 		inline void setTextureFolder(const std::string &folder) { this->textureFolder = folder; }
 
-		void resizeGl( int width, int height );
+		void resizeGl( int width, int height, int offsetX, int offsetY );
 	};
 
 

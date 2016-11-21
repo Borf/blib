@@ -724,7 +724,7 @@ namespace blib
 			return false;
 		}
 
-		void WM::resizeGl(int width, int height)
+		void WM::resizeGl(int width, int height, int offsetx, int offsety)
 		{
 			screenSize.x = width;
 			screenSize.y = height;

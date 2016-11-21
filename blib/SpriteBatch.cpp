@@ -340,10 +340,10 @@ namespace blib
 	}
 
 
-	void SpriteBatch::resizeGl( int width, int height )
+	void SpriteBatch::resizeGl( int width, int height, int offsetX, int offsetY )
 	{
 		if (renderState.activeShader == shader)
-			renderState.activeShader->setUniform(ProjectionMatrix, glm::ortho(0.0f, (float)width, (float)height, 0.0f, -1000.0f, 1.0f));
+			renderState.activeShader->setUniform(ProjectionMatrix, glm::ortho((float)offsetX, (float)width+offsetX, (float)height+offsetY, (float)offsetY, -1000.0f, 1.0f));
 	}
 
 	SpriteBatch::Cache::~Cache()

@@ -6,10 +6,10 @@ namespace blib
 	{
 
 		std::list<GlResizeRegister*> GlResizeRegister::registeredObjects;
-		void GlResizeRegister::ResizeRegisteredObjects(int width, int height)
+		void GlResizeRegister::ResizeRegisteredObjects(int width, int height, int offx, int offy)
 		{
 			for(std::list<GlResizeRegister*>::iterator it = registeredObjects.begin(); it != registeredObjects.end(); it++)
-				(*it)->resizeGl(width, height);
+				(*it)->resizeGl(width, height, offx, offy);
 		}
 
 		GlResizeRegister::GlResizeRegister()

@@ -288,9 +288,9 @@ namespace blib
 			App* app;
 		public:
 			Resizer(App* app) { this->app = app; }
-			void resizeGl(int width, int height)
+			void resizeGl(int width, int height, int offsetx, int offsety)
 			{
-				app->renderer->setViewPort(0, 0, width, height);
+				app->renderer->setViewPort(offsetx, offsety, width, height);
 			}
 		};
 		new Resizer(this);

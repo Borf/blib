@@ -51,7 +51,7 @@ namespace blib
 		glm::mat4 matrix;			//TODO: make private
 		float thickness;
 
-		virtual void resizeGl(int width, int height);
+		virtual void resizeGl(int width, int height, int offsetX, int offsetY);
 
 		virtual void begin(const glm::mat4 &matrix = glm::mat4(), float thickness = 1);
 		virtual void end();

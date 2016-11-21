@@ -6,6 +6,7 @@
 #include <blib/gl/Window.h>
 #include <blib/App.h>
 #include <blib/Util.h>
+#include <blib/gl/GlResizeRegister.h>
 
 using blib::util::Log;
 
@@ -42,6 +43,9 @@ namespace blib
             
             void Window::touchDownEvent(unsigned long id, int x, int y)
             {
+                x *= ratio;
+                x += -((1024*ratio)-1024)/2;
+                
 				int clickCount = 1;
 				clicks.push_back(blib::util::tickcount());
 				int i = clicks.size() - 2;
@@ -70,6 +74,8 @@ namespace blib
             
             void Window::touchUpEvent(unsigned long id, int x, int y)
             {
+                x *= ratio;
+                x += -((1024*ratio)-1024)/2;
                 for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
                     (*it)->onMouseUp(x,y,MouseListener::Left, 1);
                 for (Touch& t : app->touches)
@@ -85,6 +91,8 @@ namespace blib
 			}
             void Window::touchMoveEvent(unsigned long id, int x, int y)
             {
+                x *= ratio;
+                x += -((1024*ratio)-1024)/2;
                 for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
                     (*it)->onMouseMove(x,y,MouseListener::Left);
 			
@@ -98,6 +106,28 @@ namespace blib
 					}
 				}
 			}
+            
+            void Window::setWidth(int w)
+            {
+                if(width != w)
+                {
+                    ratio = (float)w / height;
+                    ratio *= (768.0f/1024.0f);
+                    blib::gl::GlResizeRegister::ResizeRegisteredObjects(1024 * ratio, 768, -((1024*ratio)-1024)/2, 0);
+                }
+                width = w;
+                
+            }
+            void Window::setHeight(int h)
+            {
+                if(height != h)
+                {
+                    ratio = (float)width / h;
+                    ratio *= (768.0f/1024.0f);
+                    blib::gl::GlResizeRegister::ResizeRegisteredObjects(1024 * ratio, 768, -((1024*ratio)-1024)/2, 0);
+                }
+                height = h;
+            }
             
 		}
 	}

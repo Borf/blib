@@ -77,11 +77,11 @@ namespace blib
 		std::thread backgroundThread;
 		AudioManagerOpenAL();
 		virtual ~AudioManagerOpenAL();
-		virtual void init();
-		virtual void playMusic( std::string filename );
-		virtual void stopMusic();
-		virtual void playSound( std::string filename );
-		virtual AudioSample* loadSample(const std::string &filename);
+		virtual void init() override;
+		virtual void playMusic( std::string filename ) override;
+		virtual void stopMusic() override;
+		virtual void playSound( std::string filename ) override;
+		virtual AudioSample* loadSample(const std::string &filename) override;
 
 		virtual OpenALAudioSample* loadSampleWav(const std::string &filename);
 		virtual OpenALAudioSample* loadSampleOgg(const std::string &filename);
@@ -89,6 +89,6 @@ namespace blib
 		Source* getFreeSource();
 		virtual void stopAllSounds() override;
 
-		virtual void update(); //TODO: move to background thread
+		virtual void update() override; //TODO: move to background thread
 	};
 }

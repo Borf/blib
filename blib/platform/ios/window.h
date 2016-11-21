@@ -17,6 +17,7 @@ namespace blib
 			{
 			private:
 				App* app;
+                float ratio = 1;
 			public:
 				Window(App* app);
 				virtual ~Window();
@@ -30,8 +31,8 @@ namespace blib
 				virtual void unmakeCurrent();
                 virtual void tick() { }
                 
-                void setWidth(int w) { width = w; };
-                void setHeight(int h) { height = h; };
+                void setWidth(int w);// { width = w; };
+                void setHeight(int h);// { height = h; };
                 
                 
                 void touchDownEvent(unsigned long id, int x, int y);
