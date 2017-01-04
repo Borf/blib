@@ -60,7 +60,7 @@ namespace blib
 
 		bool Rectangle::contains(const glm::vec2 &point) const
 		{
-			return point.x > topleft.x && point.y > topleft.y && point.x < bottomright.x && point.y < bottomright.y;
+			return point.x >= topleft.x && point.y >= topleft.y && point.x <= bottomright.x && point.y <= bottomright.y;
 		}		
 
 		bool Rectangle::containsX(const glm::vec2 &point) const
