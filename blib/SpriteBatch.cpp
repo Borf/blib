@@ -231,6 +231,17 @@ namespace blib
 			vertices.push_back(vertexDef(glm::vec2(transform * glm::vec4(coord.first,0,1)), coord.second, color, colorOverlay));
 	}
 
+	void SpriteBatch::draw(const Texture* texture, const std::vector<std::pair<glm::vec2, glm::vec2>> &coords, const glm::vec4 &color /*= glm::vec4(1,1,1,1)*/, const glm::vec4 &colorOverlay)
+	{
+		if (currentTexture != texture && currentTexture != NULL)
+			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, (unsigned short)vertices.size()));
+		currentTexture = texture;
+
+		for (const std::pair<glm::vec2, glm::vec2> &coord : coords)
+			vertices.push_back(vertexDef(glm::vec2(glm::vec4(coord.first, 0, 1)), coord.second, color, colorOverlay));
+	}
+
+
 	void SpriteBatch::draw(const Texture* texture, const glm::mat4 &transform, const std::vector<std::tuple<glm::vec2, glm::vec2, glm::vec4>> &coords)
 	{
 		if (currentTexture != texture && currentTexture != NULL)
