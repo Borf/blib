@@ -308,7 +308,12 @@ namespace blib
 			return cache;
 		}
 
+
 		cache->verts.insert(cache->verts.begin(), vertices.begin() + cacheStart, vertices.end());
+
+		cache->materialIndices = materialIndices;
+		materialIndices.clear();
+
 		std::pair<const Texture*, unsigned short> p(currentTexture, (unsigned short)vertices.size());
 		cache->materialIndices.push_back(p);
 

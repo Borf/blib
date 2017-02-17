@@ -103,6 +103,7 @@ namespace blib
 					if(yoffset >= height/32)
 					{
 						Log::out<<"No more room on texture map"<<Log::newline;
+						Log::out << "Loading texture " << filename << Log::newline;
 						return NULL;
 					}
 				}
