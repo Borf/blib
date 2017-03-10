@@ -9,8 +9,10 @@
 
 #ifdef BLIB_IOS
 #include <OpenAL/al.h>
+#include <OpenAL/alc.h>
 #else
 #include <al/al.h>
+#include <al/alc.h>
 #endif
 
 namespace blib
@@ -68,6 +70,7 @@ namespace blib
 	class AudioManagerOpenAL : public AudioManager
 	{
 	public:
+		ALCdevice *device;
 		std::mutex mutex;
 		std::vector<Source> sources;
 		std::vector<OpenALAudioSample*> samples;

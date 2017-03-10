@@ -75,7 +75,6 @@ namespace blib
 
 	void AudioManagerOpenAL::init()
 	{
-		ALCdevice *device;
 		device = alcOpenDevice(NULL);
 		if (!device)
 			Log::out << "Error initializing OpenAL" << Log::newline;
@@ -302,6 +301,8 @@ namespace blib
 
 	void OpenALAudioSample::play(bool loop)
 	{
+		if (!manager->device)
+			return;
 		if (canOnlyPlayOnce && playing && isPlaying())
 			return;
 		if (manager->canPlay && !manager->canPlay(this))
