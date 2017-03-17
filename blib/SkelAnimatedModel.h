@@ -6,6 +6,7 @@
 #include <blib/gl/Vertex.h>
 #include <blib/Material.h>
 #include <blib/util/Tree.h>
+#include <blib/json.hpp>
 #include <glm/gtc/quaternion.hpp>
 
 namespace blib
@@ -17,9 +18,6 @@ namespace blib
 	class Texture;
 	class ResourceManager;
 
-	namespace json { class Value;  };
-
-
 
 	class SkelAnimatedModel
 	{
@@ -27,7 +25,7 @@ namespace blib
 		class Bone : public blib::util::DynTree<Bone>
 		{
 		public:
-			Bone(const json::Value& value);
+			Bone(const json& value);
 			void update(std::vector<glm::mat4> &boneMatrices, float time, Animation* animation, const glm::mat4& parentMatrix = glm::mat4()) const;
 			Bone* parent;
 			std::string name;
@@ -53,7 +51,7 @@ namespace blib
 					T value;
 				};
 
-				Stream(const json::Value &data, Bone* rootBone);
+				Stream(const json &data, Bone* rootBone);
 
 				Bone* bone;
 				std::vector<Frame<glm::vec3> >		positions;
@@ -61,7 +59,7 @@ namespace blib
 				std::vector< Frame<glm::quat> >		rotations;
 			};
 
-			Animation(const json::Value& data, Bone* rootBone);
+			Animation(const json& data, Bone* rootBone);
 			Animation::Stream* getStream(const SkelAnimatedModel::Bone* bone);
 			std::vector<Stream> streams;
 			float totalTime;

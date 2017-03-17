@@ -174,7 +174,7 @@ void Textbox::draw(SpriteBatch& spriteBatch, glm::mat4 matrix, Renderer* rendere
         const_cast<Textbox*>(this)->selectionPosition = cursor;
 
 
-    json::Value skin = WM::getInstance()->skin["input"];
+    json skin = WM::getInstance()->skin["input"];
     Font* font = WM::getInstance()->font;
     Texture* texture = WM::getInstance()->skinTexture;
 
@@ -193,19 +193,19 @@ void Textbox::draw(SpriteBatch& spriteBatch, glm::mat4 matrix, Renderer* rendere
         {
             float posLeft = font->textlen(preSelectionText);
             float selectionWidth = font->textlen(selectionText);
-            spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2 + posLeft, y + 4, 0)), skin, glm::vec2(selectionWidth, 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
+            spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2 + posLeft, y + 4, 0)), skin, glm::vec2(selectionWidth, 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].get<std::string>()));
         }
 
 
         glm::vec2 renderPos(0, 0);
-        renderPos = spriteBatch.draw(font, preSelectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()), renderPos);
-        renderPos = spriteBatch.draw(font, selectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["selectfontcolor"].asString()), renderPos);
-        renderPos = spriteBatch.draw(font, postSelectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()), renderPos);
+        renderPos = spriteBatch.draw(font, preSelectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].get<std::string>()), renderPos);
+        renderPos = spriteBatch.draw(font, selectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["selectfontcolor"].get<std::string>()), renderPos);
+        renderPos = spriteBatch.draw(font, postSelectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].get<std::string>()), renderPos);
 
 
 
         if ((int)((blib::util::Profiler::getAppTime() - blinkTime)* 2) % 2 == 0 && selected)
-            spriteBatch.draw(font, "|",  glm::translate(matrix, glm::vec3(x - 1.0f + font->textlen(text.substr(0, cursor)), y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].asString()));
+            spriteBatch.draw(font, "|",  glm::translate(matrix, glm::vec3(x - 1.0f + font->textlen(text.substr(0, cursor)), y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].get<std::string>()));
 
     }
     else

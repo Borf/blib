@@ -1368,9 +1368,7 @@
     <ClInclude Include="blib\util\stb_vorbis.h">
       <Filter>util</Filter>
     </ClInclude>
-    <ClInclude Include="externals\spine\spine-c\src\spine\kvec.h">
-      <Filter>external\spine</Filter>
-    </ClInclude>
+    <ClInclude Include="blib\json.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />

@@ -1,5 +1,8 @@
 #pragma once
 
+#pragma error("Oops")
+
+#if 0
 #include <string>
 #include <map>
 #include <vector>
@@ -89,7 +92,7 @@ namespace blib
 			virtual bool operator == (const float other) { return asFloat() == other; }
 
 
-			std::ostream& prettyPrint(std::ostream& stream, blib::json::Value& printConfig = null, int level = 0) const;
+			std::ostream& prettyPrint(std::ostream& stream, json& printConfig = null, int level = 0) const;
 
 			class Iterator;
 			Iterator begin() const;
@@ -125,3 +128,4 @@ namespace blib
 
 	}
 }
+#endif

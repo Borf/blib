@@ -1,7 +1,7 @@
 #include "StaticModel.h"
 
 #include <blib/util/FileSystem.h>
-#include <blib/json.h>
+#include <blib/json.hpp>
 #include <blib/VIO.h>
 #include <blib/VBO.h>
 #include <blib/gl/Vertex.h>
@@ -14,7 +14,7 @@
 
 namespace blib
 {
-	static glm::mat4 jsonToMatrix(const blib::json::Value &v)
+	static glm::mat4 jsonToMatrix(const json &v)
 	{
 		glm::mat4 mat;
 
@@ -28,7 +28,7 @@ namespace blib
 
 	StaticModel::StaticModel(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer)
 	{
-		json::Value modelData = blib::util::FileSystem::getJson(fileName);
+		json modelData = blib::util::FileSystem::getJson(fileName);
 
 		std::string directory = "";
 		if (fileName.find("/") != std::string::npos)
@@ -64,7 +64,7 @@ namespace blib
 			
 		}
 		std::vector<unsigned short> indices;
-		for (const json::Value& mesh : modelData["meshes"])
+		for (const json& mesh : modelData["meshes"])
 		{
 			int start = indices.size();
 			for (int i : mesh["faces"])
@@ -78,11 +78,11 @@ namespace blib
 			newMesh->material.specular = glm::vec3(mesh["material"]["specular"][0], mesh["material"]["specular"][1], mesh["material"]["specular"][2]);
 			newMesh->material.shinyness = mesh["material"]["shinyness"];
 
-			if (mesh["material"]["texture"].asString() == "")
+			if (mesh["material"]["texture"].get<std::string>() == "")
 				newMesh->material.texture = NULL;
-			else //if (mesh["material"]["texture"].asString() != "level1/armour_table_top.jpg")
+			else //if (mesh["material"]["texture"].get<std::string>() != "level1/armour_table_top.jpg")
 			{
-				newMesh->material.texture = resourceManager->getResource<blib::Texture>(directory + "/" + mesh["material"]["texture"].asString());
+				newMesh->material.texture = resourceManager->getResource<blib::Texture>(directory + "/" + mesh["material"]["texture"].get<std::string>());
 				newMesh->material.texture->setTextureRepeat(true);
 			}
 

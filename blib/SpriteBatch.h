@@ -6,12 +6,11 @@
 #include <blib/math/Rectangle.h>
 #include <blib/TextureMap.h>
 #include <blib/RenderState.h>
+#include <blib/json.hpp>
 #include <queue>
-
 
 namespace blib
 {
-	namespace json { class Value; }
 	class Texture;
 	class Shader;
 	class Font;
@@ -92,7 +91,7 @@ namespace blib
 		virtual glm::vec2 draw(const Font* font, const std::string& text, const glm::mat4 &transform, const glm::vec4 &color, glm::vec2 &cursor, int wrapWidth = -1);
 
 		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, const blib::math::Rectangle &src, const blib::math::Rectangle &innerSrc, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));
-		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, json::Value skin, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));
+		virtual void drawStretchyRect(Texture* sprite, const glm::mat4 &transform, json skin, const glm::vec2 &size, const glm::vec4 &color = glm::vec4(1,1,1,1));
 
 
 		virtual void draw(const Texture* sprite, const glm::mat4 &transform, const std::vector<std::pair<glm::vec2, glm::vec2>> &coords, const glm::vec4 &color = glm::vec4(1, 1, 1, 1), const glm::vec4 &colorOverlay = glm::vec4(1, 1, 1, 0));

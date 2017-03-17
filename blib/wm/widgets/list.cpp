@@ -1,4 +1,4 @@
-#include <blib/json.h>
+#include <blib/json.hpp>
 #include "list.h"
 
 #include <blib/wm/WM.h>
@@ -33,8 +33,8 @@ namespace blib
 
 				addClickHandler([this](int x, int y, int clickCount)
 				{
-					json::Value skin = WM::getInstance()->skin["list"];
-					if (x - this->x < width - skin["scroll"]["width"].asInt())
+					json skin = WM::getInstance()->skin["list"];
+					if (x - this->x < width - skin["scroll"]["width"].get<int>())
 					{
 						selectedItems.clear();
 						selectedItems.push_back((y - this->y + scrollPosition) / 12);
@@ -80,29 +80,29 @@ namespace blib
 
 			void List::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
-				json::Value skin = WM::getInstance()->skin["list"];
+				json skin = WM::getInstance()->skin["list"];
 				Texture* texture = WM::getInstance()->skinTexture;
 
 
-				spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x,y,0)), skin, glm::vec2(width - skin["scroll"]["width"].asInt(), height));
+				spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x,y,0)), skin, glm::vec2(width - skin["scroll"]["width"].get<int>(), height));
 				
-				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y, 0)),
+				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].get<int>(), y, 0)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["buttonup"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["top"].asInt() / (float)texture->originalHeight),
-					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["height"].asInt() / (float)texture->originalHeight));
+					glm::vec2(skin["scroll"]["buttonup"]["left"].get<int>() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["top"].get<int>() / (float)texture->originalHeight),
+					skin["scroll"]["width"].get<int>() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["height"].get<int>() / (float)texture->originalHeight));
 
-				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + height - skin["scroll"]["buttondown"]["height"].asInt(), 0)),
+				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].get<int>(), y + height - skin["scroll"]["buttondown"]["height"].get<int>(), 0)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["buttondown"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["top"].asInt() / (float)texture->originalHeight),
-					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["height"].asInt() / (float)texture->originalHeight));
+					glm::vec2(skin["scroll"]["buttondown"]["left"].get<int>() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["top"].get<int>() / (float)texture->originalHeight),
+					skin["scroll"]["width"].get<int>() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["height"].get<int>() / (float)texture->originalHeight));
 
-				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt(), 0)), glm::vec3(1,(height-skin["scroll"]["buttonup"]["height"].asInt() - skin["scroll"]["buttondown"]["height"].asInt()) / (float)skin["scroll"]["background"]["height"].asInt(),1)),
+				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].get<int>(), y + skin["scroll"]["buttonup"]["height"].get<int>(), 0)), glm::vec3(1,(height-skin["scroll"]["buttonup"]["height"].get<int>() - skin["scroll"]["buttondown"]["height"].get<int>()) / (float)skin["scroll"]["background"]["height"].get<int>(),1)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["background"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["top"].asInt() / (float)texture->originalHeight),
-					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["height"].asInt() / (float)texture->originalHeight));
+					glm::vec2(skin["scroll"]["background"]["left"].get<int>() / (float)texture->originalWidth, skin["scroll"]["background"]["top"].get<int>() / (float)texture->originalHeight),
+					skin["scroll"]["width"].get<int>() / (float)texture->originalWidth, skin["scroll"]["background"]["height"].get<int>() / (float)texture->originalHeight));
 
 
 				/*
@@ -110,7 +110,7 @@ namespace blib
 	
 
 
-				GlHelper::drawStretchyRect(x, y, width - skin["scroll"]["width"].asInt(), height, skin);
+				GlHelper::drawStretchyRect(x, y, width - skin["scroll"]["width"].get<int>(), height, skin);
 
 				int textureWidth = WM::getInstance()->skinTexture->width;
 				int textureHeight = WM::getInstance()->skinTexture->width;
@@ -124,35 +124,35 @@ namespace blib
 
 				//button top
 				GlHelper::drawRect(
-					(skin["scroll"]["buttonup"]["left"].asInt()) * tx,
-					(skin["scroll"]["buttonup"]["top"].asInt()) * ty,
-					x+width-skin["scroll"]["width"].asInt(),
+					(skin["scroll"]["buttonup"]["left"].get<int>()) * tx,
+					(skin["scroll"]["buttonup"]["top"].get<int>()) * ty,
+					x+width-skin["scroll"]["width"].get<int>(),
 					y,
-					(skin["scroll"]["buttonup"]["left"].asInt() + skin["scroll"]["width"].asInt()) * tx,
-					(skin["scroll"]["buttonup"]["top"].asInt() + skin["scroll"]["buttonup"]["height"].asInt()) * ty,
+					(skin["scroll"]["buttonup"]["left"].get<int>() + skin["scroll"]["width"].get<int>()) * tx,
+					(skin["scroll"]["buttonup"]["top"].get<int>() + skin["scroll"]["buttonup"]["height"].get<int>()) * ty,
 					x + width,
-					y + skin["scroll"]["buttonup"]["height"].asInt()
+					y + skin["scroll"]["buttonup"]["height"].get<int>()
 					);
 
 				//background
 				GlHelper::drawRect(
-					(skin["scroll"]["background"]["left"].asInt()) * tx,
-					(skin["scroll"]["background"]["top"].asInt()) * ty,
-					x+width-skin["scroll"]["width"].asInt(),
-					y + skin["scroll"]["buttonup"]["height"].asInt(),
-					(skin["scroll"]["background"]["left"].asInt() + skin["scroll"]["width"].asInt()) * tx,
-					(skin["scroll"]["background"]["top"].asInt() + skin["scroll"]["background"]["height"].asInt()) * ty,
+					(skin["scroll"]["background"]["left"].get<int>()) * tx,
+					(skin["scroll"]["background"]["top"].get<int>()) * ty,
+					x+width-skin["scroll"]["width"].get<int>(),
+					y + skin["scroll"]["buttonup"]["height"].get<int>(),
+					(skin["scroll"]["background"]["left"].get<int>() + skin["scroll"]["width"].get<int>()) * tx,
+					(skin["scroll"]["background"]["top"].get<int>() + skin["scroll"]["background"]["height"].get<int>()) * ty,
 					x + width,
-					y + height - skin["scroll"]["buttondown"]["height"].asInt()
+					y + height - skin["scroll"]["buttondown"]["height"].get<int>()
 					);
 				//button bottom
 				GlHelper::drawRect(
-					(skin["scroll"]["buttondown"]["left"].asInt()) * tx,
-					(skin["scroll"]["buttondown"]["top"].asInt()) * ty,
-					x+width-skin["scroll"]["width"].asInt(),
-					y + height - skin["scroll"]["buttondown"]["height"].asInt(),
-					(skin["scroll"]["buttondown"]["left"].asInt() + skin["scroll"]["width"].asInt()) * tx,
-					(skin["scroll"]["buttondown"]["top"].asInt() + skin["scroll"]["buttondown"]["height"].asInt()) * ty,
+					(skin["scroll"]["buttondown"]["left"].get<int>()) * tx,
+					(skin["scroll"]["buttondown"]["top"].get<int>()) * ty,
+					x+width-skin["scroll"]["width"].get<int>(),
+					y + height - skin["scroll"]["buttondown"]["height"].get<int>(),
+					(skin["scroll"]["buttondown"]["left"].get<int>() + skin["scroll"]["width"].get<int>()) * tx,
+					(skin["scroll"]["buttondown"]["top"].get<int>() + skin["scroll"]["buttondown"]["height"].get<int>()) * ty,
 					x + width,
 					y + height
 					);
@@ -169,12 +169,12 @@ namespace blib
 				spriteBatch.renderState.scissor = true;
 				spriteBatch.renderState.scissorArea[0] = (int)matrix[3][0] + x + 2;
 				spriteBatch.renderState.scissorArea[1] = (int)matrix[3][1] + y + 2;
-				spriteBatch.renderState.scissorArea[2] = width - 4 - skin["scroll"]["width"].asInt();
+				spriteBatch.renderState.scissorArea[2] = width - 4 - skin["scroll"]["width"].get<int>();
 				spriteBatch.renderState.scissorArea[3] = height - 4;
 				spriteBatch.begin();
 
 //				if (!multiselect && selectedItem() >= 0 && selectedItem() < (int)items.size())
-//					spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2, y + 4 + 12 * selectedItem() - scrollPosition, 0)), skin, glm::vec2(width - 4 - skin["scroll"]["width"].asInt(), 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
+//					spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2, y + 4 + 12 * selectedItem() - scrollPosition, 0)), skin, glm::vec2(width - 4 - skin["scroll"]["width"].get<int>(), 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].get<std::string>()));
 
 
 				int selectionIndex = 0;
@@ -185,7 +185,7 @@ namespace blib
 					{
 						if (selectedItems[selectionIndex] == i)
 						{
-							spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2, y + 4 + 12 * i - scrollPosition, 0)), skin, glm::vec2(width - 4 - skin["scroll"]["width"].asInt(), 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].asString()));
+							spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x + 2, y + 4 + 12 * i - scrollPosition, 0)), skin, glm::vec2(width - 4 - skin["scroll"]["width"].get<int>(), 12), WM::getInstance()->convertHexColor4(skin["selectcolor"].get<std::string>()));
 							selectionIndex++;
 						}
 
@@ -194,7 +194,7 @@ namespace blib
 
 					spriteBatch.draw(WM::getInstance()->font, items[i], 
 						blib::math::easyMatrix(glm::vec2(x + 2, y + 12 * i - scrollPosition), matrix), 
-						WM::getInstance()->convertHexColor4(i == selectedItem() ? skin["selectfontcolor"].asString() : skin["fontcolor"].asString()));
+						WM::getInstance()->convertHexColor4(i == selectedItem() ? skin["selectfontcolor"].get<std::string>() : skin["fontcolor"].get<std::string>()));
 				}
 
 				spriteBatch.end();

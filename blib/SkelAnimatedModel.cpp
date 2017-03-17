@@ -1,6 +1,6 @@
 #include "SkelAnimatedModel.h"
 #include <blib/util/FileSystem.h>
-#include <blib/json.h>
+#include <blib/json.hpp>
 #include <blib/ResourceManager.h>
 #include <blib/linq.h>
 #include <blib/Renderer.h>
@@ -10,7 +10,7 @@
 
 namespace blib
 {
-	static glm::mat4 jsonToMatrix(const blib::json::Value &v)
+	static glm::mat4 jsonToMatrix(const json &v)
 	{
 		glm::mat4 mat;
 
@@ -32,7 +32,7 @@ namespace blib
 
 	void SkelAnimatedModel::loadModel(const std::string & modelFile, blib::ResourceManager* resourceManager, blib::Renderer* renderer)
 	{
-		const blib::json::Value modelData = blib::util::FileSystem::getJson(modelFile);
+		const json modelData = blib::util::FileSystem::getJson(modelFile);
 		std::string directory = "";
 		if (modelFile.find("/") != std::string::npos)
 			directory = modelFile.substr(0, modelFile.rfind("/"));
@@ -59,7 +59,7 @@ namespace blib
 		}
 
 		std::vector<unsigned short> indices;
-		for (const json::Value& mesh : modelData["meshes"])
+		for (const json& mesh : modelData["meshes"])
 		{
 			int start = indices.size();
 			for (int i : mesh["faces"])
@@ -73,11 +73,11 @@ namespace blib
 			newMesh->material.specular = glm::vec3(mesh["material"]["specular"][0], mesh["material"]["specular"][1], mesh["material"]["specular"][2]);
 			newMesh->material.shinyness = mesh["material"]["shinyness"];
 
-			if (!mesh["material"].isMember("texture") || mesh["material"]["texture"].asString() == "")
+			if (mesh["material"].find("texture") == mesh["material"].end()|| mesh["material"]["texture"].get<std::string>() == "")
 				newMesh->material.texture = NULL;
 			else
 			{
-				newMesh->material.texture = resourceManager->getResource<blib::Texture>(directory + "/" + mesh["material"]["texture"].asString());
+				newMesh->material.texture = resourceManager->getResource<blib::Texture>(directory + "/" + mesh["material"]["texture"].get<std::string>());
 				newMesh->material.texture->setTextureRepeat(true);
 			}
 
@@ -96,7 +96,7 @@ namespace blib
 	}
 	void SkelAnimatedModel::loadSkeleton(const std::string & boneFile)
 	{
-		const blib::json::Value boneData = blib::util::FileSystem::getJson(boneFile);
+		const json boneData = blib::util::FileSystem::getJson(boneFile);
 		rootBone = new Bone(boneData);
 		
 		rootBone->foreach([this](Bone* b)
@@ -112,15 +112,15 @@ namespace blib
 
 	void SkelAnimatedModel::loadAnimation(const std::string &fileName)
 	{
-		const blib::json::Value animData = blib::util::FileSystem::getJson(fileName);
+		const json animData = blib::util::FileSystem::getJson(fileName);
 		Animation* animation = new Animation(animData, rootBone);
 		animations[animation->name] = animation;
 	}
 
 
-	SkelAnimatedModel::Animation::Animation(const json::Value& data, Bone* rootBone)
+	SkelAnimatedModel::Animation::Animation(const json& data, Bone* rootBone)
 	{
-		name = data["name"].asString();
+		name = data["name"].get<std::string>();
 		totalTime = data["length"];
 		for (auto c : data["streams"])
 			streams.push_back(Stream(c, rootBone));
@@ -134,7 +134,7 @@ namespace blib
 		return NULL;
 	}
 
-	SkelAnimatedModel::Animation::Stream::Stream(const json::Value &data, Bone* rootBone)
+	SkelAnimatedModel::Animation::Stream::Stream(const json &data, Bone* rootBone)
 	{
 		this->bone = rootBone->get([&data](Bone* b){ return data["node"] == b->name; });
 		for (auto v : data["positions"])
@@ -356,20 +356,20 @@ namespace blib
 
 
 
-	SkelAnimatedModel::Bone::Bone(const json::Value& value)
+	SkelAnimatedModel::Bone::Bone(const json& value)
 	{
 		index = -1;
 		offset = NULL;
 		parent = NULL;
 
-		name = value["name"].asString();
+		name = value["name"].get<std::string>();
 		matrix = jsonToMatrix(value["matrix"]);
-		if (value.isMember("id"))
+		if (value.find("id") != value.end())
 		{
 			this->index = value["id"];
 			this->offset = new glm::mat4(jsonToMatrix(value["offset"]));
 		}
-		if (value.isMember("children"))
+		if (value.find("children") != value.end())
 			for (auto c : value["children"])
 			{
 				Bone* child = new Bone(c);

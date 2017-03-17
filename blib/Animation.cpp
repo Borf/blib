@@ -4,35 +4,35 @@
 #include <blib/util/Log.h>
 using blib::util::Log;
 
-#include <blib/json.h>
+#include <blib/json.hpp>
 
 
 namespace blib
 {
 	Animation::Animation( std::string filename, ResourceManager* resourceManager )
 	{
-		blib::json::Value config = blib::util::FileSystem::getJson(filename);
+		json config = blib::util::FileSystem::getJson(filename);
 
 		std::string pathName = "";
 		if(filename.find("/") != std::string::npos)
 			pathName = filename.substr(0, filename.rfind("/")+1);
 
-		texture = resourceManager->getResource<Texture>(pathName + config["texture"].asString());
+		texture = resourceManager->getResource<Texture>(pathName + config["texture"].get<std::string>());
 
 			
 		for(size_t i = 0; i < config["frames"].size(); i++)
 		{
-			blib::json::Value &v = config["frames"][i];
+			json &v = config["frames"][i];
 
-			blib::math::Rectangle rect(v["pos"][0].asFloat() / texture->originalWidth,
-				v["pos"][1].asFloat() / texture->originalHeight,
-				v["size"][0].asFloat() / texture->originalWidth,
-				v["size"][1].asFloat() / texture->originalHeight);
+			blib::math::Rectangle rect(v["pos"][0].get<float>() / texture->originalWidth,
+				v["pos"][1].get<float>() / texture->originalHeight,
+				v["size"][0].get<float>() / texture->originalWidth,
+				v["size"][1].get<float>() / texture->originalHeight);
 
 			glm::vec2 center;
-			if (v.isMember("center"))
-				center = glm::vec2(	v["center"][0].asFloat() / texture->originalWidth,
-									v["center"][1].asFloat() / texture->originalHeight);
+			if (v.find("center") != v.end())
+				center = glm::vec2(	v["center"][0].get<float>() / texture->originalWidth,
+									v["center"][1].get<float>() / texture->originalHeight);
 			else
 				center = rect.center() / glm::vec2(texture->originalWidth, texture->originalHeight);
 			frames.push_back(std::pair<glm::vec2, blib::math::Rectangle>(center, rect));
@@ -110,7 +110,7 @@ namespace blib
 
 
 	/////////////////bone
-	Animation::Bone::Bone(json::Value &config)
+	Animation::Bone::Bone(json &config)
 	{
 		frame = 0;
 	}
@@ -127,21 +127,21 @@ namespace blib
 
 
 
-	Animation::State::State( const Animation& animation, json::Value &config )
+	Animation::State::State( const Animation& animation, json &config )
 	{
-		length = config["length"].asFloat();
+		length = config["length"].get<float>();
 		for(size_t i = 0; i < config["keyframes"].size(); i++)
 			keyFrames.push_back(KeyFrame(animation, config["keyframes"][i]));
-		if(config.isMember("whendone"))
-			whenDone = config["whendone"].asString();
+		if(config.find("whendone") != config.end())
+			whenDone = config["whendone"].get<std::string>();
 	}
 
 
 	///////////////////////keyframe
 
-	Animation::State::KeyFrame::KeyFrame( const Animation& animation, json::Value &config )
+	Animation::State::KeyFrame::KeyFrame( const Animation& animation, json &config )
 	{
-		time = config["time"].asFloat();
+		time = config["time"].get<float>();
 			
 		for (auto it2 = config.begin(); it2 != config.end(); it2++)
 		{
@@ -156,8 +156,8 @@ namespace blib
 	}
 
 	////////////////////////////boneframeinfo
-	Animation::State::KeyFrame::BoneFrameInfo::BoneFrameInfo( json::Value &config )
+	Animation::State::KeyFrame::BoneFrameInfo::BoneFrameInfo( json &config )
 	{
-		frame = config["frame"].asInt();
+		frame = config["frame"].get<int>();
 	}
 }

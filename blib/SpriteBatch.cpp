@@ -10,7 +10,7 @@
 #include <blib/Math.h>
 
 #include <glm/gtc/matrix_transform.hpp>
-#include <blib/json.h>
+#include <blib/json.hpp>
 #include <locale>
 #include <codecvt>
 
@@ -276,13 +276,13 @@ namespace blib
 		draw(sprite, glm::scale(glm::translate(transform, glm::vec3(marginTopLeft,0)), glm::vec3(facWidth,facHeight,1)), glm::vec2(0,0), blib::math::Rectangle(innerSrc.topleft * factor, innerSrc.bottomright * factor), color); //center
 	}
 
-	void SpriteBatch::drawStretchyRect(Texture* sprite, const glm::mat4 &transform, json::Value skin, const glm::vec2 &size, const glm::vec4 &color)
+	void SpriteBatch::drawStretchyRect(Texture* sprite, const glm::mat4 &transform, json skin, const glm::vec2 &size, const glm::vec4 &color)
 	{
 		drawStretchyRect(
 			sprite, 
 			transform, 
-			blib::math::Rectangle(glm::vec2(skin["left"]["pos"].asInt(), skin["top"]["pos"].asInt()), glm::vec2(skin["right"]["pos"].asInt() + skin["right"]["width"].asInt(), skin["bottom"]["pos"].asInt() + skin["bottom"]["height"].asInt())), 
-			blib::math::Rectangle(glm::vec2(skin["left"]["pos"].asInt()+skin["left"]["width"].asInt(), skin["top"]["pos"].asInt()+skin["top"]["height"].asInt()), glm::vec2(skin["right"]["pos"].asInt(), skin["bottom"]["pos"].asInt())), 
+			blib::math::Rectangle(glm::vec2(skin["left"]["pos"].get<int>(), skin["top"]["pos"].get<int>()), glm::vec2(skin["right"]["pos"].get<int>() + skin["right"]["width"].get<int>(), skin["bottom"]["pos"].get<int>() + skin["bottom"]["height"].get<int>())), 
+			blib::math::Rectangle(glm::vec2(skin["left"]["pos"].get<int>()+skin["left"]["width"].get<int>(), skin["top"]["pos"].get<int>()+skin["top"]["height"].get<int>()), glm::vec2(skin["right"]["pos"].get<int>(), skin["bottom"]["pos"].get<int>())), 
 			size, 
 			color);
 	}

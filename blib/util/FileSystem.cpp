@@ -1,6 +1,6 @@
 #include "FileSystem.h"
 #include <blib/util/Log.h>
-#include <blib/json.h>
+#include <blib/json.hpp>
 #include <blib/linq.h>
 #include <fstream>
 #include <iostream>
@@ -251,15 +251,34 @@ namespace blib
 			return ret;
 		}
 
-		json::Value FileSystem::getJson(const std::string &fileName)
+		json FileSystem::getJson(const std::string &fileName)
 		{
 			std::string data = getData(fileName);
 			if (data == "")
 			{
 				Log::out << "Could not open " << fileName << Log::newline;
-				return json::Value();
+				return json();
 			}
-			return json::readJson(data);
+
+			bool inString = false;
+			bool escape = false;
+			for (size_t i = 0; i < data.size()-1; i++)
+			{
+				if (data[i] == '/' && data[i + 1] == '*' && !inString)
+				{
+					data = data.substr(0, i) + data.substr(data.find("*/", i)+2);
+				}
+				if (data[i] == '"' && !escape)
+					inString = !inString;
+				if (data[i] == '\\')
+					escape = !escape;
+				else
+					escape = false;
+			}
+
+
+
+			return json::parse(data);
 		}
 
 		std::vector<std::string> FileSystem::getFileList(const std::string &path)

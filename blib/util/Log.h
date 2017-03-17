@@ -5,7 +5,7 @@
 #ifdef BLIB_WIN
 #include <Windows.h>
 #endif
-
+#include <blib/json.hpp>
 
 
 
@@ -64,7 +64,7 @@ namespace blib
 			Log& operator <<(float txt);
 			Log& operator <<(double txt);
 			Log& operator <<(const EndLine& endline);
-
+			Log& operator <<(const json &j);
 
 			static std::string format(const char* fmt, ...); //TODO: move this to a better spot
 			static Log out;

@@ -10,7 +10,7 @@
 #include <blib/SpriteSheet.h>
 #include <blib/Font.h>
 
-#include <blib/json.h>
+#include <blib/json.hpp>
 #include <blib/util/FileSystem.h>
 
 
@@ -99,7 +99,7 @@ namespace blib
 
 		blib::SpriteSheet* ResourceManager::getSpriteSheet(const std::string &name)
 		{
-			json::Value v = util::FileSystem::getJson(name + ".json");
+			json v = util::FileSystem::getJson(name + ".json");
 			std::string directory = name;
 			
 			if(directory.find('/') != std::string::npos)
@@ -108,13 +108,13 @@ namespace blib
 				directory = directory.substr(0, directory.rfind('\\')+1);
 
 
-			blib::SpriteSheet* spriteSheet = new blib::gl::Texture<blib::SpriteSheet>(directory + v["tex"].asString());
+			blib::SpriteSheet* spriteSheet = new blib::gl::Texture<blib::SpriteSheet>(directory + v["tex"].get<std::string>());
 
-			spriteSheet->spriteCountX = v["count"][0].asInt();
-			spriteSheet->spriteCountY = v["count"][1].asInt();
+			spriteSheet->spriteCountX = v["count"][0].get<int>();
+			spriteSheet->spriteCountY = v["count"][1].get<int>();
 
-			spriteSheet->spriteWidth = spriteSheet->originalWidth / v["count"][0].asInt();
-			spriteSheet->spriteHeight = spriteSheet->originalHeight / v["count"][1].asInt();
+			spriteSheet->spriteWidth = spriteSheet->originalWidth / v["count"][0].get<int>();
+			spriteSheet->spriteHeight = spriteSheet->originalHeight / v["count"][1].get<int>();
 			spriteSheet->spriteCenter = glm::vec2(spriteSheet->spriteWidth / 2, spriteSheet->spriteHeight/2);
 			return spriteSheet;
 		}

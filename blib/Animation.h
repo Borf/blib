@@ -9,7 +9,6 @@
 namespace blib
 {
 
-	namespace json { class Value; };
 
 	//TODO: instancing?
 	class Animation
@@ -23,7 +22,7 @@ namespace blib
 			float angleOrig;
 			int frame;
 
-			Bone(json::Value &config);
+			Bone(json &config);
 			void draw(const Animation& animation, SpriteBatch &spritebatch, glm::mat4 transform, const glm::vec4& color = glm::vec4(1,1,1,1));
 		};
 		class State
@@ -36,14 +35,14 @@ namespace blib
 				{
 				public:
 					int frame;
-					BoneFrameInfo(json::Value &config);
+					BoneFrameInfo(json &config);
 				};
 				float time;
 				std::list<std::pair<Bone*, BoneFrameInfo> > boneInfo;
 
-				KeyFrame(const Animation& animation, json::Value &config);
+				KeyFrame(const Animation& animation, json &config);
 			};
-			State(const Animation& animation, json::Value &config);
+			State(const Animation& animation, json &config);
 
 			std::string whenDone;
 

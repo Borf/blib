@@ -45,6 +45,7 @@
     <ClInclude Include="blib\IWindow.h" />
     <ClInclude Include="blib\JoyState.h" />
     <ClInclude Include="blib\json.h" />
+    <ClInclude Include="blib\json.hpp" />
     <ClInclude Include="blib\KeyListener.h" />
     <ClInclude Include="blib\LineBatch.h" />
     <ClInclude Include="blib\linq.h" />
@@ -465,7 +466,6 @@
     <ClInclude Include="externals\poly2tri\sweep\sweep.h" />
     <ClInclude Include="externals\poly2tri\sweep\sweep_context.h" />
     <ClInclude Include="externals\spine\spine-c\src\spine\Json.h" />
-    <ClInclude Include="externals\spine\spine-c\src\spine\kvec.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\AnimatableSprite.cpp" />

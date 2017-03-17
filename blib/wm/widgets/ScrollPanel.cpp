@@ -76,59 +76,59 @@ namespace blib
 			void ScrollPanel::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
 
-				json::Value skin = WM::getInstance()->skin["list"];
+				json skin = WM::getInstance()->skin["list"];
 				blib::Texture* texture = WM::getInstance()->skinTexture;
 
-				spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x,y,0)), skin, glm::vec2(width - skin["scroll"]["width"].asInt(), height));
+				spriteBatch.drawStretchyRect(texture, glm::translate(matrix, glm::vec3(x,y,0)), skin, glm::vec2(width - skin["scroll"]["width"].get<int>(), height));
 				
-				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y, 0)),
+				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].get<int>(), y, 0)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["buttonup"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["top"].asInt() / (float)texture->originalHeight),
-					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["height"].asInt() / (float)texture->originalHeight));
+					glm::vec2(skin["scroll"]["buttonup"]["left"].get<int>() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["top"].get<int>() / (float)texture->originalHeight),
+					skin["scroll"]["width"].get<int>() / (float)texture->originalWidth, skin["scroll"]["buttonup"]["height"].get<int>() / (float)texture->originalHeight));
 
-				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + height - skin["scroll"]["buttondown"]["height"].asInt(), 0)),
+				spriteBatch.draw(texture, glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].get<int>(), y + height - skin["scroll"]["buttondown"]["height"].get<int>(), 0)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["buttondown"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["top"].asInt() / (float)texture->originalHeight),
-					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["height"].asInt() / (float)texture->originalHeight));
+					glm::vec2(skin["scroll"]["buttondown"]["left"].get<int>() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["top"].get<int>() / (float)texture->originalHeight),
+					skin["scroll"]["width"].get<int>() / (float)texture->originalWidth, skin["scroll"]["buttondown"]["height"].get<int>() / (float)texture->originalHeight));
 
-				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt(), 0)), glm::vec3(1, (height - skin["scroll"]["buttonup"]["height"].asInt() - skin["scroll"]["buttondown"]["height"].asInt()) / (float)skin["scroll"]["background"]["height"].asInt(), 1)),
+				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].get<int>(), y + skin["scroll"]["buttonup"]["height"].get<int>(), 0)), glm::vec3(1, (height - skin["scroll"]["buttonup"]["height"].get<int>() - skin["scroll"]["buttondown"]["height"].get<int>()) / (float)skin["scroll"]["background"]["height"].get<int>(), 1)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["background"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["top"].asInt() / (float)texture->originalHeight),
-					skin["scroll"]["width"].asInt() / (float)texture->originalWidth, skin["scroll"]["background"]["height"].asInt() / (float)texture->originalHeight));
+					glm::vec2(skin["scroll"]["background"]["left"].get<int>() / (float)texture->originalWidth, skin["scroll"]["background"]["top"].get<int>() / (float)texture->originalHeight),
+					skin["scroll"]["width"].get<int>() / (float)texture->originalWidth, skin["scroll"]["background"]["height"].get<int>() / (float)texture->originalHeight));
 
 
 				float pages = internalHeight / (float)height;
 				if (pages < 1)
 					pages = 1;
-				float scrollHeight = (height - (skin["scroll"]["buttonup"]["height"].asInt() + skin["scroll"]["buttondown"]["height"].asInt())) / (float)pages;
+				float scrollHeight = (height - (skin["scroll"]["buttonup"]["height"].get<int>() + skin["scroll"]["buttondown"]["height"].get<int>())) / (float)pages;
 				float scrollFac = scrollY / (float)(internalHeight - height);
-				float scrollHandlePosition = scrollFac * (height - (skin["scroll"]["buttonup"]["height"].asInt() + skin["scroll"]["buttondown"]["height"].asInt() + scrollHeight));
+				float scrollHandlePosition = scrollFac * (height - (skin["scroll"]["buttonup"]["height"].get<int>() + skin["scroll"]["buttondown"]["height"].get<int>() + scrollHeight));
 
-				float margin = (skin["scroll"]["handle"]["height"].asFloat() - skin["scroll"]["handle"]["center"].asFloat()) / 2.0f;
+				float margin = (skin["scroll"]["handle"]["height"].get<float>() - skin["scroll"]["handle"]["center"].get<float>()) / 2.0f;
 
 				//handle center
-				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt() + scrollHandlePosition + margin, 0)), glm::vec3(1, (scrollHeight - 2 * margin) / (skin["scroll"]["handle"]["height"].asFloat() - 2 * margin), 1)),
+				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].get<int>(), y + skin["scroll"]["buttonup"]["height"].get<int>() + scrollHandlePosition + margin, 0)), glm::vec3(1, (scrollHeight - 2 * margin) / (skin["scroll"]["handle"]["height"].get<float>() - 2 * margin), 1)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["handle"]["left"].asInt() / (float)texture->originalWidth, (skin["scroll"]["handle"]["top"].asInt() + margin) / (float)texture->originalHeight),
-					skin["scroll"]["handle"]["width"].asInt() / (float)texture->originalWidth, (skin["scroll"]["handle"]["height"].asInt() - 2 * margin) / (float)texture->originalHeight));
+					glm::vec2(skin["scroll"]["handle"]["left"].get<int>() / (float)texture->originalWidth, (skin["scroll"]["handle"]["top"].get<int>() + margin) / (float)texture->originalHeight),
+					skin["scroll"]["handle"]["width"].get<int>() / (float)texture->originalWidth, (skin["scroll"]["handle"]["height"].get<int>() - 2 * margin) / (float)texture->originalHeight));
 
 
 				//handle top
-				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt() + scrollHandlePosition, 0)), glm::vec3(1, 1, 1)),
+				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].get<int>(), y + skin["scroll"]["buttonup"]["height"].get<int>() + scrollHandlePosition, 0)), glm::vec3(1, 1, 1)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["handle"]["left"].asInt() / (float)texture->originalWidth, skin["scroll"]["handle"]["top"].asInt() / (float)texture->originalHeight),
-					skin["scroll"]["handle"]["width"].asFloat() / (float)texture->originalWidth, margin / (float)texture->originalHeight));
+					glm::vec2(skin["scroll"]["handle"]["left"].get<int>() / (float)texture->originalWidth, skin["scroll"]["handle"]["top"].get<int>() / (float)texture->originalHeight),
+					skin["scroll"]["handle"]["width"].get<float>() / (float)texture->originalWidth, margin / (float)texture->originalHeight));
 				//handle bottom
-				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].asInt(), y + skin["scroll"]["buttonup"]["height"].asInt() + scrollHandlePosition + scrollHeight - margin, 0)), glm::vec3(1, 1, 1)),
+				spriteBatch.draw(texture, glm::scale(glm::translate(matrix, glm::vec3(x + width - skin["scroll"]["width"].get<int>(), y + skin["scroll"]["buttonup"]["height"].get<int>() + scrollHandlePosition + scrollHeight - margin, 0)), glm::vec3(1, 1, 1)),
 					glm::vec2(0, 0),
 					blib::math::Rectangle(
-					glm::vec2(skin["scroll"]["handle"]["left"].asInt() / (float)texture->originalWidth, (skin["scroll"]["handle"]["top"].asInt() + skin["scroll"]["handle"]["height"].asInt() - margin) / (float)texture->originalHeight),
-					skin["scroll"]["handle"]["width"].asFloat() / (float)texture->originalWidth, margin / (float)texture->originalHeight));
+					glm::vec2(skin["scroll"]["handle"]["left"].get<int>() / (float)texture->originalWidth, (skin["scroll"]["handle"]["top"].get<int>() + skin["scroll"]["handle"]["height"].get<int>() - margin) / (float)texture->originalHeight),
+					skin["scroll"]["handle"]["width"].get<float>() / (float)texture->originalWidth, margin / (float)texture->originalHeight));
 
 
 #ifdef CLIPPING
@@ -136,7 +136,7 @@ namespace blib
 				spriteBatch.renderState.scissor = true;
 				spriteBatch.renderState.scissorArea[0] = (int)matrix[3][0]+x+2;
 				spriteBatch.renderState.scissorArea[1] = (int)matrix[3][1] + y + 2;
-				spriteBatch.renderState.scissorArea[2] = width - 4 - skin["scroll"]["width"].asInt();
+				spriteBatch.renderState.scissorArea[2] = width - 4 - skin["scroll"]["width"].get<int>();
 				spriteBatch.renderState.scissorArea[3] = height-4;
 				spriteBatch.begin();
 #endif

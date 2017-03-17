@@ -10,7 +10,7 @@
 #include <blib/Math.h>
 #include <blib/util/Log.h>
 #include <blib/SpriteBatch.h>
-#include <blib/json.h>
+#include <blib/json.hpp>
 
 using blib::util::Log;
 
@@ -330,8 +330,8 @@ namespace blib
 
 	EmitterTemplate::EmitterTemplate( std::string filename, TextureMap* textureMap, const std::string &textureFolder)
 	{
-		json::Value data = util::FileSystem::getJson(filename);
-		if(data.isNull())
+		json data = util::FileSystem::getJson(filename);
+		if(data.is_null())
 			throw "File not found";
 
 
@@ -339,11 +339,11 @@ namespace blib
 			std::pair<ParticleType, std::string>(Fading, "fading") );
 
 		
-		if(data["texture"].isString())
-			textures.push_back(data["texture"].asString());
+		if(data["texture"].is_string())
+			textures.push_back(data["texture"].get<std::string>());
 		else
 			for(size_t i = 0; i < data["texture"].size(); i++)
-				textures.push_back(data["texture"][i].asString());
+				textures.push_back(data["texture"][i].get<std::string>());
 
 		for(size_t i = 0; i < textures.size(); i++)
 			textureInfos.push_back(textureMap->addTexture(textureFolder + textures[i]));
@@ -351,57 +351,57 @@ namespace blib
 
 
 
-		textureOrder = enumFromString<TextureOrder>(data["textureorder"].asString(), util::make_vector<std::pair<TextureOrder, std::string> >() << 
+		textureOrder = enumFromString<TextureOrder>(data["textureorder"].get<std::string>(), util::make_vector<std::pair<TextureOrder, std::string> >() << 
 			std::pair<TextureOrder, std::string>(Random, "random")<<
 			std::pair<TextureOrder, std::string>(Ordered, "order"));
 
 
-		blendMode = enumFromString<BlendMode>(data["blendmode"].asString(), util::make_vector<std::pair<BlendMode, std::string> >() << 
+		blendMode = enumFromString<BlendMode>(data["blendmode"].get<std::string>(), util::make_vector<std::pair<BlendMode, std::string> >() << 
 			std::pair<BlendMode, std::string>(Alpha, "alpha")<<
 			std::pair<BlendMode, std::string>(Add, "add") );
 
-		shape = enumFromString<Shape>(data["shape"].asString(), util::make_vector<std::pair<Shape, std::string> >() << 
+		shape = enumFromString<Shape>(data["shape"].get<std::string>(), util::make_vector<std::pair<Shape, std::string> >() << 
 			std::pair<Shape, std::string>(Point, "point")<<
 			std::pair<Shape, std::string>(Line, "line")<<
 			std::pair<Shape, std::string>(Circle, "circle") );
 
-		gravity = glm::vec2(data["gravity"][0].asFloat(), data["gravity"][1].asFloat());
-		collision = data["collision"].asBool();
-		particleCountPerSecondMin = data["particlecount"][0].asInt();
+		gravity = glm::vec2(data["gravity"][0].get<float>(), data["gravity"][1].get<float>());
+		collision = data["collision"].get<bool>();
+		particleCountPerSecondMin = data["particlecount"][0].get<int>();
 
 
-		particleProps.directionMin = data["particle"]["direction"][0].asFloat();
-		particleProps.directionMax = data["particle"]["direction"][1].asFloat();
+		particleProps.directionMin = data["particle"]["direction"][0].get<float>();
+		particleProps.directionMax = data["particle"]["direction"][1].get<float>();
 
-		particleProps.speedMin = data["particle"]["speed"][0].asFloat();
-		particleProps.speedMax = data["particle"]["speed"][1].asFloat();
+		particleProps.speedMin = data["particle"]["speed"][0].get<float>();
+		particleProps.speedMax = data["particle"]["speed"][1].get<float>();
 
-		particleProps.rotationMin = data["particle"]["rotation"][0].asFloat();
-		particleProps.rotationMax = data["particle"]["rotation"][1].asFloat();
+		particleProps.rotationMin = data["particle"]["rotation"][0].get<float>();
+		particleProps.rotationMax = data["particle"]["rotation"][1].get<float>();
 
-		particleProps.rotationSpeedMin = data["particle"]["rotationspeed"][0].asFloat();
-		particleProps.rotationSpeedMax = data["particle"]["rotationspeed"][1].asFloat();
+		particleProps.rotationSpeedMin = data["particle"]["rotationspeed"][0].get<float>();
+		particleProps.rotationSpeedMax = data["particle"]["rotationspeed"][1].get<float>();
 
-		particleProps.friction = data["particle"]["friction"].asFloat();
-		particleProps.rotationFriction = data["particle"]["rotationfriction"].asFloat();
+		particleProps.friction = data["particle"]["friction"].get<float>();
+		particleProps.rotationFriction = data["particle"]["rotationfriction"].get<float>();
 
-		particleProps.fadeSpeedMin = data["particle"]["fadespeed"][0].asFloat();
-		particleProps.fadeSpeedMax = data["particle"]["fadespeed"][1].asFloat();
+		particleProps.fadeSpeedMin = data["particle"]["fadespeed"][0].get<float>();
+		particleProps.fadeSpeedMax = data["particle"]["fadespeed"][1].get<float>();
 
 	
-		particleProps.colorExp = data["particle"]["colorexp"].asFloat();
+		particleProps.colorExp = data["particle"]["colorexp"].get<float>();
 		for(size_t i = 0; i < data["particle"]["size"].size(); i++)
-			particleProps.size.push_back(data["particle"]["size"][i].asFloat());
+			particleProps.size.push_back(data["particle"]["size"][i].get<float>());
 
-		particleProps.sizeExp = data["particle"]["sizeexp"].asFloat();
+		particleProps.sizeExp = data["particle"]["sizeexp"].get<float>();
 		for(size_t i = 0; i < data["particle"]["colors"].size(); i++)
-			particleProps.colors.push_back(glm::vec4(data["particle"]["colors"][i][0].asFloat(), data["particle"]["colors"][i][1].asFloat(), data["particle"]["colors"][i][2].asFloat(), data["particle"]["colors"][i][3].asFloat()));
+			particleProps.colors.push_back(glm::vec4(data["particle"]["colors"][i][0].get<float>(), data["particle"]["colors"][i][1].get<float>(), data["particle"]["colors"][i][2].get<float>(), data["particle"]["colors"][i][3].get<float>()));
 
 		initialSpreadX = glm::vec2(0, 0);
 		initialSpreadY = glm::vec2(0, 0);
-		if (data.isMember("initialspread"))
+		if (data.find("initialspread") != data.end())
 		{
-			if (data["initialspread"][0].isArray())
+			if (data["initialspread"][0].is_array())
 			{
 				initialSpreadX = glm::vec2(data["initialspread"][0][0], data["initialspread"][0][1]);
 				initialSpreadY = glm::vec2(data["initialspread"][1][0], data["initialspread"][1][1]);

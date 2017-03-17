@@ -203,11 +203,11 @@ namespace blib
 		void WM::setSkin( std::string skinFile, ResourceManager* resourceManager )
 		{
 			skin = util::FileSystem::getJson(skinFile);
-			if (skin.isMember("texture"))
-				skinTexture = resourceManager->getResource<Texture>(skin["texture"].asString());
+			if (skin.find("texture") != skin.end())
+				skinTexture = resourceManager->getResource<Texture>(skin["texture"].get<std::string>());
 			font = resourceManager->getResource<Font>("tahoma");
-			if (skin.isMember("radialfont"))
-				radialmenufont = resourceManager->getResource<Font>(skin["radialfont"].asString());
+			if (skin.find("radialfont") != skin.end())
+				radialmenufont = resourceManager->getResource<Font>(skin["radialfont"].get<std::string>());
 		}
 
 		void WM::setFont( Font* font )
@@ -235,9 +235,9 @@ namespace blib
 			tasks.push_back(task);
 		}
 
-		blib::wm::Menu* WM::loadMenu( std::string filename, const blib::json::Value &translation )
+		blib::wm::Menu* WM::loadMenu( std::string filename, const json &translation )
 		{
-			json::Value menuData = blib::util::FileSystem::getJson(filename);
+			json menuData = blib::util::FileSystem::getJson(filename);
 
 			Menu* root = new Menu(menuData);
 
@@ -245,7 +245,7 @@ namespace blib
 			{
 				auto item = root->getItem(it.key());
 				if(item)
-					item->title = it.value().asString()	;
+					item->title = it.value().get<std::string>()	;
 			}
 			
 
@@ -586,8 +586,8 @@ namespace blib
 					if (w->inWindow(x, y) && w->visible && w->selectedWidget)
 					{
 						w->selectedWidget->onDrag(
-							x - w->x - w->selectedWidget->absoluteX() - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), 
-							y - w->y - w->selectedWidget->absoluteY() - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
+							x - w->x - w->selectedWidget->absoluteX() - WM::getInstance()->skin["window"]["offsets"]["left"].get<int>(), 
+							y - w->y - w->selectedWidget->absoluteY() - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>());
 						handled = true;
 						break;
 					}

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <blib/json.h>
+#include <blib/json.hpp>
 #include <blib/wm/widgets/Widget.h>
 #include <blib/wm/widgets/Panel.h>
 #include <blib/wm/KeyboardFocusable.h>
@@ -16,7 +16,7 @@ namespace blib
 	class Window : public KeyboardFocusable, MouseClickable
 	{
 		friend class WM;
-		void addWidgets( widgets::Panel* panel, json::Value skin, ResourceManager* resourceManager );
+		void addWidgets( widgets::Panel* panel, json skin, ResourceManager* resourceManager );
 
 	protected:
 		std::string title;

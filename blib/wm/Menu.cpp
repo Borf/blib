@@ -5,37 +5,37 @@
 #include "ToggleMenuItem.h"
 #include "ActionMenuItem.h"
 
-#include <blib/json.h>
+#include <blib/json.hpp>
 #include <blib/KeyListener.h>
 #include <blib/util/Log.h>
 using blib::util::Log;
 
 
-blib::wm::Menu::Menu(const json::Value &data)
+blib::wm::Menu::Menu(const json &data)
 {
 	for (size_t i = 0; i < data.size(); i++)
 	{
 		MenuItem* subItem = NULL;
 
-		if (data[i]["type"].asString() == "menu")
+		if (data[i]["type"].get<std::string>() == "menu")
 		{
-			subItem = new SubMenuMenuItem(data[i]["name"].asString(), new Menu(data[i]["subitems"]));
+			subItem = new SubMenuMenuItem(data[i]["name"].get<std::string>(), new Menu(data[i]["subitems"]));
 		}
-		else if (data[i]["type"].asString() == "item")
+		else if (data[i]["type"].get<std::string>() == "item")
 		{
-			subItem = new ActionMenuItem(data[i]["name"].asString());
+			subItem = new ActionMenuItem(data[i]["name"].get<std::string>());
 		}
-		else if (data[i]["type"].asString() == "toggle")
+		else if (data[i]["type"].get<std::string>() == "toggle")
 		{
-			subItem = new ToggleMenuItem(data[i]["name"].asString(), data[i]["initial"].asBool());
+			subItem = new ToggleMenuItem(data[i]["name"].get<std::string>(), data[i]["initial"].get<bool>());
 		}
 		else
-			Log::err << "Unknown menu type: " << data[i]["type"].asString() << Log::newline;
+			Log::err << "Unknown menu type: " << data[i]["type"].get<std::string>() << Log::newline;
 
 		if (subItem)
 		{
-			if (data[i].isMember("key"))
-				subItem->key = KeyListener::fromString(data[i]["key"].asString());
+			if (data[i].find("key") != data[i].end())
+				subItem->key = KeyListener::fromString(data[i]["key"].get<std::string>());
 			menuItems.push_back(subItem);
 		}
 	}
@@ -170,7 +170,7 @@ void blib::wm::Menu::setMenu(const std::string &menuLoc, blib::wm::MenuItem* men
 		}
 	}
 	
-	Menu* menu = new Menu(json::Value(json::Type::arrayValue));
+	Menu* menu = new Menu(json::array());
 	menu->setMenu(menuLoc.substr(first.length() == menuLoc.length() ? first.length() : first.length() + 1), menuItem);
 	menuItems.push_back(new SubMenuMenuItem(first, menu));
 }

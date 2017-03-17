@@ -7,7 +7,7 @@
 #include <blib/Shader.h>
 #include <blib/gl/Vertex.h>
 #include <blib/math/Triangle.h>
-#include <blib/json.h>
+#include <blib/json.hpp>
 #include <blib/util/Tree.h>
 #include <blib/Material.h>
 

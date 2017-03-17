@@ -8,11 +8,10 @@
 #include <blib/util/StreamInFile.h>
 #include <blib/util/StreamOutFile.h>
 #include <blib/util/StreamSeekable.h>
-
+#include <blib/json.hpp>
 
 namespace blib
 {
-	namespace json { class Value; }
 
 	namespace util
 	{
@@ -99,7 +98,7 @@ namespace blib
 			static const std::list<FileSystemHandler*> getHandlers();
 			static int getData(const std::string &fileName, char* &data);
 			static std::string getData(const std::string &fileName);
-			static json::Value getJson(const std::string &fileName);
+			static json getJson(const std::string &fileName);
 			static std::vector<std::string> getFileList(const std::string &path);
 			static void dispose();
 		};

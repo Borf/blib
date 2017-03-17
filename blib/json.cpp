@@ -1,3 +1,4 @@
+#if 0
 #include "json.h"
 #include <iomanip>
 #include <sstream>
@@ -351,7 +352,7 @@ namespace blib
 				assert(token == ':');
 				ltrim(stream);
 				Value val = eatValue(stream);
-				obj[key.asString()] = val;
+				obj[key.get<std::string>()] = val;
 				ltrim(stream);
 
 				token = stream.get();
@@ -493,7 +494,7 @@ namespace blib
 			return stream;
 		}
 
-		std::ostream& Value::prettyPrint(std::ostream& stream, blib::json::Value& printConfig, int level) const
+		std::ostream& Value::prettyPrint(std::ostream& stream, json& printConfig, int level) const
 		{
 			stream << std::fixed << std::setprecision(6);
 			switch (type)
@@ -520,17 +521,17 @@ namespace blib
 				int wrap = 99999;
 				if (value.arrayValue->size() > 10)
 					wrap = 1;
-				if (value.arrayValue->at(0).isArray() || value.arrayValue->at(0).isObject())
+				if (value.arrayValue->at(0).is_array() || value.arrayValue->at(0).isObject())
 					wrap = 1;
 				else
 					wrap = 3;
 
 				std::string seperator = " ";
 
-				if (!printConfig.isNull() && printConfig.isMember("wrap"))
+				if (!printConfig.is_null() && printConfig.isMember("wrap"))
 					wrap = printConfig["wrap"];
-				if (!printConfig.isNull() && printConfig.isMember("seperator"))
-					seperator = printConfig["seperator"].asString();
+				if (!printConfig.is_null() && printConfig.isMember("seperator"))
+					seperator = printConfig["seperator"].get<std::string>();
 
 
 				int index = 0;
@@ -552,12 +553,12 @@ namespace blib
 						}
 					}
 
-					blib::json::Value childPrintConfig = blib::json::Value::null;
-					if (!printConfig.isNull())
+					json childPrintConfig = json::null;
+					if (!printConfig.is_null())
 					{
 						if (printConfig.isMember("elements"))
 							childPrintConfig = printConfig["elements"];
-						else if (printConfig.isMember("recursive") && printConfig["recursive"].asBool() == true)
+						else if (printConfig.isMember("recursive") && printConfig["recursive"].get<bool>() == true)
 							childPrintConfig = printConfig;
 					}
 
@@ -578,17 +579,17 @@ namespace blib
 				int wrap = 99999;
 				if (value.arrayValue->size() > 10)
 					wrap = 1;
-				if (value.arrayValue->at(0).isArray() || value.arrayValue->at(0).isObject())
+				if (value.arrayValue->at(0).is_array() || value.arrayValue->at(0).isObject())
 					wrap = 1;
 				else
 					wrap = 3;
 
 				std::string seperator = " ";
 
-				if (!printConfig.isNull() && printConfig.isMember("wrap"))
+				if (!printConfig.is_null() && printConfig.isMember("wrap"))
 					wrap = printConfig["wrap"];
-				if (!printConfig.isNull() && printConfig.isMember("seperator"))
-					seperator = printConfig["seperator"].asString();
+				if (!printConfig.is_null() && printConfig.isMember("seperator"))
+					seperator = printConfig["seperator"].get<std::string>();
 
 
 				int index = 0;
@@ -610,13 +611,13 @@ namespace blib
 					}
 					stream << "\"" << v.first << "\" : ";
                     if (
-                            (v.second.isArray() || v.second.isObject()) &&
-                            (printConfig.isNull() ||
+                            (v.second.is_array() || v.second.isObject()) &&
+                            (printConfig.is_null() ||
                              (
                                  printConfig.isMember(v.first) &&
 								 printConfig[v.first].isObject() &&
                                  printConfig[v.first].isMember("wrap") &&
-                                 printConfig[v.first]["wrap"].asInt() < (int)v.second.size())
+                                 printConfig[v.first]["wrap"].get<int>() < (int)v.second.size())
                              )
                             )
 					{
@@ -624,12 +625,12 @@ namespace blib
 						indent(stream, level + 1);
 					}
 
-					blib::json::Value childPrintConfig = blib::json::Value::null;
-					if (!printConfig.isNull())
+					json childPrintConfig = json::null;
+					if (!printConfig.is_null())
 					{
 						if (printConfig.isMember(v.first))
 							childPrintConfig = printConfig[v.first];
-						else if (printConfig.isMember("recursive") && printConfig["recursive"].asBool() == true)
+						else if (printConfig.isMember("recursive") && printConfig["recursive"].get<bool>() == true)
 							childPrintConfig = printConfig;
 					}
 
@@ -640,7 +641,7 @@ namespace blib
 
 
 				std::set<std::string> printed;
-				if (!printConfig.isNull())
+				if (!printConfig.is_null())
 				{
 					if (printConfig.isMember("sort"))
 					{
@@ -727,3 +728,4 @@ namespace blib
 		}
 	}
 }
+#endif

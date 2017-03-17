@@ -115,6 +115,11 @@ namespace blib
 			return *this;
 		}
 
+		Log& Log::operator<<(const json& j)
+		{
+			logString("%s", j.dump().c_str());
+			return *this;
+		}
 
 		Log& Log::operator<<(const EndLine& e)
 		{

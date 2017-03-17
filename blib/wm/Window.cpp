@@ -29,7 +29,7 @@
 #include <blib/util/Log.h>
 #include <blib/util/FileSystem.h>
 #include <blib/math/Rectangle.h>
-#include <blib/json.h>
+#include <blib/json.hpp>
 
 #include <blib/wm/widgets/Panel.h>
 #include <blib/wm/widgets/button.h>
@@ -52,7 +52,7 @@ namespace blib
 		Window::Window(std::string title, std::string skinFile, ResourceManager* resourceManager)
 		{
 			this->title = title;
-			json::Value skin = util::FileSystem::getJson("assets/windows/" + skinFile);
+			json skin = util::FileSystem::getJson("assets/windows/" + skinFile);
 
 			this->x = 100;
 			this->y = 100;
@@ -62,18 +62,18 @@ namespace blib
 			this->rootPanel = NULL;
 			if (skinFile != "")
 			{
-				this->setSize(skin["size"][0].asInt(), skin["size"][1].asInt());
-				if (skin.isMember("modal"))
-					this->modal = skin["modal"].asBool();
+				this->setSize(skin["size"][0].get<int>(), skin["size"][1].get<int>());
+				if (skin.find("modal") != skin.end())
+					this->modal = skin["modal"].get<bool>();
 				else
 					this->modal = false;
-				this->resizable = skin["resizable"].asBool();
+				this->resizable = skin["resizable"].get<bool>();
 			}
 			this->rootPanel = new widgets::Panel();
 			this->rootPanel->x = 0;
 			this->rootPanel->y = 0;
-			this->rootPanel->width = skin["size"][0].asInt();
-			this->rootPanel->height = skin["size"][1].asInt();
+			this->rootPanel->width = skin["size"][0].get<int>();
+			this->rootPanel->height = skin["size"][1].get<int>();
 
 			defaultWidget = NULL;
 			selectedWidget = NULL;
@@ -81,12 +81,12 @@ namespace blib
 			if (skinFile != "")
 				this->addWidgets(this->rootPanel, skin["widgets"], resourceManager);
 
-			if (skin.isMember("closable") && skin["closable"].asBool())
+			if (skin.find("closable") != skin.end() && skin["closable"].get<bool>())
 				closable = true;
 			else
 				closable = false;
 
-			if (skin.isMember("defaultwidget"))
+			if (skin.find("defaultwidget") != skin.end())
 				defaultWidget = getComponent(skin["defaultwidget"]);
 
 		/*	addKeyDownHandler([this](blib::Key key) { 
@@ -108,23 +108,23 @@ namespace blib
 
 			addClickHandler([this](int x, int y, int clickcount) 
 			{ 
-				if (closable && y-this->y < WM::getInstance()->skin["window"]["offsets"]["top"].asInt() && x-this->x > width - WM::getInstance()->skin["window"]["offsets"]["top"].asInt())
+				if (closable && y-this->y < WM::getInstance()->skin["window"]["offsets"]["top"].get<int>() && x-this->x > width - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>())
 					close();
-				return rootPanel->onMouseClick(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount);
+				return rootPanel->onMouseClick(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].get<int>(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>(), clickcount);
 			});
-			addMouseUpHandler([this](int x, int y, int clickcount) { return rootPanel->onMouseUp(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });
+			addMouseUpHandler([this](int x, int y, int clickcount) { return rootPanel->onMouseUp(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].get<int>(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>(), clickcount); });
 			addMouseDownHandler([this](int x, int y, int clickcount) { 
 				if (selectedWidget)
 					selectedWidget->selected = false;
-				selectedWidget = rootPanel->getComponent(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
+				selectedWidget = rootPanel->getComponent(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].get<int>(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>());
 				if (selectedWidget)
 					selectedWidget->selected = true;
 
-				return rootPanel->onMouseDown(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), clickcount); });
+				return rootPanel->onMouseDown(x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].get<int>(), y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>(), clickcount); });
 			addScrollHandler([this](int x, int y, int delta) { 
 				return rootPanel->onScroll(
-					x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), 
-					y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt(), delta); });
+					x - this->x - WM::getInstance()->skin["window"]["offsets"]["left"].get<int>(), 
+					y - this->y - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>(), delta); });
 
 
 
@@ -133,8 +133,8 @@ namespace blib
 
 		void Window::setSize( int width, int height )
 		{
-			this->width = width + WM::getInstance()->skin["window"]["offsets"]["left"].asInt() + WM::getInstance()->skin["window"]["offsets"]["right"].asInt();
-			this->height = height + WM::getInstance()->skin["window"]["offsets"]["top"].asInt() + WM::getInstance()->skin["window"]["offsets"]["bottom"].asInt();
+			this->width = width + WM::getInstance()->skin["window"]["offsets"]["left"].get<int>() + WM::getInstance()->skin["window"]["offsets"]["right"].get<int>();
+			this->height = height + WM::getInstance()->skin["window"]["offsets"]["top"].get<int>() + WM::getInstance()->skin["window"]["offsets"]["bottom"].get<int>();
 			if(rootPanel)
 			{
 				int oldWidth = rootPanel->width;
@@ -174,28 +174,28 @@ namespace blib
 				spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, blib::math::easyMatrix(glm::vec2(width-13, 3), matrix), WM::getInstance()->skin["closebutton"], glm::vec2(10, 10));
 
 			spriteBatch.draw(WM::getInstance()->font, title, glm::translate(glm::mat4(), glm::vec3(x+20, y+1,0)), glm::vec4(0,0,0,1));
-			rootPanel->draw(spriteBatch, glm::translate(matrix, glm::vec3(WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), WM::getInstance()->skin["window"]["offsets"]["top"].asInt(),0)), renderer);
+			rootPanel->draw(spriteBatch, glm::translate(matrix, glm::vec3(WM::getInstance()->skin["window"]["offsets"]["left"].get<int>(), WM::getInstance()->skin["window"]["offsets"]["top"].get<int>(),0)), renderer);
 		}
 
-		void Window::addWidgets( widgets::Panel* panel, json::Value skin, ResourceManager* resourceManager )
+		void Window::addWidgets( widgets::Panel* panel, json skin, ResourceManager* resourceManager )
 		{
 			
 			for (auto it = skin.begin(); it != skin.end(); it++)
 			{
-				json::Value widgetSkin = it.value();
+				json widgetSkin = it.value();
 				Widget* widget = NULL;
-				std::string type = widgetSkin["type"].asString();
+				std::string type = widgetSkin["type"].get<std::string>();
 				if(type == "button")
 				{
-					widget = new widgets::Button(widgetSkin["text"].asString());
+					widget = new widgets::Button(widgetSkin["text"].get<std::string>());
 				}
 				else if(type == "textbox")
 				{
 					widget = new widgets::Textbox();
-					if(widgetSkin.isMember("emptytext"))
-						((widgets::Textbox*)widget)->emptyText = widgetSkin["emptytext"].asString();
-					if(widgetSkin.isMember("text"))
-						((widgets::Textbox*)widget)->text = widgetSkin["text"].asString();
+					if(widgetSkin.find("emptytext") != widgetSkin.end())
+						((widgets::Textbox*)widget)->emptyText = widgetSkin["emptytext"].get<std::string>();
+					if(widgetSkin.find("text") != widgetSkin.end())
+						((widgets::Textbox*)widget)->text = widgetSkin["text"].get<std::string>();
 			
 				}
 				else if (type == "list")
@@ -205,13 +205,13 @@ namespace blib
 				else if (type == "label")
 				{
 					widget = new widgets::Label();
-					if(widgetSkin.isMember("text"))
-						((widgets::Label*)widget)->text = widgetSkin["text"].asString();
+					if(widgetSkin.find("text") != widgetSkin.end())
+						((widgets::Label*)widget)->text = widgetSkin["text"].get<std::string>();
 				}
 				else if(type == "scrollpanel")
 					widget = new widgets::ScrollPanel();
 				else if (type == "image")
-					widget = new widgets::Image(resourceManager->getResource<blib::Texture>(widgetSkin["src"].asString()));
+					widget = new widgets::Image(resourceManager->getResource<blib::Texture>(widgetSkin["src"].get<std::string>()));
 				else if (type == "bmlbox")
 					widget = new widgets::BmlBox(resourceManager);
 				else
@@ -222,20 +222,20 @@ namespace blib
 
 				widget->name = it.key();
 
-				if(widgetSkin["position"][0].asInt() != -1)
-					widget->x = widgetSkin["position"][0].asInt();
-				if(widgetSkin["position"][1].asInt() != -1)
-					widget->y = widgetSkin["position"][1].asInt();
-				if(widgetSkin["size"][0].asInt() != -1)
-					widget->width = widgetSkin["size"][0].asInt();
-				if(widgetSkin["size"][1].asInt() != -1)
-					widget->height = widgetSkin["size"][1].asInt();
+				if(widgetSkin["position"][0].get<int>() != -1)
+					widget->x = widgetSkin["position"][0].get<int>();
+				if(widgetSkin["position"][1].get<int>() != -1)
+					widget->y = widgetSkin["position"][1].get<int>();
+				if(widgetSkin["size"][0].get<int>() != -1)
+					widget->width = widgetSkin["size"][0].get<int>();
+				if(widgetSkin["size"][1].get<int>() != -1)
+					widget->height = widgetSkin["size"][1].get<int>();
 
 				widget->parent = panel;
-				widget->positionHelpLeft =	toPositionHelp(widgetSkin["positionhelp"]["left"].asString());
-				widget->positionHelpRight = toPositionHelp(widgetSkin["positionhelp"]["right"].asString());
-				widget->positionHelpTop =	toPositionHelp(widgetSkin["positionhelp"]["top"].asString());
-				widget->positionHelpBottom =toPositionHelp(widgetSkin["positionhelp"]["bottom"].asString());
+				widget->positionHelpLeft =	toPositionHelp(widgetSkin["positionhelp"]["left"].get<std::string>());
+				widget->positionHelpRight = toPositionHelp(widgetSkin["positionhelp"]["right"].get<std::string>());
+				widget->positionHelpTop =	toPositionHelp(widgetSkin["positionhelp"]["top"].get<std::string>());
+				widget->positionHelpBottom =toPositionHelp(widgetSkin["positionhelp"]["bottom"].get<std::string>());
 
 
 				panel->add(widget);
@@ -272,24 +272,24 @@ namespace blib
 		{
 			int oldPanelWidth = rootPanel->width;
 			int oldPanelHeight = rootPanel->height;
-			rootPanel->width = width - WM::getInstance()->skin["window"]["offsets"]["left"].asInt() - WM::getInstance()->skin["window"]["offsets"]["right"].asInt();
-			rootPanel->height = height - WM::getInstance()->skin["window"]["offsets"]["top"].asInt() - WM::getInstance()->skin["window"]["offsets"]["bottom"].asInt();
+			rootPanel->width = width - WM::getInstance()->skin["window"]["offsets"]["left"].get<int>() - WM::getInstance()->skin["window"]["offsets"]["right"].get<int>();
+			rootPanel->height = height - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>() - WM::getInstance()->skin["window"]["offsets"]["bottom"].get<int>();
 			rootPanel->arrangeComponents(oldPanelWidth, oldPanelHeight);
 		}
 
 		/*void Window::mousewheel( int direction, int x, int y )
 		{
-			rootPanel->mousewheel(direction, x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
+			rootPanel->mousewheel(direction, x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].get<int>(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>());
 		}*/
 
 		bool Window::inComponent( int x, int y )
 		{
-			return rootPanel->inComponent(x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
+			return rootPanel->inComponent(x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].get<int>(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>());
 		}
 
 		Widget* Window::getComponent( int x, int y )
 		{
-			return rootPanel->getComponent(x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].asInt(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].asInt());
+			return rootPanel->getComponent(x-this->x - WM::getInstance()->skin["window"]["offsets"]["left"].get<int>(), y-this->y - WM::getInstance()->skin["window"]["offsets"]["top"].get<int>());
 		}
 
 		Widget* Window::getComponent( std::string name )
