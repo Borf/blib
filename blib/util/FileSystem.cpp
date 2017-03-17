@@ -265,9 +265,10 @@ namespace blib
 			for (size_t i = 0; i < data.size()-1; i++)
 			{
 				if (data[i] == '/' && data[i + 1] == '*' && !inString)
-				{
-					data = data.substr(0, i) + data.substr(data.find("*/", i)+2);
-				}
+					data = data.substr(0, i) + data.substr(data.find("*/", i) + 2);
+				if (data[i] == '/' && data[i + 1] == '/' && !inString)
+					data = data.substr(0, i) + data.substr(data.find("\n", i));
+
 				if (data[i] == '"' && !escape)
 					inString = !inString;
 				if (data[i] == '\\')
