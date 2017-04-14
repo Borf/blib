@@ -68,7 +68,14 @@ struct b2Vec2
 	void SetZero() { x = 0.0f; y = 0.0f; }
 
 	/// Set this vector to some specified coordinates.
-	void Set(float32 x_, float32 y_) { x = x_; y = y_; }
+	void Set(float32 x_, float32 y_) { 
+#ifdef WIN32
+		if (!(x_ == x_))
+			throw "argh";
+		if (!(y_ == y_))
+			throw "argh";
+#endif
+		x = x_; y = y_; }
 
 	/// Negate this vector.
 	b2Vec2 operator -() const { b2Vec2 v; v.Set(-x, -y); return v; }

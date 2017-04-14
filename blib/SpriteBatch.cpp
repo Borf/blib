@@ -209,6 +209,12 @@ namespace blib
 				y += lineHeight;
 				lineHeight = 12;
 			}
+			if (text[i] == '\t')
+			{
+				x = ceil((x + 50) / 50) * 50;
+				continue;
+			}
+
 			if(font->charmap.find(text[i]) == font->charmap.end())
 				continue;
 			const Glyph* g = font->getGlyph(text[i]);
