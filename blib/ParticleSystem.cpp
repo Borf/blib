@@ -90,6 +90,10 @@ namespace blib
 	{
 	//	if (elapsedTime > 3 * lastElapsedTime)
 	//		elapsedTime = lastElapsedTime;
+
+
+		int total = 0;
+
 		for(std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
 		{
 			Emitter* emitter = *it;
@@ -99,14 +103,19 @@ namespace blib
 				emitter->counter += elapsedTime;
 				continue;
 			}
-			for(int i = (int)glm::floor(emitter->counter * emitter->emitterTemplate->particleCountPerSecondMin); i < (int)glm::floor((emitter->counter + elapsedTime) * emitter->emitterTemplate->particleCountPerSecondMin); i++)
+
+			total++;
+
+			for(int i = (int)glm::floor(emitter->counter * emitter->emitterTemplate->particleCountPerSecondMin); 
+				i < (int)glm::floor((emitter->counter + elapsedTime) * emitter->emitterTemplate->particleCountPerSecondMin); i++)
+			//for(int i = 0; i < 10; i++)
 			{
                 if(nParticlesAdd < MAX_PARTICLES-1)
-				if (emitter->emitterTemplate->blendMode == EmitterTemplate::Add)
-					emitter->newParticle(addParticles[nParticlesAdd++], elapsedTime);
+					if (emitter->emitterTemplate->blendMode == EmitterTemplate::Add)
+						emitter->newParticle(addParticles[nParticlesAdd++], elapsedTime);
                 if(nParticlesAlpha < MAX_PARTICLES-1)
-				if (emitter->emitterTemplate->blendMode == EmitterTemplate::Alpha)
-					emitter->newParticle(alphaParticles[nParticlesAlpha++], elapsedTime);
+					if (emitter->emitterTemplate->blendMode == EmitterTemplate::Alpha)
+						emitter->newParticle(alphaParticles[nParticlesAlpha++], elapsedTime);
 			}
 			emitter->prevPosition = emitter->position;
 			emitter->counter += elapsedTime;
@@ -124,12 +133,12 @@ namespace blib
 			}
 		}
 
+		if (nParticlesAdd >= MAX_PARTICLES * 0.95 || nParticlesAlpha >= MAX_PARTICLES * 0.95)
+			Log::out << "Too Many Particles!: Total nr of emitters enabled: " << total << ", total particles: " << nParticlesAdd << ",\t"<< nParticlesAlpha << Log::newline;
+		
 
 		updateParticles(addParticles, nParticlesAdd, elapsedTime);
 		updateParticles(alphaParticles, nParticlesAlpha, elapsedTime);
-
-
-
 		lastElapsedTime = elapsedTime;
 	}
 

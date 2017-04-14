@@ -337,6 +337,10 @@ namespace blib
 				}
 
 			}
+			else
+			{
+				Log::out << "Unknown attachment type: " << attachment->type << Log::newline;
+			}
 /*			else if (attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
 				spSkinnedMeshAttachment* mesh = (spSkinnedMeshAttachment*)attachment;
 				if (mesh->uvsCount > SPINE_MESH_VERTEX_COUNT_MAX) continue;
