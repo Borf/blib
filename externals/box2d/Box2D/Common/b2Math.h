@@ -70,10 +70,13 @@ struct b2Vec2
 	/// Set this vector to some specified coordinates.
 	void Set(float32 x_, float32 y_) { 
 #ifdef WIN32
-		if (!(x_ == x_))
-			throw "argh";
-		if (!(y_ == y_))
-			throw "argh";
+		if (!(x_ == x_) || !(y_ == y_))
+		{
+			while (true)
+			{
+				printf("ARGH");
+			}
+		}
 #endif
 		x = x_; y = y_; }
 
