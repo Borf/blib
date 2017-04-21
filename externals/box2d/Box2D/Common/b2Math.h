@@ -57,9 +57,31 @@ struct b2Vec2
 	b2Vec2() {}
 
 	/// Construct using coordinates.
-	b2Vec2(float32 xIn, float32 yIn) : x(xIn), y(yIn) {}
+	b2Vec2(float32 xIn, float32 yIn) : x(xIn), y(yIn) {
+	
+#ifdef WIN32
+		if (!(x == x) || !(y == y))
+		{
+			while (true)
+			{
+				printf("ARGH1");
+			}
+		}
+#endif
+	}
 
-	b2Vec2(const glm::vec2 &in) : x(in.x), y(in.y) {}
+	b2Vec2(const glm::vec2 &in) : x(in.x), y(in.y) {
+	
+#ifdef WIN32
+		if (!(x == x) || !(y == y))
+		{
+			while (true)
+			{
+				printf("ARGH2");
+			}
+		}
+#endif
+	}
 
 	const glm::vec2 vec2() const { return glm::vec2(x, y); }
 	operator const glm::vec2() const { return glm::vec2(x, y); }
@@ -74,7 +96,7 @@ struct b2Vec2
 		{
 			while (true)
 			{
-				printf("ARGH");
+				printf("ARGH3");
 			}
 		}
 #endif
