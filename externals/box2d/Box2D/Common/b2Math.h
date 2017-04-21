@@ -62,10 +62,8 @@ struct b2Vec2
 #ifdef WIN32
 		if (!(x == x) || !(y == y))
 		{
-			while (true)
-			{
-				printf("ARGH1");
-			}
+			printf("ARGH1");
+			getchar();
 		}
 #endif
 	}
@@ -75,10 +73,8 @@ struct b2Vec2
 #ifdef WIN32
 		if (!(x == x) || !(y == y))
 		{
-			while (true)
-			{
-				printf("ARGH2");
-			}
+			printf("ARGH2");
+			getchar();
 		}
 #endif
 	}
@@ -94,10 +90,8 @@ struct b2Vec2
 #ifdef WIN32
 		if (!(x_ == x_) || !(y_ == y_))
 		{
-			while (true)
-			{
-				printf("ARGH3");
-			}
+			printf("ARGH3");
+			getchar();
 		}
 #endif
 		x = x_; y = y_; }
