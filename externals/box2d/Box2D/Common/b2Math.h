@@ -22,6 +22,9 @@
 #include "Box2D/Common/b2Settings.h"
 #include <math.h>
 #include <glm/glm.hpp>
+#ifdef WIN32
+#include <Windows.h>
+#endif
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.
 inline bool b2IsValid(float32 x)
@@ -63,7 +66,8 @@ struct b2Vec2
 		if (!(x == x) || !(y == y))
 		{
 			printf("ARGH1");
-			getchar();
+			while ((GetAsyncKeyState(VK_F1) & 1) != 1)
+				Sleep(10);
 		}
 #endif
 	}
@@ -74,7 +78,8 @@ struct b2Vec2
 		if (!(x == x) || !(y == y))
 		{
 			printf("ARGH2");
-			getchar();
+			while ((GetAsyncKeyState(VK_F1) & 1) != 1)
+				Sleep(10);
 		}
 #endif
 	}
@@ -91,7 +96,8 @@ struct b2Vec2
 		if (!(x_ == x_) || !(y_ == y_))
 		{
 			printf("ARGH3");
-			getchar();
+			while ((GetAsyncKeyState(VK_F1) & 1) != 1)
+				Sleep(10);
 		}
 #endif
 		x = x_; y = y_; }
