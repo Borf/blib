@@ -200,7 +200,7 @@ namespace blib
 		{
 			Uniform* uniform = buildUniform(name, type);
 			uniforms[(int)value] = uniform;
-			uniformCount = glm::max(uniformCount, (int)value + 1);
+			uniformCount = glm::max<int>(uniformCount, (int)value + 1);
 			uniform->index = uniformSize+1;
 			uniformSize += uniform->size+1;
 		}
@@ -237,7 +237,7 @@ namespace blib
 		{
 			ArrayUniform* u = new ArrayUniform(name);
 			uniforms[(int)value] = u;
-			uniformCount = glm::max(uniformCount, (int)value + 1);
+			uniformCount = glm::max<int>(uniformCount, (int)value + 1);
 
 			for (int i = 0; i < size; i++)
 			{

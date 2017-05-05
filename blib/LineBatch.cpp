@@ -89,8 +89,8 @@ namespace blib
 				glm::vec2 center = (it->p1 + it->p2) / 2.0f;
 				glm::vec2 normal = glm::normalize(glm::vec2(it->p2.y - it->p1.y, -(it->p2.x - it->p1.x)));
 
-				verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(center,0,1)), glm::clamp(color * 1.25f, 0, 1)));
-				verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(center + 10.0f * normal,0,1)), glm::clamp(color * 1.25f, 0, 1)));
+				verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(center,0,1)), glm::clamp(color * 1.25f, 0.0f, 1.0f)));
+				verts.push_back(vertexDef(glm::vec2(transform * glm::vec4(center + 10.0f * normal,0,1)), glm::clamp(color * 1.25f, 0.0f, 1.0f)));
 			}
 
 		}

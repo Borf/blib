@@ -1,6 +1,8 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #include "net.h"
 #ifdef WIN32
+#define min(a,b) (((a) < (b)) ? (a) : (b))
+#define max(a,b) (((a) > (b)) ? (a) : (b))
 #include <winsock2.h>
 typedef int socklen_t;
 #else

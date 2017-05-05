@@ -24,6 +24,7 @@
 #include <glm/glm.hpp>
 #ifdef WIN32
 #include <Windows.h>
+#include <stdio.h>
 #endif
 
 /// This function is used to ensure that a floating point number is not a NaN or infinity.

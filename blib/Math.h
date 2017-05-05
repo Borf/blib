@@ -1,5 +1,4 @@
 #pragma once
-
 #include <glm/glm.hpp>
 #include <blib/TextureMap.h>
 #include <vector>
@@ -39,6 +38,15 @@ namespace blib
 		glm::vec2 fromAngle(float angle);
 		float wrapAngleRad(float angle);
 		float wrapAngleDeg(float angle);
+
+		inline glm::vec2 min(const glm::vec2 &a, const glm::vec2 &b)
+		{
+			return glm::vec2(a.x < b.x ? a.x : b.x, a.y < b.y ? a.y : b.y);
+		}
+		inline glm::vec2 max(const glm::vec2 &a, const glm::vec2 &b)
+		{
+			return glm::vec2(a.x > b.x ? a.x : b.x, a.y > b.y ? a.y : b.y);
+		}
 
 
 		template<class T>

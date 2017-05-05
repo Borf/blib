@@ -46,7 +46,7 @@ namespace blib
 		glm::mat4 box2dMatrix( b2Body* body, glm::mat4 matrix )
 		{
 			matrix = glm::translate(matrix, glm::vec3(body->GetPosition().x, body->GetPosition().y, 0));
-			matrix = glm::rotate(matrix, glm::degrees(body->GetAngle()), glm::vec3(0,0,1));
+			matrix = glm::rotate(matrix, body->GetAngle(), glm::vec3(0,0,1));
 			return matrix;
 		}
 
@@ -57,23 +57,23 @@ namespace blib
 
 		glm::mat4 easyMatrix( const glm::vec2 &position, float rotation, glm::mat4 matrix /*= glm::mat4()*/ )
 		{
-			return glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), rotation, glm::vec3(0,0,1));
+			return glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), glm::radians(rotation), glm::vec3(0,0,1));
 		}
 
 		glm::mat4 easyMatrix( const glm::vec2 &position, const glm::vec3 &rotation, glm::mat4 matrix /*= glm::mat4()*/ )
 		{
-			return glm::translate(glm::rotate(glm::translate(matrix, glm::vec3(position-glm::vec2(rotation), 0)), rotation.z, glm::vec3(0,0,1)), glm::vec3(glm::vec2(rotation),0));
+			return glm::translate(glm::rotate(glm::translate(matrix, glm::vec3(position-glm::vec2(rotation), 0)), glm::radians(rotation.z), glm::vec3(0,0,1)), glm::vec3(glm::vec2(rotation),0));
 		}
 
 
 		glm::mat4 easyMatrix( const glm::vec2 &position, float rotation, const glm::vec2 &scale, glm::mat4 matrix /*= glm::mat4()*/ )
 		{
-			return glm::scale(glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), rotation, glm::vec3(0,0,1)), glm::vec3(scale,1));
+			return glm::scale(glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), glm::radians(rotation), glm::vec3(0,0,1)), glm::vec3(scale,1));
 		}
 
 		glm::mat4 easyMatrix( const glm::vec2 &position, float rotation, float scale, glm::mat4 matrix /*= glm::mat4()*/ )
 		{
-			return glm::scale(glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), rotation, glm::vec3(0,0,1)), glm::vec3(scale,scale,1));
+			return glm::scale(glm::rotate(glm::translate(matrix, glm::vec3(position, 0)), glm::radians(rotation), glm::vec3(0,0,1)), glm::vec3(scale,scale,1));
 		}
 
 
@@ -100,7 +100,7 @@ namespace blib
 			glm::mat4 ret;
 			ret = glm::translate(ret, glm::vec3(rect.topleft, 0));
 			ret = glm::translate(ret, glm::vec3((pivot - rect.topleft), 0));
-			ret = glm::rotate(ret, rotation, glm::vec3(0, 0, 1));
+			ret = glm::rotate(ret, glm::radians(rotation), glm::vec3(0, 0, 1));
 			ret = glm::translate(ret, glm::vec3(-(pivot - rect.topleft), 0));
 			ret = glm::scale(ret, glm::vec3(scale, 1));
 

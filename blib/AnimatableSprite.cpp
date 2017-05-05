@@ -120,7 +120,7 @@ namespace blib
 	{
 		glm::mat4 mat;
 		mat = glm::translate(mat, glm::vec3(glm::mix(rect.topleft, rect.bottomright, pivot), 0));
-		mat = glm::rotate(mat, rotation, glm::vec3(0, 0, 1));
+		mat = glm::rotate(mat, glm::radians(rotation), glm::vec3(0, 0, 1));
 		mat = glm::translate(mat, glm::vec3(-glm::mix(rect.topleft, rect.bottomright, pivot), 0));
 		mat = glm::inverse(mat);
 		point = glm::vec2(mat * glm::vec4(point, 0, 1));
