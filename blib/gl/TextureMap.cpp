@@ -31,6 +31,8 @@ namespace blib
 
 		TextureMap::~TextureMap()
 		{
+			for (auto t : toLoad)
+				stbi_image_free(t->data);
 			assert(taken);
 			delete[] taken;
 			glDeleteTextures(1, &texid);
