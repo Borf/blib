@@ -42,7 +42,9 @@ namespace blib
 		resources[resource]--;
 		if (resources[resource] == 0)
 		{
-        //    Log::out<<"deleting "<<resource->name<<Log::newline;
+#ifdef DEBUG
+			Log::out<<"deleting "<<resource->name<<Log::newline;
+#endif
 			delete resource;
 			resources.erase(resources.find(resource));
 		}

@@ -82,6 +82,9 @@
     <Filter Include="spine">
       <UniqueIdentifier>{cfa88894-fa4f-4679-99b6-b468746dbea7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="external\b2djson">
+      <UniqueIdentifier>{78a4eac4-fffb-4be4-99d4-8ca5441efebf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="blib\VIO.h" />
@@ -1369,6 +1372,24 @@
       <Filter>util</Filter>
     </ClInclude>
     <ClInclude Include="blib\json.hpp" />
+    <ClInclude Include="externals\b2dJson\b2dJsonImage.h">
+      <Filter>external\b2djson</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\b2dJson\b2dJsonImage_OpenGL.h">
+      <Filter>external\b2djson</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\b2dJson\bitmap.h">
+      <Filter>external\b2djson</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\b2dJson\b2dJson.h">
+      <Filter>external\b2djson</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\b2dJson\json\json-forwards.h">
+      <Filter>external\b2djson</Filter>
+    </ClInclude>
+    <ClInclude Include="externals\b2dJson\json\json.h">
+      <Filter>external\b2djson</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -2272,6 +2293,18 @@
     </ClCompile>
     <ClCompile Include="externals\spine\spine-c\src\spine\SkinnedMeshAttachment.c">
       <Filter>external\spine</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\b2dJson\b2dJsonImage.cpp">
+      <Filter>external\b2djson</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\b2dJson\b2dJsonImage_OpenGL.cpp">
+      <Filter>external\b2djson</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\b2dJson\jsoncpp.cpp">
+      <Filter>external\b2djson</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\b2dJson\b2dJson.cpp">
+      <Filter>external\b2djson</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

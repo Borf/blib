@@ -297,6 +297,7 @@ namespace blib
 		{
 			manager->samples.erase(std::remove(manager->samples.begin(), manager->samples.end(), this), manager->samples.end());
 		}
+		delete[] fileData;
 	}
 
 	void OpenALAudioSample::play(bool loop)

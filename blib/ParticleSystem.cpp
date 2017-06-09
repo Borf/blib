@@ -430,8 +430,16 @@ namespace blib
 
 	ParticleSystem::~ParticleSystem()
 	{
+		for (auto c : cache)
+			delete c.second;
+		for (auto e : emitters)
+			delete e;
+		delete[] particleData;
 		blib::ResourceManager::getInstance().dispose(textureMap);
-		//blib::ResourceManager::getInstance().dispose(shader);
+		blib::ResourceManager::getInstance().dispose(shader);
+		blib::ResourceManager::getInstance().dispose(vbo);
+		blib::ResourceManager::getInstance().dispose(vio);
+
 	}
 
 	void ParticleSystem::preCache(std::string dir)

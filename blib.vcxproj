@@ -132,6 +132,12 @@
     <ClInclude Include="blib\wm\widgets\Widget.h" />
     <ClInclude Include="blib\wm\Window.h" />
     <ClInclude Include="blib\wm\WM.h" />
+    <ClInclude Include="externals\b2dJson\b2dJson.h" />
+    <ClInclude Include="externals\b2dJson\b2dJsonImage.h" />
+    <ClInclude Include="externals\b2dJson\b2dJsonImage_OpenGL.h" />
+    <ClInclude Include="externals\b2dJson\bitmap.h" />
+    <ClInclude Include="externals\b2dJson\json\json-forwards.h" />
+    <ClInclude Include="externals\b2dJson\json\json.h" />
     <ClInclude Include="externals\box2d\Box2D\Box2D.h" />
     <ClInclude Include="externals\box2d\Box2D\Collision\b2BroadPhase.h" />
     <ClInclude Include="externals\box2d\Box2D\Collision\b2Collision.h" />
@@ -559,6 +565,10 @@
     <ClCompile Include="blib\wm\widgets\Widget.cpp" />
     <ClCompile Include="blib\wm\Window.cpp" />
     <ClCompile Include="blib\wm\WM.cpp" />
+    <ClCompile Include="externals\b2dJson\b2dJson.cpp" />
+    <ClCompile Include="externals\b2dJson\b2dJsonImage.cpp" />
+    <ClCompile Include="externals\b2dJson\b2dJsonImage_OpenGL.cpp" />
+    <ClCompile Include="externals\b2dJson\jsoncpp.cpp" />
     <ClCompile Include="externals\box2d\Box2D\Collision\b2BroadPhase.cpp" />
     <ClCompile Include="externals\box2d\Box2D\Collision\b2CollideCircle.cpp" />
     <ClCompile Include="externals\box2d\Box2D\Collision\b2CollideEdge.cpp" />

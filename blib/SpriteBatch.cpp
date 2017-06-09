@@ -372,6 +372,8 @@ namespace blib
 	{
 		verts.clear();
 		materialIndices.clear();
+		if (vbo)
+			blib::ResourceManager::getInstance().dispose(vbo);
 	}
 
 
