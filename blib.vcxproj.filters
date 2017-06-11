@@ -1390,6 +1390,9 @@
     <ClInclude Include="externals\b2dJson\json\json.h">
       <Filter>external\b2djson</Filter>
     </ClInclude>
+    <ClInclude Include="externals\spine\spine-c\src\spine\kvec.h">
+      <Filter>external\spine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -2291,9 +2294,6 @@
     <ClCompile Include="externals\box2d\Box2D\Dynamics\Joints\b2MotorJoint.cpp">
       <Filter>external\box2d</Filter>
     </ClCompile>
-    <ClCompile Include="externals\spine\spine-c\src\spine\SkinnedMeshAttachment.c">
-      <Filter>external\spine</Filter>
-    </ClCompile>
     <ClCompile Include="externals\b2dJson\b2dJsonImage.cpp">
       <Filter>external\b2djson</Filter>
     </ClCompile>
@@ -2305,6 +2305,27 @@
     </ClCompile>
     <ClCompile Include="externals\b2dJson\b2dJson.cpp">
       <Filter>external\b2djson</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\spine\spine-c\src\spine\PathAttachment.c">
+      <Filter>external\spine</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\spine\spine-c\src\spine\PathConstraint.c">
+      <Filter>external\spine</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\spine\spine-c\src\spine\PathConstraintData.c">
+      <Filter>external\spine</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\spine\spine-c\src\spine\SkeletonBinary.c">
+      <Filter>external\spine</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\spine\spine-c\src\spine\TransformConstraint.c">
+      <Filter>external\spine</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\spine\spine-c\src\spine\TransformConstraintData.c">
+      <Filter>external\spine</Filter>
+    </ClCompile>
+    <ClCompile Include="externals\spine\spine-c\src\spine\VertexAttachment.c">
+      <Filter>external\spine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -472,6 +472,7 @@
     <ClInclude Include="externals\poly2tri\sweep\sweep.h" />
     <ClInclude Include="externals\poly2tri\sweep\sweep_context.h" />
     <ClInclude Include="externals\spine\spine-c\src\spine\Json.h" />
+    <ClInclude Include="externals\spine\spine-c\src\spine\kvec.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\AnimatableSprite.cpp" />
@@ -789,15 +790,21 @@
     <ClCompile Include="externals\spine\spine-c\src\spine\IkConstraintData.c" />
     <ClCompile Include="externals\spine\spine-c\src\spine\Json.c" />
     <ClCompile Include="externals\spine\spine-c\src\spine\MeshAttachment.c" />
+    <ClCompile Include="externals\spine\spine-c\src\spine\PathAttachment.c" />
+    <ClCompile Include="externals\spine\spine-c\src\spine\PathConstraint.c" />
+    <ClCompile Include="externals\spine\spine-c\src\spine\PathConstraintData.c" />
     <ClCompile Include="externals\spine\spine-c\src\spine\RegionAttachment.c" />
     <ClCompile Include="externals\spine\spine-c\src\spine\Skeleton.c" />
+    <ClCompile Include="externals\spine\spine-c\src\spine\SkeletonBinary.c" />
     <ClCompile Include="externals\spine\spine-c\src\spine\SkeletonBounds.c" />
     <ClCompile Include="externals\spine\spine-c\src\spine\SkeletonData.c" />
     <ClCompile Include="externals\spine\spine-c\src\spine\SkeletonJson.c" />
     <ClCompile Include="externals\spine\spine-c\src\spine\Skin.c" />
-    <ClCompile Include="externals\spine\spine-c\src\spine\SkinnedMeshAttachment.c" />
     <ClCompile Include="externals\spine\spine-c\src\spine\Slot.c" />
     <ClCompile Include="externals\spine\spine-c\src\spine\SlotData.c" />
+    <ClCompile Include="externals\spine\spine-c\src\spine\TransformConstraint.c" />
+    <ClCompile Include="externals\spine\spine-c\src\spine\TransformConstraintData.c" />
+    <ClCompile Include="externals\spine\spine-c\src\spine\VertexAttachment.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html" />
