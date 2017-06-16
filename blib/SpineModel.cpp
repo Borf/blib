@@ -109,7 +109,8 @@ namespace blib
 
 	bool SpineModelInstance::isPlaying()
 	{
-		return spAnimationState_getCurrent(state, 0) != NULL;
+		auto s = spAnimationState_getCurrent(state, 0);
+		return s && s->trackTime < s->animationEnd;
 	}
 
 	void SpineModelInstance::setAnimation(const std::string &name, float time)
