@@ -9,6 +9,13 @@ namespace blib
 {
 	ResourceManager* ResourceManager::manager = nullptr;
 
+	void ResourceManager::cleanup()
+	{
+		for (auto r : toDelete)
+			delete r;
+		toDelete.clear();
+	}
+
 	ResourceManager::ResourceManager()
 	{
 		manager = this;
@@ -45,7 +52,8 @@ namespace blib
 #ifdef DEBUG
 			Log::out<<"deleting "<<resource->name<<Log::newline;
 #endif
-			delete resource;
+			toDelete.push_back(resource);
+
 			resources.erase(resources.find(resource));
 		}
 	}

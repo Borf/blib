@@ -3,6 +3,7 @@
 #include <functional>
 #include <string>
 #include <map>
+#include <list>
 #include <blib/VBO.h>
 
 #include <blib/Texture.h>
@@ -45,12 +46,15 @@ namespace blib
 		};
 
 	public:
+		std::list<Resource*> toDelete;
 		std::map<Resource*, int> resources;
 		virtual Resource* regResource(Resource* resource);
 		virtual void dispose(Resource* resource);
 
 		static ResourceManager& getInstance();
 
+
+		void cleanup();
 
 		ResourceManager();
 		virtual ~ResourceManager();

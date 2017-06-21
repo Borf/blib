@@ -85,6 +85,7 @@
     <ClInclude Include="blib\TextureMap.h" />
     <ClInclude Include="blib\Util.h" />
     <ClInclude Include="blib\util\Allocator.h" />
+    <ClInclude Include="blib\util\DirtyFlag.h" />
     <ClInclude Include="blib\util\FileSystem.h" />
     <ClInclude Include="blib\util\ListAllocator.h" />
     <ClInclude Include="blib\util\Log.h" />
@@ -109,6 +110,7 @@
     <ClInclude Include="blib\util\StreamWriter.h" />
     <ClInclude Include="blib\util\Thread.h" />
     <ClInclude Include="blib\util\Tree.h" />
+    <ClInclude Include="blib\util\Watchable.h" />
     <ClInclude Include="blib\VBO.h" />
     <ClInclude Include="blib\VIO.h" />
     <ClInclude Include="blib\Window.h" />

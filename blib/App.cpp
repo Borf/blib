@@ -354,6 +354,7 @@ namespace blib
 			updateThread->semaphore->signal();
 			semaphore->wait();
 			semaphore->wait();
+			resourceManager->cleanup();
 
 			frameTimes[frameTimeIndex].drawTime = renderThread->frameTime;
 			frameTimes[frameTimeIndex].updateTime = updateThread->frameTime;
@@ -403,6 +404,8 @@ namespace blib
 			renderer->flush();
 			window->swapBuffers();
 
+
+			resourceManager->cleanup();
 		
         }
 	}

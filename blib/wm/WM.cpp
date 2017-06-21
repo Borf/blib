@@ -336,7 +336,7 @@ namespace blib
 			}
 			for (size_t i = 0; i < popupMenus.size(); i++)
 			{
-				std::pair<glm::vec2, Menu*>& item = popupMenus[i];
+				std::pair<glm::vec2, Menu*> item = popupMenus[i];
 
 				if (x > item.first.x && x < item.first.x + 200 &&
 					y > item.first.y && y < item.first.y + 16 * item.second->menuItems.size())

@@ -1492,6 +1492,10 @@
     <ClInclude Include="externals\box2d\Box2D\Rope\b2Rope.h">
       <Filter>external\box2d</Filter>
     </ClInclude>
+    <ClInclude Include="blib\util\DirtyFlag.h" />
+    <ClInclude Include="blib\util\Watchable.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
