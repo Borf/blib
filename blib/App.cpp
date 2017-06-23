@@ -354,7 +354,6 @@ namespace blib
 			updateThread->semaphore->signal();
 			semaphore->wait();
 			semaphore->wait();
-			resourceManager->cleanup();
 
 			frameTimes[frameTimeIndex].drawTime = renderThread->frameTime;
 			frameTimes[frameTimeIndex].updateTime = updateThread->frameTime;
@@ -426,6 +425,7 @@ namespace blib
 			app->window->swapBuffers();
 			frameTime = util::Profiler::getAppTime() - frameStart;
 			app->semaphore->signal();
+			app->resourceManager->cleanup();
 		}
 		app->window->unmakeCurrent();
 		app->semaphore->signal();

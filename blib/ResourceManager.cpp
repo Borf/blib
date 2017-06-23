@@ -12,7 +12,12 @@ namespace blib
 	void ResourceManager::cleanup()
 	{
 		for (auto r : toDelete)
+		{
+#ifdef _DEBUG
+			Log::out << "Deleting " << r->name << Log::newline;
+#endif
 			delete r;
+		}
 		toDelete.clear();
 	}
 
@@ -49,8 +54,8 @@ namespace blib
 		resources[resource]--;
 		if (resources[resource] == 0)
 		{
-#ifdef DEBUG
-			Log::out<<"deleting "<<resource->name<<Log::newline;
+#ifdef _DEBUG
+			Log::out<<"Marking "<<resource->name<<Log::newline;
 #endif
 			toDelete.push_back(resource);
 

@@ -211,6 +211,7 @@ namespace blib
 					std::string word = text.substr(start, text.find(" ", i+1) - start);
 					int wordLength = 0;
 					for (size_t ii = 0; ii < word.length(); ii++)
+						if (font->charmap.find(word[ii]) != font->charmap.end())
 						wordLength += font->getGlyph(word[ii])->xadvance;
 					if (x + wordLength > wrapWidth && wrapWidth != -1)
 					{
