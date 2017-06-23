@@ -203,6 +203,24 @@ namespace blib
 #endif
 		for(size_t i = 0; i < text.size(); i++)
 		{
+			if (text[i] == ' ')
+			{
+				if (text.find(" ", i+1) != std::string::npos)
+				{
+					int start = i > 0 && text.rfind(" ", i - 1) != std::string::npos ? text.rfind(" ", i - 1) + 1 : 0;
+					std::string word = text.substr(start, text.find(" ", i+1) - start);
+					int wordLength = 0;
+					for (size_t ii = 0; ii < word.length(); ii++)
+						wordLength += font->getGlyph(word[ii])->xadvance;
+					if (x + wordLength > wrapWidth && wrapWidth != -1)
+					{
+						x = 0;
+						y += lineHeight;
+						lineHeight = 12;
+					}
+				}
+			}
+
 			if (text[i] == '\n' || (x > wrapWidth && wrapWidth != -1))
 			{
 				x = 0;
