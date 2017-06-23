@@ -198,17 +198,21 @@ namespace blib
 		int lineHeight = 12;
 #ifdef BLIB_IOS
         std::u32string text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
+        std::u32string space = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(" ");
+        typedef std::u32string str;
 #else
          std::string text = utf8;
+        std::string space = " ";
+        typedef std::string str;
 #endif
 		for(size_t i = 0; i < text.size(); i++)
 		{
 			if (text[i] == ' ')
 			{
-				if (text.find(" ", i+1) != std::string::npos)
+                if (text.find(space, i+1) != std::string::npos)
 				{
-					int start = i > 0 && text.rfind(" ", i - 1) != std::string::npos ? text.rfind(" ", i - 1) + 1 : 0;
-					std::string word = text.substr(start, text.find(" ", i+1) - start);
+					int start = i > 0 && text.rfind(space, i - 1) != std::string::npos ? text.rfind(space, i - 1) + 1 : 0;
+					str word = text.substr(start, text.find(space, i+1) - start);
 					int wordLength = 0;
 					for (size_t ii = 0; ii < word.length(); ii++)
 						if (font->charmap.find(word[ii]) != font->charmap.end())
