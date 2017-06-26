@@ -22,6 +22,9 @@ namespace blib
 			void setToggleValue(const std::string &path, bool value);
 			MenuItem* getItem(const std::string &path);
 
+			std::vector<MenuItem*> getItems(const std::string &path);
+
+
 			void foreach(std::function<void(MenuItem*)> callback);
 			void setMenu(const std::string &menuLoc, blib::wm::MenuItem* menuItem);
 			std::vector<MenuItem*> menuItems;

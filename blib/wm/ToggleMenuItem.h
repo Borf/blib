@@ -17,6 +17,14 @@ namespace blib
 				attachedValue = NULL;
 			}
 
+			virtual void setValue(bool v)
+			{
+				if (attachedValue)
+					*attachedValue = v;
+				else
+					value = v;
+			}
+
 			virtual bool getValue()
 			{
 				if (attachedValue)

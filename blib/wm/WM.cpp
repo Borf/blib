@@ -174,8 +174,12 @@ namespace blib
 						if (mouseState.position.x > item.first.x && mouseState.position.x < item.first.x + 200 && mouseState.position.y > item.first.y + 16 * iii && mouseState.position.y < item.first.y + 16 + 16 * iii)
 							spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(item.first.x - 2, item.first.y + 16*iii)), skin["list"], glm::vec2(200, 16), glm::vec4(0.5f, 0.5f, 0.9f, 1.0f));
 
+						std::string text = item.second->menuItems[iii]->title;
+						if(dynamic_cast<ToggleMenuItem*>(item.second->menuItems[iii]))
+							if(dynamic_cast<ToggleMenuItem*>(item.second->menuItems[iii])->getValue())
+								spriteBatch.draw(font, "x", blib::math::easyMatrix(glm::vec2(item.first.x + 2, item.first.y + 2 + 16 * iii)), glm::vec4(0, 0, 0, 1));
 
-						spriteBatch.draw(font, item.second->menuItems[iii]->title, blib::math::easyMatrix(glm::vec2(item.first.x + 2, item.first.y + 2 + 16 * iii)), glm::vec4(0, 0, 0, 1));
+						spriteBatch.draw(font, item.second->menuItems[iii]->title, blib::math::easyMatrix(glm::vec2(item.first.x + 20, item.first.y + 2 + 16 * iii)), glm::vec4(0, 0, 0, 1));
 						iii++;
 					}
 				}

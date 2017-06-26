@@ -20,6 +20,8 @@ namespace blib
 	class ResourceManager;
 	enum class Key;
 
+	class ToolBar;
+
 	namespace wm
 	{
 		class Window;
@@ -55,6 +57,7 @@ namespace blib
 
 			std::map<Key, MenuItem*> menuKeys;
 
+			ToolBar* toolBar = nullptr;
 
 
 		public:

@@ -38,7 +38,13 @@ Textbox::Textbox( )
     {
         if (key >= ' ') //only printable
         {
-            text = text.substr(0, cursor) + (char)key + text.substr(cursor);
+			if (cursor != selectionPosition)
+			{
+				text = text.substr(0, glm::min(cursor, selectionPosition)) + text.substr(glm::max(cursor, selectionPosition));
+				cursor = glm::min(cursor, selectionPosition);
+				selectionPosition = cursor;
+			}
+			text = text.substr(0, cursor) + (char)key + text.substr(cursor);
             cursor++;
             selectionPosition = cursor;
             return true;
@@ -67,10 +73,18 @@ Textbox::Textbox( )
         case blib::Key::BACKSPACE:
             if (cursor > 0)
             {
-                //TODO: erase selection
-                text = text.substr(0, cursor - 1) + text.substr(cursor);
-                cursor--;
-                selectionPosition = cursor;
+				if (cursor != selectionPosition)
+				{
+					text = text.substr(0, glm::min(cursor, selectionPosition)) + text.substr(glm::max(cursor, selectionPosition));
+					cursor = glm::min(cursor, selectionPosition);
+					selectionPosition = cursor;
+				}
+				else
+				{
+					text = text.substr(0, cursor - 1) + text.substr(cursor);
+					cursor--;
+					selectionPosition = cursor;
+				}
             }
             return true;
         case blib::Key::TAB:
@@ -78,8 +92,14 @@ Textbox::Textbox( )
         case blib::Key::DEL:
             if (cursor < text.size())
             {
-                //TODO: erase selection
-                text = text.substr(0, cursor) + text.substr(cursor + 1);
+				if (cursor != selectionPosition)
+				{
+					text = text.substr(0, glm::min(cursor, selectionPosition)) + text.substr(glm::max(cursor, selectionPosition));
+					cursor = glm::min(cursor, selectionPosition);
+					selectionPosition = cursor;
+				}
+				else
+					text = text.substr(0, cursor) + text.substr(cursor + 1);
             }
             return true;
         case blib::Key::HOME:
@@ -134,6 +154,13 @@ Textbox::Textbox( )
         cursor = text.size();
         if (!shiftDown)
             selectionPosition = cursor;
+
+		if (clickCount == 2)
+		{
+			cursor = 0;
+			selectionPosition = text.size();
+		}
+
         return true;
     });
 
