@@ -28,6 +28,8 @@ namespace blib
 			void foreach(std::function<void(MenuItem*)> callback);
 			void setMenu(const std::string &menuLoc, blib::wm::MenuItem* menuItem);
 			std::vector<MenuItem*> menuItems;
+
+			bool isEnabled(MenuItem* item);
 		};
 	}
 }

@@ -5,6 +5,8 @@
 #include "ToggleMenuItem.h"
 #include "ActionMenuItem.h"
 
+#include <list>
+
 #include <blib/json.hpp>
 #include <blib/KeyListener.h>
 #include <blib/util/Log.h>
@@ -184,6 +186,39 @@ namespace blib
 			Menu* menu = new Menu(json::array());
 			menu->setMenu(menuLoc.substr(first.length() == menuLoc.length() ? first.length() : first.length() + 1), menuItem);
 			menuItems.push_back(new SubMenuMenuItem(first, menu));
+		}
+
+		bool Menu::isEnabled(MenuItem * item)
+		{
+			if (!item->enabled)
+				return false;
+			std::list<MenuItem*> items;
+
+			std::function<bool(Menu*)> func;
+			func = [this, &func, &items, item](Menu* menu)
+			{
+				for (auto i : menu->menuItems)
+				{
+					if (i == item)
+						return true;
+					auto si = dynamic_cast<SubMenuMenuItem*>(i);
+					if (si)
+					{
+						if (func(si->menu))
+						{
+							items.push_back(i);
+							return true;
+						}
+					}
+				}
+				return false;
+			};
+			func(this);
+
+			for (auto i : items)
+				if (!i->enabled)
+					return false;
+			return true;
 		}
 	}
 }

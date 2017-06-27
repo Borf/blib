@@ -661,6 +661,12 @@ namespace blib
 
 			if (menuKeys.find(key) != menuKeys.end())
 			{
+				{
+					auto item = menuKeys[key];
+					if (!this->menuBar->isEnabled(item))
+						return false;
+				}
+
 				bool ret = false;
 				{
 					ToggleMenuItem* item = dynamic_cast<ToggleMenuItem*>(menuKeys[key]);

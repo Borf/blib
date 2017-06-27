@@ -2,6 +2,8 @@
 
 #include "ActionMenuItem.h"
 
+#include <functional>
+
 namespace blib
 {
 	namespace wm
@@ -9,18 +11,21 @@ namespace blib
 		class ToggleMenuItem : public ActionMenuItem
 		{
 			bool value;
-			bool* attachedValue;
+			bool* attachedValue = nullptr;
+			std::function<bool()> readCallback = nullptr;
+			std::function<void(bool)> writeCallback = nullptr;
 		public:
 			ToggleMenuItem(std::string name, bool initialValue) : ActionMenuItem(name)
 			{
 				value = initialValue;
-				attachedValue = NULL;
 			}
 
 			virtual void setValue(bool v)
 			{
 				if (attachedValue)
 					*attachedValue = v;
+				else if (writeCallback)
+					writeCallback(v);
 				else
 					value = v;
 			}
@@ -29,6 +34,8 @@ namespace blib
 			{
 				if (attachedValue)
 					return *attachedValue;
+				else if (readCallback)
+					return readCallback();
 				else
 					return value;
 			}
@@ -37,6 +44,8 @@ namespace blib
 			{
 				if (attachedValue)
 					*attachedValue = !*attachedValue;
+				else if (readCallback && writeCallback)
+					writeCallback(!readCallback());
 				else
 					value = !value;
 			}
