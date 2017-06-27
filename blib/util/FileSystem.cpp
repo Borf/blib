@@ -269,6 +269,12 @@ namespace blib
 				if (data[i] == '/' && data[i + 1] == '/' && !inString)
 					data = data.substr(0, i) + data.substr(data.find("\n", i));
 
+				if (inString)
+					if (data[i] == '\n')
+						data = data.substr(0, i-1) + "\\n" + data.substr(i+1);
+				if (inString)
+					if (data[i] == '\t')
+						data = data.substr(0, i) + "    " + data.substr(i + 1);
 				if (data[i] == '"' && !escape)
 					inString = !inString;
 				if (data[i] == '\\')
