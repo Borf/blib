@@ -477,6 +477,7 @@
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\Animation.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\AnimationState.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\AnimationStateData.h" />
+    <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\Array.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\Atlas.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\AtlasAttachmentLoader.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\Attachment.h" />
@@ -484,6 +485,8 @@
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\Bone.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\BoneData.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\BoundingBoxAttachment.h" />
+    <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\ClippingAttachment.h" />
+    <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\Color.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\Event.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\EventData.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\extension.h" />
@@ -493,10 +496,12 @@
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\PathAttachment.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\PathConstraint.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\PathConstraintData.h" />
+    <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\PointAttachment.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\RegionAttachment.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\Skeleton.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\SkeletonBinary.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\SkeletonBounds.h" />
+    <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\SkeletonClipping.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\SkeletonData.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\SkeletonJson.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\Skin.h" />
@@ -505,7 +510,9 @@
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\spine.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\TransformConstraint.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\TransformConstraintData.h" />
+    <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\Triangulator.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\VertexAttachment.h" />
+    <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\VertexEffect.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\src\spine\Json.h" />
     <ClInclude Include="externals\spine\spine-c\spine-c\src\spine\kvec.h" />
   </ItemGroup>
@@ -811,6 +818,7 @@
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\Animation.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\AnimationState.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\AnimationStateData.c" />
+    <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\Array.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\Atlas.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\AtlasAttachmentLoader.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\Attachment.c" />
@@ -818,6 +826,8 @@
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\Bone.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\BoneData.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\BoundingBoxAttachment.c" />
+    <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\ClippingAttachment.c" />
+    <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\Color.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\Event.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\EventData.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\extension.c" />
@@ -828,10 +838,12 @@
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\PathAttachment.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\PathConstraint.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\PathConstraintData.c" />
+    <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\PointAttachment.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\RegionAttachment.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\Skeleton.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\SkeletonBinary.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\SkeletonBounds.c" />
+    <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\SkeletonClipping.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\SkeletonData.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\SkeletonJson.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\Skin.c" />
@@ -839,7 +851,9 @@
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\SlotData.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\TransformConstraint.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\TransformConstraintData.c" />
+    <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\Triangulator.c" />
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\VertexAttachment.c" />
+    <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\VertexEffect.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="externals\glew\doc\credits.html" />

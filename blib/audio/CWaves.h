@@ -7,7 +7,9 @@
 
 #include <blib/config.h>
 #ifdef BLIB_WIN
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <windows.h>
 #else
 typedef unsigned short WORD;

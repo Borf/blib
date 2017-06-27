@@ -142,27 +142,27 @@ namespace blib
 
 		if (attachment->type == SP_ATTACHMENT_REGION) {
 			spRegionAttachment* regionAttachment = (spRegionAttachment*)attachment;
-			spRegionAttachment_computeWorldVertices(regionAttachment, slot->bone, worldVertices);
+			spRegionAttachment_computeWorldVertices(regionAttachment, slot->bone, worldVertices, 0, 2);
 			static const int indices[] = {
-				SP_VERTEX_X1, SP_VERTEX_Y1,
-				SP_VERTEX_X2, SP_VERTEX_Y2,
-				SP_VERTEX_X3, SP_VERTEX_Y3,
-				SP_VERTEX_X4, SP_VERTEX_Y4
+				0, 1,
+				2, 3,
+				4, 5,
+				6, 7
 			};
 
 			for (int ii = 0; ii < 4; ii++)
 				ret.push_back(glm::vec2(worldVertices[indices[2 * ii + 0]], worldVertices[indices[2 * ii + 1]]));
 		}
-		else if (attachment->type == SP_ATTACHMENT_MESH) {
+		/*else if (attachment->type == SP_ATTACHMENT_MESH) {
 			spMeshAttachment* mesh = (spMeshAttachment*)attachment;
-			spMeshAttachment_computeWorldVertices(mesh, slot, worldVertices);
+			spMeshAttachment_computeWorldVertices(mesh, slot, worldVertices, 0, 2);
 
 			for (int i = 0; i < mesh->trianglesCount; ++i) {
 				int index = mesh->triangles[i] << 1;
 				ret.push_back(glm::vec2(worldVertices[index], worldVertices[index + 1]));
 			}
 
-		}
+		}*/
 		/*else if (attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
 			spSkinnedMeshAttachment* mesh = (spSkinnedMeshAttachment*)attachment;
 			spSkinnedMeshAttachment_computeWorldVertices(mesh, slot, worldVertices);
@@ -198,15 +198,15 @@ namespace blib
 
 		if (attachment->type == SP_ATTACHMENT_REGION) {
 			spRegionAttachment* regionAttachment = (spRegionAttachment*)attachment;
-			spRegionAttachment_computeWorldVertices(regionAttachment, slot->bone, worldVertices);
+			spRegionAttachment_computeWorldVertices(regionAttachment, slot->bone, worldVertices,0,2);
 
 			ret.first = (Texture*)((spAtlasRegion*)regionAttachment->rendererObject)->page->rendererObject;
 
 			static const int indices[] = {
-				SP_VERTEX_X1, SP_VERTEX_Y1,
-				SP_VERTEX_X2, SP_VERTEX_Y2,
-				SP_VERTEX_X3, SP_VERTEX_Y3,
-				SP_VERTEX_X4, SP_VERTEX_Y4
+				0, 1,
+				2, 3,
+				4, 5,
+				6, 7
 			};
 
 			for (int ii = 0; ii < 4; ii++)
@@ -216,7 +216,7 @@ namespace blib
 					glm::vec2(regionAttachment->uvs[indices[2 * ii + 0]], regionAttachment->uvs[indices[2 * ii + 1]])));
 			}
 		}
-		else if (attachment->type == SP_ATTACHMENT_MESH) {
+		/*else if (attachment->type == SP_ATTACHMENT_MESH) {
 			spMeshAttachment* mesh = (spMeshAttachment*)attachment;
 			spMeshAttachment_computeWorldVertices(mesh, slot, worldVertices);
 			ret.first = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
@@ -226,7 +226,7 @@ namespace blib
 				ret.second.push_back(std::pair<glm::vec2, glm::vec2>(glm::vec2(worldVertices[index], worldVertices[index + 1]), glm::vec2(mesh->uvs[index], mesh->uvs[index + 1])));
 			}
 
-		}
+		}*/
 /*		else if (attachment->type == SP_ATTACHMENT_SKINNED_MESH) {
 			spSkinnedMeshAttachment* mesh = (spSkinnedMeshAttachment*)attachment;
 			spSkinnedMeshAttachment_computeWorldVertices(mesh, slot, worldVertices);
@@ -306,14 +306,18 @@ namespace blib
 			if (attachment->type == SP_ATTACHMENT_REGION) {
 				spRegionAttachment* regionAttachment = (spRegionAttachment*)attachment;
 				texture = (Texture*)((spAtlasRegion*)regionAttachment->rendererObject)->page->rendererObject;
-				spRegionAttachment_computeWorldVertices(regionAttachment, slot->bone, worldVertices);
-				color = glm::vec4(skeleton->r * slot->r, skeleton->g * slot->g, skeleton->b * slot->b, skeleton->a * slot->a);
+				spRegionAttachment_computeWorldVertices(regionAttachment, slot->bone, worldVertices,0,2);
+				color = glm::vec4(
+					skeleton->color.r * slot->color.r, 
+					skeleton->color.g * slot->color.g, 
+					skeleton->color.b * slot->color.b, 
+					skeleton->color.a * slot->color.a);
 
 				static const int indices[] = {
-					SP_VERTEX_X1, SP_VERTEX_Y1,
-					SP_VERTEX_X2, SP_VERTEX_Y2,
-					SP_VERTEX_X3, SP_VERTEX_Y3,
-					SP_VERTEX_X4, SP_VERTEX_Y4
+					0, 1,
+					2, 3,
+					4, 5,
+					6, 7
 				};
 
 				static const int vertIndices[] = { 0, 1, 2, 0, 2, 3 };
@@ -325,7 +329,7 @@ namespace blib
 						glm::vec2(regionAttachment->uvs[indices[2 * vertIndices[ii] + 0]], regionAttachment->uvs[indices[2 * vertIndices[ii] + 1]])));
 				}
 			}
-			else if (attachment->type == SP_ATTACHMENT_MESH) {
+			/*else if (attachment->type == SP_ATTACHMENT_MESH) {
 				spMeshAttachment* mesh = (spMeshAttachment*)attachment;
 				if (mesh->trianglesCount*3 > SPINE_MESH_VERTEX_COUNT_MAX) continue;
 				texture = (Texture*)((spAtlasRegion*)mesh->rendererObject)->page->rendererObject;
@@ -337,7 +341,7 @@ namespace blib
 					verts.push_back(std::pair<glm::vec2, glm::vec2>(glm::vec2(worldVertices[index], worldVertices[index + 1]), glm::vec2(mesh->uvs[index], mesh->uvs[index + 1])));
 				}
 
-			}
+			}*/
 			else
 			{
 				Log::out << "Unknown attachment type: " << attachment->type << Log::newline;

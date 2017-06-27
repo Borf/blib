@@ -1,5 +1,7 @@
 #include "AudioManagerWindows.h"
+#ifndef NOMINMAX
 #define NOMINMAX
+#endif
 #include <Windows.h>
 #include <Mmsystem.h>
 

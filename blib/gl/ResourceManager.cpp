@@ -58,7 +58,9 @@ namespace blib
 		blib::Shader* ResourceManager::getShader( const std::string &name )
 		{
 #if defined(BLIB_GL_FULL)
-			return new Shader(blib::util::FileSystem::getData("assets/shaders/gl/" + name + ".vert"), blib::util::FileSystem::getData("assets/shaders/gl/" + name + ".frag"));
+			return new Shader(
+				"//" + name + ".vert\n" + blib::util::FileSystem::getData("assets/shaders/gl/" + name + ".vert"), 
+				"//" + name + ".frag\n" + blib::util::FileSystem::getData("assets/shaders/gl/" + name + ".frag"));
 #elif defined(BLIB_GL_ES)
 			return new Shader(blib::util::FileSystem::getData("assets/shaders/gles/" + name + ".vert"), blib::util::FileSystem::getData("assets/shaders/gles/" + name + ".frag"));
 #else

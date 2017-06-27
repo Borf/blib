@@ -25,6 +25,13 @@ namespace blib
             {
                 Log::out<<"a shader is still empty"<<Log::newline;
             }
+
+			this->name = vertex;
+			if (name.find("\n") != std::string::npos)
+				this->name = this->name.substr(0, this->name.find("\n"));
+			if (name.size() > 2 && name.substr(0, 2) == "//")
+				name = name.substr(2);
+			name = "Shader: " + name;
 		}
 
 
@@ -137,7 +144,7 @@ namespace blib
                 char* infolog = new char[length+1];
                 memset(infolog, 0, length+1);
                 glGetProgramInfoLog(programId, length, &charsWritten, infolog);
-                Log::out<<"Error linking Program :\n"<<infolog<<Log::newline;
+                Log::out<<"Error linking Program  '"<<name<<"':\n"<<infolog<<Log::newline;
                 delete[] infolog;
             }
 
