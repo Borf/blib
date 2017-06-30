@@ -172,6 +172,9 @@
 		06E6FD7E1F063C6900412847 /* Triangulator.c in Sources */ = {isa = PBXBuildFile; fileRef = 06E6FD571F063C6900412847 /* Triangulator.c */; };
 		06E6FD7F1F063C6900412847 /* VertexAttachment.c in Sources */ = {isa = PBXBuildFile; fileRef = 06E6FD581F063C6900412847 /* VertexAttachment.c */; };
 		06E6FD801F063C6900412847 /* VertexEffect.c in Sources */ = {isa = PBXBuildFile; fileRef = 06E6FD591F063C6900412847 /* VertexEffect.c */; };
+		06E6FD831F063E6600412847 /* b2dJson.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06E6FD811F063E6600412847 /* b2dJson.cpp */; };
+		06E6FD851F063E7100412847 /* jsoncpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06E6FD841F063E7100412847 /* jsoncpp.cpp */; };
+		06E6FD881F063EE700412847 /* b2dJsonImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06E6FD861F063EE600412847 /* b2dJsonImage.cpp */; };
 		06F37BC21BC6919F0063954F /* NavMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BB91BC6919F0063954F /* NavMesh.cpp */; };
 		06F37BC31BC6919F0063954F /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBB1BC6919F0063954F /* Resource.cpp */; };
 		06F37BC41BC6919F0063954F /* SkelAnimatedModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 06F37BBD1BC6919F0063954F /* SkelAnimatedModel.cpp */; };
@@ -749,6 +752,11 @@
 		06E6FD571F063C6900412847 /* Triangulator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Triangulator.c; path = "spine/spine-c/spine-c/src/spine/Triangulator.c"; sourceTree = "<group>"; };
 		06E6FD581F063C6900412847 /* VertexAttachment.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = VertexAttachment.c; path = "spine/spine-c/spine-c/src/spine/VertexAttachment.c"; sourceTree = "<group>"; };
 		06E6FD591F063C6900412847 /* VertexEffect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = VertexEffect.c; path = "spine/spine-c/spine-c/src/spine/VertexEffect.c"; sourceTree = "<group>"; };
+		06E6FD811F063E6600412847 /* b2dJson.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = b2dJson.cpp; path = b2dJson/b2dJson.cpp; sourceTree = "<group>"; };
+		06E6FD821F063E6600412847 /* b2dJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = b2dJson.h; path = b2dJson/b2dJson.h; sourceTree = "<group>"; };
+		06E6FD841F063E7100412847 /* jsoncpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jsoncpp.cpp; path = b2dJson/jsoncpp.cpp; sourceTree = "<group>"; };
+		06E6FD861F063EE600412847 /* b2dJsonImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = b2dJsonImage.cpp; path = b2dJson/b2dJsonImage.cpp; sourceTree = "<group>"; };
+		06E6FD871F063EE600412847 /* b2dJsonImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = b2dJsonImage.h; path = b2dJson/b2dJsonImage.h; sourceTree = "<group>"; };
 		06F37BB81BC6919F0063954F /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
 		06F37BB91BC6919F0063954F /* NavMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NavMesh.cpp; sourceTree = "<group>"; };
 		06F37BBA1BC6919F0063954F /* NavMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavMesh.h; sourceTree = "<group>"; };
@@ -826,6 +834,11 @@
 		069DD2D419465ED800583161 /* externals */ = {
 			isa = PBXGroup;
 			children = (
+				06E6FD861F063EE600412847 /* b2dJsonImage.cpp */,
+				06E6FD871F063EE600412847 /* b2dJsonImage.h */,
+				06E6FD811F063E6600412847 /* b2dJson.cpp */,
+				06E6FD841F063E7100412847 /* jsoncpp.cpp */,
+				06E6FD821F063E6600412847 /* b2dJson.h */,
 				065008E21C075003005275C5 /* spine */,
 				069DD2D619465ED800583161 /* box2d */,
 				069DD5CF19465EDC00583161 /* clipper */,
@@ -1665,6 +1678,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				06E6FD851F063E7100412847 /* jsoncpp.cpp in Sources */,
 				069DD71719465EDD00583161 /* b2Fixture.cpp in Sources */,
 				069E99F41944A850001C0AF2 /* Line.cpp in Sources */,
 				06F37BC21BC6919F0063954F /* NavMesh.cpp in Sources */,
@@ -1686,6 +1700,7 @@
 				069DD72C19465EDD00583161 /* b2RopeJoint.cpp in Sources */,
 				06E6FD741F063C6900412847 /* SkeletonBinary.c in Sources */,
 				06E6FD661F063C6900412847 /* Color.c in Sources */,
+				06E6FD881F063EE700412847 /* b2dJsonImage.cpp in Sources */,
 				069E9A1A1944A850001C0AF2 /* list.cpp in Sources */,
 				069E99F91944A850001C0AF2 /* Math.cpp in Sources */,
 				069DD72D19465EDD00583161 /* b2WeldJoint.cpp in Sources */,
@@ -1747,6 +1762,7 @@
 				069DD70A19465EDD00583161 /* b2TimeOfImpact.cpp in Sources */,
 				06E6FD5D1F063C6900412847 /* Array.c in Sources */,
 				069DD71519465EDD00583161 /* b2Body.cpp in Sources */,
+				06E6FD831F063E6600412847 /* b2dJson.cpp in Sources */,
 				069E9A101944A850001C0AF2 /* Thread.cpp in Sources */,
 				069DD72319465EDD00583161 /* b2PolygonContact.cpp in Sources */,
 				06E6FD701F063C6900412847 /* PathConstraintData.c in Sources */,
