@@ -269,6 +269,13 @@ namespace blib
 			};
 			addKeyListener(new AppKeyListener(this));
 		}
+		window->addActivateListener([this](bool active)
+		{
+			if (!active)
+			{
+				keyState = KeyState();
+			}
+		});
 
 		{
 			class AppMouseListener : public MouseListener {

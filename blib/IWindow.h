@@ -6,6 +6,7 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <functional>
 
 namespace blib
 {
@@ -18,6 +19,7 @@ namespace blib
 	protected:
 		std::list<KeyListener*> keyListeners;
 		std::list<MouseListener*> mouseListeners;
+		std::list<std::function<void(bool)>> activateListeners;
 		
 		int x, y;
 		int width,height;
@@ -53,6 +55,7 @@ namespace blib
 		virtual void onResize(int width, int height) {};
 		void addListener(KeyListener* keyListener);
 		void addListener(MouseListener* keyListener);
+		void addActivateListener(std::function<void(bool)> callback) { activateListeners.push_back(callback); }
 	};
 }
 

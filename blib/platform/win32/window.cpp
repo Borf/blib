@@ -145,6 +145,8 @@ namespace blib
 					break;
 				case WM_ACTIVATE:
 					active = wParam != 0;
+					for (auto al : activateListeners)
+						al(active);
 					break;
 				case WM_SIZE: // If our window is resizing
 					width = LOWORD(lParam);
