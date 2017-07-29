@@ -91,6 +91,8 @@ namespace blib
 
 		glm::vec3 hsv2rgb(glm::vec3 hsv);
 		glm::vec3 rgb2hsv(glm::vec3 rgb);
+		std::string rgb2hex(const glm::vec3 &rgb);
+		glm::vec3 hex2rgb(std::string hex);
 
 
 		bool isMainModule();
