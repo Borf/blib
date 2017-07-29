@@ -264,7 +264,7 @@ return "~/";
 			else {
 				// r = g = b = 0                        // s = 0, v is undefined
 				out.y = 0.0;
-				out.x = NAN;                            // its now undefined
+				out.x = 0.0;                            // its now undefined
 				return out;
 			}
 			if (rgb.r >= max)                           // > is bogus, just keeps compilor happy

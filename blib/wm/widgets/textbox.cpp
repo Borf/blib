@@ -47,6 +47,7 @@ Textbox::Textbox( )
 			text = text.substr(0, cursor) + (char)key + text.substr(cursor);
             cursor++;
             selectionPosition = cursor;
+			for (const auto& o : onChange)	o();
             return true;
         }
         return false;
@@ -85,7 +86,8 @@ Textbox::Textbox( )
 					cursor--;
 					selectionPosition = cursor;
 				}
-            }
+				for (const auto& o : onChange)	o();
+			}
             return true;
         case blib::Key::TAB:
             return true;
@@ -100,7 +102,8 @@ Textbox::Textbox( )
 				}
 				else
 					text = text.substr(0, cursor) + text.substr(cursor + 1);
-            }
+				for (const auto& o : onChange)	o();
+			}
             return true;
         case blib::Key::HOME:
             cursor = 0;

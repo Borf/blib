@@ -13,7 +13,7 @@ namespace blib
 		{
 			class Textbox : public Widget
 			{
-
+				std::list<std::function<void()>> onChange;
 				int scrollPosition;
 				unsigned int selectionPosition;
 
@@ -31,6 +31,7 @@ namespace blib
 				Textbox();
 
 				virtual void draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const;
+				inline void addChangeHandler(const std::function<void()> &callback) { onChange.push_back(callback); }
 			};
 		}
 	}
