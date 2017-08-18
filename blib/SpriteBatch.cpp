@@ -219,6 +219,7 @@ namespace blib
 						wordLength += font->getGlyph(word[ii])->xadvance;
 					if (x + wordLength > wrapWidth && wrapWidth != -1)
 					{
+						i++; //skip space
 						x = 0;
 						y += lineHeight;
 						lineHeight = 12;
@@ -241,7 +242,7 @@ namespace blib
 			if(font->charmap.find(text[i]) == font->charmap.end())
 				continue;
 			const Glyph* g = font->getGlyph(text[i]);
-			lineHeight = glm::max(lineHeight, g->height);
+			lineHeight = glm::max(lineHeight, g->height + g->yoffset);
 			draw(font->texture, glm::translate(transform, glm::vec3(x+g->xoffset,y+g->yoffset,0)), glm::vec2(0,0), blib::math::Rectangle(g->x*texFactor.x,g->y*texFactor.y,g->width*texFactor.x,g->height*texFactor.y), color);
 
 			x+=g->xadvance;

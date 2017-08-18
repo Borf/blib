@@ -84,6 +84,11 @@ namespace blib
 				textureFileName = line.substr(16);
 				textureFileName = textureFileName.substr(0, textureFileName.length()-1);
 			}
+			if (line.substr(0, 6) == "common")
+			{
+				std::vector<std::string> params = split(line.substr(7), " ");
+				lineHeight = atoi(params[0].substr(11).c_str());
+			}
 			if(line.substr(0, 5) == "char ")
 			{
 				std::vector<std::string> params = split(line.substr(5), " ");

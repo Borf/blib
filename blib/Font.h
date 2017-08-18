@@ -30,6 +30,7 @@ namespace blib
 
 		const Glyph* getGlyph( const char &character ) const;
 
+		float lineHeight;
 
 		friend class gl::ResourceManager;
 		friend class gl::direct::ResourceManager;
