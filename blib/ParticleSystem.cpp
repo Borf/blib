@@ -318,9 +318,14 @@ namespace blib
 	{
 		nParticlesAdd = 0;
 		nParticlesAlpha = 0;
-		for(std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
-			delete *it;	
+		for (std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
+			delete *it;
 		emitters.clear();
+	}
+	void ParticleSystem::clearParticles()
+	{
+		nParticlesAdd = 0;
+		nParticlesAlpha = 0;
 	}
 
 

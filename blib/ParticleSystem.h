@@ -174,6 +174,7 @@ namespace blib
 		blib::VIO* vio;
 
 		void clear();
+		void clearParticles();
 		Emitter* addEmitter(std::string name);
 		void removeEmitter(Emitter* emitter);
 
