@@ -14,6 +14,13 @@ namespace blib
 			GlResizeRegister();
 			virtual ~GlResizeRegister();
 			virtual void resizeGl(int width, int height, int offx, int offy) = 0;
-		};
+
+        
+            static int width;
+            static int height;
+            static int offx;
+            static int offy;
+        
+        };
 	}
 }
