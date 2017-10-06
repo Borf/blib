@@ -363,6 +363,8 @@ namespace blib
 				alSourceStop(source->sourceId);
 				source->lastSample = nullptr;
 			}
+			if (bufferId == 0 && source)
+				alSourceUnqueueBuffers(source->sourceId, 2, buffers);
 			playing = false;
 			source = nullptr;
 			manager->mutex.unlock();
