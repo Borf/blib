@@ -12,6 +12,7 @@ namespace blib
 
 		int spriteCountX;
 		int spriteCountY;
+		int frameCount;
 
 		int spriteWidth;
 		int spriteHeight;

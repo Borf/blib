@@ -111,9 +111,10 @@ namespace blib
 
 
 			blib::SpriteSheet* spriteSheet = new blib::gl::Texture<blib::SpriteSheet>(directory + v["tex"].get<std::string>());
-
 			spriteSheet->spriteCountX = v["count"][0].get<int>();
 			spriteSheet->spriteCountY = v["count"][1].get<int>();
+			spriteSheet->frameCount = v.value("frames", spriteSheet->spriteCountX * spriteSheet->spriteCountY);
+
 
 			spriteSheet->spriteWidth = spriteSheet->originalWidth / v["count"][0].get<int>();
 			spriteSheet->spriteHeight = spriteSheet->originalHeight / v["count"][1].get<int>();
