@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <list>
 #include <blib/config.h>
 #ifdef BLIB_WIN
 #include <Windows.h>
@@ -40,7 +41,6 @@ namespace blib
 		class Log
 		{
 
-
 			std::string buffer;
 		//	bool endline;
 			class EndLine{};
@@ -52,6 +52,7 @@ namespace blib
 #endif
 
 		public:
+			std::list<std::string> lines;
 			Log();
 
 			static EndLine newline;

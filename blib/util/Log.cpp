@@ -139,6 +139,10 @@ namespace blib
 #endif
 
 
+			lines.push_back(buffer);
+			while (lines.size() > 20)
+				lines.pop_front();
+
 		#ifdef WIN32
 	//		OutputDebugStringA(buffer.c_str());
 	//		OutputDebugStringA("\r\n");
