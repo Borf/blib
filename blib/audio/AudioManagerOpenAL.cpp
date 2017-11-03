@@ -295,6 +295,11 @@ namespace blib
 	{
 		if (bufferId)
 		{
+			assert(alIsBuffer(bufferId) == AL_TRUE);
+			checkError();
+			if (source)
+				alSourceUnqueueBuffers(source->sourceId, 1, &bufferId);
+			checkError();
 			alDeleteBuffers(1, &bufferId);
 			checkError();
 		}
