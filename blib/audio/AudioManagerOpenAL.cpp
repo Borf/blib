@@ -377,6 +377,9 @@ namespace blib
 			}
 			if (bufferId == 0 && source)
 				alSourceUnqueueBuffers(source->sourceId, 2, buffers);
+			else if(source)
+				alSourceUnqueueBuffers(source->sourceId, 1, &bufferId);
+
 			playing = false;
 			source = nullptr;
 			manager->mutex.unlock();
@@ -471,6 +474,16 @@ namespace blib
 			mutex.unlock();
 			sample->stop();
 			mutex.lock();
+		}
+		
+		for(Source & source : sources)
+		{
+			alSourceStop(source.sourceId);
+			
+			ALint buffer = 0;
+			alGetSourcei(source.sourceId, AL_BUFFER, &buffer);
+			if(buffer > 0)
+				alSourceUnqueueBuffers(source.sourceId, 1, (ALuint*)&buffer);
 		}
 		mutex.unlock();
 	}
