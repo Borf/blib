@@ -293,11 +293,18 @@ namespace blib
 
 	OpenALAudioSample::~OpenALAudioSample()
 	{
+		if (bufferId)
+		{
+			alDeleteBuffers(1, &bufferId);
+			checkError();
+		}
+
 		if (manager)
 		{
 			manager->samples.erase(std::remove(manager->samples.begin(), manager->samples.end(), this), manager->samples.end());
 		}
-		delete[] fileData;
+		if(fileData)
+			delete[] fileData;
 	}
 
 	void OpenALAudioSample::play(bool loop)
