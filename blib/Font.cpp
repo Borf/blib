@@ -127,7 +127,7 @@ namespace blib
 	Font::~Font()
 	{
 		blib::ResourceManager::getInstance().dispose(texture);
-		for(std::map<char, Glyph*>::iterator it = charmap.begin(); it != charmap.end(); it++)
+		for(std::map<int, Glyph*>::iterator it = charmap.begin(); it != charmap.end(); it++)
 			delete it->second;
 		charmap.clear();
 	}

@@ -23,7 +23,7 @@ namespace blib
 	//	static Font* getFontInstance(std::string name, ResourceManager* resourceManager);
 	//	static void clearCache();
 	//	void render(std::string text, float scale);
-		std::map<char, Glyph*> charmap;
+		std::map<int, Glyph*> charmap;
 		Texture* texture;
 		Font(std::string file, ResourceManager* resourceManager);
 		~Font();
