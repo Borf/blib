@@ -44,6 +44,7 @@ namespace blib
 
 		Log::Log()
 		{
+			color = Color::WHITE;
 			//endline = true;
 		}
 //TODO: make a buffer per threadId
@@ -131,11 +132,12 @@ namespace blib
 			SYSTEMTIME beg;
 			GetLocalTime(&beg);
 
-			SetConsoleTextAttribute(handle, ConsoleForeground::GRAY);
+			SetConsoleTextAttribute(handle, (int)Color::GRAY);
 			printf("[%02d:%02d:%02d:%03d] ", beg.wHour, beg.wMinute, beg.wSecond, beg.wMilliseconds);
-			SetConsoleTextAttribute(handle, ConsoleForeground::GREEN);
+			SetConsoleTextAttribute(handle, (int)Color::GREEN);
 			printf("[%20s] ",blib::util::Thread::getCurrentThreadName().c_str());
-			SetConsoleTextAttribute(handle, ConsoleForeground::WHITE);
+			SetConsoleTextAttribute(handle, (int)color);
+			color = Color::WHITE;
 #endif
 
 
@@ -158,6 +160,14 @@ namespace blib
 #ifdef WIN32
 			logMutex->unLock();
 #endif
+			return *this;
+		}
+
+
+
+		Log& Log::operator<<(Color color)
+		{
+			this->color = color;
 			return *this;
 		}
 

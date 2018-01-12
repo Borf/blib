@@ -206,10 +206,8 @@ namespace blib
 
 		StreamOut* FileSystem::openWrite(const std::string &fileName)
 		{
-			printf("Opening %s\n", fileName.c_str());
 			for (std::list<FileSystemHandler*>::iterator it = handlers.begin(); it != handlers.end(); it++)
 			{
-				printf("Filehandler %s\n", (*it)->name.c_str());
 				StreamOut* stream = (*it)->openWrite(fileName);
 				if (stream)
 					return stream;
