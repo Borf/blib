@@ -325,6 +325,7 @@ namespace blib
 		Source* newSource = manager->getFreeSource();
 		if (!newSource)
 		{
+			Log::out << " Error getting free resource while playing "<<this->fileName << Log::newline;
 			manager->mutex.unlock();
 			return;
 		}
@@ -484,6 +485,8 @@ namespace blib
 			alGetSourcei(source.sourceId, AL_BUFFER, &buffer);
 			if(buffer > 0)
 				alSourceUnqueueBuffers(source.sourceId, 1, (ALuint*)&buffer);
+
+			source.lastSample = nullptr;
 		}
 		mutex.unlock();
 	}
