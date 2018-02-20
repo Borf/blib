@@ -199,6 +199,7 @@ namespace blib
 #ifdef BLIB_IOS
         std::u32string text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
         std::u32string space = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(" ");
+		typedef char32_t ch;
         typedef std::u32string str;
 #else
 		auto UTF8toISO8859_1 = [](const char * in)
@@ -237,13 +238,15 @@ namespace blib
 			return out;
 		};
 
-        std::string text = UTF8toISO8859_1(utf8.c_str());
+        std::string text = this->utf8 ? UTF8toISO8859_1(utf8.c_str()) : utf8;
         std::string space = " ";
         typedef std::string str;
+		typedef unsigned char ch;
 #endif
 		for(size_t i = 0; i < text.size(); i++)
 		{
-			if (text[i] == ' ')
+			ch c = text[i];
+			if (c == ' ')
 			{
                 if (text.find(space, i+1) != std::string::npos)
 				{
@@ -263,21 +266,21 @@ namespace blib
 				}
 			}
 
-			if (text[i] == '\n' || (x > wrapWidth && wrapWidth != -1))
+			if (c == '\n' || (x > wrapWidth && wrapWidth != -1))
 			{
 				x = 0;
 				y += lineHeight;
 				lineHeight = 12;
 			}
-			if (text[i] == '\t')
+			if (c == '\t')
 			{
-				x = ceil((x + 50) / 50) * 50;
+				x = ceil((x + tabsize) / tabsize) * tabsize;
 				continue;
 			}
 
-			if(font->charmap.find(text[i]) == font->charmap.end())
+			if(font->charmap.find(c) == font->charmap.end())
 				continue;
-			const Glyph* g = font->getGlyph(text[i]);
+			const Glyph* g = font->getGlyph(c);
 			lineHeight = glm::max(lineHeight, g->height + g->yoffset);
 			draw(font->texture, glm::translate(transform, glm::vec3(x+g->xoffset,y+g->yoffset,0)), glm::vec2(0,0), blib::math::Rectangle(g->x*texFactor.x,g->y*texFactor.y,g->width*texFactor.x,g->height*texFactor.y), color);
 
