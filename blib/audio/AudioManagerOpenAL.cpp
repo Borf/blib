@@ -293,6 +293,7 @@ namespace blib
 
 	OpenALAudioSample::~OpenALAudioSample()
 	{
+		manager->mutex.lock();
 		if (bufferId)
 		{
 			assert(alIsBuffer(bufferId) == AL_TRUE);
@@ -310,6 +311,7 @@ namespace blib
 		}
 		if(fileData)
 			delete[] fileData;
+		manager->mutex.unlock();
 	}
 
 	void OpenALAudioSample::play(bool loop)
@@ -407,6 +409,8 @@ namespace blib
 
 	void OpenALAudioSample::setVolume(int volume)
 	{
+		if (volume < 1)
+			volume = 1;
 		this->volume = volume;
 		if(source)
 			alSourcef(source->sourceId, AL_GAIN, volume/100.0f);
