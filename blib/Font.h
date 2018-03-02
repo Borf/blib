@@ -28,7 +28,7 @@ namespace blib
 		Font(std::string file, ResourceManager* resourceManager);
 		~Font();
 
-		const Glyph* getGlyph( const char &character ) const;
+		const Glyph* getGlyph( const int &character ) const;
 
 		float lineHeight;
 

@@ -60,6 +60,9 @@ namespace blib
 
 
 	public:
+		bool utf8 = true;
+		int tabsize = 50;
+
 		RenderState renderState;
 		blib::Shader* shader;
 		enum ShaderAttributes
