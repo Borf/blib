@@ -245,7 +245,7 @@ namespace blib
 		{
 			if (text[i] == ' ')
 			{
-                if (text.find(space, i+1) != std::string::npos)
+              //  if (text.find(space, i+1) != std::string::npos || y != cursor.y)
 				{
 					int start = i > 0 && text.rfind(space, i - 1) != std::string::npos ? text.rfind(space, i - 1) + 1 : 0;
 					str word = text.substr(start, text.find(space, i+1) - start);
