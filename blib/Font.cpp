@@ -151,7 +151,7 @@ namespace blib
 		return posX;
 	}
 
-	const Glyph* Font::getGlyph( const char &character ) const
+	const Glyph* Font::getGlyph( const int &character ) const
 	{
 		return charmap.find(character)->second;
 	}
