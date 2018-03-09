@@ -251,8 +251,8 @@ namespace blib
               //  if (text.find(space, i+1) != std::string::npos || y != cursor.y)
 				{
 					str word = text.substr(i);
-					if (word.find(" ") != std::string::npos)
-						word = word.substr(0, word.find(" "));
+					if (word.find(space) != std::string::npos)
+						word = word.substr(0, word.find(space));
 //					int start = i > 0 && text.rfind(space, i - 1) != std::string::npos ? text.rfind(space, i - 1) + 1 : 0;
 //					str word = text.substr(start, text.find(space, i+1) - start);
 					int wordLength = 0;
