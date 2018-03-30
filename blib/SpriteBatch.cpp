@@ -390,7 +390,7 @@ namespace blib
 
         while(!cache->materialIndices.empty() && cache->materialIndices[0].second < cacheStart)
             cache->materialIndices.erase(cache->materialIndices.begin());
-
+//assert that cache->materialIndices[i].second == cacheStart
         for(size_t i = 0; i < cache->materialIndices.size(); i++)
 			cache->materialIndices[i].second -= (unsigned short)cacheStart;
 			
