@@ -396,7 +396,7 @@ namespace blib
 
 		if (removeFromRenderQueue)
 		{
-			vertices.erase(vertices.begin() + cacheStart - 1, std::prev(vertices.end()));
+			vertices.resize(cacheStart);
 			materialIndices.erase(std::remove_if(materialIndices.begin(),
 				materialIndices.end(),
 				[this](const std::pair<const Texture*, unsigned short> &x) {return x.second > cacheStart; }),
