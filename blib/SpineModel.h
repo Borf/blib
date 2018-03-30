@@ -34,7 +34,7 @@ namespace blib
 
 		void playAnimation(const std::string &name, bool loop);
 		void playAnimation(const std::string &name, const std::function<void()> &callback);
-		void stopAnimation(const std::string &name);
+		void stopAnimation(const std::string &name, bool reset = true);
 
 		void setAnimation(const std::string &name, float time);
 		

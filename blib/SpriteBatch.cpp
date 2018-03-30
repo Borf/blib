@@ -250,7 +250,7 @@ namespace blib
 			{
               //  if (text.find(space, i+1) != std::string::npos || y != cursor.y)
 				{
-					str word = text.substr(i);
+					str word = text.substr(i+1);
 					if (word.find(" ") != std::string::npos)
 						word = word.substr(0, word.find(" "));
 //					int start = i > 0 && text.rfind(space, i - 1) != std::string::npos ? text.rfind(space, i - 1) + 1 : 0;
@@ -261,10 +261,11 @@ namespace blib
 						wordLength += font->getGlyph(word[ii])->xadvance;
 					if (x + wordLength > wrapWidth && wrapWidth != -1)
 					{
-						i++; //skip space
+						//i++; //skip space
 						x = 0;
 						y += lineHeight;
 						lineHeight = 12;
+						continue;
 					}
 				}
 			}

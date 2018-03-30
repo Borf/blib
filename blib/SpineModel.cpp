@@ -100,10 +100,11 @@ namespace blib
 		this->callback = callback;
 	}
 
-	void SpineModelInstance::stopAnimation(const std::string &name)
+	void SpineModelInstance::stopAnimation(const std::string &name, bool reset)
 	{
 		spAnimationState_clearTrack(state, 0);
-		spSkeleton_setToSetupPose(skeleton);
+		if(reset)
+			spSkeleton_setToSetupPose(skeleton);
 		update(0);
 	}
 
