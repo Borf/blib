@@ -368,7 +368,7 @@ namespace blib
 		cacheStart = vertices.size();
 	}
 
-	SpriteBatch::Cache* SpriteBatch::getCache()
+	SpriteBatch::Cache* SpriteBatch::getCache(bool removeFromRenderQueue)
 	{
 		assert(cacheActive);
 		assert(active);
@@ -388,12 +388,21 @@ namespace blib
 		std::pair<const Texture*, unsigned short> p(currentTexture, (unsigned short)vertices.size());
 		cache->materialIndices.push_back(p);
 
-        while(!cache->materialIndices.empty() && cache->materialIndices[0].second < cacheStart)
-            cache->materialIndices.erase(cache->materialIndices.begin());
-//assert that cache->materialIndices[i].second == cacheStart
-        for(size_t i = 0; i < cache->materialIndices.size(); i++)
+		while (!cache->materialIndices.empty() && cache->materialIndices[0].second < cacheStart)
+			cache->materialIndices.erase(cache->materialIndices.begin());
+		
+		for (size_t i = 0; i < cache->materialIndices.size(); i++)
 			cache->materialIndices[i].second -= (unsigned short)cacheStart;
-			
+
+		if (removeFromRenderQueue)
+		{
+			vertices.erase(vertices.begin() + cacheStart, std::prev(vertices.end()));
+			materialIndices.erase(std::remove_if(materialIndices.begin(),
+				materialIndices.end(),
+				[this](const std::pair<const Texture*, unsigned short> &x) {return x.second > cacheStart; }),
+				materialIndices.end());
+		}
+
 
 		return cache;
 	}

@@ -32,6 +32,7 @@ namespace blib
 		{
 			blib::VBO* vbo = NULL;
 		public:
+			//pair<texture, end of what to draw>
 			std::vector<std::pair<const Texture*, unsigned short> > materialIndices;
 			std::vector<vertexDef> verts;
 			~Cache();
@@ -79,7 +80,7 @@ namespace blib
 		virtual void end();
 
 		virtual void startCache();
-		virtual Cache* getCache();
+		virtual Cache* getCache(bool removeFromRenderQueue = false);
 		virtual void drawCache(Cache* cache);
 
 
