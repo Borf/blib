@@ -289,9 +289,6 @@ namespace blib
 			catch (json::parse_error &exception)
 			{
 				Log::out << "Can not read json file: " << fileName << ", " << exception.what() << " at " << exception.byte << Log::newline;
-#ifdef WIN32
-				getchar();
-#endif
 			}
 			return nullptr;
 		}
