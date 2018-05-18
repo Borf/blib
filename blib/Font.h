@@ -37,7 +37,7 @@ namespace blib
 		friend class SpriteBatch;
 
 	public:
-		float textlen(std::string text);
+		float textlen(const std::string &text) const;
 
 	};
 }

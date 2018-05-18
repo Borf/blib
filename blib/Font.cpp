@@ -134,7 +134,7 @@ namespace blib
 
 
 	
-	float Font::textlen(std::string text)
+	float Font::textlen(const std::string &text) const
 	{
 		float scale = 1;//0.00075f;
 
@@ -144,8 +144,7 @@ namespace blib
 		{
 			if(charmap.find(text[i]) == charmap.end())
 				continue;
-			Glyph* g = charmap[text[i]];
-			posX += g->xadvance * scale;
+			posX += getGlyph(text[i])->xadvance * scale;
 
 		}
 		return posX;
