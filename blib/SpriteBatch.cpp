@@ -189,9 +189,11 @@ namespace blib
 	}
 
 
-	glm::vec2 SpriteBatch::draw(const Font* font, const std::string &utf8, const glm::mat4 &transform, const glm::vec4 &color, glm::vec2 &cursor, int wrapWidth)
+	glm::vec2 SpriteBatch::draw(const Font* font, const std::string &utf8, const glm::mat4 &transform, const glm::vec4 &color, glm::vec2 &cursor, int wrapWidth, float maxWidth)
 	{
 		glm::vec2 texFactor(1.0f / font->texture->width, 1.0f / font->texture->height);
+
+		float scaleFactor = 1.0f;
 
 		float x = cursor.x;
 		float y = cursor.y;
@@ -243,6 +245,24 @@ namespace blib
         typedef std::string str;
 		typedef unsigned char ch;
 #endif
+
+		if (maxWidth > 0)
+		{
+			float len = 0;
+			for (size_t i = 0; i < text.size(); i++)
+			{
+				if (font->charmap.find(text[i]) != font->charmap.end())
+					len += font->getGlyph(text[i])->xadvance;
+			}
+
+			len = (transform * glm::vec4(len, 0, 0, 1)).x;
+			if (len > maxWidth)
+			{
+				scaleFactor = maxWidth / len;
+			}
+
+		}
+
 		for(size_t i = 0; i < text.size(); i++)
 		{
 			ch c = text[i];
@@ -286,7 +306,7 @@ namespace blib
 				continue;
 			const Glyph* g = font->getGlyph(c);
 			lineHeight = glm::max(lineHeight, g->height + g->yoffset);
-			draw(font->texture, glm::translate(transform, glm::vec3(x+g->xoffset,y+g->yoffset,0)), glm::vec2(0,0), blib::math::Rectangle(g->x*texFactor.x,g->y*texFactor.y,g->width*texFactor.x,g->height*texFactor.y), color);
+			draw(font->texture, glm::translate(glm::scale(transform, glm::vec3(scaleFactor, scaleFactor, 1)), glm::vec3(x+g->xoffset,y+g->yoffset,0)), glm::vec2(0,0), blib::math::Rectangle(g->x*texFactor.x,g->y*texFactor.y,g->width*texFactor.x,g->height*texFactor.y), color);
 
 			x+=g->xadvance;
 		}
