@@ -88,12 +88,14 @@ namespace blib
 
 	void SpineModelInstance::playAnimation(const std::string &name, bool loop)
 	{
+		lastAnimation = name;
 		spAnimationState_setAnimationByName(state, 0, name.c_str(), loop);
 		update(0);
 	}
 
 	void SpineModelInstance::playAnimation(const std::string &name, const std::function<void()> &callback)
 	{
+		lastAnimation = name;
 		fixedTime = -1;
 		spAnimationState_setAnimationByName(state, 0, name.c_str(), false);
 		update(0);
@@ -102,6 +104,7 @@ namespace blib
 
 	void SpineModelInstance::stopAnimation(const std::string &name, bool reset)
 	{
+		lastAnimation = "";
 		spAnimationState_clearTrack(state, 0);
 		if(reset)
 			spSkeleton_setToSetupPose(skeleton);

@@ -23,6 +23,7 @@ namespace blib
 	class SpineModelInstance
 	{
 	public:
+		std::string lastAnimation;
 		float fixedTime = -1;
 		SpineModel* model;
 		spSkeleton* skeleton;
