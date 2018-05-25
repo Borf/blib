@@ -93,6 +93,13 @@ namespace blib
 		update(0);
 	}
 
+	void SpineModelInstance::playAnimationOnTrack(const std::string &name, int track, bool loop)
+	{
+		lastAnimation = name;
+		spAnimationState_setAnimationByName(state, track, name.c_str(), loop);
+		update(0);
+	}
+
 	void SpineModelInstance::playAnimation(const std::string &name, const std::function<void()> &callback)
 	{
 		lastAnimation = name;
@@ -108,6 +115,13 @@ namespace blib
 		spAnimationState_clearTrack(state, 0);
 		if(reset)
 			spSkeleton_setToSetupPose(skeleton);
+		update(0);
+	}
+
+	void SpineModelInstance::stopAnimationOnTrack(const std::string &name, int track)
+	{
+		lastAnimation = "";
+		spAnimationState_clearTrack(state, track);
 		update(0);
 	}
 
