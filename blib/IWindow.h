@@ -52,7 +52,7 @@ namespace blib
 		virtual void tick() = 0;
 		virtual bool makeCurrent() = 0;
 		virtual void unmakeCurrent() = 0;
-		virtual void onResize(int width, int height) {};
+		virtual void onResize(int width, int height, int offX, int offY) {};
 		void addListener(KeyListener* keyListener);
 		void addListener(MouseListener* keyListener);
 		void addActivateListener(std::function<void(bool)> callback) { activateListeners.push_back(callback); }

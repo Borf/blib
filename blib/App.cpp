@@ -325,7 +325,7 @@ namespace blib
 		init();
 		Log::out<<"done calling init..."<<Log::newline;
 
-		blib::gl::GlResizeRegister::ResizeRegisteredObjects(window->getWidth(), window->getHeight());
+		blib::gl::GlResizeRegister::ResizeRegisteredObjects(window->getWidth(), window->getHeight(), appSetup.offX, appSetup.offY);
 		frameTimeIndex = 0;
 		running = true;
 	}

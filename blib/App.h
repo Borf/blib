@@ -41,6 +41,13 @@ namespace blib
 	{
 		namespace joystick		{			class Driver;		}
 	}
+	namespace platform
+	{
+		namespace win32
+		{
+			class Window;
+		}
+	}
 
 
 	// Contains the state of all individual keys on a moment in time
@@ -116,6 +123,10 @@ namespace blib
 		//enable/disable threaded background tasks
 		bool backgroundTasks;
 		//select the renderer used
+
+		int offX = 0;
+		int offY = 0;
+
 		enum RendererPreference
 		{
 			NullRenderer,
@@ -192,7 +203,7 @@ namespace blib
 		void addKeyListener(KeyListener* keyListener);
 		void addMouseListener(MouseListener* mouseListener);
 
-
+		friend class blib::platform::win32::Window;
 	public:
 		App();
 		virtual ~App();

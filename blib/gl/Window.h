@@ -21,7 +21,7 @@ namespace blib
 			virtual ~Window();
 			virtual void create(int icon, std::string title);
 			virtual void tick();
-			virtual void onResize(int width, int height);
+			virtual void onResize(int width, int height, int offX, int offY);
 		};
 	}
 }
