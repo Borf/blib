@@ -99,6 +99,7 @@ namespace blib
 			static int getData(const std::string &fileName, char* &data);
 			static std::string getData(const std::string &fileName);
 			static json getJson(const std::string &fileName);
+			static json getCbor(const std::string &fileName);
 			static std::vector<std::string> getFileList(const std::string &path);
 			static void dispose();
 		};

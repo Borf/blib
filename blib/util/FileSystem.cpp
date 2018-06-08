@@ -293,6 +293,33 @@ namespace blib
 			return nullptr;
 		}
 
+		json FileSystem::getCbor(const std::string &fileName)
+		{
+			char* data;
+			int len = getData(fileName, data);
+			if (len <= 0)
+			{
+				Log::out << "Could not open " << fileName << Log::newline;
+				return json();
+			}
+
+
+			try
+			{
+				
+				json jdata = json::from_cbor(data, len);
+				delete[] data;
+				return jdata;
+
+			}
+			catch (json::parse_error &exception)
+			{
+				Log::out << "Can not read cbor file: " << fileName << ", " << exception.what() << " at " << exception.byte << Log::newline;
+			}
+			return nullptr;
+		}
+
+
 		std::vector<std::string> FileSystem::getFileList(const std::string &path)
 		{
 			std::vector<std::string> ret;
