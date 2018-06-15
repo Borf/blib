@@ -347,6 +347,7 @@ namespace blib
 			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
 			alSourcei(source->sourceId, AL_LOOPING, loop);
 			alSourcePlay(source->sourceId);
+			checkError();
 		}
 		else //ogg
 		{
@@ -364,7 +365,6 @@ namespace blib
 			checkError();
 		}
 		playing = true;
-		checkError();
 		manager->mutex.unlock();
 	}
 
