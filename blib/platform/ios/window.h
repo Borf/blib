@@ -19,7 +19,9 @@ namespace blib
 				App* app;
                 float ratio = 1;
 			public:
-				Window(App* app);
+                float scale = 1;
+
+                Window(App* app);
 				virtual ~Window();
 
 				std::vector<long> clicks;
@@ -33,6 +35,8 @@ namespace blib
                 
                 void setWidth(int w);// { width = w; };
                 void setHeight(int h);// { height = h; };
+                
+                void setScale(float scale) { this->scale = scale; }
                 
                 
                 void touchDownEvent(unsigned long id, int x, int y);
