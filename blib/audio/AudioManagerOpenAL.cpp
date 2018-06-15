@@ -245,7 +245,7 @@ namespace blib
 		//Uncomment this to avoid VLAs
 		//#define BUFFER_SIZE 4096*32
 #ifndef BUFFER_SIZE//VLAs ftw
-#define BUFFER_SIZE 4096*2
+#define BUFFER_SIZE 4096*8
 #endif
 		ALshort* pcm = new ALshort[BUFFER_SIZE];
 		int  size = 0;
@@ -425,6 +425,7 @@ namespace blib
 
 			while (processed--) {
 				ALuint buf = 0;
+				//Log::out << "AudioManager: chunk processed" << Log::newline;
 
 				alSourceUnqueueBuffers(source->sourceId, 1, &buf);
 				if(buf != 0)
