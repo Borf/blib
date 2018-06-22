@@ -73,6 +73,9 @@ namespace blib
 			char* fileData = NULL;
             int length = 0;
             compressed = false;
+#ifdef _DEBUG
+			Log::out << "Loading texture: " << fileName << Log::newline;	
+#endif
             
 #ifdef BLIB_IOS
             if(blib::util::FileSystem::exists(fileName + ".pvrtc"))

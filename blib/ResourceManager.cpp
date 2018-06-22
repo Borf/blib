@@ -8,6 +8,7 @@ using blib::util::Log;
 namespace blib
 {
 	ResourceManager* ResourceManager::manager = nullptr;
+	std::map<std::string, Texture*> textureCache;
 
 	void ResourceManager::cleanup()
 	{
