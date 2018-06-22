@@ -12,14 +12,31 @@ namespace blib
 
 	void ResourceManager::cleanup()
 	{
-		for (auto r : toDelete)
+		for (auto &r : toDelete)
 		{
+			r.first--;
+			if (r.first < 0)
+			{
 #ifdef _DEBUG
-			Log::out << "Deleting " << r->name << Log::newline;
+				Log::out << "Deleting " << r.second->name << Log::newline;
 #endif
-			delete r;
+				blib::Texture* texture = dynamic_cast<blib::Texture*>(r.second);
+				if (texture)
+				{
+					for (auto it = textureCache.begin(); it != textureCache.end(); ++it)
+						if (it->second == texture)
+						{
+							textureCache.erase(it);
+							break;
+						}
+				}
+				delete r.second;
+			}
 		}
-		toDelete.clear();
+		toDelete.erase(std::remove_if(toDelete.begin(),	toDelete.end(),
+			[](std::pair<int, Resource*> r) {return r.first < 0; }),
+			toDelete.end());
+
 	}
 
 	ResourceManager::ResourceManager()
@@ -43,8 +60,16 @@ namespace blib
 	{
 		if (resources.find(resource) == resources.end())
 			resources[resource] = 0;
+
+		if (std::find_if(toDelete.begin(), toDelete.end(), [resource](std::pair<int, Resource*> &r) { return r.second == resource; }) != toDelete.end())
+		{
+			toDelete.erase(std::remove_if(toDelete.begin(), toDelete.end(),
+				[resource](std::pair<int, Resource*> r) {return r.second == resource; }),
+				toDelete.end());
+		}
+
 		resources[resource]++;
-      //  Log::out<<"Loading "<<resource->name<<Log::newline;
+        Log::out<<"Loading "<<(int)resource<<"\t"<<resource->name<<Log::newline;
 		return resource;
 	}
 
@@ -56,9 +81,10 @@ namespace blib
 		if (resources[resource] == 0)
 		{
 #ifdef _DEBUG
-			Log::out<<"Marking "<<resource->name<<Log::newline;
+			Log::out<<"Marking "<<(int)resource<<"\t"<<resource->name<<Log::newline;
 #endif
-			toDelete.push_back(resource);
+			assert(resources[resource] == 0);
+			toDelete.push_back(std::pair<int, Resource*>(10, resource));
 
 			resources.erase(resources.find(resource));
 		}

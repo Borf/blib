@@ -297,23 +297,6 @@ namespace blib
 			if (!attachment) continue;
 
 
-			/*			switch (slot->data->blendMode) {
-			case BLEND_MODE_ADDITIVE:
-			blend = BlendAdd;
-			break;
-			case BLEND_MODE_MULTIPLY:
-			blend = BlendMultiply;
-			break;
-			case BLEND_MODE_SCREEN: // Unsupported, fall through.
-			default:
-			blend = BlendAlpha;
-			}
-			if (states.blendMode != blend) {
-			target.draw(*vertexArray, states);
-			vertexArray->clear();
-			states.blendMode = blend;
-			}*/
-
 			Texture* texture = 0;
 
 

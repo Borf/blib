@@ -46,7 +46,7 @@ namespace blib
 		};
 
 	public:
-		std::list<Resource*> toDelete;
+		std::list<std::pair<int, Resource*> > toDelete;
 		std::map<Resource*, int> resources;
 		virtual Resource* regResource(Resource* resource);
 		virtual void dispose(Resource* resource);
