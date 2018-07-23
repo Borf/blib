@@ -180,7 +180,7 @@ namespace blib
             return out;
         };
         
-        std::string text = this->utf8 ? UTF8toISO8859_1(utf8.c_str()) : utf8;
+        std::string text = utf8;
         std::string space = " ";
         typedef std::string str;
         typedef unsigned char ch;
