@@ -26,6 +26,13 @@ using blib::util::Log;
 #endif
 #endif
 
+#ifndef BLIB_IOS
+#if (!_DLL) && (_MSC_VER >= 1900 /* VS 2015*/) && (_MSC_VER <= 1911 /* VS 2017 */)
+std::locale::id std::codecvt<char32_t, char, _Mbstatet>::id;
+#endif
+#endif
+
+
 namespace blib
 {
 	/*std::map<std::string, Font*> Font::fonts;
@@ -138,55 +145,11 @@ namespace blib
 	
 	float Font::textlen(const std::string &utf8) const
 	{
-#ifdef BLIB_IOS
         std::u32string text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
         std::u32string space = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(" ");
         typedef char32_t ch;
         typedef std::u32string str;
-#else
-        auto UTF8toISO8859_1 = [](const char * in)
-        {
-            std::string out;
-            if (in == NULL)
-                return out;
-            
-            unsigned int codepoint;
-            while (*in != 0)
-            {
-                unsigned char ch = static_cast<unsigned char>(*in);
-                if (ch <= 0x7f)
-                    codepoint = ch;
-                else if (ch <= 0xbf)
-                    codepoint = (codepoint << 6) | (ch & 0x3f);
-                else if (ch <= 0xdf)
-                    codepoint = ch & 0x1f;
-                else if (ch <= 0xef)
-                    codepoint = ch & 0x0f;
-                else
-                    codepoint = ch & 0x07;
-                ++in;
-                if (((*in & 0xc0) != 0x80) && (codepoint <= 0x10ffff))
-                {
-                    if (codepoint <= 255)
-                    {
-                        out.append(1, static_cast<char>(codepoint));
-                    }
-                    else
-                    {
-                        // do whatever you want for out-of-bounds characters
-                    }
-                }
-            }
-            return out;
-        };
-        
-        std::string text = utf8;
-        std::string space = " ";
-        typedef std::string str;
-        typedef unsigned char ch;
-#endif
 
-        
         float scale = 1;//0.00075f;
 
 		float posX = 0;
