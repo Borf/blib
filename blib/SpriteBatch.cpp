@@ -213,7 +213,7 @@ namespace blib
 					len += font->getGlyph(text[i])->xadvance;
 			}
 
-			len = (transform * glm::vec4(len, 0, 0, 1)).x;
+			len = (transform * glm::vec4(len, 0, 0, 1)).x - (transform * glm::vec4(0, 0, 0, 1)).x;
 			if (len > maxWidth)
 			{
 				scaleFactor = maxWidth / len;
