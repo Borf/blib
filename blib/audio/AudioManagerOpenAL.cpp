@@ -340,12 +340,19 @@ namespace blib
 		if (bufferId != 0) //wav
 		{
 			alSourcei(source->sourceId, AL_BUFFER, 0);
+			checkError();
 			alSourcei(source->sourceId, AL_BUFFER, bufferId);
+			checkError();
 			alSourcef(source->sourceId, AL_PITCH, 1.0f);
+			checkError();
 			alSourcef(source->sourceId, AL_GAIN, volume / 100.0f);
+			checkError();
 			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
+			checkError();
 			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
+			checkError();
 			alSourcei(source->sourceId, AL_LOOPING, loop);
+			checkError();
 			alSourcePlay(source->sourceId);
 			checkError();
 		}

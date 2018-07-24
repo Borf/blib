@@ -69,7 +69,6 @@ namespace blib
 		}
 
 		resources[resource]++;
-        Log::out<<"Loading "<<(int)resource<<"\t"<<resource->name<<Log::newline;
 		return resource;
 	}
 
