@@ -30,6 +30,7 @@ using blib::util::Log;
 #if (!_DLL) && (_MSC_VER >= 1900 /* VS 2015*/) && (_MSC_VER <= 1911 /* VS 2017 */)
 std::locale::id std::codecvt<char32_t, char, _Mbstatet>::id;
 #endif
+
 #endif
 
 
@@ -145,10 +146,17 @@ namespace blib
 	
 	float Font::textlen(const std::string &utf8) const
 	{
+#if defined(_DEBUG) && defined(BLIB_WIN)
+		std::wstring text = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(utf8);
+		std::wstring space = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(" ");
+		typedef wchar_t ch;
+		typedef std::wstring str;
+#else
         std::u32string text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
         std::u32string space = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(" ");
         typedef char32_t ch;
         typedef std::u32string str;
+#endif
 
         float scale = 1;//0.00075f;
 

@@ -135,7 +135,6 @@ namespace blib
 	class ParticleSystem : public gl::GlResizeRegister
 	{
         int MAX_PARTICLES = 10000;
-        std::map<std::string, EmitterTemplate*> cache;
 		std::string textureFolder;
 		double lastElapsedTime;
 		Renderer* renderer;
@@ -155,6 +154,8 @@ namespace blib
 		std::list<Emitter*> emitters;
 		TextureMap* textureMap;
 	public:
+		std::map<std::string, EmitterTemplate*> cache;
+
 		RenderState renderState;
 
 		ParticleSystem(Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch, int textureSize = 1024, int maxParticles = 10000);

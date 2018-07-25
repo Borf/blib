@@ -199,10 +199,18 @@ namespace blib
 		int lineHeight = 12;
 
 
-        std::u32string text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
-        std::u32string space = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(" ");
+#if defined(_DEBUG) && defined(BLIB_WIN)
+		std::wstring text = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(utf8);
+		std::wstring space = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(" ");
+		typedef wchar_t ch;
+		typedef std::wstring str;
+#else
+		std::u32string text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
+		std::u32string space = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(" ");
 		typedef char32_t ch;
-        typedef std::u32string str;
+		typedef std::u32string str;
+#endif
+		
 
 		if (maxWidth > 0)
 		{
