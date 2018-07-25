@@ -46,6 +46,9 @@ namespace blib
                 x *= ratio;
                 x += -((1024*ratio)-1024)/2;
                 
+                for (Touch& t : app->touches)
+                    if (t.id == id)
+                        return;
 				int clickCount = 1;
 				clicks.push_back(blib::util::tickcount());
 				int i = clicks.size() - 2;

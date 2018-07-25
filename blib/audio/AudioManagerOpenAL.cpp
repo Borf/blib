@@ -335,8 +335,7 @@ namespace blib
 		source->lastSample = this;
 		this->looping = loop;
 
-		Log::out << "Playing " << this->fileName << " on source " << source->index << Log::newline;
-		
+//
 		if (bufferId != 0) //wav
 		{
 			alSourcei(source->sourceId, AL_BUFFER, 0);
