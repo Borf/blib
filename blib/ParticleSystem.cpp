@@ -22,8 +22,9 @@ using blib::util::Log;
 namespace blib
 {
 
-	ParticleSystem::ParticleSystem( Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch, int textureSize )
+	ParticleSystem::ParticleSystem( Renderer* renderer, ResourceManager* resourceManager, SpriteBatch* spriteBatch, int textureSize , int maxParticles)
 	{
+        MAX_PARTICLES = maxParticles;
 		this->spriteBatch = spriteBatch;
 		this->renderer = renderer;
 		textureMap = resourceManager->getResource<TextureMap>(textureSize, textureSize);
@@ -58,6 +59,8 @@ namespace blib
 		lastElapsedTime = 0.1f;
 
 		particleData = new VertexDef[MAX_PARTICLES * 8];
+        alphaParticles = new Particle[MAX_PARTICLES];
+        addParticles = new Particle[MAX_PARTICLES];
 		for (int i = 0; i < MAX_PARTICLES; i++)
 		{
 			addParticles[i].vertex = particleData + (4 * i);
@@ -441,6 +444,8 @@ namespace blib
 		for (auto e : emitters)
 			delete e;
 		delete[] particleData;
+        delete[] alphaParticles;
+        delete[] addParticles;
 		blib::ResourceManager::getInstance().dispose(textureMap);
 		blib::ResourceManager::getInstance().dispose(shader);
 		blib::ResourceManager::getInstance().dispose(vbo);

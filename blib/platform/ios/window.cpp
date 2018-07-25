@@ -85,9 +85,20 @@ namespace blib
 						t.id = 0;
 						t.position.x = 0;
 						t.position.y = 0;
-						break;
+						return;
 					}
 				}
+                Log::out<<"Error, touch "<<id<<" not found"<<Log::newline;
+               /* for (Touch& t : app->touches)
+                {
+                    Log::out<<"touch "<<t.id<<Log::newline;
+                    if(t.id != 0)
+                    {
+                        Log::out<<"Removed touch "<<t.id<<Log::newline;
+                        t.id = 0;
+                    }
+                }*/
+                
 			}
             void Window::touchMoveEvent(unsigned long id, int x, int y)
             {
