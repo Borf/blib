@@ -33,9 +33,9 @@ namespace blib
 				virtual bool makeCurrent();
 				virtual void unmakeCurrent();
 
-				virtual void touchDownEvent(int x, int y);
-				virtual void touchUpEvent(int x, int y);
-				virtual void touchMoveEvent(int x, int y);
+				virtual void touchDownEvent(unsigned long id, int x, int y);
+				virtual void touchUpEvent(unsigned long id, int x, int y);
+				virtual void touchMoveEvent(unsigned long id, int x, int y);
 
 				virtual void keyDownEvent(blib::Key key);
 

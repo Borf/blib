@@ -2,9 +2,16 @@
 
 #include <blib/util/Thread.h>
 #include <blib/util/Log.h>
+
 #ifdef BLIB_IOS
 #include <OpenAL/alc.h>
+#endif
 
+#ifdef BLIB_ANDROID
+#include <AL/alc.h>
+#endif
+
+#if defined(BLIB_IOS) || defined(BLIB_ANDROID)
 #define SUCCEEDED(hr) (((int)(hr)) >= 0)
 #include <unistd.h>
 #else
@@ -14,6 +21,10 @@
 #include <algorithm>
 
 
+#ifdef BLIB_ANDROID
+
+
+#endif
 
 using blib::util::Log;
 
@@ -245,7 +256,7 @@ namespace blib
 		//Uncomment this to avoid VLAs
 		//#define BUFFER_SIZE 4096*32
 #ifndef BUFFER_SIZE//VLAs ftw
-#define BUFFER_SIZE 4096*8
+#define BUFFER_SIZE 4096*10
 #endif
 		ALshort* pcm = new ALshort[BUFFER_SIZE];
 		int  size = 0;
@@ -335,25 +346,18 @@ namespace blib
 		source->lastSample = this;
 		this->looping = loop;
 
-//
+		Log::out << "Playing " << this->fileName << " on source " << source->index << Log::newline;
+		
 		if (bufferId != 0) //wav
 		{
 			alSourcei(source->sourceId, AL_BUFFER, 0);
-			checkError();
 			alSourcei(source->sourceId, AL_BUFFER, bufferId);
-			checkError();
 			alSourcef(source->sourceId, AL_PITCH, 1.0f);
-			checkError();
 			alSourcef(source->sourceId, AL_GAIN, volume / 100.0f);
-			checkError();
 			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
-			checkError();
 			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
-			checkError();
 			alSourcei(source->sourceId, AL_LOOPING, loop);
-			checkError();
 			alSourcePlay(source->sourceId);
-			checkError();
 		}
 		else //ogg
 		{
@@ -371,6 +375,7 @@ namespace blib
 			checkError();
 		}
 		playing = true;
+		checkError();
 		manager->mutex.unlock();
 	}
 
@@ -428,10 +433,8 @@ namespace blib
 		{
 			ALint processed = 0;
 			alGetSourcei(source->sourceId, AL_BUFFERS_PROCESSED, &processed);
-
 			while (processed--) {
 				ALuint buf = 0;
-				//Log::out << "AudioManager: chunk processed" << Log::newline;
 
 				alSourceUnqueueBuffers(source->sourceId, 1, &buf);
 				if(buf != 0)
@@ -455,6 +458,8 @@ namespace blib
 						}
 					}
 					alSourceQueueBuffers(source->sourceId, 1, &buf);
+					if(!isPlaying())
+						alSourcePlay(source->sourceId);
 				}
 			}
 

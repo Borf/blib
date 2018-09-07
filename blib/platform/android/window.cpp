@@ -15,9 +15,9 @@
 
 using blib::util::Log;
 
-#include <android_native_app_glue.h>
+//#include <android_native_app_glue.h>
 
-extern android_app* androidApp;
+//extern android_app* androidApp;
 
 
 using blib::util::Log;
@@ -39,7 +39,7 @@ namespace blib
 
 			void Window::create(int icon, std::string title)
 			{
-				surface = 0;
+			/*	surface = 0;
 			    const EGLint attribs[] = {
 			    		EGL_RENDERABLE_TYPE, //EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
 			            EGL_OPENGL_ES2_BIT,
@@ -79,33 +79,32 @@ namespace blib
 				width = w;
 				height = h;
 
-				Log::out<<"Done creating egl window, surface "<<(int)surface<<Log::newline;
+				Log::out<<"Done creating egl window, surface "<<(int)surface<<Log::newline;*/
 			}
 
 			void Window::swapBuffers()
 			{
-				eglSwapBuffers(display, surface);
+		//		eglSwapBuffers(display, surface);
 			}
 
 
 			bool Window::makeCurrent()
 			{
-				if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
+		/*		if (eglMakeCurrent(display, surface, surface, context) == EGL_FALSE) {
 					Log::out<<"Unable to eglMakeCurrent"<<Log::newline;
 						return false;
-				}
+				}*/
 				return true;
 			}
 			void Window::unmakeCurrent()
 			{
-				if (eglMakeCurrent(display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT) == EGL_FALSE) {
+			/*	if (eglMakeCurrent(display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT) == EGL_FALSE) {
 					Log::out<<"Unable to eglUnMakeCurrent"<<Log::newline;
 						return;
-				}
+				}*/
 			}
 
-			int id = 1;
-			void Window::touchDownEvent(int x, int y)
+			void Window::touchDownEvent(unsigned long id, int x, int y)
 			{
 				int clickCount = 1;
 				clicks.push_back(blib::util::tickcount());
@@ -133,7 +132,7 @@ namespace blib
 				}
 			}
 
-			void Window::touchUpEvent(int x, int y)
+			void Window::touchUpEvent(unsigned long id, int x, int y)
 			{
 				for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 					(*it)->onMouseUp(x, y, MouseListener::Left, 1);
@@ -149,10 +148,20 @@ namespace blib
 				}
 			}
 
-			void Window::touchMoveEvent(int x, int y)
+			void Window::touchMoveEvent(unsigned long id, int x, int y)
 			{
 				for(std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 					(*it)->onMouseMove(x,y,MouseListener::Left);
+
+                for (Touch& t : app->touches)
+                {
+                    if (t.id == id)
+                    {
+                        t.position.x = x;
+                        t.position.y = y;
+                        break;
+                    }
+                }
 			}
 
 			void Window::keyDownEvent(blib::Key key)
@@ -160,7 +169,7 @@ namespace blib
 				for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
 					(*it)->onMouseMove(x, y, MouseListener::Left);
 
-				for (Touch& t : app->touches)
+			/*	for (Touch& t : app->touches)
 				{
 					if (t.id == id)
 					{
@@ -168,7 +177,7 @@ namespace blib
 						t.position.y = y;
 						break;
 					}
-				}
+				}*/
 			}
 
 

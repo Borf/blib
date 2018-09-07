@@ -22,6 +22,7 @@ inline void closesocket(SOCKET s)
 
 #include <assert.h>
 #include <thread>
+#include <glm/glm.hpp>
 #include <blib/util/Log.h>
 #include <blib/util/Thread.h>
 
@@ -70,7 +71,8 @@ namespace blib
 						for (NetTask* task : tasks)
 						{
 							FD_SET(task->s, &socks);
-							highsock = max(highsock, task->s);
+                            if(task->s > highsock)
+                                highsock = task->s;
 						}
 						select(highsock + 1, &socks, (fd_set*)0, (fd_set*)0, &timeout);
 
@@ -213,7 +215,7 @@ namespace blib
 				{
 					int rc = ::recv(s, asyncData, asyncDataLen, 0);
 					printf("RECV:");
-					for (int i = 0; i < min(2, rc); i++)
+					for (int i = 0; i < glm::min(2, rc); i++)
 						printf("%02x", asyncData[i]);
 					printf("\t");
 					for (int i = 2; i < rc; i++)
@@ -262,7 +264,7 @@ namespace blib
 				sendMutex.lock();
 				printf("SEND:");
 
-				for (size_t i = 0; i < min(2, data.length()); i++)
+				for (size_t i = 0; i < glm::min((size_t)2, data.length()); i++)
 					printf("%02x", data[i]);
 				printf("\t");
 				for (size_t i = 2; i < data.length(); i++)
