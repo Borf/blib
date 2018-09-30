@@ -18,7 +18,9 @@ namespace blib
 
 
 			short readWord();
+			unsigned short readUWord();
 			short readShort();
+			unsigned short readUShort();
 			int readInt();
 			float readFloat();
 			std::string readString(int maxLength);

@@ -10,11 +10,26 @@ short blib::util::StreamIn::readShort()
 	return a<<8 | b;
 }
 
+unsigned short blib::util::StreamIn::readUShort()
+{
+	int a = (unsigned char)get();
+	int b = (unsigned char)get();
+	return a << 8 | b;
+}
+
+
 short blib::util::StreamIn::readWord()
 {
 	int a = (unsigned char)get();
 	int b = (unsigned char)get();
 	return b<<8 | a;
+}
+
+unsigned short blib::util::StreamIn::readUWord()
+{
+	int a = (unsigned char)get();
+	int b = (unsigned char)get();
+	return b << 8 | a;
 }
 
 float blib::util::StreamIn::readFloat()
