@@ -12,7 +12,19 @@ namespace blib
 			put((data >> 8) & 0xff);
 		}
 
+		void StreamOut::writeUWord(unsigned short data)
+		{
+			put((data >> 0) & 0xff);
+			put((data >> 8) & 0xff);
+		}
+
 		void StreamOut::writeShort(short data)
+		{
+			put((data >> 8) & 0xff);
+			put((data >> 0) & 0xff);
+		}
+
+		void StreamOut::writeUShort(unsigned short data)
 		{
 			put((data >> 8) & 0xff);
 			put((data >> 0) & 0xff);

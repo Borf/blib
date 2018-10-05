@@ -200,15 +200,38 @@ namespace blib
 
 
 #if defined(_DEBUG) && defined(BLIB_WIN)
-		std::wstring text = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(utf8);
-		std::wstring space = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(" ");
+		std::wstring text;
+		std::wstring space;
 		typedef wchar_t ch;
 		typedef std::wstring str;
+
+		if (this->utf8)
+		{
+			text = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(utf8);
+			space = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(" ");
+		}
+		else
+		{
+			text = std::wstring(utf8.begin(), utf8.end());
+			space = std::wstring(1, ' ');
+		}
+
 #else
-		std::u32string text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
-		std::u32string space = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(" ");
+		std::u32string text; 
+		std::u32string space;
 		typedef char32_t ch;
 		typedef std::u32string str;
+
+		if (this->utf8)
+		{
+			text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
+			space = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(" ");
+		}
+		else
+		{
+			text = std::u32string(utf8.begin(), utf8.end());
+			space = std::u32string(1, ' ');
+		}
 #endif
 		
 

@@ -18,7 +18,10 @@ namespace blib
 			virtual void put(char);
 
 			void writeWord(short data);
+			void writeUWord(unsigned short data);
+
 			void writeShort(short data);
+			void writeUShort(unsigned short data);
 			void writeInt(int data);
 			void writeFloat(float data);
 			void writeString(const std::string& data, int length);
