@@ -40,5 +40,9 @@ namespace blib
 		virtual void stopAllSounds() {};
 
 		virtual void update() {};
+
+
+		virtual void sleep() {};
+		virtual void resume() {};
 	};
 }

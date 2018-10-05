@@ -57,6 +57,7 @@ namespace blib
         int volume = 100;
 
 
+
 		~OpenALAudioSample();
 		virtual void play(bool loop) override;
 		virtual void stop() override;
@@ -76,6 +77,7 @@ namespace blib
 		std::vector<OpenALAudioSample*> samples;
 		int lastSource = 0;
 		bool running;
+		bool alive = true;
 	public:
 		std::thread backgroundThread;
 		AudioManagerOpenAL();
@@ -93,5 +95,7 @@ namespace blib
 		virtual void stopAllSounds() override;
 
 		virtual void update() override; //TODO: move to background thread
+		virtual void sleep();
+		virtual void resume();
 	};
 }

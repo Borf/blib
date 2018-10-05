@@ -256,7 +256,7 @@ namespace blib
 		//Uncomment this to avoid VLAs
 		//#define BUFFER_SIZE 4096*32
 #ifndef BUFFER_SIZE//VLAs ftw
-#define BUFFER_SIZE 4096*10
+#define BUFFER_SIZE 4096*64
 #endif
 		ALshort* pcm = new ALshort[BUFFER_SIZE];
 		int  size = 0;
@@ -467,6 +467,14 @@ namespace blib
 		return true;
 	}
 
+	void AudioManagerOpenAL::sleep() {
+		alive = false;
+	}
+
+	void AudioManagerOpenAL::resume() {
+		alive = true;
+	}
+
 
 	bool Source::isPlaying()
 	{
@@ -477,6 +485,8 @@ namespace blib
 
 	void AudioManagerOpenAL::update()
 	{
+		if(!alive)
+			return;
 		mutex.lock();
 		for (OpenALAudioSample* sample : samples)
 			sample->update();

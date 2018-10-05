@@ -140,8 +140,8 @@ namespace blib
 					clickCount = clicks.size();
 				switch (message) {
 				case WM_MOVE:
-					x = (int)(short)LOWORD(lParam) + app->appSetup.offX;
-					y = (int)(short)HIWORD(lParam) + app->appSetup.offY;
+					x = (int)(short)LOWORD(lParam);
+					y = (int)(short)HIWORD(lParam);
 					break;
 				case WM_ACTIVATE:
 					active = wParam != 0;
@@ -151,7 +151,7 @@ namespace blib
 				case WM_SIZE: // If our window is resizing
 					width = LOWORD(lParam);
 					height = HIWORD(lParam);
-					onResize(width, height, app->appSetup.offX, app->appSetup.offY);
+					onResize(width, height,0,0);
 					break;
 				case WM_DESTROY:
 					//PostQuitMessage(0);
@@ -175,42 +175,42 @@ namespace blib
 				case WM_LBUTTONDOWN:
 					mouseButtons |= MouseListener::Left;
 					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						if ((*it)->onMouseDown(GET_X_LPARAM(lParam) + app->appSetup.offX, GET_Y_LPARAM(lParam) + app->appSetup.offY, MouseListener::Left, clickCount))
+						if ((*it)->onMouseDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Left, clickCount))
 							break;
 					break;
 				case WM_LBUTTONUP:
 					mouseButtons &= ~MouseListener::Left;
 					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						if ((*it)->onMouseUp(GET_X_LPARAM(lParam) + app->appSetup.offX, GET_Y_LPARAM(lParam) + app->appSetup.offY, MouseListener::Left, clickCount))
+						if ((*it)->onMouseUp(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Left, clickCount))
 							break;
 					break;
 				case WM_RBUTTONDOWN:
 					mouseButtons |= MouseListener::Right;
 					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						if ((*it)->onMouseDown(GET_X_LPARAM(lParam) + app->appSetup.offX, GET_Y_LPARAM(lParam) + app->appSetup.offY, MouseListener::Right, clickCount))
+						if ((*it)->onMouseDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Right, clickCount))
 							break;
 					break;
 				case WM_RBUTTONUP:
 					mouseButtons &= ~MouseListener::Right;
 					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						if ((*it)->onMouseUp(GET_X_LPARAM(lParam) + app->appSetup.offX, GET_Y_LPARAM(lParam) + app->appSetup.offY, MouseListener::Right, clickCount))
+						if ((*it)->onMouseUp(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Right, clickCount))
 							break;
 					break;
 				case WM_MBUTTONDOWN:
 					mouseButtons |= MouseListener::Middle;
 					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						if ((*it)->onMouseDown(GET_X_LPARAM(lParam) + app->appSetup.offX, GET_Y_LPARAM(lParam) + app->appSetup.offY, MouseListener::Middle, clickCount))
+						if ((*it)->onMouseDown(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Middle, clickCount))
 							break;
 					break;
 				case WM_MBUTTONUP:
 					mouseButtons &= ~MouseListener::Middle;
 					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						if ((*it)->onMouseUp(GET_X_LPARAM(lParam) + app->appSetup.offX, GET_Y_LPARAM(lParam) + app->appSetup.offY, MouseListener::Middle, clickCount))
+						if ((*it)->onMouseUp(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), MouseListener::Middle, clickCount))
 							break;
 					break;
 				case WM_MOUSEMOVE:
 					for (std::list<MouseListener*>::iterator it = mouseListeners.begin(); it != mouseListeners.end(); it++)
-						if ((*it)->onMouseMove(GET_X_LPARAM(lParam) + app->appSetup.offX, GET_Y_LPARAM(lParam) + app->appSetup.offY, (MouseListener::Buttons)mouseButtons))
+						if ((*it)->onMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (MouseListener::Buttons)mouseButtons))
 							break;
 					break;
 				case WM_MOUSEWHEEL:

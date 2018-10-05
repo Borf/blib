@@ -156,20 +156,70 @@ namespace blib
 		}
 	}
 
-	class NullAudioSample : public AudioSample
+	class AndroidAudioSample : public AudioSample
 	{
+	public:
+		std::string fileName;
+		AudioManagerAndroid* manager;
+		AndroidAudioSample(const std::string &fileName, AudioManagerAndroid* manager)
+		{
+			this->fileName = fileName;
+			this->manager = manager;
+		}
+
 		virtual void play(bool loop = false) override
 		{
+			SLresult result;
+
+			AAsset* asset = AAssetManager_open(manager->mgr, fileName.c_str(), AASSET_MODE_UNKNOWN);
+			if (NULL == asset) {
+				return;
+			}
+			off_t start, length;
+			int fd = AAsset_openFileDescriptor(asset, &start, &length);
+			assert(0 <= fd);
+			AAsset_close(asset);
+
+			// configure audio source
+			SLDataLocator_AndroidFD loc_fd = { SL_DATALOCATOR_ANDROIDFD, fd, start, length };
+			SLDataFormat_MIME format_mime = { SL_DATAFORMAT_MIME, NULL, SL_CONTAINERTYPE_UNSPECIFIED };
+			SLDataSource audioSrc = { &loc_fd, &format_mime };
+
+			// configure audio sink
+			SLDataLocator_OutputMix loc_outmix = { SL_DATALOCATOR_OUTPUTMIX, manager->outputMixObject };
+			SLDataSink audioSnk = { &loc_outmix, NULL };
+
+			// create audio player
+			const SLInterfaceID ids_[0] = {};
+			const SLboolean req_[0] = {};
+			result = (*manager->engineEngine)->CreateAudioPlayer(manager->engineEngine, &manager->fdPlayerObject, &audioSrc, &audioSnk, 0, ids_, req_);
+			assert(SL_RESULT_SUCCESS == result);
+			result = (*manager->fdPlayerObject)->Realize(manager->fdPlayerObject, SL_BOOLEAN_FALSE);
+			assert(SL_RESULT_SUCCESS == result);
+			result = (*manager->fdPlayerObject)->GetInterface(manager->fdPlayerObject, SL_IID_PLAY, &manager->fdPlayerPlay);
+			assert(SL_RESULT_SUCCESS == result);
+
+			if (NULL != manager->fdPlayerPlay) {
+				result = (*manager->fdPlayerPlay)->SetPlayState(manager->fdPlayerPlay, SL_PLAYSTATE_PLAYING);
+				assert(SL_RESULT_SUCCESS == result);
+				(void)result;
+			}
 		}
 
 		virtual void stop() override
 		{
 		}
-	};
+        virtual bool isPlaying() override
+        {
+            return false;
+        }
+        virtual void setVolume(int volume) override {/*TODO*/ }
+
+    };
 
 	AudioSample* AudioManagerAndroid::loadSample(const std::string &filename)
 	{
-		return new NullAudioSample();
+		return new AndroidAudioSample(filename, this);
 	}
 
 }

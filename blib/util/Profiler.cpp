@@ -11,10 +11,7 @@
 #include <sys/time.h>
 
 //clock_gettime is not implemented on OSX
-#ifndef CLOCK_REALTIME
 #define CLOCK_REALTIME 0
-#endif
-
 int clock_gettime(int clk_id, struct timespec* t)
 {
     struct timeval now;

@@ -46,9 +46,6 @@ namespace blib
                 x *= ratio;
                 x += -((1024*ratio)-1024)/2;
                 
-                for (Touch& t : app->touches)
-                    if (t.id == id)
-                        return;
 				int clickCount = 1;
 				clicks.push_back(blib::util::tickcount());
 				int i = clicks.size() - 2;
@@ -88,20 +85,9 @@ namespace blib
 						t.id = 0;
 						t.position.x = 0;
 						t.position.y = 0;
-						return;
+						break;
 					}
 				}
-                Log::out<<"Error, touch "<<id<<" not found"<<Log::newline;
-               /* for (Touch& t : app->touches)
-                {
-                    Log::out<<"touch "<<t.id<<Log::newline;
-                    if(t.id != 0)
-                    {
-                        Log::out<<"Removed touch "<<t.id<<Log::newline;
-                        t.id = 0;
-                    }
-                }*/
-                
 			}
             void Window::touchMoveEvent(unsigned long id, int x, int y)
             {

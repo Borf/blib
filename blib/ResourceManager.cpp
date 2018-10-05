@@ -75,7 +75,7 @@ namespace blib
 
 	void ResourceManager::dispose(Resource* resource)
 	{
-		assert(resources.find(resource) != resources.end());
+		//assert(resources.find(resource) != resources.end());
 		resources[resource]--;
 		if (resources[resource] == 0)
 		{

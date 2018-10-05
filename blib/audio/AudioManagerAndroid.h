@@ -12,6 +12,7 @@ namespace blib
 {
 	class AudioManagerAndroid : public AudioManager
 	{
+	public:
 		// engine interfaces
 		SLObjectItf engineObject;
 		SLEngineItf engineEngine;
@@ -34,12 +35,13 @@ namespace blib
 	public:
 		virtual ~AudioManagerAndroid() {};
 		virtual void setAssetManager(AAssetManager* mgr);
-		virtual void init();
-		virtual void playMusic(std::string filename);
-		virtual void stopMusic();
-		virtual void playSound(std::string filename);
+		virtual void init() override;
+		virtual void playMusic(std::string filename) override;
+		virtual void stopMusic() override;
+		virtual void playSound(std::string filename) override;
 
 		virtual AudioSample* loadSample(const std::string &filename) override;
+
 
 	};
 }

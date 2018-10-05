@@ -93,6 +93,7 @@ namespace blib
 			return new blib::gl::VIO();
 		}
 
+
 		blib::Font* ResourceManager::getFont(const std::string &name)
 		{
             return new Font("assets/fonts/" + name + ".fnt", this);

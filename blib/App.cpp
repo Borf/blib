@@ -282,7 +282,7 @@ namespace blib
 				App* app;
 			public:
 				AppMouseListener(App* app)										{	this->app = app;								}
-				bool onMouseDown(int x, int y, Button button, int clickCount)	{ app->mouseState.clickcount = clickCount; app->mouseState.position.x = x; app->mouseState.position.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = true; return false; };
+				bool onMouseDown(int x, int y, Button button, int clickCount)	{ Log::out<<"Got a touch at "<<x <<", "<<y<<Log::newline; app->mouseState.clickcount = clickCount; app->mouseState.position.x = x; app->mouseState.position.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = true; return false; };
 				bool onMouseUp(int x, int y, Button button, int clickCount)		{ app->mouseState.clickcount = clickCount; app->mouseState.position.x = x; app->mouseState.position.y = y; app->mouseState.buttons[button == MouseListener::Left ? 0 : (button == MouseListener::Middle ? 1 : 2)] = false; return false; };
 				bool onMouseMove(int x, int y, Buttons button)					{ app->mouseState.position.x = x; app->mouseState.position.y = y; return false; };
 				bool onScroll(int delta) { app->mouseState.scrollPosition += delta; return false; };

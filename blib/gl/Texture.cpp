@@ -73,9 +73,6 @@ namespace blib
 			char* fileData = NULL;
             int length = 0;
             compressed = false;
-#ifdef _DEBUG
-			Log::out << "Loading texture: " << fileName << Log::newline;	
-#endif
             
 #ifdef BLIB_IOS
             if(blib::util::FileSystem::exists(fileName + ".pvrtc"))
@@ -104,16 +101,23 @@ namespace blib
                 Log::err<<"Error loading texture '"<<fileName<<"'"<<Log::newline;
                 return;
             }
-            
+
+			if (fileName.find("intro_bg") != std::string::npos)
+			Sleep(0);
+
+#ifdef _DEBUG
+			Log::err << "loading texture '" << fileName << "'" << Log::newline;
+#endif
+
 			int depth;
 			int &_originalWidth = T::originalWidth;
 			int &_originalHeight = T::originalHeight;
 
             _originalWidth = 10;
             _originalHeight = 10;
-            depth = 1;
+            depth = 4;
             
-			unsigned char* tmpData = stbi_load_from_memory((stbi_uc*)fileData, length, &_originalWidth, &_originalHeight, &depth, 0);
+			unsigned char* tmpData = stbi_load_from_memory((stbi_uc*)fileData, length, &_originalWidth, &_originalHeight, &depth, 4);
 			if (!tmpData)
 			{
 				const char* err = stbi_failure_reason();
@@ -121,6 +125,7 @@ namespace blib
 				Log::out << err << Log::newline;
 				return;
 			}
+			depth = 4;
 			delete[] fileData;
 			data = new unsigned char[T::originalWidth*T::originalHeight*depth];
 			memcpy(data, tmpData, T::originalWidth*T::originalHeight*depth);
@@ -131,7 +136,7 @@ namespace blib
 				T::width = T::originalWidth;
 				T::height = T::originalHeight;
 				//make 4 bits
-				if(depth == 3)
+				/*if(depth == 3)
 				{
 					unsigned char* newData = new unsigned char[T::width*T::height*4];
 					for(int y = 0; y < T::height; y++)
@@ -147,7 +152,7 @@ namespace blib
 					delete[] data;
 					data = newData;
 					depth = 4;
-				}
+				}*/
 
 
 				//TODO: resize texture to power of 2 texture
