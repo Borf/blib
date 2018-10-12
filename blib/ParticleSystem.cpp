@@ -292,6 +292,15 @@ namespace blib
 		particle.position = position + blib::math::randomFloat() * (position - prevPosition) +
 			glm::vec2(blib::math::randomFloat(emitterTemplate->initialSpreadX.x, emitterTemplate->initialSpreadX.y), blib::math::randomFloat(emitterTemplate->initialSpreadY.x, emitterTemplate->initialSpreadY.y)) * blib::math::fromAngle(blib::math::randomFloat(0, blib::math::pif));
 		particle.prevPosition = particle.position -speed * blib::util::fromAngle(glm::radians(direction + blib::math::randomFloat(emitterTemplate->particleProps.directionMin, emitterTemplate->particleProps.directionMax)));
+
+		if (emitterTemplate->shape == EmitterTemplate::Shape::Circle)
+		{
+			glm::vec2 offset = blib::math::randomFloat() * 40 * blib::math::fromAngle(blib::math::randomFloat(blib::math::pif * 2));
+			particle.position += offset;
+			particle.prevPosition += offset;
+		}
+
+
 		particle.lifeDec = blib::math::randomFloat(emitterTemplate->particleProps.fadeSpeedMin, emitterTemplate->particleProps.fadeSpeedMax);
 		if(emitterTemplate->textureOrder == EmitterTemplate::Random)
 			particle.texture = emitterTemplate->textureInfos[rand()%emitterTemplate->textureInfos.size()];

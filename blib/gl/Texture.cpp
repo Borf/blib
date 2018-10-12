@@ -102,9 +102,6 @@ namespace blib
                 return;
             }
 
-			if (fileName.find("intro_bg") != std::string::npos)
-			Sleep(0);
-
 #ifdef _DEBUG
 			Log::err << "loading texture '" << fileName << "'" << Log::newline;
 #endif
