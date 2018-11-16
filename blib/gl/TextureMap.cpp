@@ -81,6 +81,9 @@ namespace blib
 			if(h%32 != 0)
 				Log::err<<"Error loading texture "<<filename<<", height is not a multiple of 32"<<Log::newline;
 
+			int ww = (int)ceil(w / 32.0f);
+			int hh = (int)ceil(h / 32.0f);
+
 			int xoffset = 0;
 			int yoffset = 0;
 
@@ -88,8 +91,8 @@ namespace blib
 			while(true)
 			{
 				ok = true;
-				for(int x = 0; x < w / 32 && ok; x++)
-					for(int y = 0; y < h / 32 && ok; y++)
+				for(int x = 0; x < ww && ok; x++)
+					for(int y = 0; y < hh && ok; y++)
 						if(isTaken(xoffset+x, yoffset+y))
 							ok = false;
 				if(ok)
@@ -111,8 +114,8 @@ namespace blib
 				}
 			}
 
-			for(int x = 0; x < w / 32; x++)
-				for(int y = 0; y < h / 32; y++)
+			for(int x = 0; x < ww; x++)
+				for(int y = 0; y < hh; y++)
 					isTaken(xoffset+x, yoffset+y) = true;
 
 
