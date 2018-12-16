@@ -128,6 +128,7 @@
     <ClInclude Include="blib\wm\widgets\Label.h" />
     <ClInclude Include="blib\wm\widgets\list.h" />
     <ClInclude Include="blib\wm\widgets\Panel.h" />
+    <ClInclude Include="blib\wm\widgets\ProgressBar.h" />
     <ClInclude Include="blib\wm\widgets\ScrollPanel.h" />
     <ClInclude Include="blib\wm\widgets\textbox.h" />
     <ClInclude Include="blib\wm\widgets\TreeView.h" />
@@ -602,6 +603,7 @@
     <ClCompile Include="blib\wm\widgets\Label.cpp" />
     <ClCompile Include="blib\wm\widgets\list.cpp" />
     <ClCompile Include="blib\wm\widgets\Panel.cpp" />
+    <ClCompile Include="blib\wm\widgets\ProgressBar.cpp" />
     <ClCompile Include="blib\wm\widgets\ScrollPanel.cpp" />
     <ClCompile Include="blib\wm\widgets\textbox.cpp" />
     <ClCompile Include="blib\wm\widgets\TreeView.cpp" />
