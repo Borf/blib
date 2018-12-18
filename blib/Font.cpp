@@ -27,7 +27,8 @@ using blib::util::Log;
 #endif
 
 #ifndef BLIB_IOS
-#if (!_DLL) && (_MSC_VER >= 1900 /* VS 2015*/) && (_MSC_VER <= 1911 /* VS 2017 */)
+//#if (!_DLL) && (_MSC_VER >= 1900 /* VS 2015*/) && (_MSC_VER <= 1911 /* VS 2017 */)
+#if (!_DLL) && (_MSC_VER >= 1900 /* VS 2015*/)
 std::locale::id std::codecvt<char32_t, char, _Mbstatet>::id;
 #endif
 
