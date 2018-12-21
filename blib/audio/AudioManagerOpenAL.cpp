@@ -37,7 +37,7 @@ namespace blib
             Log::out << " Error: " << error << Log::newline;
 
     }
-    
+
 	static void list_audio_devices(const ALCchar *devices)
 	{
 		const ALCchar *device = devices, *next = devices + 1;
@@ -148,7 +148,7 @@ namespace blib
 
     void AudioManagerOpenAL::playSound(std::string filename)
 	{
-		
+
 	}
 
 	AudioSample* AudioManagerOpenAL::loadSample(const std::string &filename)
@@ -210,7 +210,7 @@ namespace blib
 		checkError();
 		return newSample;
 	}
-	
+
 
 	OpenALAudioSample* AudioManagerOpenAL::loadSampleOgg(const std::string &filename)
 	{
@@ -218,7 +218,7 @@ namespace blib
 		char* data;
 		int len = blib::util::FileSystem::getData(filename, data);
 
-		stb_vorbis* stream = stb_vorbis_open_memory(const_cast<const unsigned char*>((unsigned char*)data), len, NULL, NULL); 
+		stb_vorbis* stream = stb_vorbis_open_memory(const_cast<const unsigned char*>((unsigned char*)data), len, NULL, NULL);
 		if (!stream)
 		{
 			Log::out << "AudioManagerOpenAL: Could not open " << filename << Log::newline;
@@ -347,7 +347,7 @@ namespace blib
 		this->looping = loop;
 
 		Log::out << "Playing " << this->fileName << " on source " << source->index << Log::newline;
-		
+
 		if (bufferId != 0) //wav
 		{
 			alSourcei(source->sourceId, AL_BUFFER, 0);
@@ -527,11 +527,11 @@ namespace blib
 			sample->stop();
 			mutex.lock();
 		}
-		
+
 		for(Source & source : sources)
 		{
 			alSourceStop(source.sourceId);
-			
+
 			ALint buffer = 0;
 			alGetSourcei(source.sourceId, AL_BUFFER, &buffer);
 			if(buffer > 0)
