@@ -8,7 +8,7 @@
 #endif
 
 #ifdef BLIB_ANDROID
-#include <AL/alc.h>
+#include <al/alc.h>
 #endif
 
 #if defined(BLIB_IOS) || defined(BLIB_ANDROID)
@@ -467,12 +467,37 @@ namespace blib
 		return true;
 	}
 
+	void OpenALAudioSample::pause() {
+		if(source) {
+		    if(!paused)
+                alSourcePause(source->sourceId);
+            else
+                alSourcePlay(source->sourceId);
+
+
+			paused = !paused;
+		}
+	}
+
 	void AudioManagerOpenAL::sleep() {
 		alive = false;
+
+        mutex.lock();
+        for (OpenALAudioSample* sample : samples)
+            sample->pause();
+        mutex.unlock();
+
+
 	}
 
 	void AudioManagerOpenAL::resume() {
 		alive = true;
+        mutex.lock();
+        for (OpenALAudioSample* sample : samples)
+            if(sample->isPaused())
+                sample->pause();
+        mutex.unlock();
+
 	}
 
 
