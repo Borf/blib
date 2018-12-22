@@ -36,7 +36,9 @@ namespace blib
 					if (x - this->x < width - skin["scroll"]["width"].get<int>())
 					{
 						selectedItems.clear();
-						selectedItems.push_back((y - this->y + scrollPosition) / 12);
+						int index = (y - this->y + scrollPosition) / 12;
+						if(index >= 0 && index < items.size())
+							selectedItems.push_back(index);
 						return true;
 					}
 					return false;

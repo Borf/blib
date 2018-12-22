@@ -203,6 +203,11 @@ void Textbox::draw(SpriteBatch& spriteBatch, glm::mat4 matrix, Renderer* rendere
     if (!selected)
         const_cast<Textbox*>(this)->selectionPosition = cursor;
 
+	if (selectionPosition > text.size())
+		const_cast<Textbox*>(this)->selectionPosition = text.size();
+
+	if (cursor > text.size())
+		const_cast<Textbox*>(this)->cursor = text.size();
 
     json skin = WM::getInstance()->skin["input"];
     Font* font = WM::getInstance()->font;

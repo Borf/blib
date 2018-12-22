@@ -35,9 +35,9 @@ namespace blib
 		friend class gl::ResourceManager;
 		friend class gl::direct::ResourceManager;
 		friend class SpriteBatch;
-
 	public:
 		float textlen(const std::string &text) const;
+		bool utf8 = true;
 
 	};
 }
