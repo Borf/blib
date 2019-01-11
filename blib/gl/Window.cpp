@@ -55,7 +55,7 @@ namespace blib
 			pfd.cColorBits = 32; // Give us 32 bits of color information (the higher, the more colors)
 			pfd.cDepthBits = 32; // Give us 32 bits of depth information (the higher, the more depth levels)
 			pfd.iLayerType = PFD_MAIN_PLANE; // Set the layer of the PFD
-			//pfd.cStencilBits = 16;
+			pfd.cStencilBits = 16;
 
 			int nPixelFormat = ChoosePixelFormat(hdc, &pfd); // Check if our PFD is valid and get a pixel format back
 			if (nPixelFormat == 0) // If it fails
