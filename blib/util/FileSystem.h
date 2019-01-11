@@ -28,6 +28,7 @@ namespace blib
 			virtual StreamInFile* openRead(const std::string &fileName) { return NULL; };
 			virtual StreamOut* openWrite(const std::string &fileName) { return NULL; };
 			virtual void getFileList(const std::string &path, std::vector<std::string> &files) {};
+			virtual void getFileList(const std::function<bool(const std::string&)> &filter, std::vector<std::string> &files) {};
 		};
 
 		class PhysicalFileSystemHandler : public FileSystemHandler
@@ -66,6 +67,7 @@ namespace blib
 			virtual StreamInFile* openRead( const std::string &fileName );
 			virtual StreamOut* openWrite( const std::string &fileName );
 			virtual void getFileList(const std::string &path, std::vector<std::string> &files);
+			virtual void getFileList(const std::function<bool(const std::string&)> &filter, std::vector<std::string> &files);
 		};
 
 
@@ -101,6 +103,7 @@ namespace blib
 			static json getJson(const std::string &fileName);
 			static json getCbor(const std::string &fileName);
 			static std::vector<std::string> getFileList(const std::string &path);
+			static std::vector<std::string> getFileList(const std::function<bool(const std::string&)> &filter);
 			static void dispose();
 		};
 	}

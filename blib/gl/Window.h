@@ -19,9 +19,9 @@ namespace blib
 
 			Window(App* app);
 			virtual ~Window();
-			virtual void create(int icon, std::string title);
-			virtual void tick();
-			virtual void onResize(int width, int height);
+			virtual void create(int icon, std::string title) override;
+			virtual void tick() override;
+			virtual void onResize(int width, int height, int offX, int offY) override;
 		};
 	}
 }

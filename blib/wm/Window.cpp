@@ -39,6 +39,7 @@
 #include <blib/wm/widgets/ScrollPanel.h>
 #include <blib/wm/widgets/Image.h>
 #include <blib/wm/widgets/BmlBox.h>
+#include <blib/wm/widgets/ProgressBar.h>
 #include <blib/wm/widgets/TreeView.h>
 
 using blib::util::Log;
@@ -149,6 +150,7 @@ namespace blib
 		{
 		//	this->x = (BrowEdit::getInstance()->width-width)/2;
 		//	this->y = (BrowEdit::getInstance()->height-height)/2;
+			WM::getInstance()->center(this);
 		}
 
 		void Window::close()
@@ -212,6 +214,8 @@ namespace blib
 					widget = new widgets::ScrollPanel();
 				else if (type == "image")
 					widget = new widgets::Image(resourceManager->getResource<blib::Texture>(widgetSkin["src"].get<std::string>()));
+				else if (type == "progressbar")
+					widget = new widgets::ProgressBar();
 				else if (type == "bmlbox")
 					widget = new widgets::BmlBox(resourceManager);
 				else

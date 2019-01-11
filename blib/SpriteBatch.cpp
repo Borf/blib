@@ -213,6 +213,9 @@ namespace blib
 		else
 		{
 			text = std::wstring(utf8.begin(), utf8.end());
+			for (int i = 0; i < utf8.size(); i++)
+				if (utf8[i] < 0)
+					text[i] = (unsigned char)text[i];
 			space = std::wstring(1, ' ');
 		}
 
@@ -230,6 +233,9 @@ namespace blib
 		else
 		{
 			text = std::u32string(utf8.begin(), utf8.end());
+			for (int i = 0; i < utf8.size(); i++)
+				if (utf8[i] < 0)
+					text[i] = (unsigned char)text[i];
 			space = std::u32string(1, ' ');
 		}
 #endif

@@ -147,9 +147,9 @@ namespace blib
 #endif
 		}
 
-		void Window::onResize(int width, int height)
+		void Window::onResize(int width, int height, int offX, int offY)
 		{			
-			blib::gl::GlResizeRegister::ResizeRegisteredObjects(width, height);
+			blib::gl::GlResizeRegister::ResizeRegisteredObjects(width, height, offX, offY);
 		}
 
 	}

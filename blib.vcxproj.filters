@@ -1517,6 +1517,9 @@
     <ClInclude Include="externals\spine\spine-c\spine-c\include\spine\AtlasAttachmentLoader.h">
       <Filter>external\spine</Filter>
     </ClInclude>
+    <ClInclude Include="blib\wm\widgets\ProgressBar.h">
+      <Filter>wm\widgets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -2471,6 +2474,9 @@
     </ClCompile>
     <ClCompile Include="externals\spine\spine-c\spine-c\src\spine\AnimationStateData.c">
       <Filter>external\spine</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\wm\widgets\ProgressBar.cpp">
+      <Filter>wm\widgets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
