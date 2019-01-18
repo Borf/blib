@@ -283,6 +283,11 @@ namespace blib
 			Log::out << "Error setting attachment '" << attachment << "' to slot " << slot << Log::newline;
 	}
 
+	float SpineModelInstance::skeletonTime() const
+	{ 
+		return skeleton->time; 
+	}
+
 
 
 	void SpineModelInstance::draw(const glm::mat4& transform, SpriteBatch& spriteBatch)
