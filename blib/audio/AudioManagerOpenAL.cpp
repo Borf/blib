@@ -11,7 +11,7 @@
 #include <al/alc.h>
 #endif
 
-#if defined(BLIB_IOS) || defined(BLIB_ANDROID)
+#if defined(BLIB_IOS) || defined(BLIB_ANDROID) || defined(BLIB_NX)
 #define SUCCEEDED(hr) (((int)(hr)) >= 0)
 #include <unistd.h>
 #else

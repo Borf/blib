@@ -92,6 +92,8 @@ namespace blib
 				}
 				else if (r->command == Render::SetViewPort)
 				{
+					Log::out << "glViewPort: " << ((RenderSetViewPort*)r)->left<<", "<< ((RenderSetViewPort*)r)->top << ", " << ((RenderSetViewPort*)r)->width << ", " << ((RenderSetViewPort*)r)->height<<Log::newline;
+
 					glViewport(((RenderSetViewPort*)r)->left, ((RenderSetViewPort*)r)->top, ((RenderSetViewPort*)r)->width, ((RenderSetViewPort*)r)->height);
 					height = ((RenderSetViewPort*)r)->height;
 				}
@@ -222,7 +224,7 @@ namespace blib
                         }
                     }
 
-#if !defined(BLIB_IOS) && !defined(BLIB_ANDROID) && !defined(BLIB_EMSCRIPTEN)
+#if !defined(BLIB_IOS) && !defined(BLIB_ANDROID) && !defined(BLIB_EMSCRIPTEN) && !defined(BLIB_NX)
 					if (!lastRenderState || r->renderState.renderStyle != lastRenderState->renderStyle)
 						glPolygonMode(GL_FRONT_AND_BACK, r->renderState.renderStyle == RenderState::WIREFRAME ? GL_LINE : GL_FILL);
 #endif
@@ -312,7 +314,9 @@ namespace blib
 					}
 
 
-
+#ifdef BLIB_NX
+//					glBindVertexArray(1); //ewwww
+#endif
 					r->setVertexAttributes(enabledVertexAttributes, vertices[1-activeLayer]);
 					totalVerts += r->vertexCount();
 
@@ -333,7 +337,7 @@ namespace blib
 					}
 					else if(r->command == Render::DrawPoints)
 					{
-#if !defined(BLIB_ANDROID) && !defined(BLIB_IOS)
+#if !defined(BLIB_ANDROID) && !defined(BLIB_IOS) && !defined(BLIB_NX)
 						glEnable(GL_POINT_SPRITE);
 						glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
                         glPointSize(10);

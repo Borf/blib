@@ -79,7 +79,7 @@ namespace blib
 		resources[resource]--;
 		if (resources[resource] == 0)
 		{
-#ifdef _DEBUG
+#if defined(_DEBUG) && !defined(BLIB_NX)
 			Log::out<<"Marking "<<(int)resource<<"\t"<<resource->name<<Log::newline;
 #endif
 			assert(resources[resource] == 0);

@@ -171,7 +171,7 @@ namespace blib
 		void TextureMap::save(std::string filename)
 		{
 			//TODO: fix fopen here
-		#if !defined(BLIB_ANDROID) && !defined(BLIB_IOS)
+		#if !defined(BLIB_ANDROID) && !defined(BLIB_IOS) && !defined(BLIB_NX)
 			glBindTexture(GL_TEXTURE_2D, texid);
 			char* pixels = new char[width*height*4];
 			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);

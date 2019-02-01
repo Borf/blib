@@ -11,7 +11,7 @@
 #pragma comment(lib,"dbghelp.lib")
 #include <winbase.h>
 #else
-#ifndef BLIB_ANDROID
+#ifdef BLIB_WIN
 #include <execinfo.h>
 #endif
 #include <sys/time.h>
@@ -346,7 +346,7 @@ return "~/";
 #else //no debug
 			return "";
 #endif
-#elif !defined(BLIB_ANDROID)
+#elif !defined(BLIB_ANDROID) && !defined(BLIB_NX)
             std::string ret;
             void* callstack[128];
             int frames= backtrace(callstack, 128);

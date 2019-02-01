@@ -19,8 +19,10 @@
 #ifndef B2DJSONIMAGE_OPENGL_H
 #define B2DJSONIMAGE_OPENGL_H
 
-#ifdef __APPLE__
+#if defined(__APPLE__)
 	#include <GLUT/glut.h>
+#elif defined(_NX)
+	#include <GL/glew.h>
 #else
 	#include <Windows.h>
 	#include <GL/GL.h>

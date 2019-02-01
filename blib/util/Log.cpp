@@ -14,6 +14,10 @@
 #include <android/log.h>
 #endif
 
+#ifdef BLIB_NX
+#include <nn/nn_Log.h>
+#endif
+
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -152,6 +156,8 @@ namespace blib
 
 		#ifdef ANDROID
 			LOGI("%s", buffer.c_str());
+		#elif defined(BLIB_NX)
+			NN_LOG("%s\n", buffer.c_str());
 		#else
             printf("%s\n", buffer.c_str());
             fflush(stdout);

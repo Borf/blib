@@ -121,9 +121,8 @@ namespace blib
 #endif
 #endif
 #endif
-			Log::out<<"glViewPort"<<Log::newline;
+			Log::out<<"glViewPort: "<<width<<", "<<height<<Log::newline;
 			glViewport(0,0,width, height);
-			Log::out<<"done glViewPort"<<Log::newline;
 
 
 		}

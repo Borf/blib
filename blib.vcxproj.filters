@@ -85,6 +85,9 @@
     <Filter Include="external\b2djson">
       <UniqueIdentifier>{78a4eac4-fffb-4be4-99d4-8ca5441efebf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="platform\nx">
+      <UniqueIdentifier>{b2fcf55c-6614-4301-8c01-0b6a5d907d15}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="blib\VIO.h" />
@@ -1520,6 +1523,15 @@
     <ClInclude Include="blib\wm\widgets\ProgressBar.h">
       <Filter>wm\widgets</Filter>
     </ClInclude>
+    <ClInclude Include="blib\platform\nx\config.h">
+      <Filter>platform\nx</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\platform\nx\window.h">
+      <Filter>platform\nx</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\audio\AudioManagerNull.h">
+      <Filter>audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -2477,6 +2489,12 @@
     </ClCompile>
     <ClCompile Include="blib\wm\widgets\ProgressBar.cpp">
       <Filter>wm\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\platform\nx\window.cpp">
+      <Filter>platform\nx</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\audio\AudioManagerNull.cpp">
+      <Filter>audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

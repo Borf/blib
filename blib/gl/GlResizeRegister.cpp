@@ -1,5 +1,8 @@
 #include "GlResizeRegister.h"
 
+#include <blib/util/Log.h>
+using blib::util::Log;
+
 namespace blib
 {
 	namespace gl
@@ -13,6 +16,7 @@ namespace blib
         
         void GlResizeRegister::ResizeRegisteredObjects(int width, int height, int offx, int offy)
 		{
+			Log::out << "Resize register, resizing to " << width << "x" << height << ", offset " << offx << "," << offy << Log::newline;
             GlResizeRegister::width = width;
             GlResizeRegister::height = height;
             GlResizeRegister::offx = offx;

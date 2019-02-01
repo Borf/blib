@@ -11,6 +11,9 @@
 #elif defined(EMSCRIPTEN)
 #include <blib/platform/emscripten/config.h>
 
+#elif defined(_NX)
+#include <blib/platform/nx/config.h>
+
 #else
 #include <blib/platform/linux/config.h>
 #endif

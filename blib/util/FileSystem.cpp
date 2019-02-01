@@ -55,7 +55,7 @@ namespace blib
 
 		void PhysicalFileSystemHandler::getFileList(const std::string &path, std::vector<std::string> &files)
 		{
-#ifndef WIN32
+#if !defined(WIN32) && !defined(BLIB_NX)
 			DIR *dp;
 			struct dirent *ep;
 			dp = opendir(path.c_str());
@@ -86,6 +86,8 @@ namespace blib
 			}
 			else
 				Log::out<<"Could not open directory '"<<directory<<"'"<<Log::newline;
+#elif defined(BLIB_NX)
+
 #else
 			WIN32_FIND_DATA FileData;													// thingy for searching through a directory
 			HANDLE hSearch;
@@ -120,10 +122,10 @@ namespace blib
 
 		void PhysicalFileSystemHandler::getFileList(const std::function<bool(const std::string&)> &filter, std::vector<std::string> &files)
 		{
-#ifndef WIN32
+#if !defined(WIN32) && !defined(BLIB_NX)
 			DIR *dp;
 			struct dirent *ep;
-			dp = opendir(path.c_str());
+			dp = opendir(directory.c_str());
 			if (dp)
 			{
 				while ((ep = readdir(dp)))
@@ -151,6 +153,8 @@ namespace blib
 			}
 			else
 				Log::out << "Could not open directory '" << directory << "'" << Log::newline;
+#elif defined(BLIB_NX)
+
 #else
 			WIN32_FIND_DATA FileData;													// thingy for searching through a directory
 			HANDLE hSearch;

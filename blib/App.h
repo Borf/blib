@@ -12,13 +12,14 @@
 
 #include <string.h> //memset
 
-
+#ifdef WIN32
 #pragma comment(lib,"opengl32.lib")
 #pragma comment(lib,"glew32s.lib")
 #pragma comment(lib,"winmm.lib")
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 #pragma comment(lib,"OpenAL32.lib")
+#endif
 
 namespace blib
 {
