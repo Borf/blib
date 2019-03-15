@@ -50,6 +50,7 @@ namespace blib
 		std::map<Resource*, int> resources;
 		virtual Resource* regResource(Resource* resource);
 		virtual void dispose(Resource* resource);
+		virtual void disposeAll();
 
 		static ResourceManager& getInstance();
 

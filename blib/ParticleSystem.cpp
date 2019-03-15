@@ -50,7 +50,7 @@ namespace blib
 		shader->finishUniformSetup();
 		shader->setUniform(ShaderUniforms::s_texture, 0);
 //        renderState.activeShader->setUniform(ShaderUniforms::projectionmatrix, glm::ortho((float)offsetX, (float)width + offsetX, (float)height + offsetY, (float)offsetY, -1000.0f, 1.0f));
-        shader->setUniform(ShaderUniforms::projectionmatrix, glm::ortho((float)blib::gl::GlResizeRegister::offx, (float)blib::gl::GlResizeRegister::width + blib::gl::GlResizeRegister::offx, (float)blib::gl::GlResizeRegister::height + blib::gl::GlResizeRegister::offy, (float)	blib::gl::GlResizeRegister::offy, -1000.0f, 1.0f));
+        shader->setUniform(ShaderUniforms::projectionmatrix, glm::ortho((float)blib::gl::GlResizeRegister::offx, (float)blib::gl::GlResizeRegister::width - blib::gl::GlResizeRegister::offx, (float)blib::gl::GlResizeRegister::height - blib::gl::GlResizeRegister::offy, (float)	blib::gl::GlResizeRegister::offy, -1000.0f, 1.0f));
 		renderState.activeShader = shader;
 		renderState.activeTexture[0] = textureMap;
 		renderState.cullFaces = RenderState::CullFaces::NONE;

@@ -13,6 +13,7 @@
 #include <blib/json.hpp>
 #include <locale>
 #include <codecvt>
+#include "util/Log.h"
 
 using blib::util::Log;
 
@@ -455,7 +456,9 @@ namespace blib
 	void SpriteBatch::resizeGl( int width, int height, int offsetX, int offsetY )
 	{
 		if (renderState.activeShader == shader)
-			renderState.activeShader->setUniform(ProjectionMatrix, glm::ortho((float)offsetX, (float)width+offsetX, (float)height+offsetY, (float)offsetY, -1000.0f, 1.0f));
+			renderState.activeShader->setUniform(ProjectionMatrix, glm::ortho((float)offsetX, (float)width-offsetX, (float)height-offsetY, (float)offsetY, -1000.0f, 1.0f));
+
+		Log::out<<"SpriteBatch: " <<offsetX << ",w: " << width<<", offy: " << offsetY << ", height "<<height<<Log::newline;
 	}
 
 	SpriteBatch::Cache::~Cache()

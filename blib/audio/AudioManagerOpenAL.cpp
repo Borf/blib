@@ -153,7 +153,6 @@ namespace blib
 
 	AudioSample* AudioManagerOpenAL::loadSample(const std::string &filename)
 	{
-		mutex.lock();
 		OpenALAudioSample* sample = NULL;
 		if (filename.substr(filename.size() - 4) == ".wav")
 			sample = loadSampleWav(filename);
@@ -161,9 +160,10 @@ namespace blib
 			sample = loadSampleOgg(filename);
 		if (sample != NULL)
 		{
+			mutex.lock();
 			samples.push_back(sample);
+			mutex.unlock();
 		}
-		mutex.unlock();
 		return sample;
 	}
 
@@ -256,7 +256,7 @@ namespace blib
 		//Uncomment this to avoid VLAs
 		//#define BUFFER_SIZE 4096*32
 #ifndef BUFFER_SIZE//VLAs ftw
-#define BUFFER_SIZE 4096*64
+#define BUFFER_SIZE 4096*64*2
 #endif
 		ALshort* pcm = new ALshort[BUFFER_SIZE];
 		int  size = 0;
@@ -305,6 +305,14 @@ namespace blib
 	OpenALAudioSample::~OpenALAudioSample()
 	{
 		manager->mutex.lock();
+		while (updating)
+		{
+#ifdef BLIB_WIN
+			Sleep(100);
+#else
+			sleep(1);
+#endif
+		}
 		if (bufferId)
 		{
 			assert(alIsBuffer(bufferId) == AL_TRUE);
@@ -431,6 +439,7 @@ namespace blib
 	{
 		if (bufferId == 0 && source && playing) //only for playing audio files
 		{
+			updating = true;
 			ALint processed = 0;
 			alGetSourcei(source->sourceId, AL_BUFFERS_PROCESSED, &processed);
 			while (processed--) {
@@ -454,16 +463,21 @@ namespace blib
 						if (shouldExit) {
 							Log::out<<"Stopping "<<fileName<<Log::newline;
 							playing = false;
+							updating = false;
 							return false;
 						}
 					}
-					alSourceQueueBuffers(source->sourceId, 1, &buf);
-					if(!isPlaying())
-						alSourcePlay(source->sourceId);
+					if(source && playing) {
+						alSourceQueueBuffers(source->sourceId, 1, &buf);
+						if (!isPlaying())
+							alSourcePlay(source->sourceId);
+					}
 				}
 			}
 
 		}
+		updating = false;
+
 		return true;
 	}
 
@@ -513,9 +527,11 @@ namespace blib
 		if(!alive)
 			return;
 		mutex.lock();
-		for (OpenALAudioSample* sample : samples)
-			sample->update();
+		std::vector<OpenALAudioSample*> samplesCopy = samples;
 		mutex.unlock();
+
+		for (OpenALAudioSample* sample : samplesCopy)
+			sample->update();
 	}
 
 	void AudioManagerOpenAL::stopAllSounds()

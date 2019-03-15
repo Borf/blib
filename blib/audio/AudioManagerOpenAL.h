@@ -44,6 +44,7 @@ namespace blib
 		ALenum format;
 		bool paused = false;
 		bool buffer(ALuint buffer);
+		bool updating = false;
 
 		//wav stuff
 		ALuint bufferId;

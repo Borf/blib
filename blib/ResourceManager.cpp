@@ -89,6 +89,14 @@ namespace blib
 		}
 	}
 
+	void ResourceManager::disposeAll()
+	{
+		for (auto r : resources)
+		{
+			delete r.first;
+		}
+		resources.clear();
+	}
 
 	void ResourceManager::printDebug()
 	{

@@ -28,6 +28,7 @@
 #include <blib/App.h>
 #include <blib/math/Ray.h>
 #include <fstream>
+#include "../util/Log.h"
 
 using blib::util::Log;
 
@@ -92,9 +93,9 @@ namespace blib
 				}
 				else if (r->command == Render::SetViewPort)
 				{
-					Log::out << "glViewPort: " << ((RenderSetViewPort*)r)->left<<", "<< ((RenderSetViewPort*)r)->top << ", " << ((RenderSetViewPort*)r)->width << ", " << ((RenderSetViewPort*)r)->height<<Log::newline;
-
 					glViewport(((RenderSetViewPort*)r)->left, ((RenderSetViewPort*)r)->top, ((RenderSetViewPort*)r)->width, ((RenderSetViewPort*)r)->height);
+					Log::out<<"Setviewport: " << ((RenderSetViewPort*)r)->left <<", "<<((RenderSetViewPort*)r)->top << ", " <<((RenderSetViewPort*)r)->width << ", " << ((RenderSetViewPort*)r)->height << Log::newline;
+
 					height = ((RenderSetViewPort*)r)->height;
 				}
 				else if (r->command == Render::SetVbo)

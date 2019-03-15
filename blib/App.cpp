@@ -167,6 +167,7 @@ namespace blib
 		else
 			Log::out<<"Invalid renderer"<<Log::newline;
 
+		resourceManager->disposeAll();
 
 		if(!resourceManager || appSetup.renderer == AppSetup::NullRenderer)
 		{
