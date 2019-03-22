@@ -5,10 +5,11 @@
 
 namespace blib
 {
+	class AudioManager;
+
 	class AudioSample
 	{
 	public:
-		virtual ~AudioSample() {};
 		bool canOnlyPlayOnce = false;
 
 		virtual void setVolume(int volume) = 0;
@@ -17,6 +18,12 @@ namespace blib
 		virtual bool isPlaying() = 0;
 
 		int userData = 0;
+
+		virtual void dispose() = 0;
+		friend class AudioManager;
+	protected:
+		virtual ~AudioSample() {};
+
 	};
 
 	class AudioManager
@@ -33,7 +40,7 @@ namespace blib
 		virtual void stopMusic() = 0;
 
 		virtual AudioSample* loadSample(const std::string &filename) = 0;
-
+		virtual void unloadSample(AudioSample* sample) = 0;
 		virtual void playSound(std::string filename) = 0;
 
 

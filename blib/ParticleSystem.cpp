@@ -95,7 +95,6 @@ namespace blib
 	//	if (elapsedTime > 3 * lastElapsedTime)
 	//		elapsedTime = lastElapsedTime;
 
-
 		int total = 0;
 
 		for(std::list<Emitter*>::iterator it = emitters.begin(); it != emitters.end(); it++)
@@ -219,7 +218,8 @@ namespace blib
 
 	void ParticleSystem::draw(glm::mat4 matrix)
 	{
-		/*for (int i = 0; i < nParticlesAlpha; i++)
+#if 0
+		for (int i = 0; i < nParticlesAlpha; i++)
 			spriteBatch->draw(alphaParticles[i].texture, blib::math::easyMatrix(alphaParticles[i].vertex.position, alphaParticles[i].rotation, 0.01f * alphaParticles[i].vertex._size), alphaParticles[i].texture->center, alphaParticles[i].vertex.color);
 		spriteBatch->end();
 		spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE;
@@ -232,15 +232,12 @@ namespace blib
 		spriteBatch->end();
 		spriteBatch->renderState.dstBlendColor = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 		spriteBatch->renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
-		spriteBatch->begin(spriteBatch->getMatrix());*/
-
-
+		spriteBatch->begin(spriteBatch->getMatrix());
+#else
 		renderState.activeShader->setUniform(ShaderUniforms::matrix, matrix);
-
 		if (nParticlesAdd > 0)
 		{
 			renderer->setVboSub(vbo, 0, particleData, nParticlesAdd * 4);
-
 			renderState.dstBlendColor = blib::RenderState::ONE;
 			renderState.dstBlendAlpha = blib::RenderState::ONE;
 			renderer->drawIndexedTriangles<VertexDef>(0, nParticlesAdd*6, renderState);
@@ -252,7 +249,7 @@ namespace blib
 			renderState.dstBlendAlpha = blib::RenderState::ONE_MINUS_SRC_ALPHA;
 			renderer->drawIndexedTriangles<VertexDef>(MAX_PARTICLES*6, nParticlesAlpha * 6, renderState);
 		}
-
+#endif
 	}
 
 	Emitter* ParticleSystem::addEmitter( std::string name )

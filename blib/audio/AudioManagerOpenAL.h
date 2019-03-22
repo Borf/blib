@@ -5,6 +5,7 @@
 #include <blib/util/stb_vorbis.h>
 #include <vector>
 #include <thread>
+#include <list>
 #include <mutex>
 
 #ifdef BLIB_IOS
@@ -60,7 +61,6 @@ namespace blib
 
 
 
-		~OpenALAudioSample();
 		virtual void play(bool loop) override;
 		virtual void stop() override;
 		virtual bool isPlaying() override;
@@ -68,9 +68,13 @@ namespace blib
 		virtual void pause();
 
         virtual bool isPaused() { return this->paused; }
+		virtual void dispose() override;
 
 		virtual bool update();
 
+		friend class AudioManagerOpenAL;
+	private:
+		~OpenALAudioSample();
 	};
 
 	class AudioManagerOpenAL : public AudioManager
@@ -83,6 +87,7 @@ namespace blib
 		int lastSource = 0;
 		bool running;
 		bool alive = true;
+		std::list<AudioSample*> toDelete;
 	public:
 		std::thread backgroundThread;
 		AudioManagerOpenAL();
@@ -92,6 +97,7 @@ namespace blib
 		virtual void stopMusic() override;
 		virtual void playSound( std::string filename ) override;
 		virtual AudioSample* loadSample(const std::string &filename) override;
+		virtual void unloadSample(AudioSample*) override;
 
 		virtual OpenALAudioSample* loadSampleWav(const std::string &filename);
 		virtual OpenALAudioSample* loadSampleOgg(const std::string &filename);

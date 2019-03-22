@@ -94,8 +94,7 @@ namespace blib
 				else if (r->command == Render::SetViewPort)
 				{
 					glViewport(((RenderSetViewPort*)r)->left, ((RenderSetViewPort*)r)->top, ((RenderSetViewPort*)r)->width, ((RenderSetViewPort*)r)->height);
-					Log::out<<"Setviewport: " << ((RenderSetViewPort*)r)->left <<", "<<((RenderSetViewPort*)r)->top << ", " <<((RenderSetViewPort*)r)->width << ", " << ((RenderSetViewPort*)r)->height << Log::newline;
-
+//					Log::out<<"Setviewport: " << ((RenderSetViewPort*)r)->left <<", "<<((RenderSetViewPort*)r)->top << ", " <<((RenderSetViewPort*)r)->width << ", " << ((RenderSetViewPort*)r)->height << Log::newline;
 					height = ((RenderSetViewPort*)r)->height;
 				}
 				else if (r->command == Render::SetVbo)

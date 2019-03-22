@@ -167,6 +167,11 @@ namespace blib
 		return sample;
 	}
 
+	void AudioManagerOpenAL::unloadSample(AudioSample* sample)
+	{
+		toDelete.push_back(sample);
+	}
+
 
 	OpenALAudioSample* AudioManagerOpenAL::loadSampleWav(const std::string &filename)
 	{
@@ -435,11 +440,16 @@ namespace blib
 			alSourcef(source->sourceId, AL_GAIN, volume/100.0f);
 	}
 
+	void OpenALAudioSample::dispose()
+	{
+		manager->unloadSample(this);
+	}
+
 	bool OpenALAudioSample::update()
 	{
+		updating = true;
 		if (bufferId == 0 && source && playing) //only for playing audio files
 		{
-			updating = true;
 			ALint processed = 0;
 			alGetSourcei(source->sourceId, AL_BUFFERS_PROCESSED, &processed);
 			while (processed--) {
@@ -526,12 +536,12 @@ namespace blib
 	{
 		if(!alive)
 			return;
-		mutex.lock();
-		std::vector<OpenALAudioSample*> samplesCopy = samples;
-		mutex.unlock();
-
-		for (OpenALAudioSample* sample : samplesCopy)
+		for (auto sample : samples)
 			sample->update();
+
+		for (auto sample : toDelete)
+			delete (OpenALAudioSample*)sample;
+		toDelete.clear();
 	}
 
 	void AudioManagerOpenAL::stopAllSounds()

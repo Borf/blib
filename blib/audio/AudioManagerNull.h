@@ -12,6 +12,7 @@ namespace blib
 		virtual void play(bool loop = false) override;
 		virtual void stop() override;
 		virtual bool isPlaying() override;
+		virtual void dispose() { delete this; }
 	};
 
 	class AudioManagerNull : public AudioManager
@@ -23,5 +24,6 @@ namespace blib
 		virtual void stopMusic() override;
 		virtual AudioSample * loadSample(const std::string & filename) override;
 		virtual void playSound(std::string filename) override;
+		virtual void unloadSample(AudioSample*) { }
 	};
 }
