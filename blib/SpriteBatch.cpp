@@ -159,9 +159,9 @@ namespace blib
 		assert(active);
 
 		glm::vec2 spriteSize = rect.size() * glm::vec2(texture->width, texture->height);
-		glm::vec2 texSize = (texture->t2 - texture->t1) * rect.size();
+		glm::vec2 texSize = (texture->t2 - texture->t1 + 1.0f / glm::vec2(texture->texMap->width, texture->texMap->height)) * rect.size(); // t1 and t2 are offset by 0.5 each, so compensate
 
-		glm::vec2 tl = texture->t1 + rect.topleft * (texture->t2 - texture->t1);
+		glm::vec2 tl = texture->t1 + rect.topleft * (texture->t2 - texture->t1 + 1.0f / glm::vec2(texture->texMap->width, texture->texMap->height));
 
 		if (currentTexture != texture->texMap && currentTexture != NULL)
 			materialIndices.push_back(std::pair<const Texture*, unsigned short>(currentTexture, (unsigned short)vertices.size()));

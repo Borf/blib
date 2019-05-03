@@ -4,6 +4,7 @@
 using blib::util::Log;
 #include <blib/util/FileSystem.h>
 #include <blib/util/stb_image.h>
+#include <blib/util/stb_image_resize.h>
 #include <string.h>
 
 #include <blib/Texture.h>
@@ -150,7 +151,18 @@ namespace blib
 					data = newData;
 					depth = 4;
 				}*/
-
+				/*
+				T::width = T::originalWidth / 2;
+				T::height = T::originalHeight / 2;
+				if (T::width < 1)
+					T::width = 1;
+				if (T::height < 1)
+					T::height = 1;
+				unsigned char* out = new unsigned char[T::width * T::height * 4];
+				stbir_resize_uint8(data, T::originalWidth, T::originalHeight,
+					0, out, T::width, T::height, 0, 4);
+				delete[] data;
+				data = out;*/
 
 				//TODO: resize texture to power of 2 texture
 
