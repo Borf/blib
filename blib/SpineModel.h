@@ -31,7 +31,7 @@ namespace blib
 		std::function<void()> callback = nullptr;
 
 		void update(double elapsedTime);
-		void draw(const glm::mat4& transform, SpriteBatch& spriteBatch);
+		void draw(const glm::mat4& transform, SpriteBatch& spriteBatch, std::function<void(SpineModelInstance*, const std::string &, glm::vec4&, glm::vec4&)> colorcallback = nullptr);
 
 		void playAnimation(const std::string &name, bool loop);
 		void playAnimationOnTrack(const std::string &name, int track, bool loop);

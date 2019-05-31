@@ -290,7 +290,7 @@ namespace blib
 
 
 
-	void SpineModelInstance::draw(const glm::mat4& transform, SpriteBatch& spriteBatch)
+	void SpineModelInstance::draw(const glm::mat4& transform, SpriteBatch& spriteBatch, std::function<void(SpineModelInstance*, const std::string &, glm::vec4&, glm::vec4&)> colorcallback)
 	{
 		static float worldVertices[SPINE_MESH_VERTEX_COUNT_MAX];
 		std::pair<glm::vec2, glm::vec2> vertices[4];
@@ -307,17 +307,21 @@ namespace blib
 
 
 			std::vector<std::pair<glm::vec2, glm::vec2>> verts;
-			glm::vec4 color;
+			glm::vec4 colorMult = glm::vec4(1,1,1,1);
+			glm::vec4 colorOverlay = glm::vec4(1, 1, 1, 0);
 
 			if (attachment->type == SP_ATTACHMENT_REGION) {
 				spRegionAttachment* regionAttachment = (spRegionAttachment*)attachment;
 				texture = (Texture*)((spAtlasRegion*)regionAttachment->rendererObject)->page->rendererObject;
 				spRegionAttachment_computeWorldVertices(regionAttachment, slot->bone, worldVertices,0,2);
-				color = glm::vec4(
+				colorMult = glm::vec4(
 					skeleton->color.r * slot->color.r, 
 					skeleton->color.g * slot->color.g, 
 					skeleton->color.b * slot->color.b, 
 					skeleton->color.a * slot->color.a);
+
+				if (colorcallback)
+					colorcallback(this, slot->data->name, colorMult, colorOverlay);
 
 				static const int indices[] = {
 					0, 1,
@@ -366,7 +370,7 @@ namespace blib
 				}
 			}*/
 
-			spriteBatch.draw(texture, transform, verts, color);
+			spriteBatch.draw(texture, transform, verts, colorMult, colorOverlay);
 		}
 	}
 }
