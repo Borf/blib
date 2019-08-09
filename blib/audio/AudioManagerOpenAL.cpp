@@ -179,34 +179,48 @@ namespace blib
 		alGenBuffers((ALuint)1, &buffer);
 		checkError();
 
-		CWaves w;
 
-		WAVEID			WaveID;
-		unsigned long			iDataSize;
-		unsigned long   iFrequency;
-		unsigned long			eBufferFormat;
-		ALchar			*pData;
-		ALboolean		bReturn;
-
-		w.LoadWaveFile(filename.c_str(), &WaveID);
-
-		if ((SUCCEEDED(w.GetWaveSize(WaveID, (unsigned long*)&iDataSize))) &&
-			(SUCCEEDED(w.GetWaveData(WaveID, (void**)&pData))) &&
-			(SUCCEEDED(w.GetWaveFrequency(WaveID, (unsigned long*)&iFrequency))) &&
-			(SUCCEEDED(w.GetWaveALBufferFormat(WaveID, &alGetEnumValue, (unsigned long*)&eBufferFormat))))
+		if (blib::util::FileSystem::exists(filename + ".ogg"))
 		{
+			char* tmpData;
+			int len = blib::util::FileSystem::getData(filename + ".ogg", tmpData);
 
+			int chan = 2, samplerate;
+			short *output;
+			int samples = stb_vorbis_decode_memory((unsigned char*)tmpData, len, &chan, &samplerate, &output);
+			alBufferData(buffer, chan == 2 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, output, samples * chan * 2, samplerate);
 			checkError();
-			alBufferData(buffer, eBufferFormat, pData, iDataSize, iFrequency);
-			checkError();
-			if (alGetError() == AL_NO_ERROR)
-				bReturn = AL_TRUE;
-			w.DeleteWaveFile(WaveID);
-
 		}
 		else
-			Log::out << "Error loading wave file: " << filename << Log::newline;
-		checkError();
+		{
+			CWaves w;
+			WAVEID			WaveID;
+			unsigned long			iDataSize;
+			unsigned long   iFrequency;
+			unsigned long			eBufferFormat;
+			ALchar			*pData;
+			ALboolean		bReturn;
+
+			w.LoadWaveFile(filename.c_str(), &WaveID);
+
+			if ((SUCCEEDED(w.GetWaveSize(WaveID, (unsigned long*)&iDataSize))) &&
+				(SUCCEEDED(w.GetWaveData(WaveID, (void**)&pData))) &&
+				(SUCCEEDED(w.GetWaveFrequency(WaveID, (unsigned long*)&iFrequency))) &&
+				(SUCCEEDED(w.GetWaveALBufferFormat(WaveID, &alGetEnumValue, (unsigned long*)&eBufferFormat))))
+			{
+
+				checkError();
+				alBufferData(buffer, eBufferFormat, pData, iDataSize, iFrequency);
+				checkError();
+				if (alGetError() == AL_NO_ERROR)
+					bReturn = AL_TRUE;
+				w.DeleteWaveFile(WaveID);
+
+			}
+			else
+				Log::out << "Error loading wave file: " << filename << Log::newline;
+			checkError();
+		}
 		OpenALAudioSample* newSample = new OpenALAudioSample();
 		newSample->fileName = filename;
 		newSample->playing = false;
