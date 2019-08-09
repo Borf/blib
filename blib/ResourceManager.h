@@ -85,14 +85,19 @@ namespace blib
 			throw "Invalid resource";
 			return NULL;
 		}
-		
+		template<class T>
+		inline T* getResource(const std::string&, float height)
+		{
+			throw "Invalid resource";
+			return NULL;
+		}
 
 		std::function<Renderer*()>										renderer;
 		std::function<Texture*(const std::string &, int)>				texture;
 		std::function<Texture*(int, int)>								emptyTexture;
 		std::function<SpriteSheet*(const std::string &)>				spritesheet;
 		std::function<Shader*(const std::string &)>						shader;
-		std::function<Font*(const std::string &)>						font;
+		std::function<Font*(const std::string &, float size)>			font;
 		std::function<Shader*()>										emptyshader;
 		std::function<VBO*()>											vbo;
 		std::function<VIO*()>											vio;
@@ -152,10 +157,16 @@ namespace blib
 	}	
 
 	template<>
+	inline Font* ResourceManager::getResource<Font>(const std::string &name, float size)
+	{
+		return (Font*)regResource(font(name, size));
+	}
+	template<>
 	inline Font* ResourceManager::getResource<Font>(const std::string &name)
 	{
-		return (Font*)regResource(font(name));
+		return (Font*)regResource(font(name, 0));
 	}
+
 
 	template<>
 	inline Shader* ResourceManager::getResource<Shader>()

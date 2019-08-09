@@ -1532,6 +1532,12 @@
     <ClInclude Include="blib\audio\AudioManagerNull.h">
       <Filter>audio</Filter>
     </ClInclude>
+    <ClInclude Include="blib\util\Timer.h">
+      <Filter>util</Filter>
+    </ClInclude>
+    <ClInclude Include="blib\util\stb_truetype.h">
+      <Filter>util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blib\Window.cpp" />
@@ -2495,6 +2501,15 @@
     </ClCompile>
     <ClCompile Include="blib\audio\AudioManagerNull.cpp">
       <Filter>audio</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\Timer.cpp">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\stb_truetype.c">
+      <Filter>util</Filter>
+    </ClCompile>
+    <ClCompile Include="blib\util\stb_rect_pack.c">
+      <Filter>util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

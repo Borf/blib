@@ -1,9 +1,12 @@
 #include <blib/Font.h>
 #include <blib/Texture.h>
+#include <blib/Renderer.h>
 #include <blib/util/FileSystem.h>
 #include <blib/util/StreamReader.h>
 #include <blib/util/Log.h>
 #include <blib/ResourceManager.h>
+#include <blib/util/stb_rect_pack.h>
+#include <blib/util/stb_truetype.h>
 
 using blib::util::Log;
 
@@ -75,65 +78,141 @@ namespace blib
 
 
 
-	Font::Font(std::string fileName, ResourceManager* resourceManager) : Resource("Font: " + fileName)
+	Font::Font(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer, float size) : Resource("Font: " + fileName)
+	{
+		if (blib::util::FileSystem::exists(fileName + ".fnt"))
+			loadFnt(fileName + ".fnt", resourceManager);
+		if (blib::util::FileSystem::exists(fileName + ".ttf"))
+			loadTtf(fileName + ".ttf", resourceManager, renderer, size);
+	}
+
+	void Font::loadFnt(const std::string &fileName, ResourceManager* resourceManager)
 	{
 		blib::util::StreamReader* file = new blib::util::StreamReader(blib::util::FileSystem::openRead(fileName));
-		if(!file)
+		if (!file)
 			return;
 		std::string textureFileName;
 
-
-
-		while(!file->eof())
+		while (!file->eof())
 		{
 			std::string line = file->getLine();
-			if(line.length() < 5)
+			if (line.length() < 5)
 				continue;
 
-			if(line.substr(0, 5) == "page ")
+			if (line.substr(0, 5) == "page ")
 			{
 				textureFileName = line.substr(16);
-				textureFileName = textureFileName.substr(0, textureFileName.length()-1);
+				textureFileName = textureFileName.substr(0, textureFileName.length() - 1);
 			}
 			if (line.substr(0, 6) == "common")
 			{
 				std::vector<std::string> params = split(line.substr(7), " ");
-				lineHeight = atoi(params[0].substr(11).c_str());
+				lineHeight = atof(params[0].substr(11).c_str());
 			}
-			if(line.substr(0, 5) == "char ")
+			if (line.substr(0, 5) == "char ")
 			{
 				std::vector<std::string> params = split(line.substr(5), " ");
 				Glyph* glyph = new Glyph();
 				glyph->id = 0;
 
-				for(size_t i = 0; i < params.size(); i++)
+				for (size_t i = 0; i < params.size(); i++)
 				{
 					std::string name = params[i].substr(0, params[i].find("="));
-							if(name == "id")			glyph->id = atoi(params[i].substr(name.length()+1).c_str());
-					else if(name == "x")			glyph->x = atoi(params[i].substr(name.length()+1).c_str());
-					else if(name == "y")			glyph->y = atoi(params[i].substr(name.length()+1).c_str());
-					else if(name == "width")		glyph->width = atoi(params[i].substr(name.length()+1).c_str());
-					else if(name == "height")		glyph->height = atoi(params[i].substr(name.length()+1).c_str());
-					else if(name == "xoffset")		glyph->xoffset = atoi(params[i].substr(name.length()+1).c_str());
-					else if(name == "yoffset")		glyph->yoffset = atoi(params[i].substr(name.length()+1).c_str());
-					else if(name == "xadvance")		glyph->xadvance = atoi(params[i].substr(name.length()+1).c_str());
-					else if(name == "page" || name == "chnl") {}
+					if (name == "id")			glyph->id = atoi(params[i].substr(name.length() + 1).c_str());
+					else if (name == "x")			glyph->x = atoi(params[i].substr(name.length() + 1).c_str());
+					else if (name == "y")			glyph->y = atoi(params[i].substr(name.length() + 1).c_str());
+					else if (name == "width")		glyph->width = atoi(params[i].substr(name.length() + 1).c_str());
+					else if (name == "height")		glyph->height = atoi(params[i].substr(name.length() + 1).c_str());
+					else if (name == "xoffset")		glyph->xoffset = atoi(params[i].substr(name.length() + 1).c_str());
+					else if (name == "yoffset")		glyph->yoffset = atoi(params[i].substr(name.length() + 1).c_str());
+					else if (name == "xadvance")		glyph->xadvance = atoi(params[i].substr(name.length() + 1).c_str());
+					else if (name == "page" || name == "chnl") {}
 					else
-						Log::out<<"Didn't parse "<<name<<Log::newline;
+						Log::out << "Didn't parse " << name << Log::newline;
 				}
 
-				if(glyph->id != 0)
+				if (glyph->id != 0)
 					charmap[glyph->id] = glyph;
 				else
 					delete glyph;
 			}
 		}
 
-		Log::out<<"Loaded font "<<fileName<<", "<<charmap.size()<<" glyphs"<<Log::newline;
+		Log::out << "Loaded font " << fileName << ", " << charmap.size() << " glyphs" << Log::newline;
 
-		texture = resourceManager->getResource<Texture>("assets/fonts/"+textureFileName);
+		texture = resourceManager->getResource<Texture>("assets/fonts/" + textureFileName);
 		delete file;
 	}
+
+	void Font::loadTtf(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer, float size)
+	{
+		unsigned char* data;
+		int dataLen = blib::util::FileSystem::getData(fileName, (char*&)data);
+		
+		font = new stbtt_fontinfo();
+
+		stbtt_InitFont(font, data, stbtt_GetFontOffsetForIndex(data, 0));
+
+		int oversample = 0;
+		
+		std::vector<int> characters;
+		for (int i = 32; i < 256; i++)
+			characters.push_back(i);
+
+		characters.push_back(26085);
+		characters.push_back(26412);
+		characters.push_back(35486);
+		unsigned char* tmpImage = new unsigned char[1024 * 1024];
+
+		stbtt_pack_context pc;
+		stbtt_PackBegin(&pc, tmpImage, 1024, 1024, 0, 2, NULL);
+		if (oversample > 0)
+			stbtt_PackSetOversampling(&pc, oversample, oversample);
+		for (std::size_t i = 0; i < characters.size(); i++)
+		{
+			stbtt_PackFontRange(&pc, data, 0, size, characters[i], 1, fontData + i);
+		}
+		stbtt_PackEnd(&pc);
+
+		for (std::size_t i = 0; i < characters.size(); i++)
+		{
+			Glyph* g = new Glyph();
+			
+			float x = 0, y = 0;
+			stbtt_aligned_quad q;
+			stbtt_GetPackedQuad(fontData+i, 1024, 1024, 0, &x, &y, &q, 0);
+
+			int xAdvance = 0, leftSideBearing = 0;
+			stbtt_GetGlyphHMetrics(font, characters[i], &xAdvance, &leftSideBearing);
+			float scale = stbtt_ScaleForPixelHeight(font, 32);
+			
+
+			g->id = characters[i];
+			g->xoffset = q.x0*oversample;
+			g->yoffset = q.y0*oversample +size;
+			g->x = q.s0 * 1024;
+			g->y = q.t0 * 1024;
+			g->width = (q.s1 - q.s0) * 1024;
+			g->height = (q.t1 - q.t0) * 1024;
+			g->xadvance = x * oversample;
+			charmap[characters[i]] = g;
+		}
+
+		unsigned char* imgData = new unsigned char[1024 * 1024 * 4];
+		for (int x = 0; x < 1024; x++)
+		{
+			for (int y = 0; y < 1024; y++)
+			{
+				imgData[(x + 1024 * y) * 4 + 0] = 255;
+				imgData[(x + 1024 * y) * 4 + 1] = 255;
+				imgData[(x + 1024 * y) * 4 + 2] = 255;
+				imgData[(x + 1024 * y) * 4 + 3] = tmpImage[x + 1024 * y];
+			}
+		}
+		texture = resourceManager->getResource<blib::Texture>(1024, 1024);
+		renderer->setTextureSubImage(texture, 0, 0, 1024, 1024, (char*)imgData);
+	}
+
 
 	Font::~Font()
 	{

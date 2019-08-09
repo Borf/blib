@@ -19,6 +19,7 @@ namespace blib
 	namespace gl
 	{
 
+		blib::Renderer* tmpRenderer;
 
 		ResourceManager::ResourceManager()
 		{
@@ -34,13 +35,13 @@ namespace blib
 			spritesheet = std::bind(&ResourceManager::getSpriteSheet, this, std::placeholders::_1);
 
 			texturemap =  std::bind(&ResourceManager::getTextureMap, this, std::placeholders::_1, std::placeholders::_2);
-			font		= std::bind(&ResourceManager::getFont, this, std::placeholders::_1);
+			font		= std::bind(&ResourceManager::getFont, this, std::placeholders::_1, std::placeholders::_2);
 		}
 
 
 		blib::Renderer* ResourceManager::getRenderer()
 		{
-			return new blib::gl::Renderer();
+			return (tmpRenderer = new blib::gl::Renderer());
 		}
 
 		blib::Texture* ResourceManager::getTexture( const std::string &name, int loadOptions )
@@ -94,9 +95,9 @@ namespace blib
 		}
 
 
-		blib::Font* ResourceManager::getFont(const std::string &name)
+		blib::Font* ResourceManager::getFont(const std::string &name, float size)
 		{
-            return new Font("assets/fonts/" + name + ".fnt", this);
+            return new Font("assets/fonts/" + name, this, tmpRenderer, size);
 		}
 
 		blib::SpriteSheet* ResourceManager::getSpriteSheet(const std::string &name)

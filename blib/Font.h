@@ -3,11 +3,13 @@
 #include <string>
 #include <map>
 #include <blib/Resource.h>
+#include <blib/util/stb_truetype.h>
 
 namespace blib
 {
 	class Texture;
 	class ResourceManager;
+	class Renderer;
 	namespace gl {
 		class ResourceManager; namespace direct { class ResourceManager; }	};
 	class Glyph
@@ -25,8 +27,13 @@ namespace blib
 	//	void render(std::string text, float scale);
 		std::map<int, Glyph*> charmap;
 		Texture* texture;
-		Font(std::string file, ResourceManager* resourceManager);
+		Font(const std::string &file, ResourceManager* resourceManager, Renderer* renderer, float size);
 		~Font();
+
+		void loadFnt(const std::string &fileName, ResourceManager* resourceManager);
+		void loadTtf(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer, float size);
+		stbtt_fontinfo* font;
+		stbtt_packedchar fontData[1024];
 
 		const Glyph* getGlyph( const int &character ) const;
 

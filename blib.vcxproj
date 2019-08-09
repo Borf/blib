@@ -31,7 +31,10 @@
     <ClInclude Include="blib\Animation.h" />
     <ClInclude Include="blib\App.h" />
     <ClInclude Include="blib\audio\AudioManager.h" />
-    <ClInclude Include="blib\audio\AudioManagerNull.h" />
+    <ClInclude Include="blib\audio\AudioManagerNull.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|NX64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|NX64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="blib\audio\AudioManagerOpenAL.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|NX64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|NX64'">true</ExcludedFromBuild>
@@ -104,8 +107,14 @@
     <ClInclude Include="blib\MouseListener.h" />
     <ClInclude Include="blib\NavMesh.h" />
     <ClInclude Include="blib\ParticleSystem.h" />
-    <ClInclude Include="blib\platform\nx\config.h" />
-    <ClInclude Include="blib\platform\nx\window.h" />
+    <ClInclude Include="blib\platform\nx\config.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="blib\platform\nx\window.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="blib\platform\win32\config.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|NX64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|NX64'">true</ExcludedFromBuild>
@@ -153,6 +162,7 @@
     <ClInclude Include="blib\util\stb_image.h" />
     <ClInclude Include="blib\util\stb_image_create.h" />
     <ClInclude Include="blib\util\stb_perlin.h" />
+    <ClInclude Include="blib\util\stb_truetype.h" />
     <ClInclude Include="blib\util\stb_vorbis.h" />
     <ClInclude Include="blib\util\Stream.h" />
     <ClInclude Include="blib\util\StreamIn.h" />
@@ -163,6 +173,7 @@
     <ClInclude Include="blib\util\StreamSeekable.h" />
     <ClInclude Include="blib\util\StreamWriter.h" />
     <ClInclude Include="blib\util\Thread.h" />
+    <ClInclude Include="blib\util\Timer.h" />
     <ClInclude Include="blib\util\Tree.h" />
     <ClInclude Include="blib\util\Watchable.h" />
     <ClInclude Include="blib\VBO.h" />
@@ -575,7 +586,10 @@
     <ClCompile Include="blib\AnimatableSprite.cpp" />
     <ClCompile Include="blib\Animation.cpp" />
     <ClCompile Include="blib\App.cpp" />
-    <ClCompile Include="blib\audio\AudioManagerNull.cpp" />
+    <ClCompile Include="blib\audio\AudioManagerNull.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|NX64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|NX64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="blib\audio\AudioManagerOpenAL.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|NX64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|NX64'">true</ExcludedFromBuild>
@@ -634,7 +648,10 @@
     <ClCompile Include="blib\math\Triangle.cpp" />
     <ClCompile Include="blib\NavMesh.cpp" />
     <ClCompile Include="blib\ParticleSystem.cpp" />
-    <ClCompile Include="blib\platform\nx\window.cpp" />
+    <ClCompile Include="blib\platform\nx\window.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="blib\platform\win32\Registry.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|NX64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|NX64'">true</ExcludedFromBuild>
@@ -670,12 +687,15 @@
     <ClCompile Include="blib\util\stb_image.c" />
     <ClCompile Include="blib\util\stb_image_create.cpp" />
     <ClCompile Include="blib\util\stb_perlin.cpp" />
+    <ClCompile Include="blib\util\stb_rect_pack.c" />
+    <ClCompile Include="blib\util\stb_truetype.c" />
     <ClCompile Include="blib\util\stb_vorbis.c" />
     <ClCompile Include="blib\util\Stream.cpp" />
     <ClCompile Include="blib\util\StreamIn.cpp" />
     <ClCompile Include="blib\util\StreamInFile.cpp" />
     <ClCompile Include="blib\util\StreamOut.cpp" />
     <ClCompile Include="blib\util\Thread.cpp" />
+    <ClCompile Include="blib\util\Timer.cpp" />
     <ClCompile Include="blib\Window.cpp" />
     <ClCompile Include="blib\wm\KeyboardFocusable.cpp" />
     <ClCompile Include="blib\wm\Menu.cpp" />

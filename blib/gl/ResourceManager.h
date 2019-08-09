@@ -17,7 +17,7 @@ namespace blib
 			Texture* getTexture(const std::string &name, int loadOptions);
 			Texture* getEmptyTexture(int width, int height);
 			Shader* getShader(const std::string &name);
-			Font* getFont(const std::string &name);
+			Font* getFont(const std::string &name, float size);
 			Shader* getShaderEmpty();
 			TextureMap* getTextureMap(int w, int h);
 			FBO* getFBO();
