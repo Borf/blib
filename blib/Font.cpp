@@ -153,7 +153,7 @@ namespace blib
 
 		stbtt_InitFont(font, data, stbtt_GetFontOffsetForIndex(data, 0));
 
-		int oversample = 0;
+		int oversample = 1;
 		
 		std::vector<int> characters;
 		for (int i = 32; i < 256; i++)
@@ -166,8 +166,8 @@ namespace blib
 
 		stbtt_pack_context pc;
 		stbtt_PackBegin(&pc, tmpImage, 1024, 1024, 0, 2, NULL);
-		if (oversample > 0)
-			stbtt_PackSetOversampling(&pc, oversample, oversample);
+		//if (oversample > 0)
+		//	stbtt_PackSetOversampling(&pc, oversample, oversample);
 		for (std::size_t i = 0; i < characters.size(); i++)
 		{
 			stbtt_PackFontRange(&pc, data, 0, size, characters[i], 1, fontData + i);
