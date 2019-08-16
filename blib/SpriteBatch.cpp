@@ -242,7 +242,7 @@ namespace blib
 #endif
 		
 
-		if (maxWidth > 0)
+		if (maxWidth != 0)
 		{
 			float len = 0;
 			for (size_t i = 0; i < text.size(); i++)
@@ -252,9 +252,9 @@ namespace blib
 			}
 
 			len = (transform * glm::vec4(len, 0, 0, 1)).x - (transform * glm::vec4(0, 0, 0, 1)).x;
-			if (len > maxWidth)
+			if (len > glm::abs(maxWidth))
 			{
-				scaleFactor = maxWidth / len;
+				scaleFactor = glm::abs(maxWidth) / len;
 			}
 
 		}
@@ -301,8 +301,12 @@ namespace blib
 			if(font->charmap.find(c) == font->charmap.end())
 				continue;
 			const Glyph* g = font->getGlyph(c);
-			lineHeight = glm::max(lineHeight, g->height + g->yoffset);
-			draw(font->texture, glm::translate(glm::scale(transform, glm::vec3(scaleFactor, scaleFactor, 1)), glm::vec3(x+g->xoffset,y+g->yoffset,0)), glm::vec2(0,0), blib::math::Rectangle(g->x*texFactor.x,g->y*texFactor.y,g->width*texFactor.x,g->height*texFactor.y), color);
+			lineHeight = glm::max(lineHeight, (int)font->lineHeight);
+
+			if(maxWidth >= 0)
+				draw(font->texture, glm::translate(glm::scale(transform, glm::vec3(scaleFactor, scaleFactor, 1)), glm::vec3(x+g->xoffset,y+g->yoffset-font->lineHeight,0)), glm::vec2(0,0), blib::math::Rectangle(g->x*texFactor.x,g->y*texFactor.y,g->width*texFactor.x,g->height*texFactor.y), color);
+			else
+				draw(font->texture, glm::translate(glm::scale(transform, glm::vec3(scaleFactor, scaleFactor, 1)), glm::vec3(x + g->xoffset, y + g->yoffset - font->lineHeight*0.5, 0)), glm::vec2(0, 0), blib::math::Rectangle(g->x*texFactor.x, g->y*texFactor.y, g->width*texFactor.x, g->height*texFactor.y), color);
 
 			x+=g->xadvance;
 		}

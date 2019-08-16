@@ -9,7 +9,6 @@ namespace blib
 {
 	class Texture;
 	class ResourceManager;
-	class Renderer;
 	namespace gl {
 		class ResourceManager; namespace direct { class ResourceManager; }	};
 	class Glyph
@@ -27,11 +26,11 @@ namespace blib
 	//	void render(std::string text, float scale);
 		std::map<int, Glyph*> charmap;
 		Texture* texture;
-		Font(const std::string &file, ResourceManager* resourceManager, Renderer* renderer, float size);
+		Font(const std::string &file, ResourceManager* resourceManager, float size);
 		~Font();
 
 		void loadFnt(const std::string &fileName, ResourceManager* resourceManager);
-		void loadTtf(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer, float size);
+		void loadTtf(const std::string &fileName, ResourceManager* resourceManager, float size);
 		stbtt_fontinfo* font;
 		stbtt_packedchar fontData[1024];
 

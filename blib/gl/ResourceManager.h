@@ -15,7 +15,7 @@ namespace blib
 			blib::Renderer* getRenderer();
 			SpriteSheet* getSpriteSheet(const std::string &name);
 			Texture* getTexture(const std::string &name, int loadOptions);
-			Texture* getEmptyTexture(int width, int height);
+			Texture* getEmptyTexture(int width, int height, unsigned char* data);
 			Shader* getShader(const std::string &name);
 			Font* getFont(const std::string &name, float size);
 			Shader* getShaderEmpty();

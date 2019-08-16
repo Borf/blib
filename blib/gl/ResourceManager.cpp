@@ -18,14 +18,11 @@ namespace blib
 {
 	namespace gl
 	{
-
-		blib::Renderer* tmpRenderer;
-
 		ResourceManager::ResourceManager()
 		{
 			renderer	= std::bind(&ResourceManager::getRenderer ,this);
 			texture		= std::bind(&ResourceManager::getTexture, this, std::placeholders::_1, std::placeholders::_2);
-			emptyTexture =std::bind(&ResourceManager::getEmptyTexture, this, std::placeholders::_1, std::placeholders::_2);
+			emptyTexture =std::bind(&ResourceManager::getEmptyTexture, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 			shader		= std::bind(&ResourceManager::getShader, this, std::placeholders::_1);
 			emptyshader = std::bind(&ResourceManager::getShaderEmpty, this);
 			vbo			= std::bind(&ResourceManager::getVBO, this);
@@ -41,7 +38,7 @@ namespace blib
 
 		blib::Renderer* ResourceManager::getRenderer()
 		{
-			return (tmpRenderer = new blib::gl::Renderer());
+			return new blib::gl::Renderer();
 		}
 
 		blib::Texture* ResourceManager::getTexture( const std::string &name, int loadOptions )
@@ -49,9 +46,9 @@ namespace blib
             return new Texture<blib::Texture>(name, loadOptions);
 		}
 		
-		blib::Texture* ResourceManager::getEmptyTexture( int width, int height )
+		blib::Texture* ResourceManager::getEmptyTexture( int width, int height, unsigned char* data)
 		{
-			return new blib::gl::Texture<blib::Texture>(NULL, width, height);
+			return new blib::gl::Texture<blib::Texture>(data, width, height);
 
 		}
 
@@ -97,7 +94,7 @@ namespace blib
 
 		blib::Font* ResourceManager::getFont(const std::string &name, float size)
 		{
-            return new Font("assets/fonts/" + name, this, tmpRenderer, size);
+            return new Font("assets/fonts/" + name, this, size);
 		}
 
 		blib::SpriteSheet* ResourceManager::getSpriteSheet(const std::string &name)

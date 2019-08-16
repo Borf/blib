@@ -1,6 +1,5 @@
 #include <blib/Font.h>
 #include <blib/Texture.h>
-#include <blib/Renderer.h>
 #include <blib/util/FileSystem.h>
 #include <blib/util/StreamReader.h>
 #include <blib/util/Log.h>
@@ -78,12 +77,12 @@ namespace blib
 
 
 
-	Font::Font(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer, float size) : Resource("Font: " + fileName)
+	Font::Font(const std::string &fileName, ResourceManager* resourceManager, float size) : Resource("Font: " + fileName)
 	{
 		if (blib::util::FileSystem::exists(fileName + ".fnt"))
 			loadFnt(fileName + ".fnt", resourceManager);
 		if (blib::util::FileSystem::exists(fileName + ".ttf"))
-			loadTtf(fileName + ".ttf", resourceManager, renderer, size);
+			loadTtf(fileName + ".ttf", resourceManager, size);
 	}
 
 	void Font::loadFnt(const std::string &fileName, ResourceManager* resourceManager)
@@ -144,8 +143,9 @@ namespace blib
 		delete file;
 	}
 
-	void Font::loadTtf(const std::string &fileName, ResourceManager* resourceManager, Renderer* renderer, float size)
+	void Font::loadTtf(const std::string &fileName, ResourceManager* resourceManager, float size)
 	{
+		lineHeight = size;
 		unsigned char* data;
 		int dataLen = blib::util::FileSystem::getData(fileName, (char*&)data);
 		
@@ -209,8 +209,7 @@ namespace blib
 				imgData[(x + 1024 * y) * 4 + 3] = tmpImage[x + 1024 * y];
 			}
 		}
-		texture = resourceManager->getResource<blib::Texture>(1024, 1024);
-		renderer->setTextureSubImage(texture, 0, 0, 1024, 1024, (char*)imgData);
+		texture = resourceManager->getResource<blib::Texture>(1024, 1024, imgData);
 	}
 
 

@@ -153,6 +153,9 @@ namespace blib
 
 	AudioSample* AudioManagerOpenAL::loadSample(const std::string &filename)
 	{
+#ifdef _DEBUG
+		Log::out << "Loading audio sample " << filename << Log::newline;
+#endif
 		OpenALAudioSample* sample = NULL;
 		if (filename.substr(filename.size() - 4) == ".wav")
 			sample = loadSampleWav(filename);
@@ -160,9 +163,8 @@ namespace blib
 			sample = loadSampleOgg(filename);
 		if (sample != NULL)
 		{
-			mutex.lock();
+			std::lock_guard<std::mutex> guard(mutex);
 			samples.push_back(sample);
-			mutex.unlock();
 		}
 		return sample;
 	}
@@ -190,6 +192,8 @@ namespace blib
 			int samples = stb_vorbis_decode_memory((unsigned char*)tmpData, len, &chan, &samplerate, &output);
 			alBufferData(buffer, chan == 2 ? AL_FORMAT_STEREO16 : AL_FORMAT_MONO16, output, samples * chan * 2, samplerate);
 			checkError();
+			delete[] tmpData;
+			delete[] output;
 		}
 		else
 		{
@@ -323,7 +327,6 @@ namespace blib
 
 	OpenALAudioSample::~OpenALAudioSample()
 	{
-		manager->mutex.lock();
 		while (updating)
 		{
 #ifdef BLIB_WIN
@@ -349,7 +352,6 @@ namespace blib
 		}
 		if(fileData)
 			delete[] fileData;
-		manager->mutex.unlock();
 	}
 
 	void OpenALAudioSample::play(bool loop)
@@ -361,54 +363,54 @@ namespace blib
 		if (manager->canPlay && !manager->canPlay(this))
 			return;
 
-		manager->mutex.lock();
-		Source* newSource = manager->getFreeSource();
-		if (!newSource)
 		{
-			Log::out << " Error getting free resource while playing "<<this->fileName << Log::newline;
-			manager->mutex.unlock();
-			return;
-		}
-		source = newSource;
-		source->lastSample = this;
-		this->looping = loop;
+			std::lock_guard<std::mutex> guard(manager->mutex);
+			Source* newSource = manager->getFreeSource();
+			if (!newSource)
+			{
+				Log::out << " Error getting free resource while playing " << this->fileName << Log::newline;
+				return;
+			}
+			source = newSource;
+			source->lastSample = this;
+			this->looping = loop;
 
-		Log::out << "Playing " << this->fileName << " on source " << source->index << Log::newline;
+			Log::out << "Playing " << this->fileName << " on source " << source->index << Log::newline;
 
-		if (bufferId != 0) //wav
-		{
-			alSourcei(source->sourceId, AL_BUFFER, 0);
-			alSourcei(source->sourceId, AL_BUFFER, bufferId);
-			alSourcef(source->sourceId, AL_PITCH, 1.0f);
-			alSourcef(source->sourceId, AL_GAIN, volume / 100.0f);
-			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
-			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
-			alSourcei(source->sourceId, AL_LOOPING, loop);
-			alSourcePlay(source->sourceId);
-		}
-		else //ogg
-		{
-			alSourcef(source->sourceId, AL_PITCH, 1.0f);
-			alSourcef(source->sourceId, AL_GAIN, volume / 100.0f);
-			alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
-			alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
-			alSourcei(source->sourceId, AL_LOOPING, 0);
-			alSourcei(source->sourceId, AL_BUFFER, 0);
+			if (bufferId != 0) //wav
+			{
+				alSourcei(source->sourceId, AL_BUFFER, 0);
+				alSourcei(source->sourceId, AL_BUFFER, bufferId);
+				alSourcef(source->sourceId, AL_PITCH, 1.0f);
+				alSourcef(source->sourceId, AL_GAIN, volume / 100.0f);
+				alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
+				alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
+				alSourcei(source->sourceId, AL_LOOPING, loop);
+				alSourcePlay(source->sourceId);
+			}
+			else //ogg
+			{
+				alSourcef(source->sourceId, AL_PITCH, 1.0f);
+				alSourcef(source->sourceId, AL_GAIN, volume / 100.0f);
+				alSource3f(source->sourceId, AL_POSITION, 0, 0, 0);
+				alSource3f(source->sourceId, AL_VELOCITY, 0, 0, 0);
+				alSourcei(source->sourceId, AL_LOOPING, 0);
+				alSourcei(source->sourceId, AL_BUFFER, 0);
 
-			checkError();
-			alSourceQueueBuffers(source->sourceId, 2, buffers);
-			checkError();
-			alSourcePlay(source->sourceId);
+				checkError();
+				alSourceQueueBuffers(source->sourceId, 2, buffers);
+				checkError();
+				alSourcePlay(source->sourceId);
+				checkError();
+			}
+			playing = true;
 			checkError();
 		}
-		playing = true;
-		checkError();
-		manager->mutex.unlock();
 	}
 
 	void OpenALAudioSample::stop()
 	{
-		manager->mutex.lock();
+		std::lock_guard<std::mutex> guard(manager->mutex);
 		if (!playing || !isPlaying())
 		{
 			if (source)
@@ -423,7 +425,6 @@ namespace blib
 
 			playing = false;
 			source = nullptr;
-			manager->mutex.unlock();
 			return;
 		}
 		playing = false;
@@ -435,7 +436,6 @@ namespace blib
 		if(bufferId == 0 && source)
 			alSourceUnqueueBuffers(source->sourceId, 2, buffers);
 		source = nullptr;
-		manager->mutex.unlock();
 	}
 
 	bool OpenALAudioSample::isPlaying()
@@ -520,22 +520,19 @@ namespace blib
 	void AudioManagerOpenAL::sleep() {
 		alive = false;
 
-        mutex.lock();
-        for (OpenALAudioSample* sample : samples)
+		std::lock_guard<std::mutex> guard(mutex);
+		for (OpenALAudioSample* sample : samples)
             sample->pause();
-        mutex.unlock();
 
 
 	}
 
 	void AudioManagerOpenAL::resume() {
 		alive = true;
-        mutex.lock();
-        for (OpenALAudioSample* sample : samples)
+		std::lock_guard<std::mutex> guard(mutex);
+		for (OpenALAudioSample* sample : samples)
             if(sample->isPaused())
                 sample->pause();
-        mutex.unlock();
-
 	}
 
 
@@ -550,6 +547,8 @@ namespace blib
 	{
 		if(!alive)
 			return;
+		std::lock_guard<std::mutex> guard(mutex);
+
 		for (auto sample : samples)
 			sample->update();
 
@@ -567,7 +566,9 @@ namespace blib
 			sample->stop();
 			mutex.lock();
 		}
+		mutex.unlock();
 
+		std::lock_guard<std::mutex> guard(mutex);
 		for(Source & source : sources)
 		{
 			alSourceStop(source.sourceId);
@@ -579,7 +580,6 @@ namespace blib
 
 			source.lastSample = nullptr;
 		}
-		mutex.unlock();
 	}
 
 }
