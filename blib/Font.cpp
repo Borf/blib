@@ -39,6 +39,9 @@ std::locale::id std::codecvt<char32_t, char, _Mbstatet>::id;
 
 namespace blib
 {
+
+	std::vector<int> Font::characters;
+
 	/*std::map<std::string, Font*> Font::fonts;
 
 	Font* Font::getFontInstance(std::string name, ResourceManager* resourceManager)
@@ -143,6 +146,57 @@ namespace blib
 		delete file;
 	}
 
+	void Font::registerCharacters(const std::string& utf8)
+	{
+#if defined(_DEBUG) && defined(BLIB_WIN)
+		std::wstring text;
+		std::wstring space;
+		typedef wchar_t ch;
+		typedef std::wstring str;
+
+		if (this->utf8)
+		{
+			text = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(utf8);
+			space = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(" ");
+		}
+		else
+		{
+			text = std::wstring(utf8.begin(), utf8.end());
+			for (int i = 0; i < utf8.size(); i++)
+				if (utf8[i] < 0)
+					text[i] = (unsigned char)text[i];
+			space = std::wstring(1, ' ');
+		}
+
+#else
+		std::u32string text;
+		std::u32string space;
+		typedef char32_t ch;
+		typedef std::u32string str;
+
+//		if (this->utf8)
+		{
+			text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
+			space = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(" ");
+		}
+/*		else
+		{
+			text = std::u32string(utf8.begin(), utf8.end());
+			for (int i = 0; i < utf8.size(); i++)
+				if (utf8[i] < 0)
+					text[i] = (unsigned char)text[i];
+			space = std::u32string(1, ' ');
+		}*/
+#endif
+
+		for (int i = 0; i < text.size(); i++)
+		{
+			if (std::find(characters.begin(), characters.end(), text[i]) == characters.end())
+				characters.push_back(text[i]);
+		}
+	}
+
+
 	void Font::loadTtf(const std::string &fileName, ResourceManager* resourceManager, float size)
 	{
 		lineHeight = size;
@@ -155,13 +209,13 @@ namespace blib
 
 		int oversample = 1;
 		
-		std::vector<int> characters;
-		for (int i = 32; i < 256; i++)
-			characters.push_back(i);
+		if(Font::characters.size() == 0)
+			for (int i = 32; i < 256; i++)
+				characters.push_back(i);
 
-		characters.push_back(26085);
-		characters.push_back(26412);
-		characters.push_back(35486);
+		//characters.push_back(26085);
+		//characters.push_back(26412);
+		//characters.push_back(35486);
 		unsigned char* tmpImage = new unsigned char[1024 * 1024];
 
 		stbtt_pack_context pc;
