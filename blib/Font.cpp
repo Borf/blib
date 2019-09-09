@@ -84,8 +84,10 @@ namespace blib
 	{
 		if (blib::util::FileSystem::exists(fileName + ".fnt"))
 			loadFnt(fileName + ".fnt", resourceManager);
-		if (blib::util::FileSystem::exists(fileName + ".ttf"))
+		else if (blib::util::FileSystem::exists(fileName + ".ttf"))
 			loadTtf(fileName + ".ttf", resourceManager, size);
+		else
+			Log::out << "Error loading font: " << fileName << Log::newline;
 	}
 
 	void Font::loadFnt(const std::string &fileName, ResourceManager* resourceManager)
@@ -154,19 +156,19 @@ namespace blib
 		typedef wchar_t ch;
 		typedef std::wstring str;
 
-		if (this->utf8)
+//		if (this->utf8)
 		{
 			text = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(utf8);
 			space = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(" ");
 		}
-		else
+/*		else
 		{
 			text = std::wstring(utf8.begin(), utf8.end());
 			for (int i = 0; i < utf8.size(); i++)
 				if (utf8[i] < 0)
 					text[i] = (unsigned char)text[i];
 			space = std::wstring(1, ' ');
-		}
+		}*/
 
 #else
 		std::u32string text;

@@ -46,7 +46,7 @@ namespace blib
 			blib::wm::Menu* radialMenuRoot;
 			blib::wm::Menu* radialMenu;
 			glm::vec2		radialMenuPosition;
-
+			double			radialMenuAnimation = 0;
 
 
 			blib::wm::Menu* menuBar;

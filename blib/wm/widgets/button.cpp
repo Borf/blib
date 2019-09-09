@@ -36,7 +36,7 @@ namespace blib
 					spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["button"], glm::vec2(width, height), glm::vec4(0.7f, 0.7f, 0.9f, 1.0f));
 				else
 					spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["button"], glm::vec2(width, height));
-				spriteBatch.draw(WM::getInstance()->font, text, glm::translate(matrix, glm::vec3(x+10.0f,y + 5,0)), glm::vec4(0,0,0,1));
+				spriteBatch.draw(WM::getInstance()->font, text, glm::translate(matrix, glm::vec3(x+10.0f,y + 17,0)), glm::vec4(0,0,0,1));
 
 			}
 

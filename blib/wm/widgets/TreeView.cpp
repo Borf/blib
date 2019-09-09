@@ -154,7 +154,7 @@ namespace blib
 
 
 					spriteBatch.draw(font, currentList[i].first,
-						blib::math::easyMatrix(glm::vec2(x + 2, y + 12 * i - scrollPosition), matrix),
+						blib::math::easyMatrix(glm::vec2(x + 2, 12+y + 12 * i - scrollPosition), matrix),
 						WM::getInstance()->convertHexColor4(i == selectedItem ? skin["selectfontcolor"].get<std::string>() : skin["fontcolor"].get<std::string>()));
 				}
 
