@@ -291,6 +291,7 @@ namespace blib
 				x = 0;
 				y += lineHeight;
 				lineHeight = 12;
+				continue;
 			}
 			if (c == '\t')
 			{
@@ -298,8 +299,11 @@ namespace blib
 				continue;
 			}
 
-			if(font->charmap.find(c) == font->charmap.end())
+			if (font->charmap.find(c) == font->charmap.end())
+			{
+				Log::out << "Could not find character " << c << Log::newline;
 				continue;
+			}
 			const Glyph* g = font->getGlyph(c);
 			lineHeight = glm::max(lineHeight, (int)font->lineHeight);
 

@@ -40,7 +40,6 @@ namespace blib
 
 		const Glyph* getGlyph( const int &character ) const;
 
-		float lineHeight;
 
 		friend class gl::ResourceManager;
 		friend class gl::direct::ResourceManager;
@@ -49,6 +48,7 @@ namespace blib
 		float textlen(const std::string &text) const;
 		bool utf8 = true;
 		static void registerCharacters(const std::string& utf8);
+		float lineHeight;
 
 	};
 }

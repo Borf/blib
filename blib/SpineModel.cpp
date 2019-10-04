@@ -153,7 +153,8 @@ namespace blib
 		spAttachment* attachment = slot->attachment;
 		if (!attachment)
 		{
-			Log::out << "Could not find attachment for slot " << name << " in animation" << Log::newline;
+			//Log::out << "Could not find attachment for slot " << name << " in animation" << Log::newline;
+			ret.push_back(glm::vec2(slot->bone->worldX, slot->bone->worldY));
 			return ret;
 		}		static float worldVertices[SPINE_MESH_VERTEX_COUNT_MAX];
 

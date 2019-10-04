@@ -154,11 +154,11 @@ namespace blib
 		typedef wchar_t ch;
 		typedef std::wstring str;
 
-		if (this->utf8)
+//		if (this->utf8)
 		{
 			text = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(utf8);
 			space = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(" ");
-		}
+		}/*
 		else
 		{
 			text = std::wstring(utf8.begin(), utf8.end());
@@ -166,7 +166,7 @@ namespace blib
 				if (utf8[i] < 0)
 					text[i] = (unsigned char)text[i];
 			space = std::wstring(1, ' ');
-		}
+		}*/
 
 #else
 		std::u32string text;
@@ -196,7 +196,8 @@ namespace blib
 		}
 	}
 
-
+	const int ttfSizeX = 2048;
+	const int ttfSizeY = 2048;
 	void Font::loadTtf(const std::string &fileName, ResourceManager* resourceManager, float size)
 	{
 		lineHeight = size;
@@ -216,15 +217,17 @@ namespace blib
 		//characters.push_back(26085);
 		//characters.push_back(26412);
 		//characters.push_back(35486);
-		unsigned char* tmpImage = new unsigned char[1024 * 1024];
+		unsigned char* tmpImage = new unsigned char[ttfSizeX * ttfSizeY];
 
 		stbtt_pack_context pc;
-		stbtt_PackBegin(&pc, tmpImage, 1024, 1024, 0, 2, NULL);
+		stbtt_PackBegin(&pc, tmpImage, ttfSizeX, ttfSizeY, 0, 2, NULL);
 		//if (oversample > 0)
 		//	stbtt_PackSetOversampling(&pc, oversample, oversample);
 		for (std::size_t i = 0; i < characters.size(); i++)
 		{
-			stbtt_PackFontRange(&pc, data, 0, size, characters[i], 1, fontData + i);
+			int res = stbtt_PackFontRange(&pc, data, 0, size, characters[i], 1, fontData + i);
+			if (res == 0)
+				Log::out << "Could not find character " << characters[i] << Log::newline;
 		}
 		stbtt_PackEnd(&pc);
 
@@ -234,7 +237,7 @@ namespace blib
 			
 			float x = 0, y = 0;
 			stbtt_aligned_quad q;
-			stbtt_GetPackedQuad(fontData+i, 1024, 1024, 0, &x, &y, &q, 0);
+			stbtt_GetPackedQuad(fontData+i, ttfSizeX, ttfSizeY, 0, &x, &y, &q, 0);
 
 			int xAdvance = 0, leftSideBearing = 0;
 			stbtt_GetGlyphHMetrics(font, characters[i], &xAdvance, &leftSideBearing);
@@ -244,26 +247,26 @@ namespace blib
 			g->id = characters[i];
 			g->xoffset = q.x0*oversample;
 			g->yoffset = q.y0*oversample +size;
-			g->x = q.s0 * 1024;
-			g->y = q.t0 * 1024;
-			g->width = (q.s1 - q.s0) * 1024;
-			g->height = (q.t1 - q.t0) * 1024;
+			g->x = q.s0 * ttfSizeX;
+			g->y = q.t0 * ttfSizeY;
+			g->width = (q.s1 - q.s0) * ttfSizeX;
+			g->height = (q.t1 - q.t0) * ttfSizeY;
 			g->xadvance = x * oversample;
 			charmap[characters[i]] = g;
 		}
 
-		unsigned char* imgData = new unsigned char[1024 * 1024 * 4];
-		for (int x = 0; x < 1024; x++)
+		unsigned char* imgData = new unsigned char[ttfSizeX * ttfSizeY * 4];
+		for (int x = 0; x < ttfSizeX; x++)
 		{
-			for (int y = 0; y < 1024; y++)
+			for (int y = 0; y < ttfSizeY; y++)
 			{
-				imgData[(x + 1024 * y) * 4 + 0] = 255;
-				imgData[(x + 1024 * y) * 4 + 1] = 255;
-				imgData[(x + 1024 * y) * 4 + 2] = 255;
-				imgData[(x + 1024 * y) * 4 + 3] = tmpImage[x + 1024 * y];
+				imgData[(x + ttfSizeY * y) * 4 + 0] = 255;
+				imgData[(x + ttfSizeY * y) * 4 + 1] = 255;
+				imgData[(x + ttfSizeY * y) * 4 + 2] = 255;
+				imgData[(x + ttfSizeY * y) * 4 + 3] = tmpImage[x + ttfSizeY * y];
 			}
 		}
-		texture = resourceManager->getResource<blib::Texture>(1024, 1024, imgData);
+		texture = resourceManager->getResource<blib::Texture>(ttfSizeX, ttfSizeY, imgData);
 	}
 
 
