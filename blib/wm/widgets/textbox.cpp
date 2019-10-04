@@ -233,18 +233,18 @@ void Textbox::draw(SpriteBatch& spriteBatch, glm::mat4 matrix, Renderer* rendere
 
 
         glm::vec2 renderPos(0, 0);
-        renderPos = spriteBatch.draw(font, preSelectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].get<std::string>()), renderPos);
-        renderPos = spriteBatch.draw(font, selectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["selectfontcolor"].get<std::string>()), renderPos);
-        renderPos = spriteBatch.draw(font, postSelectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].get<std::string>()), renderPos);
+        renderPos = spriteBatch.draw(font, preSelectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 16, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].get<std::string>()), renderPos);
+        renderPos = spriteBatch.draw(font, selectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 16, 0)), WM::getInstance()->convertHexColor4(skin["selectfontcolor"].get<std::string>()), renderPos);
+        renderPos = spriteBatch.draw(font, postSelectionText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 16, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].get<std::string>()), renderPos);
 
 
 
         if ((int)((blib::util::Profiler::getAppTime() - blinkTime)* 2) % 2 == 0 && selected)
-            spriteBatch.draw(font, "|",  glm::translate(matrix, glm::vec3(x - 1.0f + font->textlen(text.substr(0, cursor)), y + 3, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].get<std::string>()));
+            spriteBatch.draw(font, "|",  glm::translate(matrix, glm::vec3(x - 1.0f + font->textlen(text.substr(0, cursor)), y + 16, 0)), WM::getInstance()->convertHexColor4(skin["fontcolor"].get<std::string>()));
 
     }
     else
-        spriteBatch.draw(font, emptyText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 3, 0)), glm::vec4(0.6f, 0.6f, 0.6f, 1));
+        spriteBatch.draw(font, emptyText, glm::translate(matrix, glm::vec3(x + 1.0f, y + 16, 0)), glm::vec4(0.6f, 0.6f, 0.6f, 1));
 
 
 

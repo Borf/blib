@@ -13,6 +13,8 @@
 #include <blib/wm/ActionMenuItem.h>
 #include <blib/wm/SubMenuMenuItem.h>
 #include <blib/wm/ToggleMenuItem.h>
+#include <blib/util/Profiler.h>
+#include <blib/linq.h>
 using blib::util::Log;
 
 #define _USE_MATH_DEFINES
@@ -104,37 +106,49 @@ namespace blib
 
 			if (radialMenu)
 			{
+				float alpha = (float)glm::min(1.0, 5 * (blib::util::Profiler::getAppTime() - radialMenuAnimation));
+				float dist = 20 + 100 * alpha;
 
-				glm::vec2 diff = radialMenuPosition - glm::vec2(mouseState.position);
+				glm::vec2 diff = glm::vec2(mouseState.position) - radialMenuPosition;
 				float angle = atan2(diff.y, diff.x);
-                int id = (int)glm::round(((angle+2*blib::math::pif) / (2 * blib::math::pif)) * 8+7) % 8;
+				int count = blib::linq::count(radialMenu->menuItems, [](MenuItem* item) { return item->enabled; });
+				int id = (int)glm::round(((angle+2*blib::math::pif) / (2 * blib::math::pif)) * count+(0)) % count;
 
 
-				for (int i = 0; i < 8; i++)
-					spriteBatch.draw(skinTexture, blib::math::easyMatrix(radialMenuPosition, 22.5f + i * 45), glm::vec2(126, 90), blib::math::Rectangle(glm::vec2(89.0f / skinTexture->originalWidth, 0), 126.0f / skinTexture->originalWidth, 90.0f / skinTexture->originalHeight), i == id ? glm::vec4(0.9f, 0.5f, 0.5f, 1.0f): (i % 2 == 0 ? glm::vec4(0.9f, 0.9f, 0.9f, 1.0f) : glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)));
+				spriteBatch.draw(skinTexture, blib::math::easyMatrix(radialMenuPosition),
+					glm::vec2(25, 25), blib::math::Rectangle(glm::vec2(100.0f / skinTexture->originalWidth, 0),
+						50.0f / skinTexture->originalWidth, 50.0f / skinTexture->originalHeight));
+
+				spriteBatch.draw(skinTexture, blib::math::easyMatrix(radialMenuPosition, glm::degrees(angle)), 
+					glm::vec2(25, 25), blib::math::Rectangle(glm::vec2(155.0f / skinTexture->originalWidth, 0), 
+						50.0f / skinTexture->originalWidth, 50.0f / skinTexture->originalHeight));
+
+				const json &skin = this->skin["input"];
+
+				float fontHeight = this->skin["radialfont"]["size"].get<int>();
+				float boxHeight = glm::max(25.0f, fontHeight+10);
 
 				int index = 0;
 				for (size_t i = 0; i < radialMenu->menuItems.size(); i++)
 				{
 					if (!radialMenu->menuItems[i]->enabled)
 						continue;
-					glm::mat4 matrix;
-					matrix = glm::translate(matrix, glm::vec3(radialMenuPosition, 0));
-					matrix = glm::rotate(matrix, glm::radians(index * 45.0f), glm::vec3(0, 0, 1));
-					matrix = glm::translate(matrix, glm::vec3(-120, 0, 0));
-					matrix = glm::scale(matrix, glm::vec3(0.75f, 0.75f, 1.0f));
-					matrix = glm::translate(matrix, glm::vec3(0, -16, 0));
 
-
+					std::string text = radialMenu->menuItems[i]->title;
 					ToggleMenuItem* toggle = dynamic_cast<ToggleMenuItem*>(radialMenu->menuItems[i]);
 					if (toggle)
-					{
-						spriteBatch.draw(radialmenufont, (toggle->getValue() ? "[x]  " : "[  ]  ") + radialMenu->menuItems[i]->title, matrix, glm::vec4(0, 0, 0, 1));
-					}
-					else
-						spriteBatch.draw(radialmenufont, radialMenu->menuItems[i]->title, matrix, glm::vec4(0, 0, 0, 1));
-					index++;
+						text = (toggle->getValue() ? "[x]  " : "[  ]  ") + text;
 
+					float w = radialmenufont->textlen(text);
+					glm::vec3 pos = glm::vec3(radialMenuPosition + blib::math::fromAngle(glm::radians(index * (360.0 / count))) * dist - glm::vec2((w+20)/2, boxHeight/2),0);
+
+					glm::vec4 backColor(1, 1, 1, alpha);
+					if (index == id)
+						backColor = glm::vec4(0.8f, 0.8f, 0.8f, alpha);
+
+					spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(pos), skin, glm::vec2(w+20, boxHeight), backColor);
+					spriteBatch.draw(radialmenufont, text, blib::math::easyMatrix(pos+glm::vec3(10, (boxHeight/2)+(fontHeight/2), 0)), glm::vec4(0, 0, 0, alpha));
+					index++;
 				}
 			}
 
@@ -142,7 +156,7 @@ namespace blib
 			{
 				spriteBatch.drawStretchyRect(skinTexture, glm::mat4(), skin["list"], glm::vec2(screenSize.x, 18));
 				float posX = 10;
-				int posY = 2;
+				int posY = 14;
 
 				for (size_t i = 0; i < menuBar->menuItems.size(); i++)
 				{
@@ -152,10 +166,10 @@ namespace blib
 					float len = font->textlen(menuBar->menuItems[i]->title);
 
 					if (item && item->opened)
-						spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(posX-2, posY)), skin["list"], glm::vec2(len + 40, 16), glm::vec4(0.9f, 0.9f, 1.0f, 1.0f));
+						spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(posX-2, posY-12)), skin["list"], glm::vec2(len + 40, 16), glm::vec4(0.9f, 0.9f, 1.0f, 1.0f));
 
-					if (mouseState.position.x > posX && mouseState.position.x <= posX + len + 40 && mouseState.position.y > posY && mouseState.position.y < posY+16)
-						spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(posX - 2, posY)), skin["list"], glm::vec2(len + 40, 16), glm::vec4(0.5f, 0.5f, 0.9f, 1.0f));
+					if (mouseState.position.x > posX && mouseState.position.x <= posX + len + 40 && mouseState.position.y > posY-12 && mouseState.position.y < posY+4)
+						spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(posX - 2, posY-12)), skin["list"], glm::vec2(len + 40, 16), glm::vec4(0.5f, 0.5f, 0.9f, 1.0f));
 
 					spriteBatch.draw(font, menuBar->menuItems[i]->title, blib::math::easyMatrix(glm::vec2(posX, posY)), glm::vec4(0, 0, 0, 1));
 					posX += len + 40;
@@ -179,7 +193,7 @@ namespace blib
 							if(dynamic_cast<ToggleMenuItem*>(item.second->menuItems[iii])->getValue())
 								spriteBatch.draw(font, "x", blib::math::easyMatrix(glm::vec2(item.first.x + 2, item.first.y + 2 + 16 * iii)), glm::vec4(0, 0, 0, 1));
 
-						spriteBatch.draw(font, item.second->menuItems[iii]->title, blib::math::easyMatrix(glm::vec2(item.first.x + 20, item.first.y + 2 + 16 * iii)), glm::vec4(0, 0, 0, 1));
+						spriteBatch.draw(font, item.second->menuItems[iii]->title, blib::math::easyMatrix(glm::vec2(item.first.x + 20, item.first.y + 14 + 16 * iii)), glm::vec4(0, 0, 0, 1));
 						iii++;
 					}
 				}
@@ -196,7 +210,7 @@ namespace blib
 						spriteBatch.drawStretchyRect(skinTexture, blib::math::easyMatrix(glm::vec2(popupMenuPosition.x - 2, popupMenuPosition.y + 16 * iii)), skin["list"], glm::vec2(200, 16), glm::vec4(0.5f, 0.5f, 0.9f, 1.0f));
 
 
-					spriteBatch.draw(font, popupMenu->menuItems[iii]->title, blib::math::easyMatrix(glm::vec2(popupMenuPosition.x + 2, popupMenuPosition.y + 2 + 16 * iii)), glm::vec4(0, 0, 0, 1));
+					spriteBatch.draw(font, popupMenu->menuItems[iii]->title, blib::math::easyMatrix(glm::vec2(popupMenuPosition.x + 2, popupMenuPosition.y + 14 + 16 * iii)), glm::vec4(0, 0, 0, 1));
 					iii++;
 				}
 			}
@@ -211,7 +225,7 @@ namespace blib
 				skinTexture = resourceManager->getResource<Texture>(skin["texture"].get<std::string>());
 			font = resourceManager->getResource<Font>("tahoma");
 			if (skin.find("radialfont") != skin.end())
-				radialmenufont = resourceManager->getResource<Font>(skin["radialfont"].get<std::string>());
+				radialmenufont = resourceManager->getResource<Font>(skin["radialfont"]["name"].get<std::string>(), skin["radialfont"]["size"].get<int>());
 		}
 
 		void WM::setFont( Font* font )
@@ -278,9 +292,11 @@ namespace blib
 
 			if (radialMenu)
 			{
-				glm::vec2 diff = radialMenuPosition - glm::vec2(mouseState.position);
+				glm::vec2 diff = glm::vec2(mouseState.position) - radialMenuPosition;
 				float angle = atan2(diff.y, diff.x);
-                int id = (int)glm::round(((angle + 2 * blib::math::pif) / (2 * blib::math::pif)) * 8) % 8;
+				int count = blib::linq::count(radialMenu->menuItems, [](MenuItem* item) { return item->enabled; });
+				int id = (int)glm::round(((angle + 2 * blib::math::pif) / (2 * blib::math::pif)) * count + (0)) % count;
+
 				for (size_t i = 0; (int)i <= id && i < radialMenu->menuItems.size(); i++)
 					if (!radialMenu->menuItems[i]->enabled)
 						id++;
@@ -697,6 +713,7 @@ namespace blib
 				radialMenu = radialMenu ? NULL : radialMenuRoot;
 				radialMenuPosition.x = (float)mouseState.position.x;
 				radialMenuPosition.y = (float)mouseState.position.y;
+				radialMenuAnimation = blib::util::Profiler::getAppTime();
 			}
 
 			return false;
