@@ -39,11 +39,13 @@ float blib::util::StreamIn::readFloat()
 	return f;
 }
 
-std::string blib::util::StreamIn::readString( int maxLength )
+std::string blib::util::StreamIn::readString( int maxLength, int length)
 {
 	char* buf = new char[maxLength];
 	read(buf, maxLength);
 	std::string ret(buf);
+	if (length > -1)
+		ret = std::string(buf, length);
 	delete[] buf;
 	return ret;
 }

@@ -23,7 +23,7 @@ namespace blib
 			unsigned short readUShort();
 			int readInt();
 			float readFloat();
-			std::string readString(int maxLength);
+			std::string readString(int maxLength, int length = -1);
 			std::string readLine();
 			glm::vec3 readVec3();
 			glm::vec2 readVec2();
