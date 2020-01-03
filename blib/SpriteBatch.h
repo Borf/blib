@@ -33,7 +33,7 @@ namespace blib
 			blib::VBO* vbo = NULL;
 		public:
 			//pair<texture, end of what to draw>
-			std::vector<std::pair<const Texture*, unsigned short> > materialIndices;
+			std::vector<std::pair<const Texture*, unsigned int> > materialIndices;
 			std::vector<vertexDef> verts;
 			~Cache();
 
@@ -45,7 +45,7 @@ namespace blib
 
 #define MAX_SPRITES 110000
 		std::vector<vertexDef> vertices;
-		std::vector<std::pair<const Texture*, unsigned short> > materialIndices;
+		std::vector<std::pair<const Texture*, unsigned int> > materialIndices;
 		
 		const Texture* currentTexture;
 		Renderer* renderer;
