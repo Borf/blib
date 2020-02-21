@@ -327,6 +327,8 @@ namespace blib
 				Log::out << "Could not open " << fileName << Log::newline;
 				return json();
 			}
+			if (data.find("\0"))
+				data = data.substr(0, data.find("\0"));
 
 			bool inString = false;
 			bool escape = false;
@@ -359,6 +361,7 @@ namespace blib
 			catch (json::parse_error &exception)
 			{
 				Log::out << "Can not read json file: " << fileName << ", " << exception.what() << " at " << exception.byte << Log::newline;
+				printf("\n\n%s\n\n",  data.c_str());
 			}
 			return nullptr;
 		}
