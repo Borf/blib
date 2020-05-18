@@ -51,13 +51,16 @@ namespace blib
 		return opened;
 	}
 
-	void IWindow::addListener( KeyListener* keyListener )
+	void IWindow::addListener( KeyListener* keyListener)
 	{
 		keyListeners.push_back(keyListener);
 	}
-	void IWindow::addListener( MouseListener* mouseListener )
+	void IWindow::addListener( MouseListener* mouseListener, bool highPrio)
 	{
-		mouseListeners.push_back(mouseListener);
+		if(highPrio)
+			mouseListeners.emplace_front(mouseListener);
+		else
+			mouseListeners.push_back(mouseListener);
 	}
 
 	IWindow::~IWindow()

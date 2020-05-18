@@ -202,7 +202,7 @@ namespace blib
 
 		//add listeners
 		void addKeyListener(KeyListener* keyListener);
-		void addMouseListener(MouseListener* mouseListener);
+		void addMouseListener(MouseListener* mouseListener, bool highPrio = false);
 
 		friend class blib::platform::win32::Window;
 	public:

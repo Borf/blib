@@ -301,7 +301,8 @@ namespace blib
 
 			if (font->charmap.find(c) == font->charmap.end())
 			{
-				Log::out << "Could not find character " << c << Log::newline;
+				if(c != 0)
+					Log::out << "Could not find character " << c << Log::newline;
 				continue;
 			}
 			const Glyph* g = font->getGlyph(c);

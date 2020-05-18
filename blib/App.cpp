@@ -235,9 +235,9 @@ namespace blib
 	{
 		window->addListener(keyListener);
 	}
-	void App::addMouseListener(MouseListener* mouseListener)
+	void App::addMouseListener(MouseListener* mouseListener, bool highPrio)
 	{
-		window->addListener(mouseListener);
+		window->addListener(mouseListener, highPrio);
 	}
 
 
