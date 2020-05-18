@@ -422,7 +422,7 @@ namespace blib
 					windows.erase(it); // move window to top
 					windows.push_front(w);
 
-					bool ret = false;
+					bool ret = true;
 					clickX = x;
 					clickY = y;
 					if (w->inComponent(x, y))
@@ -431,7 +431,7 @@ namespace blib
 					}
 					else
 						draggingWindow = w;
-					return ret;
+					return true;
 				}
 			}
 			return false;
