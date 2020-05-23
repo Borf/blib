@@ -18,6 +18,7 @@ namespace blib
 				unsigned int selectionPosition;
 
 				bool shiftDown;
+				bool ctrlDown;
 
 				double blinkTime;
 
@@ -27,6 +28,8 @@ namespace blib
 				std::string text;
 				unsigned int cursor;
 
+
+				std::string getSelectedText();
 
 				Textbox();
 

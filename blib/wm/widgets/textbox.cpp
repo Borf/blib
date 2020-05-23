@@ -8,6 +8,8 @@
 #include <blib/util/Profiler.h>
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <blib/util/Log.h>
+using blib::util::Log;
 
 #ifdef WIN32
 #include <windows.h>
@@ -20,7 +22,7 @@ namespace wm
 {
 namespace widgets
 {
-Textbox::Textbox( )
+Textbox::Textbox()
 {
     this->text = "";
     this->width = 100;
@@ -31,6 +33,7 @@ Textbox::Textbox( )
     scrollPosition = 0;
     canHaveKeyboardFocus = true;
     shiftDown = false;
+    ctrlDown = false;
     blinkTime = blib::util::Profiler::getAppTime();
 
 
@@ -60,16 +63,25 @@ Textbox::Textbox( )
             shiftDown = false;
             return true;
         }
+        if (key == blib::Key::CONTROL)
+        {
+            ctrlDown = false;
+            return true;
+        }
         return false;
     });
 
     addKeyDownHandler([this](blib::Key key)
     {
+        Log::out<<"Key Down" << (int)key << Log::newline;
         blinkTime = blib::util::Profiler::getAppTime();
         switch (key)
         {
         case blib::Key::SHIFT:
             shiftDown = true;
+            break;
+        case blib::Key::CONTROL:
+            ctrlDown = true;
             break;
         case blib::Key::BACKSPACE:
             if (cursor > 0)
@@ -126,6 +138,52 @@ Textbox::Textbox( )
             if (!shiftDown)
                 selectionPosition = cursor;
             return true;
+        case blib::Key::C:
+            if (ctrlDown)
+            {
+                std::string output = getSelectedText();;
+                const size_t len = output.size()+1;
+                HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
+                memcpy(GlobalLock(hMem), output.c_str(), len);
+                GlobalUnlock(hMem);
+                OpenClipboard(0);
+                EmptyClipboard();
+                SetClipboardData(CF_TEXT, hMem);
+                CloseClipboard();
+                return true;
+            }
+            break;
+        case blib::Key::V:
+            if (ctrlDown)
+            {
+                if (!IsClipboardFormatAvailable(CF_TEXT))
+                    return true;
+                if (!OpenClipboard(0))
+                    return true;
+
+                auto hglb = GetClipboardData(CF_TEXT);
+                if (hglb != NULL)
+                {
+                    auto lptstr = GlobalLock(hglb);
+                    if (lptstr != NULL)
+                    {
+                        std::string clip = std::string((char*)lptstr);
+
+                        if (cursor != selectionPosition)
+                        {
+                            text = text.substr(0, glm::min(cursor, selectionPosition)) + text.substr(glm::max(cursor, selectionPosition));
+                            cursor = glm::min(cursor, selectionPosition);
+                            selectionPosition = cursor;
+                        }
+                        text = text.substr(0, cursor) + clip + text.substr(cursor);
+                        GlobalUnlock(hglb);
+                    }
+                }
+                CloseClipboard();
+
+                return true;
+            }
+            break;
         default:
             return false;
         }
@@ -138,6 +196,14 @@ Textbox::Textbox( )
         x -= this->x;//position
         x -= 1;//padding
         x += scrollPosition;
+
+
+        if (clickCount == 2)
+        {
+            cursor = 0;
+            selectionPosition = text.size();
+            return true;
+        }
 
         for (unsigned int i = 0; i < text.size(); i++)
         {
@@ -158,11 +224,7 @@ Textbox::Textbox( )
         if (!shiftDown)
             selectionPosition = cursor;
 
-		if (clickCount == 2)
-		{
-			cursor = 0;
-			selectionPosition = text.size();
-		}
+
 
         return true;
     });
@@ -195,6 +257,15 @@ Textbox::Textbox( )
 
 }
 
+
+
+std::string Textbox::getSelectedText()
+{
+    if (cursor != selectionPosition)
+        return text = text.substr(glm::min(cursor, selectionPosition), glm::max(cursor, selectionPosition) - glm::min(cursor, selectionPosition));
+    else
+        return text;
+}
 
 
 void Textbox::draw(SpriteBatch& spriteBatch, glm::mat4 matrix, Renderer* renderer) const
