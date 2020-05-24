@@ -16,9 +16,20 @@ namespace blib
 	{
 		namespace widgets
 		{
-			Image::Image(Texture* texture )
+			Image::Image(Texture* texture)
 			{
+				this->texInfo = nullptr;
 				this->texture = texture;
+				this->width = 100;
+				this->height = 100;
+				showBorder = true;
+				scaleAspect = true;
+			}
+
+			Image::Image(TextureMap::TexInfo* texInfo)
+			{
+				this->texInfo = texInfo;
+				this->texture = nullptr;
 				this->width = 100;
 				this->height = 100;
 				showBorder = true;
@@ -46,7 +57,19 @@ namespace blib
 						0,
 						scale,
 						matrix));
+				}
+				else if (texInfo)
+				{
+					glm::vec2 scale = glm::vec2((width - 2.0f) / texInfo->width, (height - 2.0f) / texInfo->height);
 
+					if (scaleAspect)
+						scale.x = (scale.y = glm::min(scale.x, scale.y));	//uninitialized read in min function?
+
+					spriteBatch.draw(texInfo, blib::math::easyMatrix(
+						glm::vec2(x + 2, y + 2),
+						0,
+						scale,
+						matrix));
 				}
 			}
 

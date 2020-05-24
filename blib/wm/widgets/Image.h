@@ -2,7 +2,7 @@
 
 #include "Widget.h"
 #include <string>
-
+#include <blib/TextureMap.h>
 
 namespace blib
 {
@@ -15,8 +15,11 @@ namespace blib
 			{
 			protected:
 				Texture* texture;
+				TextureMap::TexInfo* texInfo;
 			public:
 				Image(Texture* texture);
+				Image(TextureMap::TexInfo* texInfo);
+
 				virtual void draw(SpriteBatch &shader, glm::mat4 matrix, Renderer* renderer) const;
 
 				void setTexture(Texture*);
