@@ -41,7 +41,7 @@ namespace blib
 			void Image::draw(SpriteBatch &spriteBatch, glm::mat4 matrix, Renderer* renderer) const
 			{
 				if(showBorder)
-					spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["frame"], glm::vec2(width, height));
+					spriteBatch.drawStretchyRect(WM::getInstance()->skinTexture, glm::translate(matrix, glm::vec3(x,y,0)), WM::getInstance()->skin["frame"], glm::vec2(width, height), bgcolor);
 
 				if (texture)
 				{

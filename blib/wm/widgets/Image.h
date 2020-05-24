@@ -27,6 +27,8 @@ namespace blib
 
 				bool showBorder;
 				bool scaleAspect;
+
+				glm::vec4 bgcolor = glm::vec4(1, 1, 1, 1);
 			};
 		}
 	}
