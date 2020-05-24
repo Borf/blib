@@ -1,4 +1,5 @@
 #include "Thread.h"
+#include <mutex>
 
 #ifdef WIN32
 #include <blib/linq.h>
@@ -90,21 +91,25 @@ namespace blib
 		}
 
 #ifdef WIN32
+		std::mutex startMutex;
 		DWORD WINAPI Thread::threadStarter( LPVOID lpParam )
 		{
-			int threadId = ((Thread*)lpParam)->threadId;
-			std::string name = ((Thread*)lpParam)->name;
-			SetThreadName(threadId, (char*)name.c_str());
-
-			if(linq::contains(threadNames, [name] (std::pair<int, std::string> p) { return p.second == name; }))
 			{
-				static std::map<std::string, int> nameIndices;
-				nameIndices[name]++;
-				char newName[100];
-				sprintf(newName, "%s%03i", name.c_str(), ++nameIndices[name]);
-				name = newName;
+				std::lock_guard<std::mutex> guard(startMutex);
+				int threadId = ((Thread*)lpParam)->threadId;
+				std::string name = ((Thread*)lpParam)->name;
+				SetThreadName(threadId, (char*)name.c_str());
+
+				if (linq::contains(threadNames, [name](std::pair<int, std::string> p) { return p.second == name; }))
+				{
+					static std::map<std::string, int> nameIndices;
+					nameIndices[name]++;
+					char newName[100];
+					sprintf(newName, "%s%03i", name.c_str(), ++nameIndices[name]);
+					name = newName;
+				}
+				threadNames[threadId] = name;
 			}
-			threadNames[threadId] = name;
 			return ((Thread*)lpParam)->run();
 		}
 #else

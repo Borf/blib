@@ -6,7 +6,10 @@
 #include <blib/ResourceManager.h>
 #include <blib/util/stb_rect_pack.h>
 #include <blib/util/stb_truetype.h>
-
+#include <blib/Renderer.h>
+#include <blib/gl/Vertex.h>
+#include <blib/math/Rectangle.h>
+#include <glm/gtc/matrix_transform.hpp>
 using blib::util::Log;
 
 #include <vector>
@@ -82,10 +85,10 @@ namespace blib
 
 	Font::Font(const std::string &fileName, ResourceManager* resourceManager, float size) : Resource("Font: " + fileName)
 	{
-		if (blib::util::FileSystem::exists(fileName + ".fnt"))
-			loadFnt(fileName + ".fnt", resourceManager);
-		else if (blib::util::FileSystem::exists(fileName + ".ttf"))
+		if (blib::util::FileSystem::exists(fileName + ".ttf"))
 			loadTtf(fileName + ".ttf", resourceManager, size);
+		else if (blib::util::FileSystem::exists(fileName + ".fnt"))
+			loadFnt(fileName + ".fnt", resourceManager);
 		else
 			Log::out << "Error loading font: " << fileName << Log::newline;
 	}
@@ -247,10 +250,10 @@ namespace blib
 			
 
 			g->id = characters[i];
-			g->xoffset = q.x0*oversample;
-			g->yoffset = q.y0*oversample +size;
-			g->x = q.s0 * ttfSizeX;
-			g->y = q.t0 * ttfSizeY;
+			g->xoffset = (int)(q.x0*oversample);
+			g->yoffset = (int)(q.y0*oversample +size);
+			g->x = (int)(q.s0 * ttfSizeX);
+			g->y = (int)(q.t0 * ttfSizeY);
 			g->width = (q.s1 - q.s0) * ttfSizeX;
 			g->height = (q.t1 - q.t0) * ttfSizeY;
 			g->xadvance = x * oversample;
@@ -278,6 +281,124 @@ namespace blib
 		for(std::map<int, Glyph*>::iterator it = charmap.begin(); it != charmap.end(); it++)
 			delete it->second;
 		charmap.clear();
+	}
+
+
+	void Font::render(blib::Renderer* renderer, blib::RenderState& renderState, const std::string& utf8, const glm::vec4 &color) const
+	{
+		std::vector<VertexP2T2C4> verts;
+
+
+		glm::vec2 texFactor(1.0f / texture->width, 1.0f / texture->height);
+
+		float scaleFactor = 1.0f;
+
+		float x = 0;
+		float y = 0;
+		int lineHeight = 12;
+
+
+#if defined(_DEBUG) && defined(BLIB_WIN)
+		std::wstring text;
+		std::wstring space;
+		typedef wchar_t ch;
+		typedef std::wstring str;
+
+		if (this->utf8)
+		{
+			text = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(utf8);
+			space = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>{}.from_bytes(" ");
+		}
+		else
+		{
+			text = std::wstring(utf8.begin(), utf8.end());
+			for (int i = 0; i < utf8.size(); i++)
+				if (utf8[i] < 0)
+					text[i] = (unsigned char)text[i];
+			space = std::wstring(1, ' ');
+		}
+
+#else
+		std::u32string text;
+		std::u32string space;
+		typedef char32_t ch;
+		typedef std::u32string str;
+
+		if (this->utf8)
+		{
+			text = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(utf8);
+			space = std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>{}.from_bytes(" ");
+		}
+		else
+		{
+			text = std::u32string(utf8.begin(), utf8.end());
+			for (int i = 0; i < utf8.size(); i++)
+				if (utf8[i] < 0)
+					text[i] = (unsigned char)text[i];
+			space = std::u32string(1, ' ');
+		}
+#endif
+
+		for (size_t i = 0; i < text.size(); i++)
+		{
+			ch c = text[i];
+			if (c == ' ')
+			{
+				{
+					str word = text.substr(i + 1);
+					if (word.find(space) != std::string::npos)
+						word = word.substr(0, word.find(space));
+					int wordLength = 0;
+					for (size_t ii = 0; ii < word.length(); ii++)
+						if (charmap.find(word[ii]) != charmap.end())
+							wordLength += getGlyph(word[ii])->xadvance;
+				}
+			}
+
+			if (c == '\n')
+			{
+				x = 0;
+				y += lineHeight;
+				lineHeight = 12;
+				continue;
+			}
+			if (c == '\t')
+			{
+				x = ceil((x + 4) / 4) * 4;
+				continue;
+			}
+
+			if (charmap.find(c) == charmap.end())
+			{
+				if (c != 0)
+					Log::out << "Could not find character " << c << Log::newline;
+				continue;
+			}
+			const Glyph* g = getGlyph(c);
+			lineHeight = glm::max(lineHeight, (int)lineHeight);
+
+			glm::mat4 transform = glm::translate(glm::scale(glm::mat4(1.0f), glm::vec3(scaleFactor, scaleFactor, 1)), glm::vec3(x + g->xoffset, y + g->yoffset - lineHeight * 0.5, 0));
+			blib::math::Rectangle src(g->x * texFactor.x, g->y * texFactor.y, g->width * texFactor.x, g->height * texFactor.y);
+
+			float fw = (float)src.width();
+			float fh = (float)src.height();
+
+			verts.push_back(blib::VertexP2T2C4(glm::vec2(transform * glm::vec4(fw * 0, fh * 0, 0, 1)), glm::vec2(src.topleft.x, src.topleft.y), color)); // 1
+			verts.push_back(blib::VertexP2T2C4(glm::vec2(transform * glm::vec4(fw * 0, fh * texture->originalHeight, 0, 1)), glm::vec2(src.topleft.x, src.bottomright.y), color)); // 2
+			verts.push_back(blib::VertexP2T2C4(glm::vec2(transform * glm::vec4(fw * texture->originalWidth, fh * 0, 0, 1)), glm::vec2(src.bottomright.x, src.topleft.y), color)); // 3
+
+			verts.push_back(blib::VertexP2T2C4(glm::vec2(transform * glm::vec4(fw * 0, fh * texture->originalHeight, 0, 1)), glm::vec2(src.topleft.x, src.bottomright.y), color)); // 2
+			verts.push_back(blib::VertexP2T2C4(glm::vec2(transform * glm::vec4(fw * texture->originalWidth, fh * 0, 0, 1)), glm::vec2(src.bottomright.x, src.topleft.y), color)); // 3
+			verts.push_back(blib::VertexP2T2C4(glm::vec2(transform * glm::vec4(fw * texture->originalWidth, fh * texture->originalHeight, 0, 1)), glm::vec2(src.bottomright.x, src.bottomright.y), color)); //4
+
+
+
+			x += g->xadvance;
+		}
+
+
+		renderState.activeTexture[0] = texture;
+		renderer->drawTriangles(verts, renderState);
 	}
 
 

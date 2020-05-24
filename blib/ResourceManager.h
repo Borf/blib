@@ -175,7 +175,7 @@ namespace blib
 	template<>
 	inline Font* ResourceManager::getResource<Font>(const std::string &name)
 	{
-		return (Font*)regResource(font(name, 0));
+		return (Font*)regResource(font(name, 16));
 	}
 
 

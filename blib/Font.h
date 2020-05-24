@@ -5,11 +5,14 @@
 #include <map>
 #include <blib/Resource.h>
 #include <blib/util/stb_truetype.h>
+#include <glm/glm.hpp>
 
 namespace blib
 {
 	class Texture;
 	class ResourceManager;
+	class Renderer;
+	class RenderState;
 	namespace gl {
 		class ResourceManager; namespace direct { class ResourceManager; }	};
 	class Glyph
@@ -49,6 +52,8 @@ namespace blib
 		bool utf8 = true;
 		static void registerCharacters(const std::string& utf8);
 		float lineHeight;
+
+		void render(blib::Renderer* renderer, blib::RenderState& renderState, const std::string& utf8, const glm::vec4 &color) const;
 
 	};
 }
